@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>E-mail transacional</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 680px; box-sizing: border-box; padding: 40px; background: #ECEBE6; font-family: Outfit, Helvetica, Arial, sans-serif; color: #18181B">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72; padding: 0 4px 12px">{{preheader}}</div>
+<div style="width: 600px; background: #FFFFFF; border-radius: 16px; overflow: hidden">
+
+<div style="padding: 28px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E6E4DE">
+<span style="font-size: 22px; font-weight: 500; letter-spacing: -0.02em">marfim<span style="color: #3B3FD9">.</span></span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #6B6B72">{{tag}}</span>
+</div>
+
+<div style="padding: 40px 40px 8px; display: flex; flex-direction: column; gap: 16px">
+<span style="width: 56px; height: 56px; border-radius: 16px; background: {{iconBg}}; display: flex; align-items: center; justify-content: center">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="{{iconFg}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{icon}}"></path></svg></span>
+<div style="font-size: 32px; font-weight: 300; letter-spacing: -0.025em; line-height: 1.12">{{title}}</div>
+<div style="font-size: 16px; line-height: 1.6; color: #44444A">{{intro}}</div>
+</div>
+
+<!-- Bloco do pedido -->
+<sc-if value="{{hasOrder}}" hint-placeholder-val="{{ false }}">
+<div style="margin: 24px 40px 0; border: 1px solid #E6E4DE; border-radius: 14px; overflow: hidden">
+<div style="padding: 14px 18px; background: #F4F3EF; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #44444A"><span>PEDIDO MF-000231</span><span>01 OUT 2026</span></div>
+<sc-for list="{{items}}" as="i" hint-placeholder-count="3">
+<div style="padding: 14px 18px; border-top: 1px solid #E6E4DE; display: flex; align-items: center; gap: 14px">
+<span style="width: 44px; height: 44px; border-radius: 10px; background: {{i.tint}}; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="{{i.kind}}" size="26" hint-size="26px,29px"></dc-import></span>
+<span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px">{{i.name}}</span><span style="font-size: 12px; color: #6B6B72">{{i.brand}} · {{i.qty}} un.</span></span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; text-decoration: {{strike}}; color: {{priceColor}}">{{i.total}}</span>
+</div>
+</sc-for>
+<div style="padding: 14px 18px; border-top: 1px solid #E6E4DE; display: flex; justify-content: space-between; font-size: 15px; font-weight: 500"><span>{{totalLabel}}</span><span style="font-family: 'JetBrains Mono', monospace; text-decoration: {{strike}}; color: {{priceColor}}">R$ 666,00</span></div>
+</div>
+</sc-if>
+
+<!-- Envio -->
+<sc-if value="{{isShipped}}" hint-placeholder-val="{{ false }}">
+<div style="margin: 16px 40px 0; padding: 18px 20px; border-radius: 14px; background: #3B3FD9; color: #FFFFFF; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #ECECFD">TRANSPORTADORA</span>
+<div style="display: flex; justify-content: space-between; font-size: 15px"><span>[TRANSPORTADORA]</span><span style="font-family: 'JetBrains Mono', monospace">[CÓDIGO DE RASTREIO]</span></div>
+</div>
+</sc-if>
+
+<!-- Motivo / aviso -->
+<sc-if value="{{hasNote}}" hint-placeholder-val="{{ false }}">
+<div style="margin: 16px 40px 0; padding: 16px 18px; border-radius: 14px; background: {{noteBg}}; font-size: 14px; line-height: 1.55; color: #18181B">
+<span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: {{noteInk}}; padding-bottom: 4px">{{noteLabel}}</span>{{note}}</div>
+</sc-if>
+
+<div style="padding: 28px 40px 8px">
+<a href="{{ctaHref}}" style="display: inline-flex; align-items: center; height: 52px; padding: 0 28px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; font-size: 16px; font-weight: 500">{{cta}}</a>
+</div>
+<sc-if value="{{hasExpiry}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 8px 40px 0; font-size: 13px; color: #6B6B72; line-height: 1.6">{{expiry}}<br>Se o botão não funcionar, copie este endereço no navegador:<br><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9; word-break: break-all">{{link}}</span></div>
+</sc-if>
+<sc-if value="{{hasSafety}}" hint-placeholder-val="{{ false }}">
+<div style="margin: 20px 40px 0; padding-top: 16px; border-top: 1px solid #E6E4DE; font-size: 13px; color: #6B6B72; line-height: 1.6">{{safety}}</div>
+</sc-if>
+
+<div style="margin-top: 36px; padding: 24px 40px; background: #18181B; color: #A1A1A8; font-size: 12px; line-height: 1.7">
+<span style="display: block; color: #F4F3EF; font-size: 14px; padding-bottom: 6px">Dúvidas? Responda este e-mail ou fale com a gente: [SEU WHATSAPP]</span>
+Você recebeu este e-mail porque tem uma conta na Marfim. Mensagem automática sobre a sua conta ou pedido.<br>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px">MARFIM · CNPJ [SEU CNPJ] · [ENDEREÇO DA LOJA]</span>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"tipo":{"editor":"enum","options":["confirmacao","nova-senha","pedido-confirmado","pedido-enviado","pedido-cancelado","pagamento-nao-aprovado"],"default":"confirmacao"},"$preview":{"width":680,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const t = this.props.tipo || 'confirmacao';
+    const check = 'm5 12 5 5 9-10';
+    const mail = 'M3 6h18v12H3zM3 7l9 6 9-6';
+    const key = 'M15 7a4 4 0 1 1-3.5 6L5 19.5V22h3v-2h2v-2h2l1.5-1.5A4 4 0 0 1 15 7Z';
+    const truck = 'M3 7h11v9H3zM14 10h4l3 3v3h-7zM7 19a1.5 1.5 0 1 0 0-.01M17 19a1.5 1.5 0 1 0 0-.01';
+    const x = 'M7 7l10 10M17 7 7 17';
+    const T = {
+      'confirmacao': { tag: 'CONTA', pre: 'Falta só um clique para ativar sua conta.', icon: mail, iconBg: '#ECECFD', iconFg: '#3B3FD9', title: 'Confirme seu e-mail', intro: 'Olá, Ana. Confirme que este e-mail é seu para poder finalizar compras na Marfim.', cta: 'Confirmar e-mail', href: 'Acesso.dc.html', expiry: 'O link vale por 24 horas e só pode ser usado uma vez.', link: 'https://[SUA-LOJA]/confirmar-email?token=…', safety: 'Não criou uma conta? Pode ignorar este e-mail.' },
+      'nova-senha': { tag: 'CONTA', pre: 'Seu link para criar uma nova senha.', icon: key, iconBg: '#ECECFD', iconFg: '#3B3FD9', title: 'Crie uma nova senha', intro: 'Recebemos um pedido para redefinir a senha da sua conta. Toque no botão para escolher uma nova.', cta: 'Criar nova senha', href: 'Acesso.dc.html', expiry: 'O link vale por 30 minutos. Ao trocar a senha, as sessões abertas são encerradas.', link: 'https://[SUA-LOJA]/redefinir-senha?token=…', safety: 'Não foi você? Ignore este e-mail: sua senha continua a mesma.' },
+      'pedido-confirmado': { tag: 'PEDIDO', pre: 'Pagamento aprovado. Os ateliês já foram avisados.', icon: check, iconBg: '#E8F5EC', iconFg: '#15803D', title: 'Pedido confirmado', intro: 'Obrigado, Ana. O pagamento foi aprovado e os ateliês já começaram a separar suas peças.', cta: 'Acompanhar pedido', href: 'Conta.dc.html', order: true, totalLabel: 'Total pago', note: 'Rua [ENDEREÇO], 120 · apto 42 · Pinheiros · São Paulo, SP', noteLabel: 'ENTREGA EM', noteBg: '#F4F3EF', noteInk: '#6B6B72' },
+      'pedido-enviado': { tag: 'PEDIDO', pre: 'Sua encomenda saiu do ateliê.', icon: truck, iconBg: '#ECECFD', iconFg: '#3B3FD9', title: 'Seu pedido está a caminho', intro: 'A transportadora coletou suas peças. Acompanhe a entrega pelo código abaixo.', cta: 'Rastrear entrega', href: 'Conta.dc.html', order: true, shipped: true, totalLabel: 'Total' },
+      'pedido-cancelado': { tag: 'PEDIDO', pre: 'Seu pedido foi cancelado e o valor será estornado.', icon: x, iconBg: '#F1F0EC', iconFg: '#44444A', title: 'Pedido cancelado', intro: 'O pedido MF-000231 foi cancelado. O valor é estornado no mesmo cartão usado na compra.', cta: 'Ver pedido', href: 'Conta.dc.html', order: true, strike: true, totalLabel: 'Total estornado', note: 'O prazo para o estorno aparecer na fatura depende do banco emissor do cartão.', noteLabel: 'ESTORNO', noteBg: '#F4F3EF', noteInk: '#6B6B72' },
+      'pagamento-nao-aprovado': { tag: 'PAGAMENTO', pre: 'Não conseguimos aprovar o pagamento do seu pedido.', icon: x, iconBg: '#FCEEE4', iconFg: '#B4501E', title: 'Pagamento não aprovado', intro: 'O banco não autorizou o pagamento do pedido MF-000231. Nenhum valor foi cobrado e sua sacola continua salva.', cta: 'Tentar de novo', href: 'Carrinho.dc.html', note: 'O banco emissor não autorizou a transação.', noteLabel: 'MOTIVO INFORMADO', noteBg: '#FCEEE4', noteInk: '#B4501E' }
+    };
+    const c = T[t];
+    const items = [
+      { name: 'Pendente Orbe', brand: 'Oficina Faísca', qty: 1, total: 'R$ 359,00', kind: 'pendant', tint: '#F1F0EC' },
+      { name: 'Vaso Duna', brand: 'Estúdio Barro Cru', qty: 1, total: 'R$ 129,00', kind: 'vase', tint: '#F1F0EC' },
+      { name: 'Par de canecas Grão', brand: 'Estúdio Barro Cru', qty: 2, total: 'R$ 178,00', kind: 'mug', tint: '#FCEEE4' }
+    ];
+    return {
+      tag: c.tag, preheader: c.pre, icon: c.icon, iconBg: c.iconBg, iconFg: c.iconFg, title: c.title, intro: c.intro,
+      cta: c.cta, ctaHref: c.href,
+      hasOrder: !!c.order, items, totalLabel: c.totalLabel || 'Total',
+      strike: c.strike ? 'line-through' : 'none', priceColor: c.strike ? '#6B6B72' : '#18181B',
+      isShipped: !!c.shipped,
+      hasNote: !!c.note, note: c.note || '', noteLabel: c.noteLabel || '', noteBg: c.noteBg || '#F4F3EF', noteInk: c.noteInk || '#6B6B72',
+      hasExpiry: !!c.expiry, expiry: c.expiry || '', link: c.link || '',
+      hasSafety: !!c.safety, safety: c.safety || ''
+    };
+  }
+}
+</script>
+</body>
+</html>

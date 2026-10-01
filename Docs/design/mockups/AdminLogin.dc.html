@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Admin · Entrar</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input{font-family:Outfit,sans-serif}
+input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes bar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.up{animation:up .6s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.08s}.d2{animation-delay:.16s}
+.shake{animation:shake .35s ease}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 60s linear infinite}
+.bar{transform-origin:left;animation:bar 1s cubic-bezier(.2,.7,.2,1) both}
+.btn-p{transition:background .2s}
+.btn-p:hover:not(:disabled){background:#2A2DA8 !important}
+input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); background: #F4F3EF; overflow: hidden">
+
+<!-- Lado visual: resumo do painel -->
+<div style="position: relative; background: #18181B; color: #F4F3EF; padding: 48px 56px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden">
+<svg class="slow" width="620" height="620" viewBox="0 0 520 520" fill="none" style="position: absolute; right: -220px; top: -180px"><circle cx="260" cy="260" r="240" stroke="#3B3FD9" stroke-opacity=".5" stroke-dasharray="3 9"></circle><circle cx="260" cy="260" r="170" stroke="#FFFFFF" stroke-opacity=".08"></circle><circle cx="260" cy="20" r="7" fill="#E8793A"></circle></svg>
+<div style="position: relative; display: flex; align-items: center; gap: 10px">
+<span style="width: 30px; height: 30px; border-radius: 8px; background: #3B3FD9; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"><circle cx="8" cy="8" r="5"></circle><path d="M8 3v10"></path></svg></span>
+<span style="font-size: 22px; font-weight: 500; letter-spacing: -0.02em">marfim<span style="color: #8F92FF">.</span></span>
+<span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #F4F3EF; color: #18181B; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; display: flex; align-items: center">ADMIN</span>
+</div>
+<div style="position: relative; display: flex; flex-direction: column; gap: 18px">
+<div style="font-size: 44px; font-weight: 300; letter-spacing: -0.03em; line-height: 1.08">Pedidos, peças e ateliês<br><span style="font-weight: 500; color: #8F92FF">num só painel.</span></div>
+<div style="display: flex; flex-direction: column; gap: 12px; max-width: 420px">
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="display: flex; justify-content: space-between; font-size: 13px; color: #A1A1A8"><span>Confirmados</span><span style="font-family: 'JetBrains Mono', monospace">8</span></span><span style="height: 6px; border-radius: 999px; background: #2E2E33; overflow: hidden"><span class="bar" style="display: block; height: 6px; width: 100%; background: #3B3FD9; border-radius: 999px"></span></span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="display: flex; justify-content: space-between; font-size: 13px; color: #A1A1A8"><span>Em preparo</span><span style="font-family: 'JetBrains Mono', monospace">5</span></span><span style="height: 6px; border-radius: 999px; background: #2E2E33; overflow: hidden"><span class="bar" style="display: block; height: 6px; width: 62%; background: #3B3FD9; opacity: .75; border-radius: 999px; animation-delay: .1s"></span></span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="display: flex; justify-content: space-between; font-size: 13px; color: #A1A1A8"><span>Meta do dia</span><span style="font-family: 'JetBrains Mono', monospace">R$ 700</span></span><span style="height: 6px; border-radius: 999px; background: #2E2E33; overflow: hidden"><span class="bar" style="display: block; height: 6px; width: 78%; background: #E8793A; border-radius: 999px; animation-delay: .2s"></span></span></div>
+</div>
+</div>
+<div style="position: relative; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #6B6B72">ACESSO RESTRITO À EQUIPE · DADOS DE EXEMPLO</div>
+</div>
+
+<!-- Formulário -->
+<div style="display: flex; align-items: center; justify-content: center; padding: 48px">
+<div key="{{key}}" class="up" style="width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 20px">
+
+<sc-if value="{{isForm}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">PAINEL DE ADMINISTRAÇÃO</span>
+<h1 style="margin: 0; font-size: 36px; font-weight: 300; letter-spacing: -0.03em">Entrar no painel</h1>
+</div>
+<sc-if value="{{expired}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="padding: 12px 14px; border-radius: 12px; background: #ECECFD; font-size: 14px; line-height: 1.5">Sua sessão terminou. Entre de novo para voltar a <b style="font-weight: 500">Pedidos</b>.</div>
+</sc-if>
+<sc-if value="{{err.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{err.key}}" role="alert" class="shake" style="padding: 12px 14px; border-radius: 12px; background: #FCEEE4; font-size: 14px; line-height: 1.5; display: flex; gap: 10px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B4501E" stroke-width="1.8" stroke-linecap="round" style="flex-shrink: 0; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg><span>{{err.text}}</span></div>
+</sc-if>
+<form onSubmit="{{submit}}" style="margin: 0; display: flex; flex-direction: column; gap: 14px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">E-mail
+<input type="email" autocomplete="username" value="{{email}}" onChange="{{onEmail}}" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid {{emailB}}; border-radius: 12px; background: #FFFFFF; font-size: 15px"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Senha
+<input type="password" autocomplete="current-password" value="{{pw}}" onChange="{{onPw}}" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid #E6E4DE; border-radius: 12px; background: #FFFFFF; font-size: 15px"></label>
+<label style="display: flex; gap: 10px; align-items: center; font-size: 14px; color: #44444A; cursor: pointer"><input type="checkbox" checked="{{keep}}" onChange="{{toggleKeep}}">Manter conectado neste computador</label>
+<button type="submit" class="btn-p" disabled="{{disabled}}" style="height: 52px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 16px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 10px">
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}"><svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg></sc-if>{{cta}}</button>
+</form>
+<div style="display: flex; justify-content: space-between; font-size: 14px; padding-top: 6px; border-top: 1px solid #E6E4DE">
+<a href="Acesso.dc.html" style="font-weight: 500; text-decoration: none">Esqueci minha senha</a>
+<a href="Main.dc.html" style="color: #6B6B72; text-decoration: none">Ir para a loja</a>
+</div>
+</sc-if>
+
+<sc-if value="{{isDenied}}" hint-placeholder-val="{{ false }}">
+<span style="width: 64px; height: 64px; border-radius: 18px; background: #FCEEE4; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B4501E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11h14v10H5zM8 11V8a4 4 0 0 1 8 0v3"></path></svg></span>
+<h1 style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.03em">Sem acesso ao painel</h1>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #44444A">A conta <b style="font-weight: 500">{{email}}</b> existe, mas não tem permissão de administrador. Peça acesso a quem gerencia a loja.</p>
+<div style="display: flex; gap: 10px">
+<button class="btn-p" onClick="{{back}}" style="height: 48px; padding: 0 20px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">Usar outra conta</button>
+<a href="Main.dc.html" style="height: 48px; padding: 0 18px; box-sizing: border-box; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Ir para a loja</a>
+</div>
+</sc-if>
+
+<sc-if value="{{isOk}}" hint-placeholder-val="{{ false }}">
+<span style="width: 64px; height: 64px; border-radius: 50%; background: #E8F5EC; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span>
+<h1 style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.03em">Bem-vindo de volta</h1>
+<a href="AdminDashboard.dc.html" class="btn-p" style="align-self: flex-start; height: 48px; padding: 0 22px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Abrir o dashboard</a>
+</sc-if>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"erro":{"editor":"enum","options":["nenhum","credenciais","sem-permissao","conta-inativa","muitas-tentativas","sessao-expirada"],"default":"nenhum"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { email: '[admin]@marfim.com', pw: '', keep: true, step: 'form', err: null, errN: 0, loading: false, lockUntil: 0, now: Date.now(), tried: false }; }
+  componentDidMount() { this.t = setInterval(() => { if (this.state.lockUntil > Date.now() - 1000) this.setState({ now: Date.now() }); }, 1000); }
+  componentWillUnmount() { clearInterval(this.t); clearTimeout(this.lt); }
+  renderVals() {
+    const s = this.state;
+    const erro = this.props.erro || 'nenhum';
+    const lock = Math.max(0, Math.ceil((s.lockUntil - s.now) / 1000));
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.email);
+    const texts = {
+      credenciais: 'E-mail ou senha incorretos.',
+      'conta-inativa': 'Esta conta foi desativada. Fale com quem gerencia a loja.',
+      'muitas-tentativas': 'Muitas tentativas. Tente de novo em ' + lock + ' segundos.'
+    };
+    return {
+      key: s.step, isForm: s.step === 'form', isDenied: s.step === 'denied', isOk: s.step === 'ok',
+      expired: erro === 'sessao-expirada' && !s.err,
+      err: { show: !!s.err, text: s.err ? texts[s.err] : '', key: 'e' + s.errN },
+      email: s.email, pw: s.pw,
+      onEmail: (e) => this.setState({ email: e.target.value }), onPw: (e) => this.setState({ pw: e.target.value }),
+      emailB: s.tried && !emailOk ? '#B4501E' : '#E6E4DE',
+      keep: s.keep, toggleKeep: () => this.setState({ keep: !s.keep }),
+      loading: s.loading, disabled: s.loading || lock > 0,
+      cta: lock > 0 ? 'Aguarde ' + lock + 's' : s.loading ? 'Entrando…' : 'Entrar',
+      back: () => this.setState({ step: 'form', pw: '', err: null }),
+      submit: (e) => {
+        e.preventDefault();
+        if (!emailOk) { this.setState({ tried: true }); return; }
+        this.setState({ loading: true, err: null });
+        clearTimeout(this.lt);
+        this.lt = setTimeout(() => {
+          const n = { loading: false };
+          if (erro === 'credenciais' || erro === 'conta-inativa') Object.assign(n, { err: erro, errN: this.state.errN + 1 });
+          else if (erro === 'muitas-tentativas') Object.assign(n, { err: erro, errN: this.state.errN + 1, lockUntil: Date.now() + 30000, now: Date.now() });
+          else if (erro === 'sem-permissao') Object.assign(n, { step: 'denied' });
+          else Object.assign(n, { step: 'ok' });
+          this.setState(n);
+        }, 700);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

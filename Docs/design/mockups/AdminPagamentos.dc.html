@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Admin · Pagamentos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}
+input{font-family:Outfit,sans-serif}
+button:focus-visible,input:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+@keyframes slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes toast{0%{opacity:0;transform:translateY(12px)}12%{opacity:1;transform:none}88%{opacity:1}100%{opacity:0}}
+.slide{animation:slide .4s cubic-bezier(.2,.7,.2,1) both}
+.pop{animation:pop .3s cubic-bezier(.2,.7,.2,1) both}
+.spin{animation:spin .9s linear infinite}
+.toast{animation:toast 2.6s ease both}
+.row{transition:background .15s}
+.row:hover{background:#FAFAF8 !important}
+.btn-p{transition:background .2s}
+.btn-p:hover:not(:disabled){background:#2A2DA8 !important}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1000px; display: flex; background: #F4F3EF; overflow: hidden; position: relative">
+<dc-import name="AdminNav" active="pagamentos" h="1000" hint-size="248px,1000px"></dc-import>
+<main style="flex-grow: 1; min-width: 0; display: flex">
+<section style="flex-grow: 1; min-width: 0; padding: 28px 24px 28px 32px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: flex-end; gap: 16px">
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #6B6B72">CLIENTES E FINANÇAS</span>
+<h1 style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.025em">Pagamentos</h1>
+</div>
+<div role="tablist" aria-label="Status" style="display: flex; gap: 6px">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4"><button role="tab" aria-selected="{{t.on}}" onClick="{{t.pick}}" style="height: 36px; padding: 0 12px; border-radius: 999px; border: none; background: {{t.bg}}; color: {{t.fg}}; font-size: 13px; font-weight: 500">{{t.label}}</button></sc-for>
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; overflow: hidden">
+<div style="display: grid; grid-template-columns: 200px 110px 120px 120px minmax(0, 1fr); gap: 12px; padding: 10px 18px; background: #F1F0EC; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #6B6B72"><span>PAGAMENTO</span><span>PEDIDO</span><span>VALOR</span><span>ESTORNADO</span><span>STATUS</span></div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+<button class="row" onClick="{{r.open}}" aria-pressed="{{r.sel}}" style="width: 100%; display: grid; grid-template-columns: 200px 110px 120px 120px minmax(0, 1fr); gap: 12px; padding: 12px 18px; border: none; border-top: 1px solid #E6E4DE; border-left: 3px solid {{r.mark}}; background: {{r.bg}}; text-align: left; align-items: center; color: #18181B; font-size: 14px">
+<span style="display: flex; flex-direction: column"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">{{r.pi}}</span><span style="font-size: 12px; color: #6B6B72">{{r.when}}</span></span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">{{r.order}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{r.amount}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #6B6B72">{{r.refunded}}</span>
+<span><span key="{{r.status}}" class="pop" style="height: 22px; padding: 0 9px; border-radius: 999px; background: {{r.sbg}}; color: {{r.sfg}}; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center">{{r.status}}</span></span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<aside key="{{d.pi}}" class="slide" style="width: 400px; flex-shrink: 0; background: #FFFFFF; border-left: 1px solid #E6E4DE; padding: 28px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px; overflow: auto">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{d.pi}}</span>
+<div style="display: flex; align-items: baseline; gap: 12px"><span style="font-size: 34px; font-weight: 300; letter-spacing: -0.03em">{{d.amount}}</span><span style="height: 24px; padding: 0 10px; border-radius: 999px; background: {{d.sbg}}; color: {{d.sfg}}; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center">{{d.status}}</span></div>
+<span style="font-size: 13px; color: #6B6B72">Pedido <a href="AdminPedidos.dc.html" style="font-family: 'JetBrains Mono', monospace; text-decoration: none">{{d.order}}</a> · Cartão final {{d.last4}} · {{d.when}}</span>
+</div>
+<sc-if value="{{d.hasReason}}" hint-placeholder-val="{{ false }}"><div style="padding: 12px 14px; border-radius: 12px; background: #FCEEE4; font-size: 13px"><span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #B4501E; padding-bottom: 2px">MOTIVO DA RECUSA</span>{{d.reason}}</div></sc-if>
+
+<div style="padding: 16px; border-radius: 14px; background: #F4F3EF; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">CONFERIR COM O STRIPE</span>
+<sc-if value="{{d.checking}}" hint-placeholder-val="{{ false }}"><span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #3B3FD9"><svg class="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg>Consultando o Stripe…</span></sc-if>
+<sc-if value="{{d.checked}}" hint-placeholder-val="{{ false }}"><span class="pop" style="font-size: 13px; color: {{d.checkColor}}">{{d.checkText}}</span></sc-if>
+<button onClick="{{d.check}}" disabled="{{d.checking}}" style="align-self: flex-start; height: 38px; padding: 0 14px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 13px; font-weight: 500">Conferir agora</button>
+</div>
+
+<sc-if value="{{d.canRefund}}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{d.refund}}" style="margin: 0; padding: 16px; border-radius: 14px; border: 1px solid #E6E4DE; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">ESTORNO · ATÉ {{d.refundable}}</span>
+<div style="display: flex; gap: 8px">
+<input aria-label="Valor do estorno" inputmode="decimal" value="{{d.refundVal}}" onChange="{{d.onRefund}}" style="flex-grow: 1; min-width: 0; height: 42px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{d.refundB}}; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px">
+<button type="button" onClick="{{d.fillAll}}" style="height: 42px; padding: 0 12px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 13px">Total</button>
+</div>
+<sc-if value="{{d.refundErr}}" hint-placeholder-val="{{ false }}"><span role="alert" style="font-size: 12px; color: #B4501E">Informe um valor entre R$ 0,01 e {{d.refundable}}.</span></sc-if>
+<button type="submit" style="height: 42px; border-radius: 10px; border: none; background: #B4501E; color: #FFFFFF; font-size: 14px; font-weight: 500">Estornar</button>
+</form>
+</sc-if>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">EVENTOS</span>
+<sc-for list="{{d.events}}" as="e" hint-placeholder-count="3"><div class="pop" style="display: flex; gap: 10px; font-size: 13px"><span style="width: 8px; height: 8px; margin-top: 5px; border-radius: 50%; background: {{e.dot}}; flex-shrink: 0"></span><span style="flex-grow: 1">{{e.label}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">{{e.when}}</span></div></sc-for>
+</div>
+</aside>
+</main>
+<sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{toast.key}}" class="toast" role="status" style="position: absolute; left: 50%; bottom: 24px; margin-left: -140px; width: 280px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; background: #18181B; color: #FFFFFF; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5BC583" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>{{toast.text}}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const P = (pi, order, amount, status, when, last4, reason) => ({ pi, order, amount, status, when, last4, reason, refunded: 0, events: [['Pagamento criado', when], status === 'Recusado' ? ['Recusado pelo banco', when] : status === 'Pendente' ? ['Aguardando confirmação', when] : ['Aprovado', when]] });
+    this.state = { tab: 'todos', sel: 'pi_3Q8a…231', refundVal: '', tried: false, checking: false, checked: null, toast: null, toastN: 0,
+      list: [
+        P('pi_3Q8a…231', 'MF-000231', 666, 'Aprovado', '01 OUT 10:42', '4242'),
+        P('pi_3Q8a…230', 'MF-000230', 219, 'Pendente', '01 OUT 10:30', '1881'),
+        P('pi_3Q7z…229', 'MF-000229', 489, 'Aprovado', '30 SET 18:20', '0005'),
+        P('pi_3Q7y…228', 'MF-000228', 1290, 'Aprovado', '28 SET 11:02', '4444'),
+        P('pi_3Q7w…225', 'MF-000225', 279, 'Recusado', '29 SET 14:40', '0002', 'card_declined · O banco emissor não autorizou a transação.'),
+        Object.assign(P('pi_3Q7v…224', 'MF-000224', 149, 'Estornado', '27 SET 09:12', '4242'), { refunded: 149 })
+      ] };
+  }
+  componentWillUnmount() { clearTimeout(this.tt); clearTimeout(this.ct); }
+  toast(text) { this.setState({ toast: text, toastN: this.state.toastN + 1 }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2600); }
+  money(n) { return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  renderVals() {
+    const s = this.state;
+    const ST = { Aprovado: ['#E8F5EC', '#15803D'], Pendente: ['#F1F0EC', '#44444A'], Recusado: ['#FCEEE4', '#B4501E'], Estornado: ['#ECECFD', '#3B3FD9'], 'Estorno parcial': ['#ECECFD', '#3B3FD9'] };
+    const tabs = [['todos', 'Todos'], ['Aprovado', 'Aprovados'], ['Recusado', 'Recusados'], ['est', 'Estornos']];
+    const list = s.list.filter((p) => s.tab === 'todos' || (s.tab === 'est' ? p.refunded > 0 : p.status === s.tab));
+    const d = s.list.find((p) => p.pi === s.sel) || s.list[0];
+    const refundable = d.amount - d.refunded;
+    const val = parseFloat(s.refundVal.replace(/\./g, '').replace(',', '.'));
+    const bad = isNaN(val) || val <= 0 || val > refundable + 0.001;
+    const now = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    return {
+      tabs: tabs.map(([id, label]) => ({ label, on: s.tab === id, bg: s.tab === id ? '#18181B' : '#FFFFFF', fg: s.tab === id ? '#FFFFFF' : '#44444A', pick: () => this.setState({ tab: id }) })),
+      rows: list.map((p) => ({
+        pi: p.pi, order: p.order, when: p.when, amount: this.money(p.amount), refunded: p.refunded ? this.money(p.refunded) : '—',
+        status: p.status, sbg: ST[p.status][0], sfg: ST[p.status][1],
+        sel: p.pi === d.pi, bg: p.pi === d.pi ? '#ECECFD' : '#FFFFFF', mark: p.pi === d.pi ? '#3B3FD9' : 'transparent',
+        open: () => this.setState({ sel: p.pi, refundVal: '', tried: false, checked: null, checking: false })
+      })),
+      d: {
+        pi: d.pi, order: d.order, when: d.when, last4: d.last4, amount: this.money(d.amount), status: d.status, sbg: ST[d.status][0], sfg: ST[d.status][1],
+        hasReason: !!d.reason, reason: d.reason || '',
+        checking: s.checking, checked: !!s.checked && !s.checking,
+        checkText: 'Status no Stripe igual ao da loja: ' + d.status.toLowerCase() + '.', checkColor: '#15803D',
+        check: () => { this.setState({ checking: true, checked: null }); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ checking: false, checked: true }), 1400); },
+        canRefund: refundable > 0 && (d.status === 'Aprovado' || d.status === 'Estorno parcial'),
+        refundable: this.money(refundable), refundVal: s.refundVal,
+        onRefund: (e) => this.setState({ refundVal: e.target.value.replace(/[^\d.,]/g, ''), tried: false }),
+        fillAll: () => this.setState({ refundVal: refundable.toFixed(2).replace('.', ','), tried: false }),
+        refundB: s.tried && bad ? '#B4501E' : '#E6E4DE', refundErr: s.tried && bad,
+        refund: (e) => {
+          e.preventDefault();
+          if (bad) { this.setState({ tried: true }); return; }
+          const total = d.refunded + val;
+          const status = total >= d.amount - 0.001 ? 'Estornado' : 'Estorno parcial';
+          this.setState({ refundVal: '', tried: false, list: s.list.map((p) => (p.pi === d.pi ? Object.assign({}, p, { refunded: total, status, events: p.events.concat([['Estorno de ' + this.money(val), now]]) }) : p)) });
+          this.toast('Estorno enviado ao Stripe');
+        },
+        events: d.events.map((e, i) => ({ label: e[0], when: e[1], dot: i === d.events.length - 1 ? '#3B3FD9' : '#15803D' }))
+      },
+      toast: { show: !!s.toast, text: s.toast || '', key: 't' + s.toastN }
+    };
+  }
+}
+</script>
+</body>
+</html>

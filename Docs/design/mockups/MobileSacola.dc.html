@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Sacola</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+.up{animation:up .45s cubic-bezier(.2,.7,.2,1) both}
+.pop{animation:pop .4s ease}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 390px; height: 1180px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileTopo" count="{{count}}" back="MobileInicio.dc.html" title="Sacola" hint-size="390px,86px"></dc-import>
+<section style="padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em">
+<span style="flex: 1; height: 30px; border-radius: 999px; background: #ECECFD; color: #3B3FD9; display: flex; align-items: center; justify-content: center">01 SACOLA</span>
+<span style="flex: 1; height: 30px; border-radius: 999px; background: #F1F0EC; color: #6B6B72; display: flex; align-items: center; justify-content: center">02 ENTREGA</span>
+<span style="flex: 1; height: 30px; border-radius: 999px; background: #F1F0EC; color: #6B6B72; display: flex; align-items: center; justify-content: center">03 PAGAR</span>
+</div>
+
+<sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 18px; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+<span style="font-size: 22px; font-weight: 300">Sua sacola está vazia</span>
+<a href="MobileListagem.dc.html" style="height: 48px; padding: 0 20px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Ver a loja</a>
+</div>
+</sc-if>
+
+<sc-for list="{{lines}}" as="l" hint-placeholder-count="3">
+<article key="{{l.id}}" class="up" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; gap: 12px">
+<span style="width: 84px; height: 84px; border-radius: 12px; background: {{l.tint}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><dc-import name="Art" kind="{{l.kind}}" size="48" hint-size="48px,54px"></dc-import></span>
+<span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 12px; color: #6B6B72">{{l.brand}}</span>
+<span style="font-size: 16px; font-weight: 500">{{l.name}}</span>
+<span style="display: flex; gap: 6px; align-items: baseline"><span key="{{l.totalKey}}" class="pop" style="font-family: 'JetBrains Mono', monospace; font-size: 14px">{{l.total}}</span><sc-if value="{{l.hasOld}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72; text-decoration: line-through">{{l.old}}</span></sc-if></span>
+</span>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; align-items: center; height: 44px; border: 1px solid #E6E4DE; border-radius: 12px">
+<button onClick="{{l.dec}}" aria-label="Diminuir {{l.name}}" style="width: 44px; height: 42px; border: none; background: transparent; font-size: 18px">−</button>
+<span style="width: 24px; text-align: center; font-family: 'JetBrains Mono', monospace">{{l.qty}}</span>
+<button onClick="{{l.inc}}" aria-label="Aumentar {{l.name}}" style="width: 44px; height: 42px; border: none; background: transparent; font-size: 18px">+</button>
+</div>
+<button onClick="{{l.remove}}" style="min-height: 44px; padding: 0 8px; border: none; background: transparent; color: #6B6B72; font-size: 14px; text-decoration: underline; text-underline-offset: 3px">Remover</button>
+</div>
+</article>
+</sc-for>
+
+<sc-if value="{{has}}" hint-placeholder-val="{{ true }}">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; font-size: 14px">
+<div style="display: flex; justify-content: space-between"><span style="color: #44444A">Subtotal · {{countLabel}}</span><span style="font-family: 'JetBrains Mono', monospace">{{full}}</span></div>
+<sc-if value="{{hasSave}}" hint-placeholder-val="{{ true }}"><div style="display: flex; justify-content: space-between"><span style="color: #44444A">Promoções</span><span style="font-family: 'JetBrains Mono', monospace; color: #15803D">− {{save}}</span></div></sc-if>
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="color: #44444A">Frete</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #B4501E">EM BREVE</span></div>
+<div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 10px; border-top: 1px solid #E6E4DE"><span style="font-size: 15px; font-weight: 500">Total</span><span style="font-size: 28px; font-weight: 300">{{total}}</span></div>
+</div>
+<div style="padding: 12px 14px; border-radius: 14px; border: 1px dashed #E6E4DE; font-size: 13px; color: #6B6B72; line-height: 1.5">Cupom, embrulho para presente e Pix com desconto <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span></div>
+</sc-if>
+</section>
+
+<sc-if value="{{has}}" hint-placeholder-val="{{ true }}">
+<div style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: #FFFFFF; border-top: 1px solid #E6E4DE; padding: 10px 16px 14px">
+<a href="MobileCheckout.dc.html" style="height: 52px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; font-size: 16px; font-weight: 500"><span>Continuar</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 15px">{{total}}</span></a>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1180}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { cart: [['orbe', 1], ['duna', 1], ['grao', 2]] }; }
+  renderVals() {
+    const s = this.state;
+    const C = { orbe: ['Pendente Orbe', 'Oficina Faísca', 359, 449, 'pendant', '#F1F0EC'], duna: ['Vaso Duna', 'Estúdio Barro Cru', 129, null, 'vase', '#F1F0EC'], grao: ['Par de canecas Grão', 'Estúdio Barro Cru', 89, null, 'mug', '#FCEEE4'] };
+    const m = (n) => 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const set = (id, q) => this.setState({ cart: q <= 0 ? s.cart.filter((c) => c[0] !== id) : s.cart.map((c) => (c[0] === id ? [id, Math.min(9, q)] : c)) });
+    const sub = s.cart.reduce((a, [id, q]) => a + C[id][2] * q, 0);
+    const full = s.cart.reduce((a, [id, q]) => a + (C[id][3] || C[id][2]) * q, 0);
+    const count = s.cart.reduce((a, c) => a + c[1], 0);
+    return {
+      count, countLabel: count + (count === 1 ? ' peça' : ' peças'), empty: count === 0, has: count > 0,
+      lines: s.cart.map(([id, q]) => ({ id, name: C[id][0], brand: C[id][1], kind: C[id][4], tint: C[id][5], qty: q, total: m(C[id][2] * q), totalKey: id + q, hasOld: !!C[id][3], old: C[id][3] ? m(C[id][3] * q) : '', inc: () => set(id, q + 1), dec: () => set(id, q - 1), remove: () => set(id, 0) })),
+      full: m(full), save: m(full - sub), hasSave: full > sub, total: m(sub)
+    };
+  }
+}
+</script>
+</body>
+</html>

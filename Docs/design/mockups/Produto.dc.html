@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Loja · Página do produto</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}a:hover{color:#2A2DA8}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed}
+input,select{font-family:Outfit,sans-serif}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+.wrap{width:100%;max-width:1280px;margin:0 auto;padding-left:40px;padding-right:40px;box-sizing:border-box}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes glow{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.85;transform:scale(1.08)}}
+@keyframes slidein{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+.up{animation:up .7s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.pop{animation:pop .45s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.glow{animation:glow 3.5s ease-in-out infinite}
+.slidein{animation:slidein .45s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.card{transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+.card:hover{transform:translateY(-5px);box-shadow:0 16px 36px -18px rgba(24,24,27,.22)}
+.btn-p{transition:background .2s,transform .2s}
+.btn-p:hover{background:#2A2DA8 !important;transform:translateY(-1px)}
+.btn-s{transition:background .2s}
+.btn-s:hover{background:#ECEBE6 !important}
+.icon-b{transition:background .2s}
+.icon-b:hover{background:#ECEBE6 !important}
+.thumb{transition:border-color .2s,transform .2s}
+.thumb:hover{transform:translateY(-2px)}
+.chip{transition:border-color .2s,background .2s}
+.chip:hover{border-color:#3B3FD9 !important}
+.qty button:hover{background:#F1F0EC !important}
+details summary{list-style:none;cursor:pointer}
+details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}
+.chev{transition:transform .25s}
+.nav-a:hover{color:#3B3FD9 !important}
+.foot-a:hover{color:#FFFFFF !important}
+@media (max-width:1180px){.nav{display:none !important}}
+@media (max-width:980px){.g-split{grid-template-columns:minmax(0,1fr) !important;row-gap:28px !important}.g-split>*{grid-column:auto !important;position:static !important}.g-reco{grid-template-columns:repeat(2,minmax(0,1fr)) !important}.foot-cols{grid-template-columns:repeat(2,minmax(0,1fr)) !important;row-gap:40px !important}.foot-cols>*{grid-column:auto !important}.hide-md{display:none !important}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 100%; min-width: 360px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden">
+<dc-import name="Header" count="{{bagCount}}" active="iluminacao" hint-size="100%,108px"></dc-import>
+
+<!-- Produto inexistente -->
+<sc-if value="{{missing}}" hint-placeholder-val="{{ false }}">
+<section style="padding: 72px 0">
+<div class="wrap" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px">
+<div class="floaty" style="opacity: 0.35"><dc-import name="Art" kind="pendant" size="140" hint-size="140px,158px"></dc-import></div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">PRODUTO NÃO ENCONTRADO</div>
+<h1 style="margin: 0; font-size: 40px; font-weight: 300; letter-spacing: -0.03em">Essa peça não está mais na loja</h1>
+<p style="margin: 0; font-size: 15px; color: #6B6B72; max-width: 460px">O link pode estar errado ou a peça saiu da coleção. As outras luminárias da Oficina Faísca continuam aqui.</p>
+<a href="Listagem.dc.html" class="btn-p" style="margin-top: 8px; height: 48px; padding: 0 22px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Ver Iluminação</a>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{exists}}" hint-placeholder-val="{{ true }}">
+<section style="padding: 24px 0 8px">
+<div class="wrap" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">
+<a href="Main.dc.html" style="color: #6B6B72; text-decoration: none">INÍCIO</a> / <a href="Listagem.dc.html" style="color: #6B6B72; text-decoration: none">ILUMINAÇÃO</a> / <span style="color: #18181B">PENDENTE ORBE</span>
+</div>
+</section>
+
+<section style="padding: 12px 0 56px">
+<div class="wrap g-split" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 32px; align-items: start">
+
+<!-- Galeria -->
+<div class="up" style="grid-column: span 7; display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 10px" role="tablist" aria-label="Fotos do produto">
+<sc-for list="{{views}}" as="v" hint-placeholder-count="4">
+<button class="thumb" role="tab" aria-selected="{{v.sel}}" aria-label="{{v.label}}" onClick="{{v.pick}}" style="width: 88px; height: 88px; border-radius: 12px; border: 2px solid {{v.border}}; background: {{v.bg}}; padding: 0; overflow: hidden; display: flex; align-items: center; justify-content: center">
+<dc-import name="Art" kind="pendant" size="{{v.thumbSize}}" hint-size="48px,54px"></dc-import>
+</button>
+</sc-for>
+</div>
+<div key="{{viewKey}}" class="fade" style="position: relative; height: 560px; border-radius: 20px; background: {{view.bg}}; overflow: hidden; display: flex; align-items: center; justify-content: center">
+<sc-if value="{{view.lit}}" hint-placeholder-val="{{ false }}">
+<div class="glow" style="position: absolute; left: 50%; top: 58%; width: 360px; height: 360px; margin: -180px 0 0 -180px; border-radius: 50%; background: radial-gradient(circle, rgba(232,121,58,.55) 0, rgba(232,121,58,0) 65%)"></div>
+</sc-if>
+<div class="floaty" style="position: relative; display: flex; transform-origin: center">
+<dc-import name="Art" kind="pendant" size="{{view.size}}" hint-size="300px,338px"></dc-import>
+</div>
+<span style="position: absolute; left: 16px; bottom: 16px; height: 28px; padding: 0 12px; border-radius: 999px; background: #FFFFFF; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #44444A; display: flex; align-items: center">{{view.caption}}</span>
+<sc-if value="{{hasOff}}" hint-placeholder-val="{{ true }}">
+<span style="position: absolute; top: 16px; left: 16px; height: 28px; padding: 0 12px; border-radius: 999px; background: #E8F5EC; color: #15803D; font-family: 'JetBrains Mono', monospace; font-size: 12px; display: flex; align-items: center">-20%</span>
+</sc-if>
+</div>
+</div>
+
+<!-- Informações -->
+<div class="up d1" style="grid-column: span 5; position: sticky; top: 24px; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<a href="Listagem.dc.html" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #6B6B72; text-decoration: none">OFICINA FAÍSCA · SÃO PAULO, SP</a>
+<h1 style="margin: 0; font-size: 40px; line-height: 1.05; font-weight: 300; letter-spacing: -0.03em">Pendente Orbe</h1>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #6B6B72">Esfera de vidro soprado à boca com canopla em latão escovado. Luz difusa e quente, pensada para mesas de jantar e cantos de leitura.</p>
+</div>
+
+<div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap">
+<span style="font-size: 36px; font-weight: 300; letter-spacing: -0.03em; color: {{priceColor}}">R$ 359</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 15px; color: #6B6B72; text-decoration: line-through">R$ 449</span>
+<span style="height: 24px; padding: 0 9px; border-radius: 999px; background: #E8F5EC; color: #15803D; font-family: 'JetBrains Mono', monospace; font-size: 12px; display: flex; align-items: center">-20%</span>
+</div>
+
+<div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: {{stockColor}}">
+<span class="{{stockDotClass}}" style="width: 8px; height: 8px; border-radius: 50%; background: {{stockColor}}"></span>
+<span style="font-weight: 500">{{stockLabel}}</span>
+<span style="color: #6B6B72">{{stockNote}}</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 16px; padding-top: 20px; border-top: 1px solid #E6E4DE">
+<sc-for list="{{variantGroups}}" as="g" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #44444A">{{g.label}}: <b style="font-weight: 500; color: #18181B">{{g.value}}</b></div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap" role="radiogroup" aria-label="{{g.label}}">
+<sc-for list="{{g.options}}" as="o" hint-placeholder-count="2">
+<button class="chip" role="radio" aria-checked="{{o.sel}}" onClick="{{o.pick}}" disabled="{{o.disabled}}" style="height: 44px; padding: 0 14px 0 10px; border-radius: 12px; border: 1px solid {{o.border}}; background: {{o.bg}}; color: {{o.fg}}; display: flex; align-items: center; gap: 10px; font-size: 14px; text-decoration: {{o.strike}}">
+<span style="width: 20px; height: 20px; border-radius: 50%; background: {{o.swatch}}; border: 1px solid #E6E4DE"></span>{{o.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{notFuturo}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #6B6B72">
+<span style="height: 20px; padding: 0 8px; border-radius: 999px; border: 1px dashed #B4501E; color: #B4501E; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; display: inline-flex; align-items: center">EM BREVE</span>
+A variante escolhida ainda não segue para o pedido.
+</div>
+</sc-if>
+</div>
+
+<sc-if value="{{canBuy}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; gap: 10px">
+<div class="qty" style="display: flex; align-items: center; height: 52px; border: 1px solid #E6E4DE; border-radius: 12px; overflow: hidden; background: #FFFFFF">
+<button onClick="{{dec}}" aria-label="Diminuir quantidade" style="width: 48px; height: 52px; border: none; background: #FFFFFF; color: #18181B; display: flex; align-items: center; justify-content: center">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></button>
+<span style="width: 32px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 15px">{{qty}}</span>
+<button onClick="{{inc}}" aria-label="Aumentar quantidade" style="width: 48px; height: 52px; border: none; background: #FFFFFF; color: #18181B; display: flex; align-items: center; justify-content: center">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+<button class="btn-p" onClick="{{add}}" style="flex-grow: 1; height: 52px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 16px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 10px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>Adicionar à sacola</button>
+</div>
+<sc-if value="{{maxHit}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="font-size: 13px; color: #B4501E">Só temos {{maxQty}} unidades desta peça agora.</div>
+</sc-if>
+</sc-if>
+<sc-if value="{{soldOut}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<button disabled="" style="height: 52px; border-radius: 12px; border: 1px solid #E6E4DE; background: #F1F0EC; color: #6B6B72; font-size: 16px; font-weight: 500">Esgotado</button>
+<div style="font-size: 13px; color: #6B6B72; line-height: 1.5">A Oficina Faísca produz em lotes pequenos. Veja abaixo outras peças de Iluminação disponíveis agora.</div>
+</div>
+</sc-if>
+
+<div style="display: flex; flex-direction: column; border-top: 1px solid #E6E4DE">
+<sc-if value="{{notFuturo}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid #E6E4DE; font-size: 14px; color: #6B6B72">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"></path><circle cx="7" cy="17.5" r="1.5"></circle><circle cx="17" cy="17.5" r="1.5"></circle></svg>
+<span style="flex-grow: 1">Calcular frete e prazo pelo CEP</span>
+<span style="height: 20px; padding: 0 8px; border-radius: 999px; border: 1px dashed #B4501E; color: #B4501E; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; display: inline-flex; align-items: center">EM BREVE</span>
+</div>
+</sc-if>
+<sc-if value="{{futuro}}" hint-placeholder-val="{{ false }}">
+<form onSubmit="{{calc}}" style="margin: 0; padding: 14px 0; border-bottom: 1px solid #E6E4DE; display: flex; flex-direction: column; gap: 10px">
+<label for="cep-p" style="font-size: 14px; color: #44444A">Calcular frete e prazo</label>
+<div style="display: flex; gap: 8px"><input id="cep-p" inputmode="numeric" placeholder="00000-000" value="{{cep}}" onChange="{{onCep}}" style="flex-grow: 1; min-width: 0; height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{cepB}}; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px"><button type="submit" class="btn-s" style="height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 14px; font-weight: 500">Calcular</button></div>
+<sc-if value="{{hasShip}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="display: flex; flex-direction: column; gap: 6px; font-size: 14px">
+<div style="display: flex; justify-content: space-between"><span>Econômica · 5 a 9 dias úteis</span><span style="font-family: 'JetBrains Mono', monospace; color: #15803D">Grátis acima de R$ 299</span></div>
+<div style="display: flex; justify-content: space-between"><span>Expressa · 2 a 4 dias úteis</span><span style="font-family: 'JetBrains Mono', monospace">R$ 42,90</span></div>
+</div>
+</sc-if>
+</form>
+</sc-if>
+<details open="" style="border-bottom: 1px solid #E6E4DE">
+<summary style="padding: 16px 0; display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 500">Medidas e materiais
+<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<div style="padding: 0 0 16px; display: grid; grid-template-columns: 140px minmax(0, 1fr); row-gap: 8px; font-size: 14px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #6B6B72; padding-top: 2px">DIÂMETRO</span><span>[MEDIDA] cm</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #6B6B72; padding-top: 2px">CABO</span><span>[MEDIDA] m, ajustável</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #6B6B72; padding-top: 2px">MATERIAIS</span><span>Vidro soprado, latão escovado</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #6B6B72; padding-top: 2px">LÂMPADA</span><span>E27, não inclusa</span>
+</div>
+</details>
+<details style="border-bottom: 1px solid #E6E4DE">
+<summary style="padding: 16px 0; display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 500">Cuidados com a peça
+<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<div style="padding: 0 0 16px; font-size: 14px; line-height: 1.6; color: #44444A">Limpe o vidro com pano macio e seco. O latão ganha pátina com o tempo; para manter o brilho, use cera neutra a cada seis meses.</div>
+</details>
+<details style="border-bottom: 1px solid #E6E4DE">
+<summary style="padding: 16px 0; display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 500">Trocas e devoluções
+<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<div style="padding: 0 0 16px; font-size: 14px; line-height: 1.6; color: #44444A">Você tem 30 dias a partir do recebimento para trocar ou devolver.</div>
+</details>
+</div>
+</div>
+</div>
+</section>
+</sc-if>
+
+<!-- Combina com: mesma categoria -->
+<section style="padding: 8px 0 72px">
+<div class="wrap" style="display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">MAIS EM ILUMINAÇÃO</div>
+<h2 style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.025em">Combina com o Orbe</h2>
+</div>
+<div class="g-reco" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{recos}}" as="p" hint-placeholder-count="3">
+<article class="card" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 8px; display: flex; flex-direction: column; gap: 12px">
+<a href="Produto.dc.html" aria-label="{{p.name}}" style="height: 200px; border-radius: 12px; background: {{p.tint}}; display: flex; align-items: center; justify-content: center; position: relative">
+<dc-import name="Art" kind="{{p.kind}}" size="104" hint-size="104px,117px"></dc-import>
+<sc-if value="{{p.low}}" hint-placeholder-val="{{ false }}">
+<span style="position: absolute; top: 10px; left: 10px; height: 24px; padding: 0 10px; border-radius: 999px; background: #FFFFFF; color: #B4501E; font-size: 12px; font-weight: 500; display: flex; align-items: center">Últimas unidades</span>
+</sc-if>
+</a>
+<div style="padding: 0 6px 6px; display: flex; align-items: flex-end; gap: 10px">
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 12px; color: #6B6B72">{{p.brand}}</div>
+<a href="Produto.dc.html" style="font-size: 16px; font-weight: 500; color: #18181B; text-decoration: none">{{p.name}}</a>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; padding-top: 2px">{{p.price}}</span>
+</div>
+<button class="btn-p" onClick="{{p.add}}" aria-label="Adicionar {{p.name}} à sacola" style="width: 44px; height: 44px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+</article>
+</sc-for>
+<a href="Listagem.dc.html" class="btn-s" style="border: 1px dashed #E6E4DE; border-radius: 16px; background: transparent; text-decoration: none; color: #18181B; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 24px; min-height: 200px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">CATEGORIA</span>
+<span style="font-size: 22px; font-weight: 300; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px">Ver toda a Iluminação
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+</a>
+</div>
+</div>
+</section>
+
+<dc-import name="Footer" hint-size="100%,560px"></dc-import>
+
+<!-- 06 · Mini-sacola -->
+<sc-if value="{{drawerOpen}}" hint-placeholder-val="{{ false }}">
+<div class="fade" onClick="{{closeDrawer}}" style="position: fixed; inset: 0; background: rgba(24,24,27,0.32); z-index: 40"></div>
+<aside class="slidein" role="dialog" aria-label="Adicionado à sacola" style="position: fixed; top: 16px; right: 16px; width: 380px; max-width: calc(100% - 32px); background: #FFFFFF; border-radius: 20px; box-shadow: 0 30px 60px -20px rgba(24,24,27,.35); z-index: 41; display: flex; flex-direction: column">
+<div style="padding: 18px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #E6E4DE">
+<span class="pop" style="width: 28px; height: 28px; border-radius: 50%; background: #E8F5EC; color: #15803D; display: flex; align-items: center; justify-content: center">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span>
+<span style="flex-grow: 1; font-size: 16px; font-weight: 500">Adicionado à sacola</span>
+<button class="icon-b" onClick="{{closeDrawer}}" aria-label="Fechar" style="width: 40px; height: 40px; border-radius: 10px; border: none; background: transparent; color: #18181B; display: flex; align-items: center; justify-content: center">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+</div>
+<div style="padding: 18px 20px; display: flex; gap: 14px; align-items: center">
+<div style="width: 72px; height: 72px; border-radius: 12px; background: {{dItem.tint}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+<dc-import name="Art" kind="{{dItem.kind}}" size="44" hint-size="44px,50px"></dc-import></div>
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 12px; color: #6B6B72">{{dItem.brand}}</span>
+<span style="font-size: 15px; font-weight: 500">{{dItem.name}}</span>
+<span style="font-size: 13px; color: #6B6B72">Quantidade: {{dItem.qty}}</span>
+</div>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">{{dItem.price}}</span>
+</div>
+<div style="margin: 0 20px; padding: 14px 0; border-top: 1px solid #E6E4DE; display: flex; justify-content: space-between; font-size: 14px">
+<span style="color: #44444A">Sacola · {{bagCountLabel}}</span>
+<span style="font-family: 'JetBrains Mono', monospace">{{bagTotal}}</span>
+</div>
+<div style="padding: 4px 20px 20px; display: flex; flex-direction: column; gap: 8px">
+<a href="Carrinho.dc.html" class="btn-p" style="height: 48px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 500">Ir para a sacola
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<button class="btn-s" onClick="{{closeDrawer}}" style="height: 48px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; font-size: 15px; font-weight: 500">Continuar comprando</button>
+</div>
+</aside>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"estado":{"editor":"enum","options":["em-estoque","ultimas-unidades","esgotado","inexistente"],"default":"em-estoque"},"futuro":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":2000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { view: 0, qty: 1, finish: 'latao', glass: 'leitoso', drawer: null, bag: [129, 89, 89], maxHit: false };
+  }
+  money(n) { return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
+  renderVals() {
+    const s = this.state;
+    const futuro = !!this.props.futuro;
+    const cepD = (s.cep || '').replace(/\D/g, '');
+    const extraF = { futuro, notFuturo: !futuro, cep: s.cep || '', onCep: (e) => this.setState({ cep: e.target.value.replace(/\D/g, '').slice(0, 8).replace(/^(\d{5})(\d)/, '$1-$2'), cepTried: false, shipOk: false }),
+      cepB: s.cepTried && cepD.length !== 8 ? '#B4501E' : '#E6E4DE', hasShip: !!s.shipOk,
+      calc: (e) => { e.preventDefault(); if (cepD.length !== 8) { this.setState({ cepTried: true }); return; } this.setState({ shipOk: true }); } };
+    const estado = this.props.estado || 'em-estoque';
+    const low = estado === 'ultimas-unidades';
+    const out = estado === 'esgotado';
+    const maxQty = low ? 2 : 9;
+
+    const viewsData = [
+      { label: 'Frente', caption: 'FRENTE', bg: '#F1F0EC', size: 300, thumb: 48 },
+      { label: 'Acesa', caption: 'ACESA · LUZ QUENTE', bg: '#232327', size: 300, thumb: 48, lit: true },
+      { label: 'Detalhe do vidro', caption: 'DETALHE DO VIDRO', bg: '#ECECFD', size: 560, thumb: 96 },
+      { label: 'Ambiente', caption: 'NA MESA DE JANTAR', bg: '#FCEEE4', size: 200, thumb: 36 }
+    ];
+    const views = viewsData.map((v, i) => ({
+      label: v.label, sel: i === s.view, bg: v.bg, thumbSize: v.thumb,
+      border: i === s.view ? '#3B3FD9' : 'transparent',
+      pick: () => this.setState({ view: i })
+    }));
+    const cv = viewsData[s.view];
+
+    const groups = [
+      { key: 'finish', label: 'Acabamento', opts: [['latao', 'Latão escovado', '#C9A56A'], ['preto', 'Preto fosco', '#232327', true]] },
+      { key: 'glass', label: 'Vidro', opts: [['leitoso', 'Leitoso', '#FFFFFF'], ['ambar', 'Âmbar', '#E8A15A']] }
+    ];
+    const variantGroups = groups.map((g) => {
+      const current = s[g.key];
+      return {
+        label: g.label,
+        value: g.opts.find((o) => o[0] === current)[1],
+        options: g.opts.map(([id, label, swatch, unavailable]) => {
+          const sel = id === current;
+          return {
+            label: unavailable ? label + ' · esgotado' : label, swatch, sel, disabled: !!unavailable,
+            border: sel ? '#3B3FD9' : '#E6E4DE', bg: sel ? '#ECECFD' : '#FFFFFF',
+            fg: unavailable ? '#6B6B72' : '#18181B', strike: 'none',
+            pick: () => this.setState({ [g.key]: id })
+          };
+        })
+      };
+    });
+
+    let stockLabel = 'Em estoque', stockNote = '· despacho em até 3 dias úteis', stockColor = '#15803D', stockDotClass = 'pulse';
+    if (low) { stockLabel = 'Últimas 2 unidades'; stockNote = '· a Oficina Faísca produz em lotes pequenos'; stockColor = '#B4501E'; stockDotClass = ''; }
+    if (out) { stockLabel = 'Esgotado'; stockNote = '· sem previsão de novo lote'; stockColor = '#6B6B72'; stockDotClass = ''; }
+
+    const recoData = [
+      { id: 'arco', name: 'Luminária Arco', price: 489, kind: 'lamp', tint: '#ECECFD' },
+      { id: 'fio', name: 'Arandela Fio', price: 279, kind: 'sconce', tint: '#FCEEE4', low: true },
+      { id: 'brasa', name: 'Castiçal Brasa', price: 159, kind: 'jar', tint: '#F1F0EC' }
+    ];
+    const all = recoData.concat([{ id: 'orbe', name: 'Pendente Orbe', price: 359, kind: 'pendant', tint: '#F1F0EC' }]);
+    const d = s.drawer ? all.find((p) => p.id === s.drawer.id) : all[3];
+    const bagTotal = s.bag.reduce((a, b) => a + b, 0);
+
+    return Object.assign(extraF, {
+      missing: estado === 'inexistente', exists: estado !== 'inexistente',
+      views, view: { bg: cv.bg, size: cv.size, caption: cv.caption, lit: !!cv.lit }, viewKey: 'v' + s.view,
+      hasOff: true, priceColor: out ? '#6B6B72' : '#18181B',
+      stockLabel, stockNote, stockColor, stockDotClass,
+      variantGroups,
+      canBuy: !out, soldOut: out,
+      qty: s.qty, maxQty, maxHit: s.maxHit,
+      inc: () => (s.qty >= maxQty ? this.setState({ maxHit: true }) : this.setState({ qty: s.qty + 1, maxHit: false })),
+      dec: () => this.setState({ qty: Math.max(1, s.qty - 1), maxHit: false }),
+      add: () => this.setState({ drawer: { id: 'orbe', qty: s.qty }, bag: s.bag.concat(Array(s.qty).fill(359)) }),
+      recos: recoData.map((p) => ({
+        name: p.name, kind: p.kind, tint: p.tint, brand: p.id === 'brasa' ? 'Oficina Faísca' : 'Oficina Faísca', low: !!p.low,
+        price: this.money(p.price),
+        add: () => this.setState({ drawer: { id: p.id, qty: 1 }, bag: s.bag.concat([p.price]) })
+      })),
+      drawerOpen: !!s.drawer, closeDrawer: () => this.setState({ drawer: null }),
+      dItem: { name: d.name, kind: d.kind, tint: d.tint, brand: 'Oficina Faísca', qty: s.drawer ? s.drawer.qty : 1, price: this.money(d.price * (s.drawer ? s.drawer.qty : 1)) },
+      bagCount: s.bag.length, bagCountLabel: s.bag.length + (s.bag.length === 1 ? ' item' : ' itens'), bagTotal: this.money(bagTotal)
+    });
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Checkout · Entrega</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}a:hover{color:#2A2DA8}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed}
+input,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+.wrap{width:100%;max-width:1280px;margin:0 auto;padding-left:40px;padding-right:40px;box-sizing:border-box}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
+@keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(250%)}}
+.up{animation:up .6s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}
+.pop{animation:pop .45s ease}
+.shine{position:relative;overflow:hidden}
+.shine::after{content:"";position:absolute;top:0;bottom:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shine 2.6s ease-in-out infinite}
+.btn-p{transition:background .2s,transform .2s}
+.btn-p:hover{background:#2A2DA8 !important;transform:translateY(-1px)}
+.btn-s{transition:background .2s}
+.btn-s:hover{background:#ECEBE6 !important}
+.opt{transition:border-color .2s,background .2s}
+.opt:hover{border-color:#3B3FD9 !important}
+.lnk{background:none;border:none;padding:0;color:#3B3FD9;font-size:14px;font-weight:500;min-height:32px;font-family:inherit;cursor:pointer}
+.lnk:hover{color:#2A2DA8}
+.nav-a:hover{color:#3B3FD9 !important}
+.foot-a:hover{color:#FFFFFF !important}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+@media (max-width:1180px){.nav{display:none !important}}
+@media (max-width:980px){.g-split{grid-template-columns:minmax(0,1fr) !important;row-gap:28px !important}.g-split>*{grid-column:auto !important;position:static !important}.g-form{grid-template-columns:minmax(0,1fr) !important}.g-form>*{grid-column:auto !important}.foot-cols{grid-template-columns:repeat(2,minmax(0,1fr)) !important;row-gap:40px !important}.foot-cols>*{grid-column:auto !important}.hide-md{display:none !important}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 100%; min-width: 360px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden">
+<dc-import name="Header" count="4" active="sacola" logged="{{ true }}" hint-size="100%,108px"></dc-import>
+
+<section style="padding: 32px 0 8px">
+<div class="wrap" style="display: flex; flex-direction: column; gap: 24px">
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; flex-wrap: wrap">
+<li><a href="Carrinho.dc.html" style="height: 32px; padding: 0 14px; border-radius: 999px; background: #E8F5EC; color: #15803D; display: flex; align-items: center; gap: 8px; text-decoration: none"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg><span style="font-family: Outfit, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0">Sacola</span></a></li>
+<li aria-hidden="true" style="width: 40px; height: 1px; background: #15803D"></li>
+<li aria-current="step" style="height: 32px; padding: 0 14px; border-radius: 999px; background: #ECECFD; color: #3B3FD9; display: flex; align-items: center; gap: 8px"><span>02</span><span style="font-family: Outfit, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0">Entrega</span></li>
+<li aria-hidden="true" style="width: 40px; height: 1px; background: #E6E4DE"></li>
+<li style="height: 32px; padding: 0 14px; border-radius: 999px; background: #F1F0EC; color: #6B6B72; display: flex; align-items: center; gap: 8px"><span>03</span><span style="font-family: Outfit, sans-serif; font-size: 14px; color: #44444A; letter-spacing: 0">Pagamento</span></li>
+</ol>
+<h1 class="up" style="margin: 0; font-size: 44px; line-height: 1; font-weight: 300; letter-spacing: -0.03em">Para onde <span style="font-weight: 500; color: #3B3FD9">vamos enviar?</span></h1>
+</div>
+</section>
+
+<section style="padding: 24px 0 64px">
+<div class="wrap g-split" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: start">
+<div style="grid-column: span 8; display: flex; flex-direction: column; gap: 16px">
+
+<!-- Endereço de entrega -->
+<div class="up d1" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9">A</span>
+<h2 style="margin: 0; font-size: 20px; font-weight: 500; flex-grow: 1">Endereço de entrega</h2>
+<sc-if value="{{canAdd}}" hint-placeholder-val="{{ true }}">
+<button class="lnk" onClick="{{openForm}}">+ Novo endereço</button>
+</sc-if>
+</div>
+
+<sc-if value="{{noAddr}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 14px 16px; border-radius: 12px; background: #F1F0EC; font-size: 14px; color: #44444A; display: flex; gap: 10px; align-items: center">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.6" stroke-linejoin="round"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+Você ainda não tem endereços salvos. Cadastre o primeiro abaixo; ele vira o seu padrão.</div>
+</sc-if>
+
+<div style="display: flex; flex-direction: column; gap: 10px" role="radiogroup" aria-label="Endereço de entrega">
+<sc-for list="{{addrs}}" as="a" hint-placeholder-count="2">
+<label key="{{a.id}}" class="opt up" style="display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; border-radius: 14px; border: 1px solid {{a.border}}; background: {{a.bg}}; cursor: pointer">
+<input type="radio" name="ship" checked="{{a.sel}}" onChange="{{a.pick}}" style="margin-top: 2px">
+<span style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px">
+<span style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><b style="font-size: 15px; font-weight: 500">{{a.label}}</b>
+<sc-if value="{{a.isDefault}}" hint-placeholder-val="{{ false }}"><span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #F1F0EC; color: #44444A; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; display: inline-flex; align-items: center">PADRÃO DE ENTREGA</span></sc-if>
+</span>
+<span style="font-size: 14px; color: #44444A; line-height: 1.5">{{a.who}} · {{a.line1}}<br>{{a.line2}}</span>
+</span>
+</label>
+</sc-for>
+</div>
+
+<sc-if value="{{formOpen}}" hint-placeholder-val="{{ false }}">
+<form class="up" onSubmit="{{saveAddr}}" style="margin: 0; padding-top: 16px; border-top: 1px solid #E6E4DE; display: flex; flex-direction: column; gap: 14px">
+<div style="font-size: 15px; font-weight: 500">Novo endereço</div>
+<div class="g-form" style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px">
+<label style="grid-column: span 2; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Nome do endereço
+<input value="{{f.label}}" onChange="{{f.onLabel}}" placeholder="Casa, Trabalho…" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 15px"></label>
+<label style="grid-column: span 4; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Quem recebe
+<input value="{{f.who}}" onChange="{{f.onWho}}" autocomplete="name" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{f.whoB}}; border-radius: 12px; font-size: 15px"></label>
+<label style="grid-column: span 2; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">CEP
+<input value="{{f.cep}}" onChange="{{f.onCep}}" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{f.cepB}}; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px"></label>
+<label style="grid-column: span 4; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Rua
+<input value="{{f.street}}" onChange="{{f.onStreet}}" autocomplete="address-line1" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{f.streetB}}; border-radius: 12px; font-size: 15px"></label>
+<label style="grid-column: span 2; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Número
+<input value="{{f.num}}" onChange="{{f.onNum}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{f.numB}}; border-radius: 12px; font-size: 15px"></label>
+<label style="grid-column: span 4; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Complemento <span style="color: #6B6B72">(opcional)</span>
+<input value="{{f.comp}}" onChange="{{f.onComp}}" autocomplete="address-line2" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 15px"></label>
+<label style="grid-column: span 2; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Bairro
+<input value="{{f.hood}}" onChange="{{f.onHood}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 15px"></label>
+<label style="grid-column: span 3; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Cidade
+<input value="{{f.city}}" onChange="{{f.onCity}}" autocomplete="address-level2" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{f.cityB}}; border-radius: 12px; font-size: 15px"></label>
+<label style="grid-column: span 1; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">UF
+<select value="{{f.uf}}" onChange="{{f.onUf}}" style="height: 44px; padding: 0 8px; border: 1px solid #E6E4DE; border-radius: 12px; background: #FFFFFF; font-size: 15px">
+<option>SP</option><option>RJ</option><option>MG</option><option>PR</option><option>RS</option><option>SC</option><option>BA</option><option>PE</option><option>DF</option><option>GO</option>
+</select></label>
+</div>
+<sc-if value="{{f.hasErr}}" hint-placeholder-val="{{ false }}"><div role="alert" style="font-size: 13px; color: #B4501E">Preencha os campos destacados. O CEP tem 8 números.</div></sc-if>
+<label style="display: flex; gap: 10px; align-items: center; font-size: 14px; color: #44444A; cursor: pointer"><input type="checkbox" checked="{{f.makeDefault}}" onChange="{{f.toggleDefault}}">Usar como padrão de entrega</label>
+<div style="display: flex; gap: 10px">
+<button type="submit" class="btn-p" style="height: 44px; padding: 0 20px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">Salvar endereço</button>
+<sc-if value="{{canCancelForm}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn-s" onClick="{{closeForm}}" style="height: 44px; padding: 0 18px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; font-size: 15px; font-weight: 500">Cancelar</button></sc-if>
+</div>
+</form>
+</sc-if>
+</div>
+
+<!-- Cobrança -->
+<div class="up d2" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9">B</span>
+<h2 style="margin: 0; font-size: 20px; font-weight: 500">Endereço de cobrança</h2>
+</div>
+<label style="display: flex; gap: 12px; align-items: center; font-size: 15px; cursor: pointer"><input type="checkbox" checked="{{sameBilling}}" onChange="{{toggleSame}}">Igual ao endereço de entrega</label>
+<sc-if value="{{showBilling}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="display: flex; flex-direction: column; gap: 10px" role="radiogroup" aria-label="Endereço de cobrança">
+<sc-for list="{{billAddrs}}" as="a" hint-placeholder-count="2">
+<label class="opt" style="display: flex; gap: 14px; align-items: flex-start; padding: 14px 18px; border-radius: 14px; border: 1px solid {{a.border}}; background: {{a.bg}}; cursor: pointer">
+<input type="radio" name="bill" checked="{{a.sel}}" onChange="{{a.pick}}" style="margin-top: 2px">
+<span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 15px; font-weight: 500">{{a.label}}</b><span style="font-size: 14px; color: #44444A">{{a.line1}} · {{a.line2}}</span></span>
+</label>
+</sc-for>
+</div>
+</sc-if>
+</div>
+
+<!-- Frete -->
+<sc-if value="{{futuro}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 12px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9">C</span><h2 style="margin: 0; font-size: 20px; font-weight: 500; flex-grow: 1">Frete e prazo</h2><span style="font-size: 13px; color: #6B6B72">para {{shipCep}}</span></div>
+<sc-for list="{{shipOpts}}" as="o" hint-placeholder-count="2">
+<label class="opt" style="display: flex; gap: 14px; align-items: center; padding: 16px 18px; border-radius: 14px; border: 1px solid {{o.border}}; background: {{o.bg}}; cursor: pointer">
+<input type="radio" name="frete" checked="{{o.on}}" onChange="{{o.pick}}">
+<span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px"><b style="font-size: 15px; font-weight: 500">{{o.label}}</b><span style="font-size: 13px; color: #44444A">{{o.eta}}</span></span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: {{o.color}}">{{o.price}}</span>
+</label>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{notFuturo}}" hint-placeholder-val="{{ true }}">
+<div style="background: #FFFFFF; border: 1px dashed #E6E4DE; border-radius: 20px; padding: 20px 24px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72">C</span>
+<h2 style="margin: 0; font-size: 20px; font-weight: 500; color: #6B6B72; flex-grow: 1">Frete e prazo</h2>
+<span style="height: 20px; padding: 0 8px; border-radius: 999px; border: 1px dashed #B4501E; color: #B4501E; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; display: inline-flex; align-items: center">EM BREVE</span>
+</div>
+<div style="font-size: 14px; color: #6B6B72; line-height: 1.5">A escolha de entrega econômica ou expressa, com prazo por CEP, chega em breve. Por enquanto o pedido não tem custo de frete.</div>
+</div>
+</sc-if>
+</div>
+
+<!-- Resumo -->
+<aside class="up d2" style="grid-column: 9 / span 4; position: sticky; top: 24px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<span style="font-size: 20px; font-weight: 500">Seu pedido</span>
+<a href="Carrinho.dc.html" style="font-size: 13px; font-weight: 500; text-decoration: none">Editar</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{lines}}" as="l" hint-placeholder-count="3">
+<div style="display: flex; gap: 12px; align-items: center">
+<div style="position: relative; width: 52px; height: 52px; border-radius: 10px; background: {{l.tint}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+<dc-import name="Art" kind="{{l.kind}}" size="30" hint-size="30px,34px"></dc-import>
+<span style="position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; box-sizing: border-box; border-radius: 999px; background: #18181B; color: #FFFFFF; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">{{l.qty}}</span>
+</div>
+<span style="flex-grow: 1; font-size: 14px">{{l.name}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{l.total}}</span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid #E6E4DE; font-size: 14px">
+<div style="display: flex; justify-content: space-between"><span style="color: #44444A">Subtotal</span><span style="font-family: 'JetBrains Mono', monospace">R$ 666,00</span></div>
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="color: #44444A">Frete</span><span style="font-family: 'JetBrains Mono', monospace; font-size: {{freteSize}}; color: {{freteColor}}">{{freteLabel}}</span></div>
+</div>
+<div style="display: flex; align-items: flex-end; justify-content: space-between; padding-top: 16px; border-top: 1px solid #E6E4DE">
+<span style="font-size: 15px; font-weight: 500">Total</span>
+<span key="{{grand}}" style="font-size: 34px; font-weight: 300; letter-spacing: -0.03em; line-height: 1">{{grand}}</span>
+</div>
+<sc-if value="{{ready}}" hint-placeholder-val="{{ true }}">
+<a href="Pagamento.dc.html" class="btn-p shine" style="height: 52px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; font-weight: 500">Continuar para pagamento
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</sc-if>
+<sc-if value="{{notReady}}" hint-placeholder-val="{{ false }}">
+<button disabled="" style="height: 52px; border-radius: 12px; border: none; background: #E6E4DE; color: #6B6B72; font-size: 16px; font-weight: 500">Cadastre um endereço para continuar</button>
+</sc-if>
+<a href="Carrinho.dc.html" style="align-self: center; font-size: 14px; font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 6px">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>Voltar para a sacola</a>
+</aside>
+</div>
+</section>
+
+<dc-import name="Footer" hint-size="100%,560px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"estado":{"editor":"enum","options":["com-enderecos","sem-endereco"],"default":"com-enderecos"},"futuro":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1700}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      from: null, added: [], ship: null, bill: null, same: true, form: null, tried: false,
+      f: { label: '', who: '', cep: '', street: '', num: '', comp: '', hood: '', city: '', uf: 'SP', makeDefault: true }
+    };
+  }
+  renderVals() {
+    const s = this.state;
+    const futuro = !!this.props.futuro;
+    const frete = s.frete || 'eco';
+    const freteCost = frete === 'exp' ? 42.9 : 0;
+    const estado = this.props.estado || 'com-enderecos';
+    const fresh = s.from !== estado;
+    const added = fresh ? [] : s.added;
+    const saved = estado === 'sem-endereco' ? [] : [
+      { id: 'casa', label: 'Casa', who: 'Ana Ribeiro', line1: 'Rua [ENDEREÇO], 120 · apto 42', line2: 'Pinheiros · São Paulo, SP · 05400-000', isDefault: true },
+      { id: 'trab', label: 'Trabalho', who: 'Ana Ribeiro', line1: 'Av. [ENDEREÇO], 1500 · 8º andar', line2: 'Bela Vista · São Paulo, SP · 01310-000', isDefault: false }
+    ];
+    const list = saved.concat(added);
+    const defId = (list.find((a) => a.isDefault) || list[0] || {}).id;
+    const shipId = (!fresh && s.ship) || defId;
+    const billId = (!fresh && s.bill) || defId;
+    const formOpen = list.length === 0 || (!fresh && s.form === 'open');
+    const f = s.f;
+    const cepDigits = f.cep.replace(/\D/g, '');
+    const bad = { who: !f.who.trim(), cep: cepDigits.length !== 8, street: !f.street.trim(), num: !f.num.trim(), city: !f.city.trim() };
+    const anyBad = Object.values(bad).some(Boolean);
+    const B = (k) => (s.tried && bad[k] ? '#B4501E' : '#E6E4DE');
+    const setF = (k) => (e) => this.setState({ f: Object.assign({}, s.f, { [k]: k === 'cep' ? e.target.value.replace(/\D/g, '').slice(0, 8).replace(/^(\d{5})(\d)/, '$1-$2') : e.target.value }) });
+    const card = (a, sel, pick) => ({
+      id: a.id, label: a.label, who: a.who, line1: a.line1, line2: a.line2, isDefault: a.isDefault, sel,
+      border: sel ? '#3B3FD9' : '#E6E4DE', bg: sel ? '#ECECFD' : '#FFFFFF', pick
+    });
+    const lines = [
+      { name: 'Pendente Orbe', qty: 1, total: 'R$ 359', kind: 'pendant', tint: '#F1F0EC' },
+      { name: 'Vaso Duna', qty: 1, total: 'R$ 129', kind: 'vase', tint: '#F1F0EC' },
+      { name: 'Par de canecas Grão', qty: 2, total: 'R$ 178', kind: 'mug', tint: '#FCEEE4' }
+    ];
+    return {
+      noAddr: list.length === 0, canAdd: list.length > 0 && !formOpen,
+      addrs: list.map((a) => card(a, a.id === shipId, () => this.setState({ from: estado, added, ship: a.id }))),
+      billAddrs: list.map((a) => card(a, a.id === billId, () => this.setState({ from: estado, added, bill: a.id }))),
+      formOpen, canCancelForm: list.length > 0,
+      openForm: () => this.setState({ from: estado, added, form: 'open', tried: false }),
+      closeForm: () => this.setState({ from: estado, added, form: null }),
+      f: {
+        label: f.label, who: f.who, cep: f.cep, street: f.street, num: f.num, comp: f.comp, hood: f.hood, city: f.city, uf: f.uf, makeDefault: f.makeDefault,
+        onLabel: setF('label'), onWho: setF('who'), onCep: setF('cep'), onStreet: setF('street'), onNum: setF('num'), onComp: setF('comp'), onHood: setF('hood'), onCity: setF('city'), onUf: setF('uf'),
+        toggleDefault: () => this.setState({ f: Object.assign({}, s.f, { makeDefault: !f.makeDefault }) }),
+        whoB: B('who'), cepB: B('cep'), streetB: B('street'), numB: B('num'), cityB: B('city'),
+        hasErr: s.tried && anyBad
+      },
+      saveAddr: (e) => {
+        e.preventDefault();
+        if (anyBad) { this.setState({ from: estado, added, tried: true, form: 'open' }); return; }
+        const id = 'n' + Date.now();
+        const isDef = f.makeDefault || list.length === 0;
+        const prev = isDef ? added.map((a) => Object.assign({}, a, { isDefault: false })) : added;
+        const na = { id, label: f.label.trim() || 'Endereço ' + (list.length + 1), who: f.who, line1: f.street + ', ' + f.num + (f.comp ? ' · ' + f.comp : ''), line2: (f.hood ? f.hood + ' · ' : '') + f.city + ', ' + f.uf + ' · ' + f.cep, isDefault: isDef };
+        this.setState({ from: estado, added: prev.concat([na]), ship: id, form: null, tried: false, f: { label: '', who: '', cep: '', street: '', num: '', comp: '', hood: '', city: '', uf: 'SP', makeDefault: true } });
+      },
+      sameBilling: s.same, showBilling: !s.same && list.length > 0,
+      toggleSame: () => this.setState({ same: !s.same }),
+      lines,
+      ready: list.length > 0, notReady: list.length === 0,
+      futuro, notFuturo: !futuro, shipCep: (list.find((a) => a.id === shipId) || { line2: '' }).line2.split(' · ').pop() || 'seu CEP',
+      shipOpts: [['eco', 'Econômica', '5 a 9 dias úteis · grátis acima de R$ 299', 0], ['exp', 'Expressa', '2 a 4 dias úteis', 42.9]].map(([id, label, eta, cost]) => ({ label, eta, on: frete === id, price: cost ? 'R$ ' + cost.toFixed(2).replace('.', ',') : 'Grátis', color: cost ? '#18181B' : '#15803D', border: frete === id ? '#3B3FD9' : '#E6E4DE', bg: frete === id ? '#ECECFD' : '#FFFFFF', pick: () => this.setState({ frete: id }) })),
+      freteLabel: futuro ? (freteCost ? 'R$ ' + freteCost.toFixed(2).replace('.', ',') : 'Grátis') : 'EM BREVE',
+      freteColor: futuro ? (freteCost ? '#18181B' : '#15803D') : '#B4501E', freteSize: futuro ? '14px' : '11px',
+      grand: 'R$ ' + (666 + (futuro ? freteCost : 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2 })
+    };
+  }
+}
+</script>
+</body>
+</html>

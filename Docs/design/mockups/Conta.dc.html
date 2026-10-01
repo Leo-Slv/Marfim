@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Loja · Minha conta</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}a:hover{color:#2A2DA8}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input{font-family:Outfit,sans-serif}
+input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+.wrap{width:100%;max-width:1280px;margin:0 auto;padding-left:40px;padding-right:40px;box-sizing:border-box}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}12%{opacity:1;transform:none}88%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.up{animation:up .55s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.15s}.d4{animation-delay:.2s}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.toast{animation:toast 2.8s ease both}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.grow{transform-origin:top;animation:grow .8s cubic-bezier(.2,.7,.2,1) both .2s}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.btn-p{transition:background .2s,transform .2s}
+.btn-p:hover:not(:disabled){background:#2A2DA8 !important;transform:translateY(-1px)}
+.btn-s{transition:background .2s}
+.btn-s:hover{background:#ECEBE6 !important}
+.side-b{transition:background .2s,color .2s}
+.side-b:hover{background:#ECEBE6 !important}
+.row{transition:background .2s}
+.row:hover{background:#FAFAF8 !important}
+.lnk{background:none;border:none;padding:0;color:#3B3FD9;font-size:14px;font-weight:500;min-height:32px;font-family:inherit;cursor:pointer}
+.lnk:hover{color:#2A2DA8}
+.lnk-d{background:none;border:none;padding:0;color:#6B6B72;font-size:14px;min-height:32px;font-family:inherit;cursor:pointer}
+.lnk-d:hover{color:#B4501E}
+.nav-a:hover{color:#3B3FD9 !important}
+.foot-a:hover{color:#FFFFFF !important}
+@media (max-width:1180px){.nav{display:none !important}}
+@media (max-width:980px){.g-split{grid-template-columns:minmax(0,1fr) !important;row-gap:24px !important}.g-split>*{grid-column:auto !important;position:static !important}.g-2{grid-template-columns:minmax(0,1fr) !important}.foot-cols{grid-template-columns:repeat(2,minmax(0,1fr)) !important;row-gap:40px !important}.foot-cols>*{grid-column:auto !important}.hide-md{display:none !important}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 100%; min-width: 360px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden">
+<dc-import name="Header" count="0" logged="{{ true }}" hint-size="100%,108px"></dc-import>
+
+<section style="padding: 36px 0 8px">
+<div class="wrap" style="display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">MINHA CONTA</div>
+<h1 class="up" style="margin: 0; font-size: 44px; line-height: 1; font-weight: 300; letter-spacing: -0.03em">Olá, <span style="font-weight: 500; color: #3B3FD9">Ana</span></h1>
+</div>
+<span style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 999px; background: #E8F5EC; color: #15803D; font-size: 13px">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>E-mail confirmado</span>
+</div>
+</section>
+
+<section style="padding: 24px 0 72px">
+<div class="wrap g-split" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: start">
+
+<nav aria-label="Seções da conta" style="grid-column: span 3; position: sticky; top: 24px; display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{menu}}" as="m" hint-placeholder-count="4">
+<button class="side-b" onClick="{{m.go}}" aria-current="{{m.current}}" style="height: 48px; padding: 0 14px; border-radius: 12px; border: none; background: {{m.bg}}; color: {{m.fg}}; font-size: 15px; font-weight: {{m.weight}}; display: flex; align-items: center; gap: 12px; text-align: left">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{m.icon}}"></path></svg>
+<span style="flex-grow: 1">{{m.label}}</span>
+<sc-if value="{{m.hasCount}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72">{{m.count}}</span></sc-if>
+</button>
+</sc-for>
+<a href="Acesso.dc.html" class="side-b" style="height: 48px; padding: 0 14px; border-radius: 12px; color: #6B6B72; text-decoration: none; font-size: 15px; display: flex; align-items: center; gap: 12px; margin-top: 8px; border-top: 1px solid #E6E4DE">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h4v16h-4M10 17l5-5-5-5M15 12H3"></path></svg>Sair</a>
+</nav>
+
+<div key="{{secKey}}" class="up" style="grid-column: 4 / span 9; display: flex; flex-direction: column; gap: 16px">
+
+<!-- 20 · Meus dados -->
+<sc-if value="{{sec.dados}}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{saveData}}" style="margin: 0; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 18px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 500; letter-spacing: -0.01em">Meus dados</h2>
+<div class="g-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Nome
+<input value="{{d.first}}" onChange="{{d.onFirst}}" autocomplete="given-name" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid {{d.firstB}}; border-radius: 12px; font-size: 15px; color: #18181B"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Sobrenome
+<input value="{{d.last}}" onChange="{{d.onLast}}" autocomplete="family-name" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 15px; color: #18181B"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">E-mail
+<span style="position: relative; display: flex"><input value="ana@email.com" readOnly style="flex-grow: 1; height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid #E6E4DE; border-radius: 12px; background: #F4F3EF; font-size: 15px; color: #44444A"><span style="position: absolute; right: 12px; top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #15803D">CONFIRMADO</span></span>
+<span style="font-size: 12px; color: #6B6B72">Para trocar o e-mail, fale com o atendimento.</span></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Telefone
+<input value="{{d.phone}}" onChange="{{d.onPhone}}" inputmode="tel" autocomplete="tel" placeholder="(11) 90000-0000" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid {{d.phoneB}}; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #18181B">
+<sc-if value="{{d.phoneErr}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: #B4501E">Use DDD + número, com 10 ou 11 dígitos.</span></sc-if></label>
+</div>
+<sc-if value="{{d.firstErr}}" hint-placeholder-val="{{ false }}"><span role="alert" style="font-size: 13px; color: #B4501E">O nome é obrigatório.</span></sc-if>
+<div style="display: flex; gap: 10px; align-items: center; padding-top: 6px; border-top: 1px solid #E6E4DE">
+<button type="submit" class="btn-p" style="height: 48px; padding: 0 22px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">Salvar alterações</button>
+<sc-if value="{{d.dirty}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #6B6B72">Alterações não salvas</span></sc-if>
+</div>
+</form>
+</sc-if>
+
+<!-- 21 · Endereços -->
+<sc-if value="{{sec.enderecos}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; gap: 12px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 500; letter-spacing: -0.01em; flex-grow: 1">Endereços</h2>
+<sc-if value="{{addr.has}}" hint-placeholder-val="{{ true }}"><button class="btn-s" onClick="{{addr.openNew}}" style="height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; font-size: 14px; font-weight: 500">+ Novo endereço</button></sc-if>
+</div>
+<sc-if value="{{addr.empty}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 48px 32px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+<div class="floaty" style="width: 64px; height: 64px; border-radius: 50%; background: #F1F0EC; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.5" stroke-linejoin="round"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"></path><circle cx="12" cy="9" r="2.5"></circle></svg></div>
+<div style="font-size: 22px; font-weight: 300">Nenhum endereço salvo</div>
+<div style="font-size: 14px; color: #6B6B72; max-width: 360px">Cadastre um endereço para agilizar o checkout. O primeiro vira o padrão de entrega e de cobrança.</div>
+<button class="btn-p" onClick="{{addr.openNew}}" style="margin-top: 6px; height: 48px; padding: 0 22px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">Adicionar endereço</button>
+</div>
+</sc-if>
+<sc-if value="{{addr.formOpen}}" hint-placeholder-val="{{ false }}">
+<form class="up" onSubmit="{{addr.save}}" style="margin: 0; background: #FFFFFF; border: 1px solid #3B3FD9; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<b style="font-size: 16px; font-weight: 500">{{addr.formTitle}}</b>
+<div class="g-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Nome do endereço<input value="{{addr.f.label}}" onChange="{{addr.f.onLabel}}" placeholder="Casa, Trabalho…" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 15px"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Rua e número<input value="{{addr.f.line1}}" onChange="{{addr.f.onLine1}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{addr.f.line1B}}; border-radius: 12px; font-size: 15px"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A; grid-column: span 2">Bairro, cidade, UF e CEP<input value="{{addr.f.line2}}" onChange="{{addr.f.onLine2}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{addr.f.line2B}}; border-radius: 12px; font-size: 15px"></label>
+</div>
+<div style="display: flex; gap: 10px">
+<button type="submit" class="btn-p" style="height: 44px; padding: 0 20px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">Salvar</button>
+<button type="button" class="btn-s" onClick="{{addr.close}}" style="height: 44px; padding: 0 18px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; font-size: 15px; font-weight: 500">Cancelar</button>
+</div>
+</form>
+</sc-if>
+<div class="g-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{addr.list}}" as="a" hint-placeholder-count="2">
+<article key="{{a.id}}" class="up" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+<b style="font-size: 16px; font-weight: 500; flex-grow: 1">{{a.label}}</b>
+<sc-if value="{{a.isShip}}" hint-placeholder-val="{{ false }}"><span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #ECECFD; color: #3B3FD9; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; display: inline-flex; align-items: center">ENTREGA PADRÃO</span></sc-if>
+<sc-if value="{{a.isBill}}" hint-placeholder-val="{{ false }}"><span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #F1F0EC; color: #44444A; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; display: inline-flex; align-items: center">COBRANÇA PADRÃO</span></sc-if>
+</div>
+<div style="font-size: 14px; color: #44444A; line-height: 1.55">Ana Ribeiro<br>{{a.line1}}<br>{{a.line2}}</div>
+<sc-if value="{{a.confirming}}" hint-placeholder-val="{{ false }}">
+<div class="pop" role="alertdialog" aria-label="Confirmar exclusão" style="padding: 12px 14px; border-radius: 12px; background: #FCEEE4; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px">
+<span style="flex-grow: 1">Excluir “{{a.label}}”?</span>
+<button onClick="{{a.del}}" style="height: 36px; padding: 0 14px; border-radius: 10px; border: none; background: #B4501E; color: #FFFFFF; font-size: 13px; font-weight: 500">Excluir</button>
+<button onClick="{{a.cancelDel}}" style="height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; font-size: 13px">Manter</button>
+</div>
+</sc-if>
+<sc-if value="{{a.idle}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; gap: 16px; flex-wrap: wrap; padding-top: 10px; border-top: 1px solid #E6E4DE">
+<button class="lnk" onClick="{{a.edit}}">Editar</button>
+<sc-if value="{{a.canShip}}" hint-placeholder-val="{{ true }}"><button class="lnk" onClick="{{a.makeShip}}">Tornar entrega padrão</button></sc-if>
+<sc-if value="{{a.canBill}}" hint-placeholder-val="{{ true }}"><button class="lnk" onClick="{{a.makeBill}}">Tornar cobrança padrão</button></sc-if>
+<span style="flex-grow: 1"></span>
+<button class="lnk-d" onClick="{{a.askDel}}">Excluir</button>
+</div>
+</sc-if>
+</article>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- 22 · Meus pedidos -->
+<sc-if value="{{sec.pedidos}}" hint-placeholder-val="{{ false }}">
+<h2 style="margin: 0; font-size: 24px; font-weight: 500; letter-spacing: -0.01em">Meus pedidos</h2>
+<sc-if value="{{ord.empty}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 48px 32px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+<div class="floaty" style="width: 64px; height: 64px; border-radius: 50%; background: #F1F0EC; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.5" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg></div>
+<div style="font-size: 22px; font-weight: 300">Você ainda não fez pedidos</div>
+<div style="font-size: 14px; color: #6B6B72; max-width: 360px">Quando fizer, você acompanha cada etapa por aqui, do ateliê até a entrega.</div>
+<a href="Main.dc.html" class="btn-p" style="margin-top: 6px; height: 48px; padding: 0 22px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Ver a loja</a>
+</div>
+</sc-if>
+<sc-if value="{{ord.has}}" hint-placeholder-val="{{ true }}">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; overflow: hidden">
+<div class="hide-md" style="display: grid; grid-template-columns: 140px 120px minmax(0, 1fr) 120px 190px 24px; gap: 16px; padding: 12px 20px; background: #F1F0EC; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #6B6B72">
+<span>PEDIDO</span><span>DATA</span><span>ITENS</span><span>TOTAL</span><span>STATUS</span><span></span>
+</div>
+<sc-for list="{{ord.list}}" as="o" hint-placeholder-count="5">
+<button class="row up" onClick="{{o.open}}" style="width: 100%; border: none; border-top: 1px solid #E6E4DE; background: #FFFFFF; padding: 16px 20px; display: grid; grid-template-columns: 140px 120px minmax(0, 1fr) 120px 190px 24px; gap: 16px; align-items: center; text-align: left; color: #18181B; animation-delay: {{o.delay}}">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500">{{o.id}}</span>
+<span style="font-size: 14px; color: #44444A">{{o.date}}</span>
+<span style="display: flex; align-items: center; gap: 10px; min-width: 0">
+<span style="display: flex">
+<sc-for list="{{o.thumbs}}" as="t" hint-placeholder-count="2">
+<span style="width: 36px; height: 36px; border-radius: 10px; background: {{t.tint}}; border: 2px solid #FFFFFF; margin-right: -8px; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="{{t.kind}}" size="20" hint-size="20px,23px"></dc-import></span>
+</sc-for>
+</span>
+<span style="font-size: 14px; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{o.summary}}</span>
+</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{o.total}}</span>
+<span><span style="height: 26px; padding: 0 10px; border-radius: 999px; background: {{o.bg}}; color: {{o.fg}}; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center">{{o.status}}</span></span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.8" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+</sc-for>
+<div style="padding: 14px 20px; border-top: 1px solid #E6E4DE; display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72">
+<span>1–5 DE 5</span><span>PÁGINA 1 DE 1</span>
+</div>
+</div>
+</sc-if>
+</sc-if>
+
+<!-- 23 · Detalhe do pedido -->
+<sc-if value="{{sec.detalhe}}" hint-placeholder-val="{{ false }}">
+<button class="lnk" onClick="{{backToOrders}}" style="align-self: flex-start; display: flex; align-items: center; gap: 6px">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>Meus pedidos</button>
+<div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+<h2 style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 500">{{det.id}}</h2>
+<span key="{{det.status}}" class="pop" style="height: 30px; padding: 0 12px; border-radius: 999px; background: {{det.bg}}; color: {{det.fg}}; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center">{{det.status}}</span>
+<span style="flex-grow: 1"></span>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #15803D"><span class="pulse" style="width: 7px; height: 7px; border-radius: 50%; background: #15803D"></span>Ao vivo</span>
+</div>
+<div style="font-size: 14px; color: #6B6B72">Feito em {{det.date}} · {{det.count}}</div>
+
+<div class="g-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #6B6B72; padding-bottom: 12px">LINHA DO TEMPO</span>
+<sc-for list="{{det.timeline}}" as="t" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: 20px minmax(0, 1fr); column-gap: 14px">
+<div style="display: flex; flex-direction: column; align-items: center">
+<span style="width: 14px; height: 14px; border-radius: 50%; background: {{t.dot}}; border: 2px solid {{t.ring}}; box-sizing: border-box; margin-top: 3px"></span>
+<sc-if value="{{t.notLast}}" hint-placeholder-val="{{ true }}"><span class="grow" style="flex-grow: 1; width: 2px; min-height: 30px; background: {{t.line}}; margin: 4px 0"></span></sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px; padding-bottom: 16px">
+<span style="font-size: 15px; font-weight: {{t.weight}}; color: {{t.color}}">{{t.label}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">{{t.when}}</span>
+<sc-if value="{{t.hasNote}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #44444A">{{t.note}}</span></sc-if>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 16px">
+<sc-if value="{{det.shipped}}" hint-placeholder-val="{{ true }}">
+<div style="background: #3B3FD9; color: #FFFFFF; border-radius: 20px; padding: 22px 24px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #ECECFD">ENVIO</span>
+<div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 14px"><span>[TRANSPORTADORA]</span><span style="font-family: 'JetBrains Mono', monospace">[CÓDIGO DE RASTREIO]</span></div>
+<a href="#" style="align-self: flex-start; height: 40px; padding: 0 16px; border-radius: 10px; background: #FFFFFF; color: #2A2DA8; text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500">Rastrear na transportadora
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+</div>
+</sc-if>
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 22px 24px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #6B6B72">ITENS</span>
+<sc-for list="{{det.items}}" as="i" hint-placeholder-count="3">
+<div style="display: flex; gap: 12px; align-items: center">
+<span style="width: 44px; height: 44px; border-radius: 10px; background: {{i.tint}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><dc-import name="Art" kind="{{i.kind}}" size="26" hint-size="26px,29px"></dc-import></span>
+<span style="flex-grow: 1; font-size: 14px">{{i.qty}}× {{i.name}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{i.total}}</span>
+</div>
+</sc-for>
+<div style="display: flex; justify-content: space-between; padding-top: 12px; border-top: 1px solid #E6E4DE; font-size: 15px; font-weight: 500"><span>Total</span><span style="font-family: 'JetBrains Mono', monospace">{{det.total}}</span></div>
+<div style="font-size: 13px; color: #6B6B72; line-height: 1.5">Entrega: Casa · Rua [ENDEREÇO], 120 · São Paulo, SP<br>Pagamento: cartão final 4242</div>
+</div>
+<sc-if value="{{det.canCancel}}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{det.askCancel}}" hint-placeholder-val="{{ false }}">
+<div class="pop" role="alertdialog" aria-label="Confirmar cancelamento" style="padding: 16px; border-radius: 16px; background: #FCEEE4; display: flex; flex-direction: column; gap: 10px; font-size: 14px">
+<b style="font-weight: 500">Cancelar o pedido {{det.id}}?</b>
+<span style="color: #44444A">O valor é estornado no cartão e as peças voltam ao estoque.</span>
+<div style="display: flex; gap: 8px"><button onClick="{{det.doCancel}}" style="height: 40px; padding: 0 16px; border-radius: 10px; border: none; background: #B4501E; color: #FFFFFF; font-size: 14px; font-weight: 500">Sim, cancelar</button>
+<button onClick="{{det.keep}}" style="height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; font-size: 14px">Manter pedido</button></div>
+</div>
+</sc-if>
+<sc-if value="{{det.showCancelBtn}}" hint-placeholder-val="{{ true }}">
+<button class="btn-s" onClick="{{det.ask}}" style="height: 44px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #B4501E; font-size: 14px; font-weight: 500">Cancelar pedido</button>
+<span style="font-size: 12px; color: #6B6B72; text-align: center">Dá para cancelar até o ateliê começar o preparo.</span>
+</sc-if>
+</sc-if>
+<sc-if value="{{det.inFulfilment}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 14px 16px; border-radius: 14px; background: #F1F0EC; font-size: 13px; color: #44444A; line-height: 1.5">O ateliê já começou o preparo, então o pedido não pode mais ser cancelado por aqui. Depois de receber, você tem 30 dias para trocar ou devolver.</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<!-- 24 · Trocar senha -->
+<sc-if value="{{sec.senha}}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{pw.done}}" hint-placeholder-val="{{ false }}">
+<div class="pop" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 12px">
+<span style="width: 56px; height: 56px; border-radius: 50%; background: #E8F5EC; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span>
+<b style="font-size: 22px; font-weight: 500">Senha alterada</b>
+<span style="font-size: 15px; color: #44444A; line-height: 1.55">Encerramos as sessões abertas em outros aparelhos. Este continua conectado.</span>
+<button class="lnk" onClick="{{pw.reset}}" style="align-self: flex-start">Voltar</button>
+</div>
+</sc-if>
+<sc-if value="{{pw.form}}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{pw.submit}}" style="margin: 0; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 16px; max-width: 520px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 500; letter-spacing: -0.01em">Trocar senha</h2>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Senha atual
+<input key="{{pw.errKey}}" class="{{pw.curClass}}" type="password" autocomplete="current-password" value="{{pw.cur}}" onChange="{{pw.onCur}}" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid {{pw.curB}}; border-radius: 12px; font-size: 15px">
+<sc-if value="{{pw.curErr}}" hint-placeholder-val="{{ false }}"><span role="alert" style="font-size: 12px; color: #B4501E">A senha atual está incorreta.</span></sc-if></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Nova senha
+<input type="password" autocomplete="new-password" value="{{pw.nw}}" onChange="{{pw.onNw}}" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid {{pw.nwB}}; border-radius: 12px; font-size: 15px"></label>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{pw.bars}}" as="b" hint-placeholder-count="3"><span style="height: 4px; border-radius: 999px; background: {{b.color}}; transition: background .3s"></span></sc-for>
+</div>
+<div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px">
+<sc-for list="{{pw.rules}}" as="r" hint-placeholder-count="3"><span style="display: flex; align-items: center; gap: 6px; color: {{r.color}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{r.icon}}"></path></svg>{{r.label}}</span></sc-for>
+</div>
+<div style="font-size: 13px; color: #6B6B72; line-height: 1.5">Ao trocar a senha, as sessões em outros aparelhos são encerradas.</div>
+<button type="submit" class="btn-p" style="align-self: flex-start; height: 48px; padding: 0 22px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">Trocar senha</button>
+</form>
+</sc-if>
+</sc-if>
+</div>
+</div>
+</section>
+
+<dc-import name="Footer" hint-size="100%,560px"></dc-import>
+
+<sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{toast.key}}" class="toast" role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 50; display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 14px; background: #18181B; color: #FFFFFF; font-size: 14px; box-shadow: 0 20px 40px -16px rgba(24,24,27,.4)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5BC583" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>{{toast.text}}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"secao":{"editor":"enum","options":["dados","enderecos","pedidos","detalhe","senha"],"default":"pedidos"},"vazio":{"editor":"boolean","default":false},"statusDetalhe":{"editor":"enum","options":["confirmado","em-preparo","enviado","entregue","cancelado"],"default":"enviado"},"erroSenha":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sec: null, from: null, toast: null, toastN: 0, detId: 'MF-000198', canceled: false, askCancel: false,
+      data: { first: 'Ana', last: 'Ribeiro', phone: '(11) 98000-0000' }, dirty: false, dataTried: false,
+      addrs: null, addrForm: null, f: { label: '', line1: '', line2: '' }, fTried: false, delAsk: null,
+      pw: { cur: '', nw: '' }, pwTried: false, pwErrN: 0, pwCurErr: false, pwDone: false };
+  }
+  key() { return [this.props.secao, this.props.vazio, this.props.statusDetalhe, this.props.erroSenha].join('|'); }
+  toast(text) { this.setState({ toast: text, toastN: this.state.toastN + 1 }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2800); }
+  componentWillUnmount() { clearTimeout(this.tt); }
+  money(n) { return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  renderVals() {
+    const s = this.state;
+    const k = this.key();
+    const fresh = s.from !== k;
+    const sec = (!fresh && s.sec) || this.props.secao || 'pedidos';
+    const vazio = !!this.props.vazio;
+    const go = (x, extra) => this.setState(Object.assign({ sec: x, from: k }, extra || {}));
+    const ST = {
+      'Aguardando pagamento': ['#F1F0EC', '#44444A'], 'Confirmado': ['#ECECFD', '#3B3FD9'], 'Em preparo': ['#FCEEE4', '#B4501E'],
+      'Enviado': ['#3B3FD9', '#FFFFFF'], 'Entregue': ['#E8F5EC', '#15803D'], 'Cancelado': ['#F1F0EC', '#44444A'], 'Pagamento não aprovado': ['#FCEEE4', '#B4501E']
+    };
+    const statusMap = { 'confirmado': 'Confirmado', 'em-preparo': 'Em preparo', 'enviado': 'Enviado', 'entregue': 'Entregue', 'cancelado': 'Cancelado' };
+    const orders = [
+      { id: 'MF-000231', date: '01 out 2026', status: 'Confirmado', items: [['Pendente Orbe', 1, 359, 'pendant', '#F1F0EC'], ['Vaso Duna', 1, 129, 'vase', '#F1F0EC'], ['Par de canecas Grão', 2, 89, 'mug', '#FCEEE4']] },
+      { id: 'MF-000198', date: '12 set 2026', status: 'Enviado', items: [['Luminária Arco', 1, 489, 'lamp', '#ECECFD']] },
+      { id: 'MF-000177', date: '28 ago 2026', status: 'Entregue', items: [['Manta Trama', 1, 219, 'throw', '#ECECFD'], ['Almofada Linho', 1, 119, 'throw', '#FCEEE4']] },
+      { id: 'MF-000150', date: '02 ago 2026', status: 'Cancelado', items: [['Cadeira Lina', 1, 1290, 'chair', '#E8F5EC']] },
+      { id: 'MF-000141', date: '20 jul 2026', status: 'Pagamento não aprovado', items: [['Tigela Areia', 1, 79, 'bowl', '#F1F0EC']] }
+    ];
+    const detId = fresh ? 'MF-000198' : s.detId;
+    const o = orders.find((x) => x.id === detId) || orders[1];
+    let detStatus = o.id === 'MF-000198' && this.props.statusDetalhe ? statusMap[this.props.statusDetalhe] : o.status;
+    if (!fresh && s.canceled && s.detId === o.id) detStatus = 'Cancelado';
+    const flow = ['Aguardando pagamento', 'Confirmado', 'Em preparo', 'Enviado', 'Entregue'];
+    const whens = ['12 SET · 14:02', '12 SET · 14:03', '13 SET · 09:40', '14 SET · 16:15', '18 SET · 11:30'];
+    const notes = { 'Confirmado': 'Pagamento aprovado no cartão.', 'Em preparo': 'A Oficina Faísca está embalando a peça.', 'Enviado': 'Coletado pela transportadora.', 'Entregue': 'Recebido por Ana.' };
+    let timeline;
+    if (detStatus === 'Cancelado') {
+      timeline = [['Aguardando pagamento', whens[0]], ['Confirmado', whens[1]], ['Cancelado', 'AGORA', 'Estorno solicitado ao banco.']].map((t, i, arr) => ({ label: t[0], when: t[1], note: t[2] || notes[t[0]] || '', hasNote: !!(t[2] || notes[t[0]]), last: i === arr.length - 1 }));
+    } else if (detStatus === 'Pagamento não aprovado') {
+      timeline = [['Aguardando pagamento', whens[0]], ['Pagamento não aprovado', whens[1], 'O banco não autorizou a transação.']].map((t, i, arr) => ({ label: t[0], when: t[1], note: t[2], hasNote: !!t[2], last: i === arr.length - 1 }));
+    } else {
+      const idx = flow.indexOf(detStatus);
+      timeline = flow.map((label, i) => ({ label, when: i <= idx ? whens[i] : 'A SEGUIR', note: notes[label] || '', hasNote: i <= idx && !!notes[label], last: i === flow.length - 1, future: i > idx, current: i === idx }));
+    }
+    timeline = timeline.map((t, i, arr) => {
+      const cur = t.current || (t.last && !t.future && t.current === undefined);
+      return Object.assign(t, {
+        notLast: i < arr.length - 1,
+        dot: t.future ? '#FFFFFF' : (cur ? (detStatus === 'Cancelado' || detStatus === 'Pagamento não aprovado' ? '#B4501E' : '#3B3FD9') : '#15803D'),
+        ring: t.future ? '#E6E4DE' : 'transparent',
+        line: t.future || (arr[i + 1] && arr[i + 1].future) ? '#E6E4DE' : '#15803D',
+        color: t.future ? '#6B6B72' : '#18181B', weight: cur ? 500 : 400
+      });
+    });
+    const sum = (it) => it.reduce((a, x) => a + x[1] * x[2], 0);
+    const units = (it) => it.reduce((a, x) => a + x[1], 0);
+    const cancelable = detStatus === 'Confirmado';
+    const inFul = detStatus === 'Em preparo' || detStatus === 'Enviado';
+
+    // endereços
+    const baseAddrs = vazio ? [] : [
+      { id: 'casa', label: 'Casa', line1: 'Rua [ENDEREÇO], 120 · apto 42', line2: 'Pinheiros · São Paulo, SP · 05400-000' },
+      { id: 'trab', label: 'Trabalho', line1: 'Av. [ENDEREÇO], 1500 · 8º andar', line2: 'Bela Vista · São Paulo, SP · 01310-000' }
+    ];
+    const addrState = (!fresh && s.addrs) || { list: baseAddrs, ship: baseAddrs[0] ? 'casa' : null, bill: baseAddrs[0] ? 'casa' : null };
+    const setAddr = (patch, extra) => this.setState(Object.assign({ from: k, sec: 'enderecos', addrs: Object.assign({}, addrState, patch) }, extra || {}));
+    const f = s.f;
+    const fBad = { line1: !f.line1.trim(), line2: !f.line2.trim() };
+    const formOpen = !fresh && !!s.addrForm;
+
+    // senha
+    const nw = s.pw.nw;
+    const rules = [
+      { ok: nw.length >= 8 && nw.length <= 128, label: '8 a 128 caracteres' },
+      { ok: /[A-Za-zÀ-ÿ]/.test(nw), label: 'Uma letra' },
+      { ok: /\d/.test(nw), label: 'Um número' }
+    ];
+    const score = rules.filter((r) => r.ok).length;
+    const barColor = score === 3 ? '#15803D' : score === 2 ? '#E8793A' : '#B4501E';
+    const phoneDigits = s.data.phone.replace(/\D/g, '');
+    const phoneBad = phoneDigits.length < 10 || phoneDigits.length > 11;
+    const firstBad = !s.data.first.trim();
+    const setData = (key) => (e) => this.setState({ data: Object.assign({}, s.data, { [key]: e.target.value }), dirty: true });
+
+    const menuItems = [
+      ['pedidos', 'Meus pedidos', 'M5 8h14l-1 12H6L5 8ZM9 8V6a3 3 0 0 1 6 0v2', vazio ? 0 : orders.length],
+      ['dados', 'Meus dados', 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 21c1.5-4 4.5-6 8-6s6.5 2 8 6'],
+      ['enderecos', 'Endereços', 'M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z'],
+      ['senha', 'Trocar senha', 'M5 11h14v10H5zM8 11V8a4 4 0 0 1 8 0v3']
+    ];
+    const activeMenu = sec === 'detalhe' ? 'pedidos' : sec;
+
+    return {
+      secKey: sec + (sec === 'detalhe' ? detId : ''),
+      sec: { dados: sec === 'dados', enderecos: sec === 'enderecos', pedidos: sec === 'pedidos', detalhe: sec === 'detalhe', senha: sec === 'senha' },
+      menu: menuItems.map(([id, label, icon, count]) => {
+        const on = id === activeMenu;
+        return { label, icon, hasCount: count !== undefined, count, current: on ? 'page' : 'false', bg: on ? '#FFFFFF' : 'transparent', fg: on ? '#3B3FD9' : '#18181B', weight: on ? 500 : 400, go: () => go(id) };
+      }),
+      d: {
+        first: s.data.first, last: s.data.last, phone: s.data.phone,
+        onFirst: setData('first'), onLast: setData('last'), onPhone: setData('phone'),
+        phoneErr: s.dataTried && phoneBad, phoneB: s.dataTried && phoneBad ? '#B4501E' : '#E6E4DE',
+        firstErr: s.dataTried && firstBad, firstB: s.dataTried && firstBad ? '#B4501E' : '#E6E4DE',
+        dirty: s.dirty
+      },
+      saveData: (e) => { e.preventDefault(); if (phoneBad || firstBad) { this.setState({ dataTried: true }); return; } this.setState({ dataTried: false, dirty: false }); this.toast('Dados salvos'); },
+      addr: {
+        has: addrState.list.length > 0, empty: addrState.list.length === 0 && !formOpen,
+        formOpen, formTitle: s.addrForm && s.addrForm !== 'new' ? 'Editar endereço' : 'Novo endereço',
+        openNew: () => this.setState({ from: k, sec: 'enderecos', addrs: addrState, addrForm: 'new', f: { label: '', line1: '', line2: '' }, fTried: false }),
+        close: () => this.setState({ addrForm: null }),
+        f: {
+          label: f.label, line1: f.line1, line2: f.line2,
+          onLabel: (e) => this.setState({ f: Object.assign({}, s.f, { label: e.target.value }) }),
+          onLine1: (e) => this.setState({ f: Object.assign({}, s.f, { line1: e.target.value }) }),
+          onLine2: (e) => this.setState({ f: Object.assign({}, s.f, { line2: e.target.value }) }),
+          line1B: s.fTried && fBad.line1 ? '#B4501E' : '#E6E4DE', line2B: s.fTried && fBad.line2 ? '#B4501E' : '#E6E4DE'
+        },
+        save: (e) => {
+          e.preventDefault();
+          if (fBad.line1 || fBad.line2) { this.setState({ fTried: true }); return; }
+          const isNew = s.addrForm === 'new';
+          const id = isNew ? 'a' + Date.now() : s.addrForm;
+          const item = { id, label: f.label.trim() || 'Endereço', line1: f.line1, line2: f.line2 };
+          const list = isNew ? addrState.list.concat([item]) : addrState.list.map((a) => (a.id === id ? item : a));
+          const first = addrState.list.length === 0;
+          setAddr({ list, ship: first ? id : addrState.ship, bill: first ? id : addrState.bill }, { addrForm: null });
+          this.toast(isNew ? 'Endereço adicionado' : 'Endereço atualizado');
+        },
+        list: addrState.list.map((a) => {
+          const asking = !fresh && s.delAsk === a.id;
+          return {
+            id: a.id, label: a.label, line1: a.line1, line2: a.line2,
+            isShip: addrState.ship === a.id, isBill: addrState.bill === a.id,
+            canShip: addrState.ship !== a.id, canBill: addrState.bill !== a.id,
+            confirming: asking, idle: !asking,
+            edit: () => this.setState({ from: k, sec: 'enderecos', addrs: addrState, addrForm: a.id, f: { label: a.label, line1: a.line1, line2: a.line2 }, fTried: false }),
+            makeShip: () => { setAddr({ ship: a.id }); this.toast('Entrega padrão atualizada'); },
+            makeBill: () => { setAddr({ bill: a.id }); this.toast('Cobrança padrão atualizada'); },
+            askDel: () => this.setState({ from: k, sec: 'enderecos', addrs: addrState, delAsk: a.id }),
+            cancelDel: () => this.setState({ delAsk: null }),
+            del: () => {
+              const list = addrState.list.filter((x) => x.id !== a.id);
+              const fb = list[0] ? list[0].id : null;
+              setAddr({ list, ship: addrState.ship === a.id ? fb : addrState.ship, bill: addrState.bill === a.id ? fb : addrState.bill }, { delAsk: null });
+              this.toast('Endereço excluído');
+            }
+          };
+        })
+      },
+      ord: {
+        empty: vazio, has: !vazio,
+        list: orders.map((x, i) => {
+          const st = x.id === 'MF-000198' && this.props.statusDetalhe ? statusMap[this.props.statusDetalhe] : x.status;
+          const shown = !fresh && s.canceled && s.detId === x.id ? 'Cancelado' : st;
+          return {
+            id: x.id, date: x.date, delay: (i * 0.05).toFixed(2) + 's',
+            thumbs: x.items.slice(0, 2).map((it) => ({ kind: it[3], tint: it[4] })),
+            summary: x.items.length === 1 ? x.items[0][0] : x.items[0][0] + ' + ' + (x.items.length - 1) + (x.items.length === 2 ? ' peça' : ' peças'),
+            total: this.money(sum(x.items)), status: shown, bg: ST[shown][0], fg: ST[shown][1],
+            open: () => go('detalhe', { detId: x.id, askCancel: false })
+          };
+        })
+      },
+      backToOrders: () => go('pedidos'),
+      det: {
+        id: o.id, date: o.date, status: detStatus, bg: ST[detStatus][0], fg: ST[detStatus][1],
+        count: units(o.items) + (units(o.items) === 1 ? ' peça' : ' peças'),
+        timeline,
+        shipped: detStatus === 'Enviado' || detStatus === 'Entregue',
+        items: o.items.map((it) => ({ name: it[0], qty: it[1], total: this.money(it[1] * it[2]), kind: it[3], tint: it[4] })),
+        total: this.money(sum(o.items)),
+        canCancel: cancelable, inFulfilment: inFul,
+        askCancel: !fresh && s.askCancel, showCancelBtn: fresh || !s.askCancel,
+        ask: () => go('detalhe', { detId: o.id, askCancel: true }),
+        keep: () => this.setState({ askCancel: false }),
+        doCancel: () => { go('detalhe', { detId: o.id, askCancel: false, canceled: true }); this.toast('Pedido cancelado'); }
+      },
+      pw: {
+        cur: s.pw.cur, nw: s.pw.nw,
+        onCur: (e) => this.setState({ pw: Object.assign({}, s.pw, { cur: e.target.value }), pwCurErr: false }),
+        onNw: (e) => this.setState({ pw: Object.assign({}, s.pw, { nw: e.target.value }) }),
+        curErr: !fresh && s.pwCurErr, curB: !fresh && s.pwCurErr ? '#B4501E' : '#E6E4DE', curClass: !fresh && s.pwCurErr ? 'shake' : '', errKey: 'pe' + s.pwErrN,
+        nwB: s.pwTried && score < 3 ? '#B4501E' : '#E6E4DE',
+        bars: [0, 1, 2].map((i) => ({ color: i < score ? barColor : '#E6E4DE' })),
+        rules: rules.map((r) => ({ label: r.label, color: r.ok ? '#15803D' : '#6B6B72', icon: r.ok ? 'm5 12 5 5 9-10' : 'M12 12h.01' })),
+        done: !fresh && s.pwDone, form: fresh || !s.pwDone,
+        submit: (e) => {
+          e.preventDefault();
+          if (score < 3) { this.setState({ pwTried: true }); return; }
+          if (this.props.erroSenha) { go('senha', { pwCurErr: true, pwErrN: s.pwErrN + 1 }); return; }
+          go('senha', { pwDone: true, pw: { cur: '', nw: '' }, pwTried: false });
+        },
+        reset: () => go('senha', { pwDone: false })
+      },
+      toast: { show: !!s.toast, text: s.toast || '', key: 't' + s.toastN }
+    };
+  }
+}
+</script>
+</body>
+</html>

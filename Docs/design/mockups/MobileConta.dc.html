@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Meus pedidos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes slide{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.up{animation:up .45s cubic-bezier(.2,.7,.2,1) both}
+.slide{animation:slide .4s cubic-bezier(.2,.7,.2,1) both}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.tabs{scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 390px; height: 1100px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden">
+<dc-import name="MobileTopo" count="0" title="Minha conta" hint-size="390px,86px"></dc-import>
+<div class="tabs" style="display: flex; gap: 8px; overflow-x: auto; padding: 14px 16px; border-bottom: 1px solid #E6E4DE">
+<span style="flex-shrink: 0; height: 38px; padding: 0 14px; border-radius: 999px; background: #18181B; color: #FFFFFF; font-size: 14px; display: flex; align-items: center">Pedidos</span>
+<a href="Conta.dc.html" style="flex-shrink: 0; height: 38px; padding: 0 14px; border-radius: 999px; background: #F1F0EC; color: #44444A; text-decoration: none; font-size: 14px; display: flex; align-items: center">Meus dados</a>
+<a href="Conta.dc.html" style="flex-shrink: 0; height: 38px; padding: 0 14px; border-radius: 999px; background: #F1F0EC; color: #44444A; text-decoration: none; font-size: 14px; display: flex; align-items: center">Endereços</a>
+<a href="Conta.dc.html" style="flex-shrink: 0; height: 38px; padding: 0 14px; border-radius: 999px; background: #F1F0EC; color: #44444A; text-decoration: none; font-size: 14px; display: flex; align-items: center">Senha</a>
+</div>
+
+<sc-if value="{{isList}}" hint-placeholder-val="{{ true }}">
+<section style="padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<h1 style="margin: 0 0 4px; font-size: 30px; font-weight: 300; letter-spacing: -0.03em">Meus pedidos</h1>
+<sc-for list="{{orders}}" as="o" hint-placeholder-count="4">
+<button class="up" onClick="{{o.open}}" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; text-align: left; color: #18181B; animation-delay: {{o.delay}}">
+<span style="display: flex; align-items: center; width: 100%"><span style="flex-grow: 1; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">{{o.id}}</span><span style="height: 24px; padding: 0 10px; border-radius: 999px; background: {{o.bg}}; color: {{o.fg}}; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center">{{o.status}}</span></span>
+<span style="display: flex; align-items: center; gap: 10px; width: 100%">
+<span style="display: flex"><sc-for list="{{o.thumbs}}" as="t" hint-placeholder-count="2"><span style="width: 40px; height: 40px; border-radius: 10px; background: {{t.tint}}; border: 2px solid #FFFFFF; margin-right: -8px; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="{{t.kind}}" size="22" hint-size="22px,25px"></dc-import></span></sc-for></span>
+<span style="flex-grow: 1; padding-left: 10px; font-size: 13px; color: #44444A">{{o.date}} · {{o.summary}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{o.total}}</span>
+</span>
+</button>
+</sc-for>
+</section>
+</sc-if>
+
+<sc-if value="{{isDetail}}" hint-placeholder-val="{{ false }}">
+<section key="{{d.id}}" class="slide" style="padding: 16px; display: flex; flex-direction: column; gap: 14px">
+<button onClick="{{back}}" style="align-self: flex-start; min-height: 40px; border: none; background: none; padding: 0; color: #3B3FD9; font-size: 14px; font-weight: 500">‹ Meus pedidos</button>
+<div style="display: flex; align-items: center; gap: 10px"><span style="flex-grow: 1; font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500">{{d.id}}</span><span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #15803D"><span class="pulse" style="width: 7px; height: 7px; border-radius: 50%; background: #15803D"></span>Ao vivo</span></div>
+<span style="align-self: flex-start; height: 28px; padding: 0 12px; border-radius: 999px; background: {{d.bg}}; color: {{d.fg}}; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center">{{d.status}}</span>
+<sc-if value="{{d.shipped}}" hint-placeholder-val="{{ false }}">
+<div style="background: #3B3FD9; color: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #ECECFD">ENVIO</span><span style="font-size: 14px">[TRANSPORTADORA] · <span style="font-family: 'JetBrains Mono', monospace">[CÓDIGO]</span></span><a href="#" style="height: 44px; border-radius: 10px; background: #FFFFFF; color: #2A2DA8; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500">Rastrear na transportadora ↗</a></div>
+</sc-if>
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 16px; display: flex; flex-direction: column">
+<sc-for list="{{d.timeline}}" as="t" hint-placeholder-count="5">
+<div style="display: grid; grid-template-columns: 18px minmax(0, 1fr); column-gap: 12px">
+<div style="display: flex; flex-direction: column; align-items: center"><span style="width: 12px; height: 12px; border-radius: 50%; background: {{t.dot}}; border: 2px solid {{t.ring}}; box-sizing: border-box; margin-top: 4px"></span><sc-if value="{{t.notLast}}" hint-placeholder-val="{{ true }}"><span class="grow" style="flex-grow: 1; width: 2px; min-height: 24px; background: {{t.line}}; margin: 4px 0"></span></sc-if></div>
+<div style="display: flex; flex-direction: column; padding-bottom: 12px"><span style="font-size: 15px; font-weight: {{t.weight}}; color: {{t.color}}">{{t.label}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6B6B72">{{t.when}}</span></div>
+</div>
+</sc-for>
+</div>
+<div style="font-size: 14px; color: #44444A; display: flex; justify-content: space-between; padding: 0 4px"><span>Total</span><span style="font-family: 'JetBrains Mono', monospace">{{d.total}}</span></div>
+</section>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { sel: null }; }
+  renderVals() {
+    const s = this.state;
+    const ST = { Confirmado: ['#ECECFD', '#3B3FD9'], Enviado: ['#3B3FD9', '#FFFFFF'], Entregue: ['#E8F5EC', '#15803D'], Cancelado: ['#F1F0EC', '#44444A'] };
+    const O = [
+      ['MF-000231', '01 out', 'Confirmado', 666, [['pendant', '#F1F0EC'], ['vase', '#F1F0EC']], 'Pendente Orbe + 2'],
+      ['MF-000198', '12 set', 'Enviado', 489, [['lamp', '#ECECFD']], 'Luminária Arco'],
+      ['MF-000177', '28 ago', 'Entregue', 338, [['throw', '#ECECFD'], ['throw', '#FCEEE4']], 'Manta Trama + 1'],
+      ['MF-000150', '02 ago', 'Cancelado', 1290, [['chair', '#E8F5EC']], 'Cadeira Lina']
+    ];
+    const m = (n) => 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    const o = O.find((x) => x[0] === s.sel) || O[1];
+    const flow = ['Confirmado', 'Em preparo', 'Enviado', 'Entregue'];
+    const idx = o[2] === 'Cancelado' ? -1 : flow.indexOf(o[2]);
+    const tl = o[2] === 'Cancelado' ? [['Confirmado', '02 AGO'], ['Cancelado', '02 AGO']].map((t, i, a) => ({ label: t[0], when: t[1], future: false, cur: i === a.length - 1 })) :
+      flow.map((l, i) => ({ label: l, when: i <= idx ? ['12 SET', '13 SET', '14 SET', '18 SET'][i] : 'A SEGUIR', future: i > idx, cur: i === idx }));
+    return {
+      isList: !s.sel, isDetail: !!s.sel, back: () => this.setState({ sel: null }),
+      orders: O.map((x, i) => ({ id: x[0], date: x[1], status: x[2], bg: ST[x[2]][0], fg: ST[x[2]][1], total: m(x[3]), thumbs: x[4].map(([kind, tint]) => ({ kind, tint })), summary: x[5], delay: (i * 0.05) + 's', open: () => this.setState({ sel: x[0] }) })),
+      d: { id: o[0], status: o[2], bg: ST[o[2]][0], fg: ST[o[2]][1], total: m(o[3]), shipped: o[2] === 'Enviado' || o[2] === 'Entregue',
+        timeline: tl.map((t, i, a) => ({ label: t.label, when: t.when, notLast: i < a.length - 1, dot: t.future ? '#FFFFFF' : t.cur ? (o[2] === 'Cancelado' ? '#B4501E' : '#3B3FD9') : '#15803D', ring: t.future ? '#E6E4DE' : 'transparent', line: (a[i + 1] && a[i + 1].future) ? '#E6E4DE' : '#15803D', color: t.future ? '#6B6B72' : '#18181B', weight: t.cur ? 500 : 400 })) }
+    };
+  }
+}
+</script>
+</body>
+</html>

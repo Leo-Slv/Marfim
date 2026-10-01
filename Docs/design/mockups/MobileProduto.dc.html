@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Produto</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes glow{0%,100%{opacity:.55}50%{opacity:.85}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+.fade{animation:fade .35s ease both}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.glow{animation:glow 3.5s ease-in-out infinite}
+.pulse{animation:pulse 1.8s ease-out infinite}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 390px; height: 1520px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileTopo" count="{{bag}}" back="MobileListagem.dc.html" title="Iluminação" hint-size="390px,86px"></dc-import>
+
+<div style="position: relative">
+<div key="{{viewKey}}" class="fade" style="height: 400px; background: {{view.bg}}; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center">
+<sc-if value="{{view.lit}}" hint-placeholder-val="{{ false }}"><div class="glow" style="position: absolute; left: 50%; top: 58%; width: 280px; height: 280px; margin: -140px 0 0 -140px; border-radius: 50%; background: radial-gradient(circle, rgba(232,121,58,.55) 0, rgba(232,121,58,0) 65%)"></div></sc-if>
+<div class="floaty" style="position: relative; display: flex"><dc-import name="Art" kind="pendant" size="{{view.size}}" hint-size="220px,248px"></dc-import></div>
+</div>
+<button onClick="{{prev}}" aria-label="Foto anterior" style="position: absolute; left: 8px; top: 178px; width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(255,255,255,.9); font-size: 18px">‹</button>
+<button onClick="{{next}}" aria-label="Próxima foto" style="position: absolute; right: 8px; top: 178px; width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(255,255,255,.9); font-size: 18px">›</button>
+<div style="position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 6px">
+<sc-for list="{{dots}}" as="d" hint-placeholder-count="4"><button onClick="{{d.go}}" aria-label="Foto {{d.n}}" style="width: {{d.w}}; height: 8px; border-radius: 999px; border: none; padding: 0; background: {{d.bg}}; transition: width .25s"></button></sc-for>
+</div>
+<span style="position: absolute; top: 12px; left: 12px; height: 26px; padding: 0 10px; border-radius: 999px; background: #E8F5EC; color: #15803D; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; align-items: center">-20%</span>
+</div>
+
+<section style="padding: 20px 16px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">OFICINA FAÍSCA · SÃO PAULO</span>
+<h1 style="margin: 0; font-size: 32px; font-weight: 300; letter-spacing: -0.03em">Pendente Orbe</h1>
+<div style="display: flex; align-items: baseline; gap: 10px"><span style="font-size: 28px; font-weight: 300">R$ 359</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #6B6B72; text-decoration: line-through">R$ 449</span></div>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #15803D"><span class="pulse" style="width: 7px; height: 7px; border-radius: 50%; background: #15803D"></span>Em estoque · despacho em até 3 dias úteis</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #44444A">Esfera de vidro soprado à boca com canopla em latão escovado. Luz difusa e quente.</p>
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 14px; border-top: 1px solid #E6E4DE">
+<span style="font-size: 13px; color: #44444A">Acabamento: <b style="font-weight: 500; color: #18181B">{{finishLabel}}</b></span>
+<div style="display: flex; gap: 8px" role="radiogroup" aria-label="Acabamento">
+<sc-for list="{{finishes}}" as="o" hint-placeholder-count="2"><button role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" disabled="{{o.off}}" style="flex: 1; height: 48px; border-radius: 12px; border: 1px solid {{o.border}}; background: {{o.bg}}; color: {{o.fg}}; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px"><span style="width: 18px; height: 18px; border-radius: 50%; background: {{o.sw}}; border: 1px solid #E6E4DE"></span>{{o.label}}</button></sc-for>
+</div>
+<span style="font-size: 12px; color: #6B6B72"><span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span> A variante ainda não segue para o pedido.</span>
+</div>
+<div style="display: flex; flex-direction: column; border-top: 1px solid #E6E4DE">
+<details style="border-bottom: 1px solid #E6E4DE"><summary style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 500">Medidas e materiais<span class="chev">⌄</span></summary><div style="padding-bottom: 14px; font-size: 14px; line-height: 1.6; color: #44444A">Diâmetro [MEDIDA] cm · cabo [MEDIDA] m · vidro soprado e latão · lâmpada E27 não inclusa.</div></details>
+<details style="border-bottom: 1px solid #E6E4DE"><summary style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 500">Cuidados<span class="chev">⌄</span></summary><div style="padding-bottom: 14px; font-size: 14px; line-height: 1.6; color: #44444A">Limpe o vidro com pano macio e seco. O latão ganha pátina com o tempo.</div></details>
+<details style="border-bottom: 1px solid #E6E4DE"><summary style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 500">Trocas e devoluções<span class="chev">⌄</span></summary><div style="padding-bottom: 14px; font-size: 14px; line-height: 1.6; color: #44444A">30 dias a partir do recebimento.</div></details>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 6px">
+<span style="font-size: 20px; font-weight: 300">Combina com o Orbe</span>
+<div style="display: flex; gap: 10px; overflow-x: auto">
+<a href="MobileProduto.dc.html" style="flex-shrink: 0; width: 150px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 6px; text-decoration: none; color: #18181B"><span style="height: 120px; border-radius: 10px; background: #ECECFD; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="lamp" size="64" hint-size="64px,72px"></dc-import></span><span style="display: block; padding: 6px 4px 2px; font-size: 13px; font-weight: 500">Luminária Arco</span><span style="display: block; padding: 0 4px 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px">R$ 489</span></a>
+<a href="MobileProduto.dc.html" style="flex-shrink: 0; width: 150px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 6px; text-decoration: none; color: #18181B"><span style="height: 120px; border-radius: 10px; background: #FCEEE4; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="sconce" size="64" hint-size="64px,72px"></dc-import></span><span style="display: block; padding: 6px 4px 2px; font-size: 13px; font-weight: 500">Arandela Fio</span><span style="display: block; padding: 0 4px 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px">R$ 279</span></a>
+<a href="MobileProduto.dc.html" style="flex-shrink: 0; width: 150px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 6px; text-decoration: none; color: #18181B"><span style="height: 120px; border-radius: 10px; background: #F1F0EC; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="jar" size="64" hint-size="64px,72px"></dc-import></span><span style="display: block; padding: 6px 4px 2px; font-size: 13px; font-weight: 500">Castiçal Brasa</span><span style="display: block; padding: 0 4px 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px">R$ 159</span></a>
+</div>
+</div>
+</section>
+
+<!-- Barra fixa -->
+<div style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: #FFFFFF; border-top: 1px solid #E6E4DE; padding: 10px 16px 14px; display: flex; gap: 10px; align-items: center">
+<div style="display: flex; align-items: center; height: 52px; border: 1px solid #E6E4DE; border-radius: 12px">
+<button onClick="{{dec}}" aria-label="Diminuir" style="width: 44px; height: 50px; border: none; background: transparent; font-size: 18px">−</button>
+<span style="width: 22px; text-align: center; font-family: 'JetBrains Mono', monospace">{{qty}}</span>
+<button onClick="{{inc}}" aria-label="Aumentar" style="width: 44px; height: 50px; border: none; background: transparent; font-size: 18px">+</button>
+</div>
+<button onClick="{{add}}" style="flex-grow: 1; height: 52px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 16px; font-weight: 500">Adicionar · {{total}}</button>
+</div>
+
+<sc-if value="{{sheet}}" hint-placeholder-val="{{ false }}">
+<div class="fade" onClick="{{close}}" style="position: fixed; inset: 0; background: rgba(24,24,27,.35); z-index: 40"></div>
+<div class="sheet" role="dialog" aria-label="Adicionado à sacola" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: #FFFFFF; border-radius: 20px 20px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 14px">
+<span style="align-self: center; width: 40px; height: 4px; border-radius: 999px; background: #E6E4DE"></span>
+<b style="font-size: 16px; font-weight: 500; color: #15803D">✓ Adicionado à sacola</b>
+<div style="display: flex; gap: 12px; align-items: center"><span style="width: 60px; height: 60px; border-radius: 10px; background: #F1F0EC; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="pendant" size="36" hint-size="36px,41px"></dc-import></span><span style="flex-grow: 1; font-size: 15px">{{qty}}× Pendente Orbe</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 14px">{{total}}</span></div>
+<a href="MobileSacola.dc.html" style="height: 52px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 500">Ir para a sacola</a>
+<button onClick="{{close}}" style="height: 48px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px; font-weight: 500">Continuar comprando</button>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1520}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { v: 0, qty: 1, finish: 'latao', sheet: false, bag: 3 }; }
+  renderVals() {
+    const s = this.state;
+    const V = [{ bg: '#F1F0EC', size: 220 }, { bg: '#232327', size: 220, lit: true }, { bg: '#ECECFD', size: 420 }, { bg: '#FCEEE4', size: 150 }];
+    const n = V.length;
+    const total = 'R$ ' + (359 * s.qty).toLocaleString('pt-BR');
+    return {
+      bag: s.bag, view: V[s.v], viewKey: 'v' + s.v,
+      prev: () => this.setState({ v: (s.v + n - 1) % n }), next: () => this.setState({ v: (s.v + 1) % n }),
+      dots: V.map((_, i) => ({ n: i + 1, w: i === s.v ? '22px' : '8px', bg: i === s.v ? '#3B3FD9' : 'rgba(24,24,27,.25)', go: () => this.setState({ v: i }) })),
+      finishLabel: s.finish === 'latao' ? 'Latão escovado' : 'Preto fosco',
+      finishes: [['latao', 'Latão', '#C9A56A', false], ['preto', 'Preto · esgotado', '#232327', true]].map(([id, label, sw, off]) => ({ label, sw, off, on: s.finish === id, border: s.finish === id ? '#3B3FD9' : '#E6E4DE', bg: s.finish === id ? '#ECECFD' : '#FFFFFF', fg: off ? '#6B6B72' : '#18181B', pick: () => this.setState({ finish: id }) })),
+      qty: s.qty, total,
+      inc: () => this.setState({ qty: Math.min(9, s.qty + 1) }), dec: () => this.setState({ qty: Math.max(1, s.qty - 1) }),
+      add: () => this.setState({ sheet: true, bag: s.bag + s.qty }), sheet: s.sheet, close: () => this.setState({ sheet: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

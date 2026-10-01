@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Admin · Navegação</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<aside style="width: 248px; height: {{h}}; box-sizing: border-box; padding: 24px 16px; background: #F4F3EF; border-right: 1px solid #E6E4DE; display: flex; flex-direction: column; gap: 24px; font-family: Outfit, system-ui, sans-serif; color: #18181B">
+<a href="AdminDashboard.dc.html" style="display: flex; align-items: center; gap: 8px; padding: 0 8px; text-decoration: none; color: #18181B">
+<span style="width: 28px; height: 28px; border-radius: 8px; background: #3B3FD9; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"><circle cx="8" cy="8" r="5"></circle><path d="M8 3v10"></path></svg></span>
+<span style="font-size: 20px; font-weight: 500; letter-spacing: -0.02em">marfim<span style="color: #3B3FD9">.</span></span>
+<span style="margin-left: auto; height: 22px; padding: 0 8px; border-radius: 999px; background: #18181B; color: #FFFFFF; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; display: flex; align-items: center">ADMIN</span>
+</a>
+<nav aria-label="Administração" style="display: flex; flex-direction: column; gap: 18px">
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #6B6B72; padding: 0 10px 6px">{{g.title}}</div>
+<sc-for list="{{g.items}}" as="i" hint-placeholder-count="4">
+<a href="{{i.href}}" aria-current="{{i.current}}" style="height: 40px; padding: 0 10px; border-radius: 10px; background: {{i.bg}}; color: {{i.fg}}; text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: {{i.weight}}; box-shadow: {{i.shadow}}">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{i.icon}}"></path></svg>
+<span style="flex-grow: 1">{{i.label}}</span>
+<sc-if value="{{i.hasBadge}}" hint-placeholder-val="{{ false }}"><span style="min-width: 22px; height: 20px; padding: 0 6px; box-sizing: border-box; border-radius: 999px; background: {{i.badgeBg}}; color: {{i.badgeFg}}; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center">{{i.badge}}</span></sc-if>
+</a>
+</sc-for>
+</div>
+</sc-for>
+</nav>
+<div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px 10px; border-top: 1px solid #E6E4DE">
+<span style="width: 34px; height: 34px; border-radius: 50%; background: #E3E1F9; color: #3B3FD9; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center">[AD]</span>
+<span style="flex-grow: 1; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">[NOME DO ADMIN]</span><span style="font-size: 12px; color: #6B6B72">Administrador</span></span>
+<a href="AdminLogin.dc.html" aria-label="Sair do painel" style="width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #6B6B72"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h4v16h-4M10 17l5-5-5-5M15 12H3"></path></svg></a>
+</div>
+</aside>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["dashboard","pedidos","produtos","categorias","estoque","clientes","pagamentos","auditoria","falhas"],"default":"dashboard"},"h":{"editor":"int","default":960},"$preview":{"width":248,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const a = this.props.active || 'dashboard';
+    const I = {
+      dash: 'M4 13h6V4H4zM14 20h6v-9h-6zM14 4h6v4h-6zM4 20h6v-3H4z',
+      ord: 'M5 8h14l-1 12H6L5 8ZM9 8V6a3 3 0 0 1 6 0v2',
+      prod: 'M12 3 3 8l9 5 9-5-9-5ZM3 8v8l9 5 9-5V8',
+      cat: 'M4 6h7v7H4zM13 6h7v7h-7zM4 15h7v5H4zM13 15h7v5h-7z',
+      stock: 'M3 7h18v13H3zM3 7l3-4h12l3 4M9 12h6',
+      cust: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM2 21c1-4 4-6 7-6s6 2 7 6M17 11a3 3 0 1 0 0-6M19 15c2 1 3 3 3 6',
+      pay: 'M2 6h20v12H2zM2 10h20',
+      audit: 'M9 5h10v16H5V9zM9 5v4H5M9 14h6M9 17h4',
+      fail: 'M12 3 2 21h20L12 3ZM12 10v5M12 18h.01'
+    };
+    const mk = (id, label, icon, href, badge, tone) => {
+      const on = id === a;
+      return {
+        label, icon, href: href || '#', current: on ? 'page' : 'false',
+        bg: on ? '#FFFFFF' : 'transparent', fg: on ? '#3B3FD9' : (href ? '#18181B' : '#6B6B72'), weight: on ? 500 : 400,
+        shadow: on ? '0 1px 2px rgba(24,24,27,.06)' : 'none',
+        hasBadge: !!badge, badge: badge || '',
+        badgeBg: tone === 'goal' ? '#FCEEE4' : tone === 'bad' ? '#FCEEE4' : '#ECECFD',
+        badgeFg: tone === 'goal' || tone === 'bad' ? '#B4501E' : '#3B3FD9'
+      };
+    };
+    return {
+      h: (Number(this.props.h) || 960) + 'px',
+      groups: [
+        { title: 'OPERAÇÃO', items: [
+          mk('dashboard', 'Dashboard', I.dash, 'AdminDashboard.dc.html'),
+          mk('pedidos', 'Pedidos', I.ord, 'AdminPedidos.dc.html', '8'),
+          mk('produtos', 'Produtos', I.prod, 'AdminProdutos.dc.html'),
+          mk('categorias', 'Categorias', I.cat, 'AdminCategorias.dc.html'),
+          mk('estoque', 'Estoque', I.stock, 'AdminEstoque.dc.html', '3', 'goal')
+        ] },
+        { title: 'CLIENTES E FINANÇAS', items: [
+          mk('clientes', 'Clientes', I.cust, 'AdminClientes.dc.html'),
+          mk('pagamentos', 'Pagamentos', I.pay, 'AdminPagamentos.dc.html')
+        ] },
+        { title: 'SISTEMA', items: [
+          mk('auditoria', 'Auditoria', I.audit, 'AdminAuditoria.dc.html'),
+          mk('falhas', 'Mensagens com falha', I.fail, 'AdminFalhas.dc.html', '2', 'bad')
+        ] }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

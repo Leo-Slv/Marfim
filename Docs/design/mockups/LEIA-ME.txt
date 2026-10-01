@@ -1,0 +1,23 @@
+MARFIM · TELAS DO E-COMMERCE
+
+Como abrir
+1. Descompacte a pasta.
+2. Abra o arquivo index.html no navegador (Chrome, Edge, Firefox ou Safari).
+3. Clique na tela que quiser. Os links dentro das telas levam às outras.
+
+Se alguma tela abrir em branco
+Alguns navegadores bloqueiam páginas abertas direto do disco. Nesse caso, sirva a pasta localmente:
+  - Com Python:  na pasta, rode  python3 -m http.server 8000  e abra http://localhost:8000
+  - Com Node:    na pasta, rode  npx serve  e abra o endereço que aparecer
+
+O que tem aqui
+  - index.html ............ índice de todas as telas
+  - *.dc.html ............. uma tela por arquivo (código-fonte editável)
+  - Header, Footer, Art, AdminNav, Email, MobileTopo .dc.html: componentes compartilhados
+  - support.js ............ motor que monta as telas (inclui os componentes embutidos)
+
+Observações
+  - As fontes vêm do Google Fonts; sem internet, o navegador usa uma fonte parecida.
+  - Os estados alternativos (erros, vazio, "futuro" etc.) são alternados pelos Tweaks no canvas.
+    No pacote, cada tela abre no estado padrão e continua interativa.
+  - Textos entre [COLCHETES] são marcadores para preencher com dados reais da loja.

@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Loja · Início</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}a:hover{color:#2A2DA8}
+button{font-family:inherit;cursor:pointer}
+.wrap{width:100%;max-width:1280px;margin:0 auto;padding-left:40px;padding-right:40px;box-sizing:border-box}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes marquee{to{transform:translateX(-50%)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes draw{from{stroke-dashoffset:600}to{stroke-dashoffset:0}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+@keyframes swing{0%,100%{transform:rotate(-2.2deg)}50%{transform:rotate(2.2deg)}}
+.up{animation:up .9s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.08s}.d2{animation-delay:.16s}.d3{animation-delay:.24s}.d4{animation-delay:.32s}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.spin{animation:spin 40s linear infinite}
+.marquee{animation:marquee 28s linear infinite}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.draw path,.draw line,.draw ellipse,.draw rect{stroke-dasharray:600;animation:draw 2.2s cubic-bezier(.4,0,.2,1) both .3s}
+.pop{animation:pop .45s ease}
+.swing{transform-origin:50% -56px;animation:swing 6s ease-in-out infinite}
+.card{transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+.card:hover{transform:translateY(-5px);box-shadow:0 16px 36px -18px rgba(24,24,27,.22)}
+.card .art{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.card:hover .art{transform:scale(1.06) rotate(-2deg)}
+.btn-p{transition:background .2s,transform .2s}
+.btn-p:hover{background:#2A2DA8 !important;transform:translateY(-1px)}
+.btn-s{transition:background .2s}
+.btn-s:hover{background:#ECEBE6 !important}
+.pill{transition:background .2s,color .2s}
+.pill:hover{background:#ECEBE6 !important}
+.icon-b{transition:background .2s}
+.icon-b:hover{background:#ECEBE6 !important}
+.nav a{color:#18181B;text-decoration:none}
+.nav a:hover{color:#3B3FD9}
+.bar{transition:width .7s cubic-bezier(.2,.7,.2,1)}
+.atrow{cursor:pointer;font-family:inherit}
+.atrow .atname{transition:transform .35s cubic-bezier(.2,.7,.2,1),color .2s;display:inline-block}
+.atrow:hover .atname{transform:translateX(8px);color:#3B3FD9 !important}
+@media (max-width: 1180px){
+.g-prod{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
+.nav{display:none !important}
+}
+@media (max-width: 980px){
+.g-hero,.g-split{grid-template-columns:minmax(0,1fr) !important;row-gap:40px !important}
+.g-split > *{grid-column:auto !important}
+.g-prod{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+.promo{flex-wrap:wrap !important}
+.foot-cols{grid-template-columns:repeat(2,minmax(0,1fr)) !important;row-gap:40px !important}
+.foot-cols > *{grid-column:auto !important}
+.hide-md{display:none !important}
+}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 100%; min-width: 360px; box-sizing: border-box; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden">
+
+<dc-import name="Header" count="{{cartCount}}" hint-size="100%,108px"></dc-import>
+
+<!-- Hero -->
+<section id="inicio" style="padding: 40px 0 32px">
+<div class="wrap g-hero" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 22px; padding-right: 16px">
+<div class="up" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">COLEÇÃO OUTONO · 2026</div>
+<h1 class="up d1" style="margin: 0; font-size: 56px; line-height: 1.04; font-weight: 300; letter-spacing: -0.03em">Objetos simples para uma casa <span style="font-weight: 500; color: #3B3FD9">mais calma</span>.</h1>
+<p class="up d2" style="margin: 0; font-size: 17px; line-height: 1.55; color: #6B6B72; max-width: 460px">Peças feitas à mão por pequenos estúdios, com materiais naturais e acabamento que dura. Escolha, receba e viva com menos ruído.</p>
+<div class="up d3" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap">
+<a href="#produtos" class="btn-p" style="height: 48px; padding: 0 22px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500">Explorar coleção
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</a>
+<a href="#produtos" class="btn-s" style="height: 48px; padding: 0 20px; border-radius: 12px; background: #FFFFFF; border: 1px solid #E6E4DE; box-sizing: border-box; color: #18181B; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Ver lookbook</a>
+</div>
+<div class="up d4" style="display: flex; flex-wrap: wrap; column-gap: 24px; row-gap: 8px; padding-top: 16px; border-top: 1px solid #E6E4DE; font-size: 13px; color: #44444A">
+<div style="display: flex; align-items: center; gap: 8px">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="1.6" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"></path><circle cx="7" cy="17.5" r="1.5"></circle><circle cx="17" cy="17.5" r="1.5"></circle></svg>Frete grátis acima de R$ 299 <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span></div>
+<div style="display: flex; align-items: center; gap: 8px">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="1.6" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"></path></svg>Troca em 30 dias</div>
+<div style="display: flex; align-items: center; gap: 8px">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="1.6"><rect x="3" y="6" width="18" height="13" rx="2"></rect><path d="M3 10h18"></path></svg>6× sem juros <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span></div>
+</div>
+</div>
+
+<div class="up d2" style="height: 460px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 12px; box-sizing: border-box">
+<div style="position: relative; height: 100%; border-radius: 14px; background: #ECECFD; overflow: hidden">
+<svg class="spin" width="420" height="420" viewBox="0 0 520 520" style="position: absolute; left: 50%; top: 45%; margin: -210px 0 0 -210px" fill="none"><circle cx="260" cy="260" r="240" stroke="#3B3FD9" stroke-opacity=".25" stroke-dasharray="3 9"></circle><circle cx="260" cy="260" r="170" stroke="#3B3FD9" stroke-opacity=".18"></circle><circle cx="260" cy="20" r="7" fill="#E8793A"></circle></svg>
+<div class="floaty" style="position: absolute; left: 0; right: 0; top: 0; bottom: 80px; display: flex; align-items: center; justify-content: center">
+<svg class="draw" width="220" height="250" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M44 164V70c0-30 18-46 44-46 22 0 34 12 37 30"></path><path d="M108 56h34l-8 22h-18z" fill="#3B3FD9" stroke="#3B3FD9"></path><ellipse cx="44" cy="166" rx="22" ry="5" fill="#FFFFFF"></ellipse><path d="M125 82v8" stroke="#E8793A" stroke-width="2"></path></svg>
+</div>
+<div style="position: absolute; top: 16px; left: 16px; height: 28px; padding: 0 12px; border-radius: 999px; background: #FFFFFF; color: #B4501E; font-size: 13px; font-weight: 500; display: flex; align-items: center">Mais vendido</div>
+<div style="position: absolute; top: 16px; right: 16px; height: 28px; padding: 0 12px; border-radius: 999px; background: #E8F5EC; color: #15803D; font-size: 13px; display: flex; align-items: center; gap: 8px"><span class="pulse" style="width: 7px; height: 7px; border-radius: 50%; background: #15803D"></span>Em estoque</div>
+<div style="position: absolute; left: 14px; right: 14px; bottom: 14px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 12px 12px 12px 16px; display: flex; align-items: center; gap: 14px">
+<div style="flex-grow: 1; min-width: 0">
+<div style="font-size: 16px; font-weight: 500">Luminária Arco</div>
+<div style="font-size: 13px; color: #6B6B72">Latão escovado · cúpula índigo</div>
+</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 500">R$ 489</div>
+<button class="btn-p" onClick="{{addHero}}" style="height: 44px; padding: 0 16px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 6px">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Adicionar</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Produtos -->
+<section id="produtos" style="padding: 32px 0 16px">
+<div class="wrap" style="display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap">
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">ESCOLHIDOS DA SEMANA</div>
+<h2 style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.025em">Feito para ficar</h2>
+</div>
+<div style="width: 320px; background: #FFFFFF; border: 1px dashed #E6E4DE; border-radius: 14px; padding: 12px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; opacity: 0.65">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px">
+<span style="color: #44444A">{{shipLabel}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px; white-space: nowrap">EM BREVE</span>
+</div>
+<div style="height: 6px; border-radius: 999px; background: #F1F0EC; overflow: hidden">
+<div class="bar" style="height: 6px; border-radius: 999px; background: #E8793A; width: {{shipPct}}"></div>
+</div>
+</div>
+</div>
+
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{cats}}" as="c" hint-placeholder-count="5">
+<sc-if value="{{c.active}}" hint-placeholder-val="{{ false }}">
+<button onClick="{{c.pick}}" style="height: 40px; padding: 0 18px; border-radius: 999px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 14px; font-weight: 500">{{c.label}}</button>
+</sc-if>
+<sc-if value="{{c.idle}}" hint-placeholder-val="{{ true }}">
+<button class="pill" onClick="{{c.pick}}" style="height: 40px; padding: 0 18px; border-radius: 999px; border: none; background: #F1F0EC; color: #44444A; font-size: 14px; font-weight: 500">{{c.label}}</button>
+</sc-if>
+</sc-for>
+</div>
+
+<div class="g-prod" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{items}}" as="p" hint-placeholder-count="8">
+<article class="card up" key="{{p.key}}" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 8px; display: flex; flex-direction: column; gap: 12px; animation-delay: {{p.delay}}">
+<div style="position: relative; height: 210px; border-radius: 12px; background: {{p.tint}}; overflow: hidden; display: flex; align-items: center; justify-content: center">
+<div class="art" style="display: flex">
+<sc-if value="{{p.isLamp}}" hint-placeholder-val="{{ true }}">
+<svg width="112" height="128" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M44 164V70c0-30 18-46 44-46 22 0 34 12 37 30"></path><path d="M108 56h34l-8 22h-18z" fill="#3B3FD9" stroke="#3B3FD9"></path><ellipse cx="44" cy="166" rx="22" ry="5" fill="#FFFFFF"></ellipse></svg>
+</sc-if>
+<sc-if value="{{p.isPendant}}" hint-placeholder-val="{{ false }}">
+<svg width="112" height="128" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="2" stroke-linecap="round"><path d="M80 10v70"></path><circle cx="80" cy="112" r="34" fill="#FFFFFF"></circle><path d="M56 112a24 24 0 0 1 24-24" stroke="#E8793A"></path></svg>
+</sc-if>
+<sc-if value="{{p.isVase}}" hint-placeholder-val="{{ false }}">
+<svg width="112" height="128" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M66 30h28v14c22 16 26 38 26 60 0 36-18 60-40 60s-40-24-40-60c0-22 4-44 26-60z" fill="#FFFFFF"></path><path d="M80 30C78 18 70 10 58 8M80 30c4-12 14-18 24-18" stroke="#15803D"></path></svg>
+</sc-if>
+<sc-if value="{{p.isChair}}" hint-placeholder-val="{{ false }}">
+<svg width="112" height="128" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M50 20h60v74H50z" fill="#FFFFFF"></path><path d="M40 94h80v14H40z" fill="#15803D" stroke="#15803D"></path><path d="M48 108l-6 60M112 108l6 60M58 108v44M102 108v44"></path></svg>
+</sc-if>
+<sc-if value="{{p.isMug}}" hint-placeholder-val="{{ false }}">
+<svg width="112" height="128" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M40 60h64v70c0 14-10 24-24 24h-16c-14 0-24-10-24-24z" fill="#FFFFFF"></path><path d="M104 76h10a16 16 0 0 1 0 32h-10"></path><path d="M60 30c-6 8 6 12 0 20M80 26c-6 8 6 12 0 20" stroke="#E8793A"></path></svg>
+</sc-if>
+<sc-if value="{{p.isThrow}}" hint-placeholder-val="{{ false }}">
+<svg width="112" height="128" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="2" stroke-linejoin="round"><path d="M30 60h100v30H30z" fill="#FFFFFF"></path><path d="M30 90h100v30H30z" fill="#3B3FD9" stroke="#3B3FD9"></path><path d="M30 120h100v30H30z" fill="#FFFFFF"></path><path d="M40 150v10M56 150v10M72 150v10M88 150v10M104 150v10M120 150v10" stroke-linecap="round"></path></svg>
+</sc-if>
+</div>
+<sc-if value="{{p.hasTag}}" hint-placeholder-val="{{ false }}">
+<span style="position: absolute; top: 10px; left: 10px; height: 24px; padding: 0 10px; border-radius: 999px; background: #FFFFFF; color: #B4501E; font-size: 12px; font-weight: 500; display: flex; align-items: center">{{p.tag}}</span>
+</sc-if>
+<button class="icon-b" onClick="{{p.fav}}" aria-label="Favoritar {{p.name}}" style="position: absolute; top: 4px; right: 4px; width: 44px; height: 44px; border-radius: 50%; border: none; background: transparent; color: #18181B; display: flex; align-items: center; justify-content: center">
+<span style="width: 32px; height: 32px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
+<sc-if value="{{p.isFav}}" hint-placeholder-val="{{ false }}">
+<svg class="pop" width="16" height="16" viewBox="0 0 24 24" fill="#3B3FD9" stroke="#3B3FD9" stroke-width="1.6" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"></path></svg>
+</sc-if>
+<sc-if value="{{p.notFav}}" hint-placeholder-val="{{ true }}">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"></path></svg>
+</sc-if>
+</span>
+</button>
+</div>
+<div style="padding: 0 6px 6px; display: flex; align-items: flex-end; gap: 10px">
+<div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 12px; color: #6B6B72">{{p.cat}}</div>
+<div style="font-size: 16px; font-weight: 500">{{p.name}}</div>
+<div style="display: flex; align-items: center; gap: 6px; padding-top: 2px; flex-wrap: wrap">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">{{p.price}}</span>
+<sc-if value="{{p.hasOff}}" hint-placeholder-val="{{ false }}">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72; text-decoration: line-through">{{p.old}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; height: 20px; padding: 0 7px; border-radius: 999px; background: #E8F5EC; color: #15803D; display: flex; align-items: center">{{p.off}}</span>
+</sc-if>
+</div>
+</div>
+<sc-if value="{{p.justAdded}}" hint-placeholder-val="{{ false }}">
+<button aria-label="Adicionado" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px; border: none; background: #15803D; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+<svg class="pop" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>
+</button>
+</sc-if>
+<sc-if value="{{p.notAdded}}" hint-placeholder-val="{{ true }}">
+<button class="btn-p" onClick="{{p.add}}" aria-label="Adicionar {{p.name}} à sacola" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+</button>
+</sc-if>
+</div>
+</article>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- Promoção -->
+<section style="padding: 24px 0">
+<div class="wrap">
+<div class="promo" style="position: relative; overflow: hidden; border-radius: 20px; background: #3B3FD9; color: #FFFFFF; padding: 36px 40px; display: flex; align-items: center; gap: 36px; row-gap: 24px">
+<svg class="spin" width="340" height="340" viewBox="0 0 420 420" fill="none" style="position: absolute; right: -80px; top: -110px"><circle cx="210" cy="210" r="200" stroke="#FFFFFF" stroke-opacity=".18" stroke-dasharray="3 10"></circle><circle cx="210" cy="210" r="140" stroke="#FFFFFF" stroke-opacity=".12"></circle><circle cx="210" cy="10" r="7" fill="#E8793A"></circle></svg>
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 10px; position: relative">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #ECECFD">SEMANA DO DESIGN</div>
+<div style="font-size: 34px; font-weight: 300; letter-spacing: -0.025em; line-height: 1.1">Até <span style="font-weight: 500">20% off</span> em iluminação</div>
+<div style="font-size: 15px; color: #ECECFD">Válido para peças selecionadas até domingo, 23h59.</div>
+</div>
+<div style="display: flex; gap: 8px; position: relative">
+<sc-for list="{{clock}}" as="t" hint-placeholder-count="4">
+<div style="width: 64px; height: 72px; border-radius: 12px; background: #2A2DA8; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 500">{{t.v}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #ECECFD">{{t.l}}</span>
+</div>
+</sc-for>
+</div>
+<a href="#produtos" style="position: relative; height: 48px; padding: 0 22px; border-radius: 12px; background: #FFFFFF; color: #2A2DA8; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Aproveitar</a>
+</div>
+</div>
+</section>
+
+<!-- Ateliês: índice editorial + destaque -->
+<section id="ateliers" style="padding: 56px 0 24px">
+<div class="wrap g-split" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: stretch">
+<div key="{{atKey}}" class="up" style="grid-column: span 5; height: 500px; position: relative; border-radius: 20px; background: {{at.tint}}; overflow: hidden">
+<div style="position: absolute; top: 20px; left: 22px; right: 22px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #44444A">
+<span>ATELIÊ {{at.num}} / 04</span><span>{{at.city}}</span>
+</div>
+<div class="floaty" style="position: absolute; left: 0; right: 0; top: 48px; height: 240px; display: flex; align-items: center; justify-content: center">
+<sc-if value="{{at.isClay}}" hint-placeholder-val="{{ true }}">
+<svg class="draw" width="176" height="200" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M66 30h28v14c22 16 26 38 26 60 0 36-18 60-40 60s-40-24-40-60c0-22 4-44 26-60z" fill="#FFFFFF"></path><path d="M50 96c20 6 40 6 60 0" stroke="#E8793A"></path><path d="M44 118c24 8 48 8 72 0" stroke="#E8793A"></path></svg>
+</sc-if>
+<sc-if value="{{at.isWood}}" hint-placeholder-val="{{ false }}">
+<svg class="draw" width="176" height="200" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M50 20h60v74H50z" fill="#FFFFFF"></path><path d="M40 94h80v14H40z" fill="#15803D" stroke="#15803D"></path><path d="M48 108l-6 60M112 108l6 60M58 108v44M102 108v44"></path></svg>
+</sc-if>
+<sc-if value="{{at.isLight}}" hint-placeholder-val="{{ false }}">
+<svg class="draw" width="176" height="200" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="1.5" stroke-linecap="round"><path d="M80 10v70"></path><circle cx="80" cy="112" r="34" fill="#FFFFFF"></circle><path d="M56 112a24 24 0 0 1 24-24" stroke="#3B3FD9" stroke-width="2"></path></svg>
+</sc-if>
+<sc-if value="{{at.isLoom}}" hint-placeholder-val="{{ false }}">
+<svg class="draw" width="176" height="200" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="1.5" stroke-linejoin="round"><path d="M30 60h100v30H30z" fill="#FFFFFF"></path><path d="M30 90h100v30H30z" fill="#3B3FD9" stroke="#3B3FD9"></path><path d="M30 120h100v30H30z" fill="#FFFFFF"></path><path d="M40 150v10M56 150v10M72 150v10M88 150v10M104 150v10M120 150v10" stroke-linecap="round"></path></svg>
+</sc-if>
+</div>
+<div style="position: absolute; left: 12px; right: 12px; bottom: 12px; background: #FFFFFF; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="font-size: 21px; font-weight: 500; letter-spacing: -0.015em">{{at.name}}</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; font-size: 13px">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #6B6B72">TÉCNICA</span><span>{{at.technique}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #6B6B72">MATÉRIA-PRIMA</span><span>{{at.material}}</span></div>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; padding-top: 12px; border-top: 1px solid #E6E4DE">
+<span style="flex-grow: 1; font-size: 13px; color: #44444A">{{at.productsLine}}</span>
+<a href="#produtos" style="font-size: 14px; font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 6px; white-space: nowrap">Ver peças
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+</div>
+</div>
+
+<div style="grid-column: 7 / span 6; display: flex; flex-direction: column; justify-content: center">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">QUEM FAZ AS PEÇAS</div>
+<h2 style="margin: 10px 0 0; font-size: 40px; line-height: 1.05; font-weight: 300; letter-spacing: -0.03em">Nada aqui sai <span style="font-weight: 500; color: #3B3FD9">de fábrica</span>.</h2>
+<p style="margin: 14px 0 0; font-size: 15px; line-height: 1.55; color: #6B6B72; max-width: 460px">Trabalhamos com quatro ateliês. Cada peça é feita, conferida e embalada por quem assina o acabamento.</p>
+<div style="margin-top: 28px; display: flex; flex-direction: column; border-bottom: 1px solid #E6E4DE">
+<sc-for list="{{ateliers}}" as="a" hint-placeholder-count="4">
+<button class="atrow" onClick="{{a.pick}}" style="width: 100%; border: none; border-top: 1px solid #E6E4DE; background: transparent; padding: 16px 0; display: flex; align-items: baseline; gap: 18px; text-align: left; color: #18181B">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {{a.numColor}}; width: 22px">{{a.num}}</span>
+<span class="atname" style="flex-grow: 1; font-size: 26px; letter-spacing: -0.02em; font-weight: {{a.weight}}; color: {{a.nameColor}}">{{a.name}}</span>
+<span style="font-size: 14px; color: #6B6B72">{{a.craft}}</span>
+<span class="hide-md" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #44444A; width: 130px; text-align: right">{{a.city}}</span>
+</button>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Envio: etiqueta -->
+<section style="padding: 56px 0 72px">
+<div class="wrap g-split" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center">
+<div style="grid-column: span 6; display: flex; flex-direction: column">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">DO ATELIÊ À SUA PORTA</div>
+<h2 style="margin: 10px 0 0; font-size: 40px; line-height: 1.05; font-weight: 300; letter-spacing: -0.03em">Sai da bancada, <span style="font-weight: 500">chega na sua mesa.</span></h2>
+<div style="margin-top: 32px; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; gap: 18px; align-items: baseline">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9; width: 60px; flex-shrink: 0">3 DIAS</span>
+<span style="font-size: 16px; line-height: 1.5; color: #44444A">É o prazo máximo para o ateliê embalar e despachar. Peças sob encomenda avisam o prazo na página.</span>
+</div>
+<div style="display: flex; gap: 18px; align-items: baseline">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9; width: 60px; flex-shrink: 0">0 g</span>
+<span style="font-size: 16px; line-height: 1.5; color: #44444A">de plástico na embalagem: papel kraft, palha e fita de algodão, tudo reaproveitável.</span>
+</div>
+<div style="display: flex; gap: 18px; align-items: baseline">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9; width: 60px; flex-shrink: 0">30 DIAS</span>
+<span style="font-size: 16px; line-height: 1.5; color: #44444A">para trocar ou devolver. A coleta fica por nossa conta.</span>
+</div>
+</div>
+</div>
+
+<div style="grid-column: 8 / span 5; display: flex; flex-direction: column; align-items: center">
+<svg width="2" height="56" viewBox="0 0 2 56" style="display: block"><path d="M1 0v56" stroke="#B4501E" stroke-width="1.5" stroke-dasharray="2 3"></path></svg>
+<div class="swing" style="width: 100%; max-width: 380px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 18px; box-shadow: 0 26px 50px -28px rgba(24,24,27,.25); position: relative; font-family: 'JetBrains Mono', monospace; color: #18181B">
+<span style="position: absolute; top: -8px; left: 50%; margin-left: -7px; width: 14px; height: 14px; border-radius: 50%; background: #F4F3EF; border: 1.5px solid #B4501E; box-sizing: border-box"></span>
+<div style="padding: 26px 24px 16px; display: flex; justify-content: space-between; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">ETIQUETA DE ENVIO</span>
+<span style="font-family: Outfit, sans-serif; font-size: 19px; font-weight: 500">marfim<span style="color: #3B3FD9">.</span></span>
+</div>
+<span style="transform: rotate(-8deg); border: 1.5px solid #B4501E; color: #B4501E; border-radius: 7px; padding: 5px 9px; font-size: 12px; letter-spacing: 0.16em">FRÁGIL</span>
+</div>
+<div style="border-top: 1.5px dashed #E6E4DE"></div>
+<div key="{{atKey}}" class="up" style="padding: 16px 24px; display: grid; grid-template-columns: 96px minmax(0, 1fr); row-gap: 10px; font-size: 12px">
+<span style="color: #6B6B72">DE</span><span>{{at.name}} · {{at.city}}</span>
+<span style="color: #6B6B72">PARA</span><span>Você</span>
+<span style="color: #6B6B72">CONTEÚDO</span><span>{{at.firstProduct}}</span>
+<span style="color: #6B6B72">EMBALAGEM</span><span>Kraft · palha · algodão</span>
+<span style="color: #6B6B72">DESPACHO</span><span style="color: #15803D">Até 3 dias úteis</span>
+</div>
+<div style="border-top: 1.5px dashed #E6E4DE"></div>
+<div style="padding: 16px 24px 20px; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px">
+<svg width="170" height="38" viewBox="0 0 200 44" aria-hidden="true"><g fill="#18181B"><rect x="0" width="3" height="44"></rect><rect x="6" width="1" height="44"></rect><rect x="10" width="2" height="44"></rect><rect x="15" width="4" height="44"></rect><rect x="22" width="1" height="44"></rect><rect x="26" width="2" height="44"></rect><rect x="31" width="1" height="44"></rect><rect x="35" width="3" height="44"></rect><rect x="41" width="2" height="44"></rect><rect x="46" width="1" height="44"></rect><rect x="50" width="4" height="44"></rect><rect x="57" width="1" height="44"></rect><rect x="61" width="2" height="44"></rect><rect x="66" width="3" height="44"></rect><rect x="72" width="1" height="44"></rect><rect x="76" width="2" height="44"></rect><rect x="81" width="1" height="44"></rect><rect x="85" width="4" height="44"></rect><rect x="92" width="2" height="44"></rect><rect x="97" width="1" height="44"></rect><rect x="101" width="3" height="44"></rect><rect x="107" width="1" height="44"></rect><rect x="111" width="2" height="44"></rect><rect x="116" width="4" height="44"></rect><rect x="123" width="1" height="44"></rect><rect x="127" width="3" height="44"></rect><rect x="133" width="1" height="44"></rect><rect x="137" width="2" height="44"></rect><rect x="142" width="1" height="44"></rect><rect x="146" width="4" height="44"></rect><rect x="153" width="2" height="44"></rect><rect x="158" width="1" height="44"></rect><rect x="162" width="3" height="44"></rect><rect x="168" width="1" height="44"></rect><rect x="172" width="2" height="44"></rect><rect x="177" width="4" height="44"></rect><rect x="184" width="1" height="44"></rect><rect x="188" width="2" height="44"></rect><rect x="193" width="1" height="44"></rect><rect x="197" width="3" height="44"></rect></g></svg>
+<span style="font-size: 11px; color: #6B6B72">{{at.code}}</span>
+</div>
+</div>
+<div style="margin-top: 20px; font-size: 11px; letter-spacing: 0.06em; color: #6B6B72; font-family: 'JetBrains Mono', monospace">ESCOLHA UM ATELIÊ ACIMA PARA VER A ETIQUETA</div>
+</div>
+</div>
+</section>
+
+<dc-import name="Footer" hint-size="100%,560px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3560}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { cat: 'Tudo', cart: [], favs: {}, added: null, at: 0, now: Date.now() };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.setState({ now: Date.now() }), 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    clearTimeout(this.addedT);
+  }
+  money(n) {
+    return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+  }
+  add(id, price) {
+    clearTimeout(this.addedT);
+    this.setState({ cart: this.state.cart.concat([price]), added: id });
+    this.addedT = setTimeout(() => this.setState({ added: null }), 1400);
+  }
+  renderVals() {
+    const products = [
+      { id: 'arco', name: 'Luminária Arco', cat: 'Iluminação', price: 489, kind: 'lamp', tint: '#ECECFD', tag: 'Mais vendido' },
+      { id: 'duna', name: 'Vaso Duna', cat: 'Casa', price: 129, kind: 'vase', tint: '#F1F0EC', tag: 'Novo' },
+      { id: 'lina', name: 'Cadeira Lina', cat: 'Casa', price: 1290, old: 1490, kind: 'chair', tint: '#E8F5EC' },
+      { id: 'grao', name: 'Par de canecas Grão', cat: 'Cozinha', price: 89, kind: 'mug', tint: '#FCEEE4' },
+      { id: 'orbe', name: 'Pendente Orbe', cat: 'Iluminação', price: 359, old: 449, kind: 'pendant', tint: '#F1F0EC' },
+      { id: 'trama', name: 'Manta Trama', cat: 'Têxteis', price: 219, kind: 'throw', tint: '#ECECFD', tag: 'Novo' },
+      { id: 'seixo', name: 'Jarra Seixo', cat: 'Cozinha', price: 149, kind: 'vase', tint: '#E8F5EC' },
+      { id: 'linho', name: 'Almofada Linho', cat: 'Têxteis', price: 119, kind: 'throw', tint: '#FCEEE4' }
+    ];
+    const s = this.state;
+    const cats = ['Tudo', 'Casa', 'Cozinha', 'Iluminação', 'Têxteis'].map((c) => ({
+      label: c, active: s.cat === c, idle: s.cat !== c, pick: () => this.setState({ cat: c })
+    }));
+    const shown = products.filter((p) => s.cat === 'Tudo' || p.cat === s.cat);
+    const items = shown.map((p, i) => {
+      const fav = !!s.favs[p.id];
+      const justAdded = s.added === p.id;
+      return {
+        key: s.cat + '-' + p.id,
+        name: p.name, cat: p.cat, tint: p.tint,
+        delay: (i * 0.06).toFixed(2) + 's',
+        price: this.money(p.price),
+        hasOff: !!p.old, old: p.old ? this.money(p.old) : '',
+        off: p.old ? '-' + Math.round((1 - p.price / p.old) * 100) + '%' : '',
+        hasTag: !!p.tag, tag: p.tag || '',
+        isLamp: p.kind === 'lamp', isPendant: p.kind === 'pendant', isVase: p.kind === 'vase',
+        isChair: p.kind === 'chair', isMug: p.kind === 'mug', isThrow: p.kind === 'throw',
+        isFav: fav, notFav: !fav,
+        justAdded: justAdded, notAdded: !justAdded,
+        fav: () => this.setState({ favs: Object.assign({}, s.favs, { [p.id]: !fav }) }),
+        add: () => this.add(p.id, p.price)
+      };
+    });
+    const total = s.cart.reduce((a, b) => a + b, 0);
+    const goal = 299;
+    const pct = Math.min(100, (total / goal) * 100);
+    const shipLabel = total >= goal ? 'Frete grátis liberado' : 'Faltam ' + this.money(goal - total) + ' para frete grátis';
+
+    const now = new Date(s.now);
+    const end = new Date(now);
+    end.setDate(now.getDate() + ((7 - now.getDay()) % 7));
+    end.setHours(23, 59, 59, 0);
+    let diff = Math.max(0, Math.floor((end - now) / 1000));
+    const pad = (n) => String(n).padStart(2, '0');
+    const d = Math.floor(diff / 86400); diff -= d * 86400;
+    const h = Math.floor(diff / 3600); diff -= h * 3600;
+    const m = Math.floor(diff / 60); const sec = diff - m * 60;
+
+    const atData = [
+      { num: '01', name: 'Estúdio Barro Cru', city: 'CUNHA · SP', craft: 'Cerâmica', technique: 'Queima a lenha, 1.280 °C', material: 'Argila local e esmalte de cinzas', products: ['Vaso Duna', 'Jarra Seixo', 'Par de canecas Grão'], tint: '#FCEEE4', kind: 'clay', code: 'MF-BC-0142' },
+      { num: '02', name: 'Oficina Tora', city: 'GONÇALVES · MG', craft: 'Marcenaria', technique: 'Encaixes sem prego', material: 'Freijó de reflorestamento', products: ['Cadeira Lina'], tint: '#E8F5EC', kind: 'wood', code: 'MF-OT-0087' },
+      { num: '03', name: 'Oficina Faísca', city: 'SÃO PAULO · SP', craft: 'Iluminação', technique: 'Vidro soprado à boca', material: 'Latão escovado e vidro', products: ['Luminária Arco', 'Pendente Orbe'], tint: '#ECECFD', kind: 'light', code: 'MF-OF-0213' },
+      { num: '04', name: 'Tear Alto', city: 'RESENDE COSTA · MG', craft: 'Tecelagem', technique: 'Tear de pedal manual', material: 'Algodão e linho tingidos no ateliê', products: ['Manta Trama', 'Almofada Linho'], tint: '#F1F0EC', kind: 'loom', code: 'MF-TA-0058' }
+    ];
+    const selAt = s.at || 0;
+    const a0 = atData[selAt];
+    const at = Object.assign({}, a0, {
+      isClay: a0.kind === 'clay', isWood: a0.kind === 'wood', isLight: a0.kind === 'light', isLoom: a0.kind === 'loom',
+      firstProduct: a0.products[0],
+      productsLine: a0.products.length + (a0.products.length > 1 ? ' peças: ' : ' peça: ') + a0.products.join(', ')
+    });
+    const ateliers = atData.map((a, i) => ({
+      num: a.num, name: a.name, craft: a.craft, city: a.city,
+      weight: i === selAt ? 500 : 300,
+      nameColor: i === selAt ? '#3B3FD9' : '#18181B',
+      numColor: i === selAt ? '#3B3FD9' : '#6B6B72',
+      pick: () => this.setState({ at: i })
+    }));
+
+    return {
+      at, ateliers, atKey: 'at-' + selAt,
+      cats, items,
+      cartCount: s.cart.length,
+      hasFavs: Object.keys(s.favs).some((k) => s.favs[k]),
+      subtotal: this.money(total),
+      shipPct: pct.toFixed(1) + '%',
+      shipLabel,
+      addHero: () => this.add('arco', 489),
+      clock: [
+        { v: pad(d), l: 'DIAS' }, { v: pad(h), l: 'HORAS' }, { v: pad(m), l: 'MIN' }, { v: pad(sec), l: 'SEG' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

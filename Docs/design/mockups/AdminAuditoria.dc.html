@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Admin · Auditoria</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+button{font-family:inherit;cursor:pointer}
+input{font-family:Outfit,sans-serif}
+button:focus-visible,input:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.up{animation:up .35s cubic-bezier(.2,.7,.2,1) both}
+.row{transition:background .15s}
+.row:hover{background:#FAFAF8 !important}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1000px; display: flex; background: #F4F3EF; overflow: hidden">
+<dc-import name="AdminNav" active="auditoria" h="1000" hint-size="248px,1000px"></dc-import>
+<main style="flex-grow: 1; min-width: 0; padding: 28px 32px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: flex-end; gap: 16px">
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #6B6B72">SISTEMA</span>
+<h1 style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.025em">Auditoria</h1>
+</div>
+<input type="search" aria-label="Buscar no registro" placeholder="Quem, ação ou ID" value="{{q}}" onChange="{{onQ}}" style="height: 40px; width: 260px; box-sizing: border-box; padding: 0 12px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 14px">
+</div>
+<div style="display: flex; gap: 6px">
+<sc-for list="{{types}}" as="t" hint-placeholder-count="6"><button onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="height: 34px; padding: 0 12px; border-radius: 999px; border: none; background: {{t.bg}}; color: {{t.fg}}; font-size: 13px; font-weight: 500">{{t.label}}</button></sc-for>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; overflow: hidden">
+<div style="display: grid; grid-template-columns: 150px 180px minmax(0, 1fr) 120px 150px 24px; gap: 12px; padding: 10px 18px; background: #F1F0EC; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #6B6B72"><span>QUANDO</span><span>QUEM</span><span>AÇÃO</span><span>ENTIDADE</span><span>ID</span><span></span></div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="9">
+<div style="border-top: 1px solid #E6E4DE">
+<button class="row" onClick="{{r.toggle}}" aria-expanded="{{r.open}}" style="width: 100%; display: grid; grid-template-columns: 150px 180px minmax(0, 1fr) 120px 150px 24px; gap: 12px; padding: 12px 18px; border: none; background: {{r.bg}}; text-align: left; align-items: center; color: #18181B; font-size: 14px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #44444A">{{r.when}}</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{r.whoDot}}"></span>{{r.who}}</span>
+<span>{{r.action}}</span>
+<span><span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #F1F0EC; color: #44444A; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; display: inline-flex; align-items: center">{{r.entity}}</span></span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #44444A">{{r.id}}</span>
+<span style="color: #6B6B72; transform: rotate({{r.rot}}); transition: transform .2s; display: inline-block">›</span>
+</button>
+<sc-if value="{{r.open}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="padding: 4px 18px 16px 360px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<div style="padding: 12px 14px; border-radius: 10px; background: #FCEEE4; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; white-space: pre-line"><span style="font-size: 10px; letter-spacing: 0.12em; color: #B4501E">ANTES</span>
+{{r.before}}</div>
+<div style="padding: 12px 14px; border-radius: 10px; background: #E8F5EC; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; white-space: pre-line"><span style="font-size: 10px; letter-spacing: 0.12em; color: #15803D">DEPOIS</span>
+{{r.after}}</div>
+</div>
+</sc-if>
+</div>
+</sc-for>
+<sc-if value="{{noRows}}" hint-placeholder-val="{{ false }}"><div style="padding: 40px; text-align: center; font-size: 14px; color: #6B6B72">Nada encontrado.</div></sc-if>
+</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">REGISTRO SOMENTE LEITURA · NÃO PODE SER EDITADO NEM APAGADO</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { q: '', type: 'Todos', open: 1 }; }
+  renderVals() {
+    const s = this.state;
+    const L = [
+      ['01 OUT · 10:58', '[ADMIN]', 'admin', 'Iniciou o preparo', 'Pedido', 'MF-000229', 'status: Confirmed', 'status: InFulfilment'],
+      ['01 OUT · 10:42', 'Sistema', 'sys', 'Confirmou o pagamento', 'Pedido', 'MF-000231', 'status: AwaitingPayment', 'status: Confirmed\npaymentId: pi_3Q8a…231'],
+      ['01 OUT · 09:30', '[ADMIN]', 'admin', 'Alterou o preço', 'Produto', 'pendente-orbe', 'price: 339,00\ncompareAtPrice: null', 'price: 359,00\ncompareAtPrice: 449,00'],
+      ['01 OUT · 09:12', '[ADMIN]', 'admin', 'Registrou recebimento', 'Estoque', 'BC-DUNA', 'available: 9', 'available: 14'],
+      ['30 SET · 18:05', 'Ana Ribeiro', 'cust', 'Atualizou endereço padrão', 'Cliente', 'ana', 'defaultShipping: trab', 'defaultShipping: casa'],
+      ['30 SET · 16:40', '[ADMIN]', 'admin', 'Desativou conta', 'Cliente', 'c5', 'isActive: true', 'isActive: false'],
+      ['29 SET · 14:41', 'Sistema', 'sys', 'Pagamento recusado', 'Pagamento', 'pi_3Q7w…225', 'status: Pending', 'status: Failed\nreason: card_declined'],
+      ['28 SET · 09:00', '[ADMIN]', 'admin', 'Estornou pagamento', 'Pagamento', 'pi_3Q7v…224', 'refunded: 0,00', 'refunded: 149,00'],
+      ['27 SET · 11:20', '[ADMIN]', 'admin', 'Criou categoria', 'Categoria', 'banho', '—', 'name: Banho\nvisible: false']
+    ];
+    const types = ['Todos', 'Pedido', 'Produto', 'Estoque', 'Cliente', 'Pagamento', 'Categoria'];
+    const q = s.q.trim().toLowerCase();
+    const rows = L.map((l, i) => ({ l, i })).filter(({ l }) => (s.type === 'Todos' || l[4] === s.type) && (!q || (l[1] + ' ' + l[3] + ' ' + l[5]).toLowerCase().includes(q)));
+    const dot = { admin: '#3B3FD9', sys: '#6B6B72', cust: '#15803D' };
+    return {
+      q: s.q, onQ: (e) => this.setState({ q: e.target.value }),
+      types: types.map((t) => ({ label: t, on: s.type === t, bg: s.type === t ? '#18181B' : '#FFFFFF', fg: s.type === t ? '#FFFFFF' : '#44444A', pick: () => this.setState({ type: t }) })),
+      rows: rows.map(({ l, i }) => ({
+        when: l[0], who: l[1], whoDot: dot[l[2]], action: l[3], entity: l[4].toUpperCase(), id: l[5], before: l[6], after: l[7],
+        open: s.open === i, bg: s.open === i ? '#FAFAF8' : '#FFFFFF', rot: s.open === i ? '90deg' : '0deg',
+        toggle: () => this.setState({ open: s.open === i ? null : i })
+      })),
+      noRows: rows.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Barra do topo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 390px; font-family: Outfit, system-ui, sans-serif; color: #18181B; background: #F4F3EF; position: relative">
+<div style="height: 30px; background: #3B3FD9; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em">TROCA FÁCIL EM 30 DIAS</div>
+<header style="height: 56px; padding: 0 8px; display: flex; align-items: center; gap: 4px; border-bottom: 1px solid #E6E4DE">
+<sc-if value="{{hasBack}}" hint-placeholder-val="{{ false }}">
+<a href="{{backHref}}" aria-label="Voltar" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #18181B"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 6l-6 6 6 6"></path></svg></a>
+</sc-if>
+<sc-if value="{{noBack}}" hint-placeholder-val="{{ true }}">
+<button onClick="{{openMenu}}" aria-label="Abrir menu" aria-expanded="{{menu}}" style="width: 44px; height: 44px; border-radius: 12px; border: none; background: transparent; color: #18181B; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"></path></svg></button>
+</sc-if>
+<a href="MobileInicio.dc.html" style="flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; color: #18181B">
+<span style="font-size: 19px; font-weight: 500; letter-spacing: -0.02em">{{title}}<span style="color: #3B3FD9">{{dot}}</span></span></a>
+<a href="MobileListagem.dc.html" aria-label="Buscar" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #18181B"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></a>
+<a href="MobileSacola.dc.html" aria-label="Sacola, {{count}} itens" style="position: relative; width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #18181B">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
+<sc-if value="{{hasCount}}" hint-placeholder-val="{{ true }}"><span key="{{count}}" style="position: absolute; top: 4px; right: 2px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 999px; background: #E8793A; color: #FFFFFF; font-family: 'JetBrains Mono', monospace; font-size: 10px; display: flex; align-items: center; justify-content: center">{{count}}</span></sc-if>
+</a>
+</header>
+<sc-if value="{{menu}}" hint-placeholder-val="{{ false }}">
+<div onClick="{{closeMenu}}" style="position: fixed; inset: 0; background: rgba(24,24,27,.35); z-index: 50"></div>
+<nav aria-label="Menu" style="position: fixed; top: 0; left: 0; bottom: 0; width: 310px; background: #F4F3EF; z-index: 51; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; overflow: auto; box-shadow: 20px 0 40px -20px rgba(24,24,27,.3)">
+<div style="display: flex; align-items: center"><span style="flex-grow: 1; font-size: 20px; font-weight: 500">marfim<span style="color: #3B3FD9">.</span></span><button onClick="{{closeMenu}}" aria-label="Fechar menu" style="width: 44px; height: 44px; border-radius: 12px; border: none; background: transparent; font-size: 22px; cursor: pointer">×</button></div>
+<a href="Acesso.dc.html" style="height: 48px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500">Entrar ou criar conta</a>
+<div style="display: flex; flex-direction: column">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #6B6B72; padding-bottom: 6px">LOJA</span>
+<a href="MobileListagem.dc.html" style="height: 48px; border-bottom: 1px solid #E6E4DE; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #18181B; font-size: 20px; font-weight: 300">Novidades<span style="color: #6B6B72">›</span></a>
+<a href="MobileListagem.dc.html" style="height: 48px; border-bottom: 1px solid #E6E4DE; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #18181B; font-size: 20px; font-weight: 300">Casa<span style="color: #6B6B72">›</span></a>
+<a href="MobileListagem.dc.html" style="height: 48px; border-bottom: 1px solid #E6E4DE; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #18181B; font-size: 20px; font-weight: 300">Cozinha<span style="color: #6B6B72">›</span></a>
+<a href="MobileListagem.dc.html" style="height: 48px; border-bottom: 1px solid #E6E4DE; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #18181B; font-size: 20px; font-weight: 300">Iluminação<span style="color: #6B6B72">›</span></a>
+<a href="MobileListagem.dc.html" style="height: 48px; border-bottom: 1px solid #E6E4DE; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #18181B; font-size: 20px; font-weight: 300">Têxteis<span style="color: #6B6B72">›</span></a>
+<a href="MobileListagem.dc.html" style="height: 48px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #3B3FD9; font-size: 20px; font-weight: 400">Promoções<span>›</span></a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px; font-size: 15px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #6B6B72; padding-bottom: 6px">AJUDA</span>
+<a href="MobileConta.dc.html" style="min-height: 40px; display: flex; align-items: center; color: #18181B; text-decoration: none">Meus pedidos</a>
+<a href="Conteudo.dc.html" style="min-height: 40px; display: flex; align-items: center; color: #18181B; text-decoration: none">Trocas e devoluções</a>
+<a href="Conteudo.dc.html" style="min-height: 40px; display: flex; align-items: center; color: #18181B; text-decoration: none">Perguntas frequentes</a>
+<a href="Conteudo.dc.html" style="min-height: 40px; display: flex; align-items: center; color: #18181B; text-decoration: none">Nossa história</a>
+</div>
+</nav>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"count":{"editor":"int","default":3},"back":{"editor":"text","default":""},"title":{"editor":"text","default":""},"$preview":{"width":390,"height":86}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { menu: false }; }
+  renderVals() {
+    const count = Number(this.props.count ?? 3);
+    const back = this.props.back || '';
+    const title = this.props.title || '';
+    return {
+      count, hasCount: count > 0, hasBack: !!back, noBack: !back, backHref: back,
+      title: title || 'marfim', dot: title ? '' : '.',
+      menu: this.state.menu, openMenu: () => this.setState({ menu: true }), closeMenu: () => this.setState({ menu: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

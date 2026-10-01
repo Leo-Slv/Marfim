@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Ilustração de produto</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: {{w}}; height: {{h}}; display: flex; align-items: center; justify-content: center; color: #18181B">
+<sc-if value="{{isLamp}}" hint-placeholder-val="{{ true }}">
+<svg width="100%" height="100%" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="{{sw}}" stroke-linecap="round" stroke-linejoin="round"><path d="M44 164V70c0-30 18-46 44-46 22 0 34 12 37 30"></path><path d="M108 56h34l-8 22h-18z" fill="#3B3FD9" stroke="#3B3FD9"></path><ellipse cx="44" cy="166" rx="22" ry="5" fill="#FFFFFF"></ellipse></svg>
+</sc-if>
+<sc-if value="{{isSconce}}" hint-placeholder-val="{{ false }}">
+<svg width="100%" height="100%" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="{{sw}}" stroke-linecap="round" stroke-linejoin="round"><path d="M40 40v100"></path><path d="M40 90h50"></path><path d="M80 90l20-34h30l-14 34z" fill="#FFFFFF"></path><path d="M100 100v14" stroke="#E8793A"></path></svg>
+</sc-if>
+<sc-if value="{{isPendant}}" hint-placeholder-val="{{ false }}">
+<svg width="100%" height="100%" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="{{sw}}" stroke-linecap="round"><path d="M80 10v70"></path><circle cx="80" cy="112" r="34" fill="#FFFFFF"></circle><path d="M56 112a24 24 0 0 1 24-24" stroke="#E8793A"></path></svg>
+</sc-if>
+<sc-if value="{{isVase}}" hint-placeholder-val="{{ false }}">
+<svg width="100%" height="100%" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="{{sw}}" stroke-linejoin="round" stroke-linecap="round"><path d="M66 30h28v14c22 16 26 38 26 60 0 36-18 60-40 60s-40-24-40-60c0-22 4-44 26-60z" fill="#FFFFFF"></path><path d="M80 30C78 18 70 10 58 8M80 30c4-12 14-18 24-18" stroke="#15803D"></path></svg>
+</sc-if>
+<sc-if value="{{isJar}}" hint-placeholder-val="{{ false }}">
+<svg width="100%" height="100%" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="{{sw}}" stroke-linejoin="round" stroke-linecap="round"><path d="M58 40h44l-4 16c18 10 22 30 22 52 0 34-18 54-40 54s-40-20-40-54c0-22 4-42 22-52z" fill="#FFFFFF"></path><path d="M100 60c14 0 18 20 4 30" ></path><path d="M50 112c20 6 40 6 60 0" stroke="#E8793A"></path></svg>
+</sc-if>
+<sc-if value="{{isChair}}" hint-placeholder-val="{{ false }}">
+<svg width="100%" height="100%" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="{{sw}}" stroke-linecap="round" stroke-linejoin="round"><path d="M50 20h60v74H50z" fill="#FFFFFF"></path><path d="M40 94h80v14H40z" fill="#15803D" stroke="#15803D"></path><path d="M48 108l-6 60M112 108l6 60M58 108v44M102 108v44"></path></svg>
+</sc-if>
+<sc-if value="{{isBench}}" hint-placeholder-val="{{ false }}">
+<svg width="100%" height="100%" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="{{sw}}" stroke-linecap="round" stroke-linejoin="round"><path d="M20 84h120v16H20z" fill="#FFFFFF"></path><path d="M32 100l-6 50M128 100l6 50M44 100v36M116 100v36"></path><path d="M44 124h72" stroke="#15803D"></path></svg>
+</sc-if>
+<sc-if value="{{isMug}}" hint-placeholder-val="{{ false }}">
+<svg width="100%" height="100%" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="{{sw}}" stroke-linecap="round" stroke-linejoin="round"><path d="M40 60h64v70c0 14-10 24-24 24h-16c-14 0-24-10-24-24z" fill="#FFFFFF"></path><path d="M104 76h10a16 16 0 0 1 0 32h-10"></path><path d="M60 30c-6 8 6 12 0 20M80 26c-6 8 6 12 0 20" stroke="#E8793A"></path></svg>
+</sc-if>
+<sc-if value="{{isBowl}}" hint-placeholder-val="{{ false }}">
+<svg width="100%" height="100%" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="{{sw}}" stroke-linecap="round" stroke-linejoin="round"><path d="M24 84h112c0 36-24 60-56 60S24 120 24 84z" fill="#FFFFFF"></path><path d="M64 144h32"></path><path d="M40 98c24 8 56 8 80 0" stroke="#3B3FD9"></path></svg>
+</sc-if>
+<sc-if value="{{isThrow}}" hint-placeholder-val="{{ false }}">
+<svg width="100%" height="100%" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="{{sw}}" stroke-linejoin="round"><path d="M30 60h100v30H30z" fill="#FFFFFF"></path><path d="M30 90h100v30H30z" fill="#3B3FD9" stroke="#3B3FD9"></path><path d="M30 120h100v30H30z" fill="#FFFFFF"></path><path d="M40 150v10M56 150v10M72 150v10M88 150v10M104 150v10M120 150v10" stroke-linecap="round"></path></svg>
+</sc-if>
+<sc-if value="{{isTowel}}" hint-placeholder-val="{{ false }}">
+<svg width="100%" height="100%" viewBox="0 0 160 180" fill="none" stroke="#18181B" stroke-width="{{sw}}" stroke-linejoin="round" stroke-linecap="round"><path d="M30 40h100"></path><path d="M44 40v110h72V40" fill="#FFFFFF"></path><path d="M44 120h72" stroke="#E8793A"></path><path d="M44 130h72" stroke="#E8793A"></path></svg>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"kind":{"editor":"enum","options":["lamp","sconce","pendant","vase","jar","chair","bench","mug","bowl","throw","towel"],"default":"lamp"},"size":{"editor":"int","default":160,"min":24,"max":400},"$preview":{"width":160,"height":180}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const k = this.props.kind || 'lamp';
+    const size = Number(this.props.size) || 160;
+    return {
+      w: size + 'px', h: Math.round(size * 1.125) + 'px',
+      sw: size < 90 ? 3 : 2,
+      isLamp: k === 'lamp', isSconce: k === 'sconce', isPendant: k === 'pendant', isVase: k === 'vase', isJar: k === 'jar',
+      isChair: k === 'chair', isBench: k === 'bench', isMug: k === 'mug', isBowl: k === 'bowl', isThrow: k === 'throw', isTowel: k === 'towel'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Admin · Clientes</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}
+input{font-family:Outfit,sans-serif}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+@keyframes slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes toast{0%{opacity:0;transform:translateY(12px)}12%{opacity:1;transform:none}88%{opacity:1}100%{opacity:0}}
+.slide{animation:slide .4s cubic-bezier(.2,.7,.2,1) both}
+.pop{animation:pop .3s cubic-bezier(.2,.7,.2,1) both}
+.toast{animation:toast 2.6s ease both}
+.row{transition:background .15s}
+.row:hover{background:#FAFAF8 !important}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1000px; display: flex; background: #F4F3EF; overflow: hidden; position: relative">
+<dc-import name="AdminNav" active="clientes" h="1000" hint-size="248px,1000px"></dc-import>
+<main style="flex-grow: 1; min-width: 0; display: flex">
+<section style="flex-grow: 1; min-width: 0; padding: 28px 24px 28px 32px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: flex-end; gap: 16px">
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #6B6B72">CLIENTES E FINANÇAS</span>
+<h1 style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.025em">Clientes</h1>
+</div>
+<input type="search" aria-label="Buscar cliente" placeholder="Nome ou e-mail" value="{{q}}" onChange="{{onQ}}" style="height: 40px; width: 260px; box-sizing: border-box; padding: 0 12px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 14px">
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; overflow: hidden">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 90px 120px 110px 110px; gap: 12px; padding: 10px 18px; background: #F1F0EC; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #6B6B72"><span>CLIENTE</span><span>PEDIDOS</span><span>TOTAL GASTO</span><span>E-MAIL</span><span>CONTA</span></div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+<button class="row" onClick="{{r.open}}" aria-pressed="{{r.sel}}" style="width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 90px 120px 110px 110px; gap: 12px; padding: 12px 18px; border: none; border-top: 1px solid #E6E4DE; border-left: 3px solid {{r.mark}}; background: {{r.bg}}; text-align: left; align-items: center; color: #18181B; font-size: 14px">
+<span style="display: flex; align-items: center; gap: 10px; min-width: 0"><span style="width: 32px; height: 32px; border-radius: 50%; background: #E3E1F9; color: #3B3FD9; font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0">{{r.ini}}</span><span style="display: flex; flex-direction: column; min-width: 0"><span>{{r.name}}</span><span style="font-size: 12px; color: #6B6B72; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.email}}</span></span></span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{r.orders}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{r.spent}}</span>
+<span style="font-size: 12px; color: {{r.confColor}}">{{r.conf}}</span>
+<span><span style="height: 22px; padding: 0 9px; border-radius: 999px; background: {{r.sbg}}; color: {{r.sfg}}; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center">{{r.status}}</span></span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<aside key="{{d.id}}" class="slide" style="width: 400px; flex-shrink: 0; background: #FFFFFF; border-left: 1px solid #E6E4DE; padding: 28px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px; overflow: auto">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="width: 52px; height: 52px; border-radius: 50%; background: #E3E1F9; color: #3B3FD9; font-size: 18px; font-weight: 500; display: flex; align-items: center; justify-content: center">{{d.ini}}</span>
+<span style="flex-grow: 1; display: flex; flex-direction: column"><span style="font-size: 18px; font-weight: 500">{{d.name}}</span><span style="font-size: 13px; color: #6B6B72">{{d.email}}</span></span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<div style="padding: 12px; border-radius: 12px; background: #F4F3EF"><div style="font-size: 11px; color: #6B6B72">Pedidos</div><div style="font-size: 22px; font-weight: 300">{{d.orders}}</div></div>
+<div style="padding: 12px; border-radius: 12px; background: #F4F3EF"><div style="font-size: 11px; color: #6B6B72">Total gasto</div><div style="font-size: 18px; font-weight: 300; padding-top: 3px">{{d.spent}}</div></div>
+<div style="padding: 12px; border-radius: 12px; background: #F4F3EF"><div style="font-size: 11px; color: #6B6B72">Cliente desde</div><div style="font-size: 18px; font-weight: 300; padding-top: 3px">{{d.since}}</div></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 14px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">DADOS</span>
+<div style="display: flex; justify-content: space-between"><span style="color: #6B6B72">Telefone</span><span>{{d.phone}}</span></div>
+<div style="display: flex; justify-content: space-between"><span style="color: #6B6B72">E-mail</span><span style="color: {{d.confColor}}">{{d.conf}}</span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">ENDEREÇOS</span>
+<sc-for list="{{d.addrs}}" as="a" hint-placeholder-count="1"><div style="padding: 10px 12px; border-radius: 10px; border: 1px solid #E6E4DE; font-size: 13px; line-height: 1.5"><b style="font-weight: 500">{{a.label}}</b> · {{a.tags}}<br><span style="color: #44444A">{{a.line}}</span></div></sc-for>
+<sc-if value="{{d.noAddr}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #6B6B72">Nenhum endereço salvo.</span></sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">PEDIDOS RECENTES</span>
+<sc-for list="{{d.recent}}" as="o" hint-placeholder-count="2"><a href="AdminPedidos.dc.html" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-top: 1px solid #E6E4DE; text-decoration: none; color: #18181B; font-size: 13px"><span style="font-family: 'JetBrains Mono', monospace">{{o.id}}</span><span style="font-family: 'JetBrains Mono', monospace">{{o.total}}</span><span style="color: #44444A">{{o.status}}</span></a></sc-for>
+<sc-if value="{{d.noOrders}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #6B6B72">Ainda não comprou.</span></sc-if>
+</div>
+<div style="margin-top: auto; padding: 16px; border-radius: 14px; background: {{d.boxBg}}; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 500">{{d.boxTitle}}</span>
+<span style="font-size: 13px; color: #44444A; line-height: 1.5">{{d.boxText}}</span>
+<sc-if value="{{d.asking}}" hint-placeholder-val="{{ false }}">
+<div class="pop" style="display: flex; gap: 8px"><button onClick="{{d.confirm}}" style="height: 38px; padding: 0 14px; border-radius: 10px; border: none; background: {{d.btnBg}}; color: #FFFFFF; font-size: 13px; font-weight: 500">{{d.confirmLabel}}</button><button onClick="{{d.keep}}" style="height: 38px; padding: 0 12px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 13px">Voltar</button></div>
+</sc-if>
+<sc-if value="{{d.notAsking}}" hint-placeholder-val="{{ true }}">
+<button onClick="{{d.ask}}" style="align-self: flex-start; height: 38px; padding: 0 14px; border-radius: 10px; border: 1px solid {{d.btnBg}}; background: #FFFFFF; color: {{d.btnBg}}; font-size: 13px; font-weight: 500">{{d.actionLabel}}</button>
+</sc-if>
+</div>
+</aside>
+</main>
+<sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{toast.key}}" class="toast" role="status" style="position: absolute; left: 50%; bottom: 24px; margin-left: -140px; width: 280px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; background: #18181B; color: #FFFFFF; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5BC583" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>{{toast.text}}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const C = (id, name, email, orders, spent, conf, active, since, addrs, recent) => ({ id, name, email, orders, spent, conf, active, since, addrs, recent });
+    this.state = { q: '', sel: 'ana', ask: false, toast: null, toastN: 0,
+      list: [
+        C('ana', 'Ana Ribeiro', 'ana@email.com', 5, 2829, true, true, 'jul 2026', [['Casa', 'entrega e cobrança padrão', 'Rua [ENDEREÇO], 120 · São Paulo, SP'], ['Trabalho', '', 'Av. [ENDEREÇO], 1500 · São Paulo, SP']], [['MF-000231', 666, 'Confirmado'], ['MF-000198', 489, 'Enviado']]),
+        C('c2', '[CLIENTE 2]', 'cliente2@email.com', 2, 708, true, true, 'ago 2026', [['Casa', 'entrega e cobrança padrão', '[ENDEREÇO]']], [['MF-000229', 489, 'Em preparo']]),
+        C('c3', '[CLIENTE 3]', 'cliente3@email.com', 1, 1290, true, true, 'set 2026', [['Casa', 'entrega e cobrança padrão', '[ENDEREÇO]']], [['MF-000228', 1290, 'Enviado']]),
+        C('c4', '[CLIENTE 4]', 'cliente4@email.com', 0, 0, false, true, 'set 2026', [], []),
+        C('c5', '[CLIENTE 5]', 'cliente5@email.com', 3, 657, true, false, 'mai 2026', [['Casa', 'entrega e cobrança padrão', '[ENDEREÇO]']], [['MF-000150', 1290, 'Cancelado']]),
+        C('c6', '[CLIENTE 6]', 'cliente6@email.com', 1, 219, true, true, 'out 2026', [], [['MF-000230', 219, 'Aguardando pagamento']])
+      ] };
+  }
+  componentWillUnmount() { clearTimeout(this.tt); }
+  toast(text) { this.setState({ toast: text, toastN: this.state.toastN + 1 }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2600); }
+  money(n) { return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  renderVals() {
+    const s = this.state;
+    const ini = (n) => n.replace(/[\[\]]/g, '').split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+    const q = s.q.trim().toLowerCase();
+    const list = s.list.filter((c) => !q || (c.name + ' ' + c.email).toLowerCase().includes(q));
+    const d = s.list.find((c) => c.id === s.sel) || s.list[0];
+    const flip = () => { this.setState({ list: s.list.map((c) => (c.id === d.id ? Object.assign({}, c, { active: !c.active }) : c)), ask: false }); this.toast(d.active ? 'Conta desativada' : 'Conta reativada'); };
+    return {
+      q: s.q, onQ: (e) => this.setState({ q: e.target.value }),
+      rows: list.map((c) => ({
+        name: c.name, email: c.email, ini: ini(c.name), orders: c.orders, spent: this.money(c.spent),
+        conf: c.conf ? 'Confirmado' : 'Pendente', confColor: c.conf ? '#15803D' : '#B4501E',
+        status: c.active ? 'Ativa' : 'Desativada', sbg: c.active ? '#E8F5EC' : '#F1F0EC', sfg: c.active ? '#15803D' : '#44444A',
+        sel: c.id === d.id, bg: c.id === d.id ? '#ECECFD' : '#FFFFFF', mark: c.id === d.id ? '#3B3FD9' : 'transparent',
+        open: () => this.setState({ sel: c.id, ask: false })
+      })),
+      d: {
+        id: d.id + (d.active ? 'a' : 'd'), name: d.name, email: d.email, ini: ini(d.name), orders: d.orders, spent: this.money(d.spent), since: d.since,
+        phone: '[TELEFONE]', conf: d.conf ? 'Confirmado' : 'Ainda não confirmado', confColor: d.conf ? '#15803D' : '#B4501E',
+        addrs: d.addrs.map(([label, tags, line]) => ({ label, tags: tags || 'sem padrão', line })), noAddr: d.addrs.length === 0,
+        recent: d.recent.map(([id, t, st]) => ({ id, total: this.money(t), status: st })), noOrders: d.recent.length === 0,
+        boxBg: d.active ? '#FCEEE4' : '#E8F5EC',
+        boxTitle: d.active ? 'Desativar conta' : 'Conta desativada',
+        boxText: d.active ? 'A pessoa não consegue mais entrar (account_inactive). Pedidos e histórico continuam guardados.' : 'Ao reativar, a pessoa volta a entrar com a mesma senha.',
+        actionLabel: d.active ? 'Desativar' : 'Reativar', confirmLabel: d.active ? 'Sim, desativar' : 'Sim, reativar',
+        btnBg: d.active ? '#B4501E' : '#15803D',
+        asking: s.ask, notAsking: !s.ask, ask: () => this.setState({ ask: true }), keep: () => this.setState({ ask: false }), confirm: flip
+      },
+      toast: { show: !!s.toast, text: s.toast || '', key: 't' + s.toastN }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Listagem</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}
+input[type=radio]{accent-color:#3B3FD9;width:18px;height:18px;margin:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 390px; height: 1640px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileTopo" count="{{bag}}" hint-size="390px,86px"></dc-import>
+<section style="padding: 20px 16px 0; display: flex; flex-direction: column; gap: 12px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">INÍCIO / {{catUpper}}</div>
+<div style="display: flex; align-items: baseline; gap: 10px"><h1 key="{{cat}}" class="up" style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.03em">{{cat}}</h1><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72">{{countLabel}}</span></div>
+</section>
+<div class="chips" style="display: flex; gap: 8px; overflow-x: auto; padding: 14px 16px">
+<sc-for list="{{cats}}" as="c" hint-placeholder-count="6"><button onClick="{{c.pick}}" style="flex-shrink: 0; height: 38px; padding: 0 14px; border-radius: 999px; border: none; background: {{c.bg}}; color: {{c.fg}}; font-size: 14px; font-weight: 500">{{c.label}}</button></sc-for>
+</div>
+<div style="padding: 0 16px 14px; display: flex; gap: 8px">
+<button onClick="{{openSort}}" style="flex-grow: 1; height: 44px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 4v16M3 16l4 4 4-4M17 20V4M13 8l4-4 4 4"></path></svg>{{sortLabel}}</button>
+</div>
+<section style="padding: 0 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{items}}" as="p" hint-placeholder-count="6">
+<article key="{{p.key}}" class="up" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 6px; display: flex; flex-direction: column; gap: 8px">
+<a href="MobileProduto.dc.html" style="position: relative; height: 150px; border-radius: 10px; background: {{p.tint}}; display: flex; align-items: center; justify-content: center; opacity: {{p.op}}"><dc-import name="Art" kind="{{p.kind}}" size="80" hint-size="80px,90px"></dc-import>
+<sc-if value="{{p.hasBadge}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: 6px; left: 6px; height: 22px; padding: 0 8px; border-radius: 999px; background: #FFFFFF; color: {{p.badgeFg}}; font-size: 11px; font-weight: 500; display: flex; align-items: center">{{p.badge}}</span></sc-if></a>
+<div style="padding: 0 4px 4px; display: flex; align-items: flex-end; gap: 6px">
+<div style="flex-grow: 1; min-width: 0"><div style="font-size: 11px; color: #6B6B72">{{p.brand}}</div><div style="font-size: 14px; font-weight: 500; line-height: 1.25">{{p.name}}</div>
+<div style="display: flex; gap: 6px; align-items: baseline; padding-top: 2px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">{{p.price}}</span><sc-if value="{{p.hasOld}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6B6B72; text-decoration: line-through">{{p.old}}</span></sc-if></div></div>
+<sc-if value="{{p.can}}" hint-placeholder-val="{{ true }}"><button onClick="{{p.add}}" aria-label="Adicionar {{p.name}}" style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 20px">+</button></sc-if>
+</div>
+</article>
+</sc-for>
+</section>
+<div style="padding: 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">{{shownLabel}}</span>
+<sc-if value="{{hasMore}}" hint-placeholder-val="{{ true }}"><button onClick="{{more}}" style="height: 48px; width: 100%; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px">
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}"><svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg></sc-if>Carregar mais</button></sc-if>
+</div>
+
+<!-- Ordenar -->
+<sc-if value="{{sortOpen}}" hint-placeholder-val="{{ false }}">
+<div class="fade" onClick="{{closeSort}}" style="position: fixed; inset: 0; background: rgba(24,24,27,.35); z-index: 40"></div>
+<div class="sheet" role="dialog" aria-label="Ordenar" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: #FFFFFF; border-radius: 20px 20px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 4px">
+<span style="align-self: center; width: 40px; height: 4px; border-radius: 999px; background: #E6E4DE; margin-bottom: 10px"></span>
+<span style="font-size: 18px; font-weight: 500; padding-bottom: 6px">Ordenar por</span>
+<sc-for list="{{sorts}}" as="o" hint-placeholder-count="4"><label style="min-height: 52px; display: flex; align-items: center; gap: 12px; border-top: 1px solid #E6E4DE; font-size: 16px; cursor: pointer"><input type="radio" name="sort" checked="{{o.on}}" onChange="{{o.pick}}">{{o.label}}</label></sc-for>
+</div>
+</sc-if>
+
+<!-- 06 · Mini-sacola mobile -->
+<sc-if value="{{sheet}}" hint-placeholder-val="{{ false }}">
+<div class="fade" onClick="{{closeSheet}}" style="position: fixed; inset: 0; background: rgba(24,24,27,.35); z-index: 40"></div>
+<div class="sheet" role="dialog" aria-label="Adicionado à sacola" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: #FFFFFF; border-radius: 20px 20px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 14px">
+<span style="align-self: center; width: 40px; height: 4px; border-radius: 999px; background: #E6E4DE"></span>
+<div style="display: flex; align-items: center; gap: 8px"><span style="width: 26px; height: 26px; border-radius: 50%; background: #E8F5EC; color: #15803D; display: flex; align-items: center; justify-content: center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span><b style="font-size: 16px; font-weight: 500">Adicionado à sacola</b></div>
+<div style="display: flex; gap: 12px; align-items: center"><span style="width: 60px; height: 60px; border-radius: 10px; background: {{sItem.tint}}; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="{{sItem.kind}}" size="36" hint-size="36px,41px"></dc-import></span><span style="flex-grow: 1; font-size: 15px">{{sItem.name}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 14px">{{sItem.price}}</span></div>
+<a href="MobileSacola.dc.html" style="height: 52px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 500">Ir para a sacola · {{bag}} itens</a>
+<button onClick="{{closeSheet}}" style="height: 48px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px; font-weight: 500">Continuar comprando</button>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1640}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { cat: 'Tudo', sort: 'recentes', shown: 6, loading: false, sortOpen: false, sheet: null, bag: 3 }; }
+  componentWillUnmount() { clearTimeout(this.lt); }
+  renderVals() {
+    const s = this.state;
+    const P = [
+      ['Arandela Fio', 'Iluminação', 279, null, 'sconce', '#FCEEE4', 'Oficina Faísca', 'Low', 1], ['Vaso Duna', 'Casa', 129, null, 'vase', '#F1F0EC', 'Barro Cru', 'New', 2],
+      ['Luminária Arco', 'Iluminação', 489, null, 'lamp', '#ECECFD', 'Oficina Faísca', '', 3], ['Tigela Areia', 'Cozinha', 79, 95, 'bowl', '#F1F0EC', 'Barro Cru', '', 4],
+      ['Manta Trama', 'Têxteis', 219, null, 'throw', '#ECECFD', 'Tear Alto', 'New', 5], ['Pendente Orbe', 'Iluminação', 359, 449, 'pendant', '#F1F0EC', 'Oficina Faísca', '', 6],
+      ['Cadeira Lina', 'Casa', 1290, 1490, 'chair', '#E8F5EC', 'Oficina Tora', '', 7], ['Par de canecas Grão', 'Cozinha', 89, null, 'mug', '#FCEEE4', 'Barro Cru', '', 8],
+      ['Banco Tora', 'Casa', 690, null, 'bench', '#ECECFD', 'Oficina Tora', 'Out', 9], ['Jarra Seixo', 'Cozinha', 149, null, 'jar', '#E8F5EC', 'Barro Cru', 'Low', 10],
+      ['Almofada Linho', 'Têxteis', 119, null, 'throw', '#FCEEE4', 'Tear Alto', '', 11], ['Toalha Listra', 'Têxteis', 99, null, 'towel', '#E8F5EC', 'Tear Alto', '', 12]
+    ];
+    const sorts = { recentes: 'Mais recentes', nome: 'Nome (A–Z)', asc: 'Menor preço', desc: 'Maior preço' };
+    const list = P.filter((p) => s.cat === 'Tudo' || p[1] === s.cat).sort((a, b) => s.sort === 'nome' ? a[0].localeCompare(b[0], 'pt-BR') : s.sort === 'asc' ? a[2] - b[2] : s.sort === 'desc' ? b[2] - a[2] : a[8] - b[8]);
+    const shown = list.slice(0, s.shown);
+    const money = (n) => 'R$ ' + n.toLocaleString('pt-BR');
+    const B = { Low: ['Últimas unidades', '#B4501E'], New: ['Novo', '#3B3FD9'], Out: ['Esgotado', '#44444A'] };
+    const sItem = s.sheet ? P.find((p) => p[0] === s.sheet) : P[0];
+    return {
+      bag: s.bag, cat: s.cat, catUpper: s.cat.toUpperCase(), countLabel: list.length + ' peças',
+      cats: ['Tudo', 'Casa', 'Cozinha', 'Iluminação', 'Têxteis'].map((c) => ({ label: c, bg: s.cat === c ? '#3B3FD9' : '#F1F0EC', fg: s.cat === c ? '#FFFFFF' : '#44444A', pick: () => this.setState({ cat: c, shown: 6 }) })),
+      sortLabel: 'Ordenar: ' + sorts[s.sort], openSort: () => this.setState({ sortOpen: true }), closeSort: () => this.setState({ sortOpen: false }), sortOpen: s.sortOpen,
+      sorts: Object.keys(sorts).map((k) => ({ label: sorts[k], on: s.sort === k, pick: () => this.setState({ sort: k, sortOpen: false }) })),
+      items: shown.map((p, i) => ({
+        key: s.cat + s.sort + p[0], name: p[0], price: money(p[2]), hasOld: !!p[3], old: p[3] ? money(p[3]) : '', kind: p[4], tint: p[5], brand: p[6],
+        hasBadge: !!p[7], badge: p[7] ? B[p[7]][0] : '', badgeFg: p[7] ? B[p[7]][1] : '', can: p[7] !== 'Out', op: p[7] === 'Out' ? 0.5 : 1,
+        add: () => this.setState({ sheet: p[0], bag: s.bag + 1 })
+      })),
+      shownLabel: shown.length + ' DE ' + list.length, hasMore: shown.length < list.length, loading: s.loading,
+      more: () => { this.setState({ loading: true }); clearTimeout(this.lt); this.lt = setTimeout(() => this.setState({ loading: false, shown: s.shown + 6 }), 700); },
+      sheet: !!s.sheet, closeSheet: () => this.setState({ sheet: null }),
+      sItem: { name: sItem[0], price: money(sItem[2]), kind: sItem[4], tint: sItem[5] }
+    };
+  }
+}
+</script>
+</body>
+</html>

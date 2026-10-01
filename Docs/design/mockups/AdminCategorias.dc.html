@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Admin · Categorias</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.4}
+input{font-family:Outfit,sans-serif}
+button:focus-visible,input:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes toast{0%{opacity:0;transform:translateY(12px)}12%{opacity:1;transform:none}88%{opacity:1}100%{opacity:0}}
+.up{animation:up .4s cubic-bezier(.2,.7,.2,1) both}
+.toast{animation:toast 2.6s ease both}
+.row{transition:background .15s}
+.row:hover{background:#FAFAF8}
+.btn-p{transition:background .2s}
+.btn-p:hover:not(:disabled){background:#2A2DA8 !important}
+.ib{transition:background .15s}
+.ib:hover:not(:disabled){background:#ECEBE6 !important}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1000px; display: flex; background: #F4F3EF; overflow: hidden; position: relative">
+<dc-import name="AdminNav" active="categorias" h="1000" hint-size="248px,1000px"></dc-import>
+<main style="flex-grow: 1; min-width: 0; padding: 28px 32px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; align-items: flex-end; gap: 16px">
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #6B6B72">CATÁLOGO</span>
+<h1 style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.025em">Categorias</h1>
+</div>
+<span style="font-size: 13px; color: #6B6B72">A ordem aqui é a ordem do menu da loja.</span>
+</div>
+
+<form onSubmit="{{add}}" style="margin: 0; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 16px 18px; display: flex; gap: 10px; align-items: flex-end">
+<label style="flex-grow: 1; display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: #44444A">Nova categoria<input value="{{draft}}" onChange="{{onDraft}}" placeholder="Ex.: Banho" style="height: 42px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{draftB}}; border-radius: 10px; font-size: 15px"></label>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72; padding-bottom: 12px; width: 220px">/categoria/{{draftSlug}}</span>
+<button type="submit" class="btn-p" style="height: 42px; padding: 0 18px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 14px; font-weight: 500">Adicionar</button>
+</form>
+<sc-if value="{{dupErr}}" hint-placeholder-val="{{ false }}"><span role="alert" style="font-size: 13px; color: #B4501E; margin-top: -10px">Já existe uma categoria com esse nome.</span></sc-if>
+
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; overflow: hidden">
+<div style="display: grid; grid-template-columns: 56px minmax(0, 1fr) 220px 110px 110px 200px; gap: 12px; padding: 10px 18px; background: #F1F0EC; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #6B6B72"><span>ORDEM</span><span>NOME</span><span>ENDEREÇO</span><span>PRODUTOS</span><span>NO MENU</span><span></span></div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="5">
+<div key="{{r.id}}" class="row up" style="display: grid; grid-template-columns: 56px minmax(0, 1fr) 220px 110px 110px 200px; gap: 12px; padding: 12px 18px; border-top: 1px solid #E6E4DE; align-items: center; font-size: 14px">
+<span style="display: flex; gap: 2px">
+<button class="ib" onClick="{{r.up}}" disabled="{{r.first}}" aria-label="Subir {{r.name}}" style="width: 26px; height: 32px; border-radius: 7px; border: none; background: transparent; font-size: 13px">↑</button>
+<button class="ib" onClick="{{r.down}}" disabled="{{r.last}}" aria-label="Descer {{r.name}}" style="width: 26px; height: 32px; border-radius: 7px; border: none; background: transparent; font-size: 13px">↓</button>
+</span>
+<sc-if value="{{r.editing}}" hint-placeholder-val="{{ false }}">
+<input aria-label="Nome da categoria" value="{{r.editVal}}" onChange="{{r.onEdit}}" style="height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #3B3FD9; border-radius: 9px; font-size: 14px">
+</sc-if>
+<sc-if value="{{r.notEditing}}" hint-placeholder-val="{{ true }}"><span style="font-weight: 500">{{r.name}}</span></sc-if>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72">/categoria/{{r.slug}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{r.count}}</span>
+<span><button onClick="{{r.toggle}}" role="switch" aria-checked="{{r.visible}}" aria-label="Mostrar {{r.name}} no menu" style="width: 44px; height: 26px; border-radius: 999px; border: none; padding: 3px; background: {{r.swBg}}; display: flex; justify-content: {{r.swJust}}"><span style="width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF"></span></button></span>
+<span style="display: flex; gap: 12px; justify-content: flex-end; align-items: center">
+<sc-if value="{{r.editing}}" hint-placeholder-val="{{ false }}"><button onClick="{{r.save}}" style="background: none; border: none; padding: 0; min-height: 32px; color: #3B3FD9; font-size: 13px; font-weight: 500">Salvar</button><button onClick="{{r.cancel}}" style="background: none; border: none; padding: 0; min-height: 32px; color: #6B6B72; font-size: 13px">Cancelar</button></sc-if>
+<sc-if value="{{r.notEditing}}" hint-placeholder-val="{{ true }}"><button onClick="{{r.edit}}" style="background: none; border: none; padding: 0; min-height: 32px; color: #3B3FD9; font-size: 13px; font-weight: 500">Renomear</button>
+<button onClick="{{r.del}}" disabled="{{r.hasProducts}}" title="{{r.delHint}}" style="background: none; border: none; padding: 0; min-height: 32px; color: #B4501E; font-size: 13px; font-weight: 500">Excluir</button></sc-if>
+</span>
+</div>
+</sc-for>
+</div>
+<div style="font-size: 12px; color: #6B6B72">Só é possível excluir categorias sem produtos. Mova os produtos antes, na tela Produtos.</div>
+</main>
+<sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{toast.key}}" class="toast" role="status" style="position: absolute; left: 50%; bottom: 24px; margin-left: -140px; width: 280px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; background: #18181B; color: #FFFFFF; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5BC583" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>{{toast.text}}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { draft: '', tried: false, dup: false, editing: null, editVal: '', toast: null, toastN: 0,
+      cats: [
+        { id: 'novidades', name: 'Novidades', count: 4, visible: true }, { id: 'casa', name: 'Casa', count: 4, visible: true },
+        { id: 'cozinha', name: 'Cozinha', count: 4, visible: true }, { id: 'iluminacao', name: 'Iluminação', count: 4, visible: true },
+        { id: 'texteis', name: 'Têxteis', count: 3, visible: true }, { id: 'banho', name: 'Banho', count: 0, visible: false }
+      ] };
+  }
+  componentWillUnmount() { clearTimeout(this.tt); }
+  toast(text) { this.setState({ toast: text, toastN: this.state.toastN + 1 }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2600); }
+  slug(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+  renderVals() {
+    const s = this.state;
+    const set = (cats) => this.setState({ cats });
+    const swap = (i, j) => { const c = s.cats.slice(); [c[i], c[j]] = [c[j], c[i]]; set(c); };
+    return {
+      draft: s.draft, draftSlug: this.slug(s.draft) || '…', onDraft: (e) => this.setState({ draft: e.target.value, tried: false, dup: false }),
+      draftB: s.tried || s.dup ? '#B4501E' : '#E6E4DE', dupErr: s.dup,
+      add: (e) => {
+        e.preventDefault();
+        const name = s.draft.trim();
+        if (!name) { this.setState({ tried: true }); return; }
+        if (s.cats.some((c) => c.id === this.slug(name))) { this.setState({ dup: true }); return; }
+        this.setState({ cats: s.cats.concat([{ id: this.slug(name), name, count: 0, visible: false }]), draft: '' });
+        this.toast('Categoria criada (fora do menu)');
+      },
+      rows: s.cats.map((c, i) => ({
+        id: c.id, name: c.name, slug: c.id, count: c.count, visible: c.visible,
+        first: i === 0, last: i === s.cats.length - 1,
+        up: () => swap(i, i - 1), down: () => swap(i, i + 1),
+        swBg: c.visible ? '#3B3FD9' : '#E6E4DE', swJust: c.visible ? 'flex-end' : 'flex-start',
+        toggle: () => set(s.cats.map((x) => (x.id === c.id ? Object.assign({}, x, { visible: !x.visible }) : x))),
+        editing: s.editing === c.id, notEditing: s.editing !== c.id, editVal: s.editVal,
+        onEdit: (e) => this.setState({ editVal: e.target.value }),
+        edit: () => this.setState({ editing: c.id, editVal: c.name }),
+        cancel: () => this.setState({ editing: null }),
+        save: () => { if (!s.editVal.trim()) return; set(s.cats.map((x) => (x.id === c.id ? Object.assign({}, x, { name: s.editVal.trim() }) : x))); this.setState({ editing: null }); this.toast('Categoria renomeada'); },
+        hasProducts: c.count > 0, delHint: c.count > 0 ? 'Tem produtos: mova-os antes' : 'Excluir',
+        del: () => { set(s.cats.filter((x) => x.id !== c.id)); this.toast('Categoria excluída'); }
+      })),
+      toast: { show: !!s.toast, text: s.toast || '', key: 't' + s.toastN }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Loja · Institucional e ajuda</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}a:hover{color:#2A2DA8}
+button{font-family:inherit;cursor:pointer}
+input{font-family:Outfit,sans-serif}
+input:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+.wrap{width:100%;max-width:1280px;margin:0 auto;padding-left:40px;padding-right:40px;box-sizing:border-box}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.up{animation:up .6s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.spin{animation:spin 50s linear infinite}
+.btn-p{transition:background .2s,transform .2s}
+.btn-p:hover{background:#2A2DA8 !important;transform:translateY(-1px)}
+.btn-s{transition:background .2s}
+.btn-s:hover{background:#ECEBE6 !important}
+.side-b{transition:background .2s}
+.side-b:hover{background:#ECEBE6 !important}
+.toc a{color:#44444A;text-decoration:none}
+.toc a:hover{color:#3B3FD9}
+details summary{list-style:none;cursor:pointer}
+details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(45deg)}
+.chev{transition:transform .25s}
+details[open]{background:#FFFFFF}
+.nav-a:hover{color:#3B3FD9 !important}
+.foot-a:hover{color:#FFFFFF !important}
+@media (max-width:1180px){.nav{display:none !important}}
+@media (max-width:980px){.g-split{grid-template-columns:minmax(0,1fr) !important;row-gap:28px !important}.g-split>*{grid-column:auto !important;position:static !important}.g-2{grid-template-columns:minmax(0,1fr) !important}.foot-cols{grid-template-columns:repeat(2,minmax(0,1fr)) !important;row-gap:40px !important}.foot-cols>*{grid-column:auto !important}.hide-md{display:none !important}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 100%; min-width: 360px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden">
+<dc-import name="Header" count="3" hint-size="100%,108px"></dc-import>
+
+<section style="padding: 40px 0 72px">
+<div class="wrap g-split" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 32px; align-items: start">
+
+<!-- Índice das páginas -->
+<nav aria-label="Institucional e ajuda" class="hide-md" style="grid-column: span 3; position: sticky; top: 24px; display: flex; flex-direction: column; gap: 18px">
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #6B6B72; padding: 0 12px 6px">{{g.title}}</div>
+<sc-for list="{{g.pages}}" as="p" hint-placeholder-count="5">
+<sc-if value="{{p.live}}" hint-placeholder-val="{{ false }}">
+<button class="side-b" onClick="{{p.go}}" aria-current="{{p.current}}" style="height: 40px; padding: 0 12px; border-radius: 10px; border: none; background: {{p.bg}}; color: {{p.fg}}; font-size: 14px; font-weight: {{p.weight}}; text-align: left; display: flex; align-items: center; gap: 8px"><span style="flex-grow: 1">{{p.label}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6B6B72">{{p.model}}</span></button>
+</sc-if>
+<sc-if value="{{p.static}}" hint-placeholder-val="{{ true }}">
+<span style="height: 40px; padding: 0 12px; border-radius: 10px; color: #44444A; font-size: 14px; display: flex; align-items: center; gap: 8px"><span style="flex-grow: 1">{{p.label}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6B6B72">{{p.model}}</span></span>
+</sc-if>
+</sc-for>
+</div>
+</sc-for>
+<div style="padding: 12px; border-radius: 12px; border: 1px dashed #E6E4DE; font-size: 12px; color: #6B6B72; line-height: 1.5">A = página editorial · B = ajuda e textos legais. Textos entre [COLCHETES] dependem de informação real da loja.</div>
+</nav>
+
+<div key="{{pageKey}}" style="grid-column: 4 / span 9; display: flex; flex-direction: column">
+
+<!-- 25 · Nossa história (modelo A) -->
+<sc-if value="{{isHistoria}}" hint-placeholder-val="{{ true }}">
+<div class="up" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">NOSSA HISTÓRIA</div>
+<h1 class="up d1" style="margin: 14px 0 0; font-size: 56px; line-height: 1.02; font-weight: 300; letter-spacing: -0.035em; max-width: 760px">Uma loja pequena para quem <span style="font-weight: 500; color: #3B3FD9">faz devagar</span>.</h1>
+<p class="up d2" style="margin: 20px 0 0; font-size: 18px; line-height: 1.6; color: #44444A; max-width: 640px">A Marfim nasceu em [ANO], em [CIDADE], da vontade de encontrar num só lugar peças feitas à mão por gente que assina o próprio trabalho. [CONTE AQUI COMO A LOJA COMEÇOU.]</p>
+
+<div class="up d3 g-2" style="margin-top: 40px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div style="position: relative; height: 340px; border-radius: 20px; background: #ECECFD; overflow: hidden; display: flex; align-items: center; justify-content: center">
+<svg class="spin" width="380" height="380" viewBox="0 0 520 520" fill="none" style="position: absolute"><circle cx="260" cy="260" r="240" stroke="#3B3FD9" stroke-opacity=".2" stroke-dasharray="3 9"></circle><circle cx="260" cy="20" r="7" fill="#E8793A"></circle></svg>
+<div class="floaty" style="display: flex"><dc-import name="Art" kind="vase" size="150" hint-size="150px,169px"></dc-import></div>
+<span style="position: absolute; left: 16px; bottom: 16px; height: 28px; padding: 0 12px; border-radius: 999px; background: #FFFFFF; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #44444A; display: flex; align-items: center">[FOTO DO ATELIÊ]</span>
+</div>
+<div style="height: 340px; border-radius: 20px; background: #FFFFFF; border: 1px solid #E6E4DE; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between">
+<div style="font-size: 26px; font-weight: 300; letter-spacing: -0.02em; line-height: 1.3">“[UMA FRASE DE QUEM FUNDOU A LOJA, NAS PALAVRAS DELA.]”</div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 500">[NOME]</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #6B6B72">FUNDADORA</span></div>
+</div>
+</div>
+
+<div style="margin-top: 56px; display: flex; flex-direction: column">
+<sc-for list="{{principles}}" as="p" hint-placeholder-count="3">
+<div class="g-2" style="display: grid; grid-template-columns: 80px minmax(0, 1fr) minmax(0, 1.4fr); gap: 24px; padding: 28px 0; border-top: 1px solid #E6E4DE; align-items: baseline">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #3B3FD9">{{p.n}}</span>
+<span style="font-size: 26px; font-weight: 300; letter-spacing: -0.02em">{{p.title}}</span>
+<span style="font-size: 16px; line-height: 1.6; color: #44444A">{{p.text}}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="margin-top: 32px; border-radius: 20px; background: #3B3FD9; color: #FFFFFF; padding: 36px 40px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap">
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 8px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #ECECFD">QUEM FAZ AS PEÇAS</span>
+<span style="font-size: 30px; font-weight: 300; letter-spacing: -0.02em">Conheça os quatro ateliês parceiros</span>
+</div>
+<a href="Main.dc.html" style="height: 48px; padding: 0 22px; border-radius: 12px; background: #FFFFFF; color: #2A2DA8; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Ver ateliês</a>
+</div>
+</sc-if>
+
+<!-- 32 · Perguntas frequentes (modelo B) -->
+<sc-if value="{{isFaq}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">AJUDA</div>
+<h1 class="up d1" style="margin: 14px 0 0; font-size: 48px; line-height: 1.04; font-weight: 300; letter-spacing: -0.03em">Perguntas <span style="font-weight: 500; color: #3B3FD9">frequentes</span></h1>
+<label class="up d2" style="margin-top: 24px; display: flex; align-items: center; gap: 12px; height: 56px; box-sizing: border-box; padding: 0 18px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; max-width: 640px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+<input type="search" aria-label="Buscar nas perguntas" placeholder="Buscar: troca, prazo, senha…" value="{{q}}" onChange="{{onQ}}" style="flex-grow: 1; border: none; outline: none; background: transparent; font-size: 17px; color: #18181B; min-width: 0">
+</label>
+<div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{faqCats}}" as="c" hint-placeholder-count="5">
+<button onClick="{{c.pick}}" style="height: 38px; padding: 0 14px; border-radius: 999px; border: none; background: {{c.bg}}; color: {{c.fg}}; font-size: 14px; font-weight: 500">{{c.label}}</button>
+</sc-for>
+</div>
+<div style="margin-top: 24px; display: flex; flex-direction: column; border-top: 1px solid #E6E4DE">
+<sc-for list="{{faqs}}" as="f" hint-placeholder-count="6">
+<details key="{{f.key}}" class="up" style="border-bottom: 1px solid #E6E4DE; border-radius: 12px; transition: background .2s">
+<summary style="padding: 20px 16px; display: flex; align-items: center; gap: 16px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #6B6B72; width: 90px; flex-shrink: 0">{{f.cat}}</span>
+<span style="flex-grow: 1; font-size: 17px; font-weight: 500">{{f.q}}</span>
+<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+</summary>
+<div style="padding: 0 16px 20px 122px; font-size: 15px; line-height: 1.65; color: #44444A; max-width: 720px">{{f.a}}
+<sc-if value="{{f.soon}}" hint-placeholder-val="{{ false }}"> <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span></sc-if>
+</div>
+</details>
+</sc-for>
+</div>
+<sc-if value="{{faqEmpty}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 40px 0; text-align: center; font-size: 15px; color: #6B6B72">Nenhuma pergunta encontrada para “{{q}}”. Fale com o atendimento abaixo.</div>
+</sc-if>
+</sc-if>
+
+<!-- 29 · Trocas e devoluções (modelo B) -->
+<sc-if value="{{isTrocas}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">AJUDA · ATUALIZADO EM [DATA]</div>
+<h1 class="up d1" style="margin: 14px 0 0; font-size: 48px; line-height: 1.04; font-weight: 300; letter-spacing: -0.03em">Trocas e <span style="font-weight: 500; color: #3B3FD9">devoluções</span></h1>
+<div class="up d2 g-2" style="margin-top: 28px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 40px; font-weight: 300; letter-spacing: -0.03em; line-height: 1">30</span><span style="font-size: 14px; color: #44444A">dias para pedir a troca ou devolução, a partir do recebimento</span></div>
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 40px; font-weight: 300; letter-spacing: -0.03em; line-height: 1">[X]</span><span style="font-size: 14px; color: #44444A">dias úteis para o estorno aparecer na fatura do cartão</span></div>
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 40px; font-weight: 300; letter-spacing: -0.03em; line-height: 1">R$ 0</span><span style="font-size: 14px; color: #44444A">de custo de coleta para você <span style="color: #6B6B72">[CONFIRMAR]</span></span></div>
+</div>
+<div style="margin-top: 32px; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start" class="g-2">
+<nav class="toc hide-md" aria-label="Nesta página" style="position: sticky; top: 24px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; padding-left: 14px; border-left: 2px solid #E6E4DE">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">NESTA PÁGINA</span>
+<a href="#prazo">Prazo</a><a href="#como">Como pedir</a><a href="#condicoes">Condições</a><a href="#estorno">Estorno</a><a href="#cancelar">Cancelar antes do envio</a>
+</nav>
+<div style="display: flex; flex-direction: column; gap: 28px; font-size: 16px; line-height: 1.7; color: #44444A; max-width: 680px">
+<div id="prazo" style="display: flex; flex-direction: column; gap: 8px"><h2 style="margin: 0; font-size: 22px; font-weight: 500; color: #18181B">Prazo</h2><p style="margin: 0">Você tem 30 dias corridos a partir do recebimento para pedir a troca ou a devolução de qualquer peça, sem precisar justificar.</p></div>
+<div id="como" style="display: flex; flex-direction: column; gap: 12px"><h2 style="margin: 0; font-size: 22px; font-weight: 500; color: #18181B">Como pedir</h2>
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px">
+<li style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9; padding-top: 4px">01</span><span>Entre em <a href="Conta.dc.html">Meus pedidos</a> e abra o pedido.</span></li>
+<li style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9; padding-top: 4px">02</span><span>Fale com o atendimento informando o número do pedido e a peça. [CANAL: WHATSAPP OU E-MAIL]</span></li>
+<li style="display: flex; gap: 14px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9; padding-top: 4px">03</span><span>Embale a peça como chegou. Combinamos a coleta com você.</span></li>
+</ol>
+<div style="padding: 14px 16px; border-radius: 12px; background: #FCEEE4; font-size: 14px; line-height: 1.55; color: #18181B; display: flex; gap: 10px; align-items: flex-start"><span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px; white-space: nowrap">EM BREVE</span>Pedir a troca direto pela página do pedido, sem falar com o atendimento.</div>
+</div>
+<div id="condicoes" style="display: flex; flex-direction: column; gap: 8px"><h2 style="margin: 0; font-size: 22px; font-weight: 500; color: #18181B">Condições</h2><p style="margin: 0">A peça precisa estar sem sinais de uso e com a embalagem original. Peças artesanais têm pequenas variações de cor e forma; isso faz parte do processo e não é defeito. [REVISAR COM O JURÍDICO]</p></div>
+<div id="estorno" style="display: flex; flex-direction: column; gap: 8px"><h2 style="margin: 0; font-size: 22px; font-weight: 500; color: #18181B">Estorno</h2><p style="margin: 0">Na devolução, o valor é estornado no mesmo cartão usado na compra assim que a peça chega ao ateliê. O prazo para aparecer na fatura depende do banco.</p></div>
+<div id="cancelar" style="display: flex; flex-direction: column; gap: 8px"><h2 style="margin: 0; font-size: 22px; font-weight: 500; color: #18181B">Cancelar antes do envio</h2><p style="margin: 0">Enquanto o ateliê não começou o preparo, você cancela o pedido sozinho em <a href="Conta.dc.html">Meus pedidos</a>. Depois disso, vale a troca ou devolução.</p></div>
+</div>
+</div>
+</sc-if>
+
+<!-- 26 · Ateliês parceiros (modelo A) -->
+<sc-if value="{{isAteliers}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">ATELIÊS PARCEIROS</div>
+<h1 class="up d1" style="margin: 14px 0 0; font-size: 56px; line-height: 1.02; font-weight: 300; letter-spacing: -0.035em; max-width: 760px">Quatro bancadas, <span style="font-weight: 500; color: #3B3FD9">um endereço</span>.</h1>
+<p class="up d2" style="margin: 20px 0 0; font-size: 18px; line-height: 1.6; color: #44444A; max-width: 640px">Cada ateliê cuida de um ofício. Nas páginas de produto, o nome de quem fez aparece junto com a peça.</p>
+<div style="margin-top: 40px; display: flex; flex-direction: column; gap: 16px">
+<sc-for list="{{ateliers}}" as="a" hint-placeholder-count="4">
+<article class="up g-2" style="display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 24px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 16px; animation-delay: {{a.delay}}">
+<div style="height: 220px; border-radius: 14px; background: {{a.tint}}; display: flex; align-items: center; justify-content: center"><div class="floaty" style="display: flex"><dc-import name="Art" kind="{{a.kind}}" size="120" hint-size="120px,135px"></dc-import></div></div>
+<div style="padding: 12px 12px 12px 0; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">{{a.num}} · {{a.city}}</span>
+<span style="font-size: 30px; font-weight: 300; letter-spacing: -0.02em">{{a.name}}</span>
+<span style="font-size: 15px; line-height: 1.6; color: #44444A">{{a.text}}</span>
+<div style="display: flex; gap: 6px; flex-wrap: wrap; padding-top: 4px">
+<sc-for list="{{a.products}}" as="p" hint-placeholder-count="2"><a href="Produto.dc.html" style="height: 30px; padding: 0 12px; border-radius: 999px; background: #F1F0EC; color: #44444A; text-decoration: none; font-size: 13px; display: flex; align-items: center">{{p}}</a></sc-for>
+</div>
+</div>
+</article>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- 27 · Venda com a gente (modelo A) -->
+<sc-if value="{{isVenda}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">VENDA COM A GENTE</div>
+<h1 class="up d1" style="margin: 14px 0 0; font-size: 56px; line-height: 1.02; font-weight: 300; letter-spacing: -0.035em; max-width: 760px">Você faz. A gente <span style="font-weight: 500; color: #3B3FD9">leva até a casa</span> das pessoas.</h1>
+<p class="up d2" style="margin: 20px 0 0; font-size: 18px; line-height: 1.6; color: #44444A; max-width: 640px">Procuramos ateliês pequenos que trabalham à mão. Cuidamos da loja, do pagamento e do atendimento; você cuida das peças. [CONDIÇÕES COMERCIAIS A DEFINIR]</p>
+<div class="g-2" style="margin-top: 40px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<sc-for list="{{criteria}}" as="c" hint-placeholder-count="3">
+<div class="up" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 8px; animation-delay: {{c.delay}}"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9">{{c.n}}</span><span style="font-size: 20px; font-weight: 500">{{c.title}}</span><span style="font-size: 14px; line-height: 1.55; color: #44444A">{{c.text}}</span></div>
+</sc-for>
+</div>
+<div style="margin-top: 40px; display: flex; flex-direction: column">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #6B6B72; padding-bottom: 12px">COMO FUNCIONA</span>
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: 60px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-top: 1px solid #E6E4DE; align-items: baseline"><span style="font-size: 32px; font-weight: 300; color: #3B3FD9">{{s.n}}</span><span style="display: flex; flex-direction: column; gap: 4px"><b style="font-size: 17px; font-weight: 500">{{s.title}}</b><span style="font-size: 15px; color: #44444A; line-height: 1.55">{{s.text}}</span></span></div>
+</sc-for>
+</div>
+<div style="margin-top: 24px; border-radius: 20px; background: #3B3FD9; color: #FFFFFF; padding: 32px 36px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap">
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 26px; font-weight: 300">Mande seu portfólio</span><span style="font-size: 14px; color: #ECECFD">Fotos das peças, cidade, técnica e capacidade de produção por mês.</span></div>
+<a href="#" style="height: 48px; padding: 0 22px; border-radius: 12px; background: #FFFFFF; color: #2A2DA8; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">[E-MAIL PARA ATELIÊS]</a>
+</div>
+</sc-if>
+
+<!-- 28 · Lookbook (modelo A) -->
+<sc-if value="{{isLookbook}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">LOOKBOOK · OUTONO 2026</div>
+<h1 class="up d1" style="margin: 14px 0 0; font-size: 56px; line-height: 1.02; font-weight: 300; letter-spacing: -0.035em">As peças <span style="font-weight: 500; color: #3B3FD9">em casa</span></h1>
+<p class="up d2" style="margin: 16px 0 0; font-size: 17px; color: #44444A; max-width: 600px">Quatro cantos montados com a coleção. Toque numa peça para ver na loja.</p>
+<div class="g-2" style="margin-top: 32px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{scenes}}" as="sc" hint-placeholder-count="4">
+<figure class="up" style="margin: 0; position: relative; height: {{sc.h}}; border-radius: 20px; background: {{sc.bg}}; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; gap: 12px; padding-bottom: 72px; box-sizing: border-box; animation-delay: {{sc.delay}}">
+<sc-for list="{{sc.pieces}}" as="p" hint-placeholder-count="2"><div class="floaty" style="display: flex; animation-delay: {{p.delay}}"><dc-import name="Art" kind="{{p.kind}}" size="{{p.size}}" hint-size="100px,113px"></dc-import></div></sc-for>
+<figcaption style="position: absolute; left: 16px; right: 16px; bottom: 16px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: {{sc.ink}}; flex-grow: 1">{{sc.title}}</span>
+<sc-for list="{{sc.tags}}" as="t" hint-placeholder-count="2"><a href="Produto.dc.html" style="height: 30px; padding: 0 12px; border-radius: 999px; background: #FFFFFF; color: #18181B; text-decoration: none; font-size: 13px; display: flex; align-items: center">{{t}}</a></sc-for>
+</figcaption>
+</figure>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- 30, 31, 33, 34 · Ajuda e legal (modelo B, por dados) -->
+<sc-if value="{{isB}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">{{b.eyebrow}}</div>
+<h1 class="up d1" style="margin: 14px 0 0; font-size: 48px; line-height: 1.04; font-weight: 300; letter-spacing: -0.03em">{{b.title}}</h1>
+<p class="up d2" style="margin: 16px 0 0; font-size: 17px; line-height: 1.6; color: #44444A; max-width: 640px">{{b.intro}}</p>
+<sc-if value="{{b.hasSoon}}" hint-placeholder-val="{{ false }}">
+<div style="margin-top: 20px; padding: 14px 16px; border-radius: 12px; background: #FCEEE4; font-size: 14px; line-height: 1.55; display: flex; gap: 10px; align-items: flex-start; max-width: 680px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px; white-space: nowrap">EM BREVE</span>{{b.soon}}</div>
+</sc-if>
+<div class="g-2" style="margin-top: 32px; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start">
+<nav class="toc hide-md" aria-label="Nesta página" style="position: sticky; top: 24px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; padding-left: 14px; border-left: 2px solid #E6E4DE">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">NESTA PÁGINA</span>
+<sc-for list="{{b.sections}}" as="x" hint-placeholder-count="4"><a href="#{{x.id}}">{{x.h}}</a></sc-for>
+</nav>
+<div style="display: flex; flex-direction: column; gap: 28px; font-size: 16px; line-height: 1.7; color: #44444A; max-width: 680px">
+<sc-for list="{{b.sections}}" as="x" hint-placeholder-count="4">
+<div id="{{x.id}}" style="display: flex; flex-direction: column; gap: 8px"><h2 style="margin: 0; font-size: 22px; font-weight: 500; color: #18181B">{{x.h}}</h2><p style="margin: 0">{{x.p}}</p></div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<!-- 35 · Rastrear pedido -->
+<sc-if value="{{isRastrear}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">RASTREAR PEDIDO</div>
+<h1 class="up d1" style="margin: 14px 0 0; font-size: 48px; line-height: 1.04; font-weight: 300; letter-spacing: -0.03em">Onde está meu <span style="font-weight: 500; color: #3B3FD9">pedido?</span></h1>
+<div class="up d2 g-2" style="margin-top: 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
+<span style="width: 48px; height: 48px; border-radius: 14px; background: #ECECFD; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="1.6" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"></path><circle cx="7" cy="17.5" r="1.5"></circle><circle cx="17" cy="17.5" r="1.5"></circle></svg></span>
+<b style="font-size: 20px; font-weight: 500">Entre na sua conta</b>
+<span style="font-size: 15px; line-height: 1.55; color: #44444A">Em Meus pedidos você vê a linha do tempo, a transportadora e o código de rastreio, atualizados em tempo real.</span>
+<div style="display: flex; gap: 10px; padding-top: 6px"><a href="Acesso.dc.html" class="btn-p" style="height: 48px; padding: 0 22px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Entrar</a><a href="Conta.dc.html" class="btn-s" style="height: 48px; padding: 0 18px; box-sizing: border-box; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Já entrei: Meus pedidos</a></div>
+</div>
+<sc-if value="{{notFuturo}}" hint-placeholder-val="{{ true }}">
+<div style="background: #FFFFFF; border: 1px dashed #E6E4DE; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 12px; opacity: 0.7">
+<div style="display: flex; align-items: center; gap: 10px"><b style="font-size: 20px; font-weight: 500; flex-grow: 1">Rastrear sem login</b><span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 3px 7px">EM BREVE</span></div>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Número do pedido<input disabled="" placeholder="MF-000000" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #E6E4DE; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">E-mail da compra<input disabled="" placeholder="voce@email.com" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 14px"></label>
+</div>
+</sc-if>
+<sc-if value="{{futuro}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
+<b style="font-size: 20px; font-weight: 500">Rastrear sem login</b>
+<sc-if value="{{trk.form}}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{trk.submit}}" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Número do pedido<input value="{{trk.num}}" onChange="{{trk.onNum}}" placeholder="MF-000000" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{trk.b}}; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; text-transform: uppercase"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">E-mail da compra<input type="email" value="{{trk.email}}" onChange="{{trk.onEmail}}" placeholder="voce@email.com" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{trk.b}}; border-radius: 12px; font-size: 14px"></label>
+<sc-if value="{{trk.err}}" hint-placeholder-val="{{ false }}"><span role="alert" style="font-size: 13px; color: #B4501E">Não encontramos um pedido com esse número e e-mail.</span></sc-if>
+<button type="submit" class="btn-p" style="height: 48px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">Rastrear</button>
+<span style="font-size: 12px; color: #6B6B72">Para testar: MF-000198 e ana@email.com</span>
+</form>
+</sc-if>
+<sc-if value="{{trk.found}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 10px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 500; flex-grow: 1">MF-000198</span><span style="height: 26px; padding: 0 10px; border-radius: 999px; background: #3B3FD9; color: #FFFFFF; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center">Enviado</span></div>
+<div style="font-size: 14px; color: #44444A">[TRANSPORTADORA] · <span style="font-family: 'JetBrains Mono', monospace">[CÓDIGO]</span> · previsão [DATA]</div>
+<div style="display: flex; gap: 6px"><span style="flex: 1; height: 6px; border-radius: 999px; background: #15803D"></span><span style="flex: 1; height: 6px; border-radius: 999px; background: #15803D"></span><span style="flex: 1; height: 6px; border-radius: 999px; background: #3B3FD9"></span><span style="flex: 1; height: 6px; border-radius: 999px; background: #E6E4DE"></span></div>
+<div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6B6B72"><span>CONFIRMADO</span><span>PREPARO</span><span>ENVIADO</span><span>ENTREGUE</span></div>
+<button class="lnk" onClick="{{trk.reset}}" style="align-self: flex-start; background: none; border: none; padding: 0; color: #3B3FD9; font-size: 14px; font-weight: 500; min-height: 32px; cursor: pointer">Rastrear outro pedido</button>
+</div>
+</sc-if>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<!-- Ainda precisa de ajuda -->
+<div style="margin-top: 48px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 24px 28px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap">
+<span style="width: 48px; height: 48px; border-radius: 14px; background: #ECECFD; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="1.6" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"></path></svg></span>
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px"><b style="font-size: 17px; font-weight: 500">Ainda precisa de ajuda?</b><span style="font-size: 14px; color: #6B6B72">Seg a sex, 9h às 18h · [SEU WHATSAPP] · [SEU E-MAIL]</span></div>
+<a href="Conta.dc.html" class="btn-s" style="height: 44px; padding: 0 18px; box-sizing: border-box; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; text-decoration: none; display: flex; align-items: center; font-size: 14px; font-weight: 500">Rastrear pedido</a>
+</div>
+</div>
+</div>
+</section>
+
+<dc-import name="Footer" hint-size="100%,560px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pagina":{"editor":"enum","options":["nossa-historia","ateliers","venda","lookbook","perguntas-frequentes","trocas-e-devolucoes","prazos","cuidados","rastrear","privacidade","termos"],"default":"nossa-historia"},"futuro":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1800}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { page: null, from: null, q: '', cat: 'Todas' }; }
+  norm(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  renderVals() {
+    const s = this.state;
+    const prop = this.props.pagina || 'nossa-historia';
+    const page = s.page && s.from === prop ? s.page : prop;
+    const go = (p) => this.setState({ page: p, from: prop, q: '', cat: 'Todas' });
+    if (this.lastPage !== page) { this.lastPage = page; }
+    const groupsData = [
+      { title: 'A MARFIM', pages: [['nossa-historia', 'Nossa história', 'A'], ['ateliers', 'Ateliês parceiros', 'A'], ['venda', 'Venda com a gente', 'A'], ['lookbook', 'Lookbook', 'A']] },
+      { title: 'AJUDA', pages: [['perguntas-frequentes', 'Perguntas frequentes', 'B'], ['trocas-e-devolucoes', 'Trocas e devoluções', 'B'], ['prazos', 'Prazos e frete', 'B'], ['cuidados', 'Cuidados com as peças', 'B'], ['rastrear', 'Rastrear pedido', '']] },
+      { title: 'LEGAL', pages: [['privacidade', 'Privacidade', 'B'], ['termos', 'Termos de uso', 'B']] }
+    ];
+    const groups = groupsData.map((g) => ({
+      title: g.title,
+      pages: g.pages.map(([id, label, model]) => {
+        const on = id === page;
+        return { label, model, live: !!id, static: !id, current: on ? 'page' : 'false', bg: on ? '#FFFFFF' : 'transparent', fg: on ? '#3B3FD9' : '#18181B', weight: on ? 500 : 400, go: () => id && go(id) };
+      })
+    }));
+    const faqAll = [
+      ['Pedidos', 'Como acompanho meu pedido?', 'Em Minha conta › Meus pedidos. A linha do tempo atualiza sozinha a cada etapa, e o rastreio aparece quando a transportadora coleta.'],
+      ['Pedidos', 'Posso cancelar um pedido?', 'Sim, pela página do pedido, enquanto o ateliê não começou o preparo. Depois disso, use a troca ou devolução.'],
+      ['Pagamento', 'Quais formas de pagamento vocês aceitam?', 'Cartão de crédito. Os dados do cartão vão direto para o processador de pagamento; a Marfim não guarda o número.'],
+      ['Pagamento', 'Tem Pix ou parcelamento?', 'Pix com desconto e parcelamento estão a caminho.', true],
+      ['Pagamento', 'Meu pagamento não foi aprovado. E agora?', 'Nenhum valor é cobrado e as peças voltam ao estoque. Sua sacola continua salva: confira os dados ou use outro cartão e tente de novo.'],
+      ['Entrega', 'Quanto custa o frete e qual o prazo?', 'O cálculo de frete e prazo pelo CEP está chegando. Hoje, o ateliê despacha em até 3 dias úteis.', true],
+      ['Trocas', 'Qual o prazo para trocar ou devolver?', '30 dias a partir do recebimento. Veja o passo a passo em Trocas e devoluções.'],
+      ['Conta', 'Não recebi o e-mail de confirmação.', 'Confira o spam e peça um novo link na faixa do topo do site. O link vale 24 horas.'],
+      ['Conta', 'Esqueci minha senha.', 'Use “Esqueci minha senha” na tela de entrar. O link chega por e-mail e vale 30 minutos.']
+    ];
+    const cats = ['Todas', 'Pedidos', 'Pagamento', 'Entrega', 'Trocas', 'Conta'];
+    const t = this.norm(s.q.trim());
+    const faqs = faqAll.filter(([c, q, a]) => (s.cat === 'Todas' || c === s.cat) && (!t || this.norm(q + ' ' + a).includes(t)))
+      .map(([c, q, a, soon], i) => ({ key: s.cat + t + i, cat: c.toUpperCase(), q, a, soon: !!soon }));
+    const B = {
+      prazos: { eyebrow: 'AJUDA · ATUALIZADO EM [DATA]', title: 'Prazos e frete', intro: 'Cada peça sai direto do ateliê que a fez. O prazo total soma o preparo no ateliê e o transporte.', soon: 'Cálculo de frete e prazo pelo CEP, entrega expressa e frete grátis acima de R$ 299.', sections: [
+        ['preparo', 'Preparo no ateliê', 'O ateliê confere, embala e despacha em até 3 dias úteis depois da confirmação do pagamento. Peças sob encomenda mostram o prazo próprio na página do produto.'],
+        ['transporte', 'Transporte', 'O prazo de transporte depende da região e da transportadora. [DEFINIR PRAZOS POR REGIÃO]'],
+        ['rastreio', 'Rastreio', 'Quando a transportadora coleta, o código aparece em Meus pedidos e chega por e-mail.'],
+        ['ausencia', 'Se ninguém estiver em casa', '[POLÍTICA DA TRANSPORTADORA PARA NOVAS TENTATIVAS]']] },
+      cuidados: { eyebrow: 'AJUDA', title: 'Cuidados com as peças', intro: 'Peças feitas à mão duram muito com cuidados simples. Pequenas variações de cor e forma são parte do processo.', sections: [
+        ['ceramica', 'Cerâmica', 'Pode ir à lava-louças e ao micro-ondas, exceto peças com detalhes metálicos. Evite choque térmico: não leve do congelador direto ao forno.'],
+        ['madeira', 'Madeira', 'Limpe com pano levemente úmido. A cada seis meses, aplique óleo vegetal ou cera de abelha para manter a proteção.'],
+        ['latao', 'Latão e vidro', 'O latão escurece com o tempo e ganha pátina. Para manter o brilho, use cera neutra. Limpe o vidro com pano macio e seco.'],
+        ['tecidos', 'Algodão e linho', 'Lave à mão ou no ciclo delicado, em água fria, e seque à sombra. O linho amacia a cada lavagem.']] },
+      privacidade: { eyebrow: 'LEGAL · ATUALIZADO EM [DATA]', title: 'Política de privacidade', intro: '[TEXTO A SER REVISADO PELO JURÍDICO.] Esta página explica quais dados a Marfim coleta, por que e como você controla esses dados.', sections: [
+        ['coleta', 'Dados que coletamos', 'Nome, e-mail, telefone e endereços que você informa; histórico de pedidos. Os dados do cartão vão direto ao processador de pagamento e não ficam com a Marfim.'],
+        ['uso', 'Para que usamos', 'Processar pedidos, enviar e-mails sobre a conta e os pedidos, e prevenir fraudes.'],
+        ['compartilhamento', 'Com quem compartilhamos', 'Com o ateliê que faz a peça (nome e endereço de entrega), a transportadora e o processador de pagamento. [LISTA COMPLETA]'],
+        ['direitos', 'Seus direitos (LGPD)', 'Você pode pedir acesso, correção ou exclusão dos seus dados pelo [CANAL DO ENCARREGADO].']] },
+      termos: { eyebrow: 'LEGAL · ATUALIZADO EM [DATA]', title: 'Termos de uso', intro: '[TEXTO A SER REVISADO PELO JURÍDICO.] Ao usar a loja, você concorda com as regras abaixo.', sections: [
+        ['conta', 'Conta', 'Você é responsável pela senha da sua conta. Para finalizar compras, o e-mail precisa estar confirmado.'],
+        ['precos', 'Preços e estoque', 'Preço e disponibilidade são conferidos de novo no momento do pagamento. Se algo mudar, avisamos antes de cobrar.'],
+        ['pagamento', 'Pagamento', 'Aceitamos cartão de crédito. O pedido só é confirmado depois da aprovação do banco.'],
+        ['trocas', 'Trocas e cancelamentos', 'Valem as regras da página Trocas e devoluções e o Código de Defesa do Consumidor.']] }
+    };
+    const bp = B[page];
+    const ateliers = [
+      ['01', 'Estúdio Barro Cru', 'CUNHA · SP', 'vase', '#FCEEE4', 'Cerâmica de alta temperatura queimada em forno a lenha. [HISTÓRIA DO ATELIÊ]', ['Vaso Duna', 'Jarra Seixo', 'Canecas Grão', 'Tigela Areia']],
+      ['02', 'Oficina Tora', 'GONÇALVES · MG', 'chair', '#E8F5EC', 'Marcenaria em madeira de reflorestamento, com encaixes sem prego. [HISTÓRIA DO ATELIÊ]', ['Cadeira Lina', 'Banco Tora']],
+      ['03', 'Oficina Faísca', 'SÃO PAULO · SP', 'pendant', '#ECECFD', 'Luminárias em latão e vidro soprado, montadas uma a uma. [HISTÓRIA DO ATELIÊ]', ['Pendente Orbe', 'Luminária Arco', 'Arandela Fio']],
+      ['04', 'Tear Alto', 'RESENDE COSTA · MG', 'throw', '#F1F0EC', 'Tecelagem em tear de pedal, com fios tingidos no próprio ateliê. [HISTÓRIA DO ATELIÊ]', ['Manta Trama', 'Almofada Linho', 'Toalha Listra']]
+    ].map((a, i) => ({ num: a[0], name: a[1], city: a[2], kind: a[3], tint: a[4], text: a[5], products: a[6], delay: (i * 0.06).toFixed(2) + 's' }));
+    return {
+      futuro: !!this.props.futuro, notFuturo: !this.props.futuro,
+      trk: (() => {
+        const ok = (s.tNum || '').trim().toUpperCase() === 'MF-000198' && (s.tEmail || '').trim().toLowerCase() === 'ana@email.com';
+        return { num: s.tNum || '', email: s.tEmail || '', form: !s.tFound, found: !!s.tFound, err: !!s.tErr, b: s.tErr ? '#B4501E' : '#E6E4DE',
+          onNum: (e) => this.setState({ tNum: e.target.value, tErr: false }), onEmail: (e) => this.setState({ tEmail: e.target.value, tErr: false }),
+          submit: (e) => { e.preventDefault(); this.setState(ok ? { tFound: true } : { tErr: true }); },
+          reset: () => this.setState({ tFound: false, tNum: '', tEmail: '' }) };
+      })(),
+      isAteliers: page === 'ateliers', isVenda: page === 'venda', isLookbook: page === 'lookbook', isRastrear: page === 'rastrear',
+      isB: !!bp,
+      b: bp ? { eyebrow: bp.eyebrow, title: bp.title, intro: bp.intro, hasSoon: !!bp.soon, soon: bp.soon || '', sections: bp.sections.map(([id, h, p]) => ({ id, h, p })) } : { sections: [] },
+      ateliers,
+      criteria: [['01', 'Feito à mão', 'Produção artesanal, em lote pequeno, com o nome de quem faz.'], ['02', 'Constância', 'Capacidade de repor as peças com qualidade parecida ao longo da estação.'], ['03', 'Despacho em 3 dias', 'Embalar e despachar em até 3 dias úteis depois do pedido.']].map((c, i) => ({ n: c[0], title: c[1], text: c[2], delay: (i * 0.06).toFixed(2) + 's' })),
+      steps: [['1', 'Você manda o portfólio', 'Fotos, técnica, cidade e quantas peças consegue produzir por mês.'], ['2', 'Conversamos', 'Visitamos o ateliê (ou fazemos uma chamada) e escolhemos as peças juntos.'], ['3', 'Fotos e cadastro', 'Fotografamos e cadastramos as peças com o nome do ateliê.'], ['4', 'Pedidos chegam', 'Você recebe o pedido, embala e entrega para a coleta. O pagamento é repassado em [PRAZO].']].map((s) => ({ n: s[0], title: s[1], text: s[2] })),
+      scenes: [
+        { title: 'MESA DE JANTAR', bg: '#ECECFD', ink: '#3B3FD9', h: '420px', pieces: [['pendant', 150], ['vase', 90]], tags: ['Pendente Orbe', 'Vaso Duna'] },
+        { title: 'CANTO DE LEITURA', bg: '#FCEEE4', ink: '#B4501E', h: '420px', pieces: [['chair', 150], ['lamp', 130]], tags: ['Cadeira Lina', 'Luminária Arco'] },
+        { title: 'CAFÉ DA MANHÃ', bg: '#E8F5EC', ink: '#15803D', h: '320px', pieces: [['mug', 90], ['jar', 110], ['bowl', 90]], tags: ['Canecas Grão', 'Jarra Seixo'] },
+        { title: 'SOFÁ', bg: '#F1F0EC', ink: '#44444A', h: '320px', pieces: [['throw', 130], ['throw', 90]], tags: ['Manta Trama', 'Almofada Linho'] }
+      ].map((sc, i) => ({ title: sc.title, bg: sc.bg, ink: sc.ink, h: sc.h, tags: sc.tags, delay: (i * 0.08).toFixed(2) + 's', pieces: sc.pieces.map(([kind, size], j) => ({ kind, size, delay: (j * 0.7).toFixed(1) + 's' })) })),
+      pageKey: page, groups,
+      isHistoria: page === 'nossa-historia', isFaq: page === 'perguntas-frequentes', isTrocas: page === 'trocas-e-devolucoes',
+      principles: [
+        { n: '01', title: 'Feito à mão, de verdade', text: 'Só vendemos peças produzidas por ateliês que conhecemos pelo nome. Nada de revenda de fábrica.' },
+        { n: '02', title: 'Poucas peças, bem feitas', text: 'Lotes pequenos e materiais que envelhecem bem: cerâmica, madeira, latão, linho.' },
+        { n: '03', title: 'Quem fez, assina', text: 'Cada página de produto diz qual ateliê fez a peça. [COMPLETE COM O QUE A LOJA PROMETE.]' }
+      ],
+      q: s.q, onQ: (e) => this.setState({ q: e.target.value }),
+      faqCats: cats.map((c) => ({ label: c, bg: c === s.cat ? '#3B3FD9' : '#F1F0EC', fg: c === s.cat ? '#FFFFFF' : '#44444A', pick: () => this.setState({ cat: c }) })),
+      faqs, faqEmpty: faqs.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Loja · Estados de erro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}a:hover{color:#2A2DA8}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+button:focus-visible,a:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+.wrap{width:100%;max-width:1280px;margin:0 auto;padding-left:40px;padding-right:40px;box-sizing:border-box}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-14px) rotate(4deg)}}
+@keyframes wobble{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes ring{from{stroke-dashoffset:0}to{stroke-dashoffset:327}}
+.up{animation:up .6s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.08s}.d2{animation-delay:.16s}.d3{animation-delay:.24s}
+.floaty{animation:floaty 6s ease-in-out infinite}
+.wobble{animation:wobble 3s ease-in-out infinite;transform-origin:50% 0}
+.spin{animation:spin 40s linear infinite}
+.btn-p{transition:background .2s,transform .2s}
+.btn-p:hover:not(:disabled){background:#2A2DA8 !important;transform:translateY(-1px)}
+.btn-s{transition:background .2s}
+.btn-s:hover{background:#ECEBE6 !important}
+.nav-a:hover{color:#3B3FD9 !important}
+.foot-a:hover{color:#FFFFFF !important}
+@media (max-width:1180px){.nav{display:none !important}}
+@media (max-width:980px){.foot-cols{grid-template-columns:repeat(2,minmax(0,1fr)) !important;row-gap:40px !important}.foot-cols>*{grid-column:auto !important}.hide-md{display:none !important}.big{font-size:120px !important}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 100%; min-width: 360px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden">
+<dc-import name="Header" count="3" logged="{{logged}}" hint-size="100%,108px"></dc-import>
+
+<section style="padding: 72px 0 96px; flex-grow: 1">
+<div key="{{tipo}}" class="wrap" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px">
+
+<!-- 36 · 404 -->
+<sc-if value="{{is404}}" hint-placeholder-val="{{ true }}">
+<div class="up" style="position: relative; display: flex; align-items: center; justify-content: center">
+<span class="big" style="font-size: 220px; font-weight: 300; letter-spacing: -0.06em; line-height: 0.9; color: #18181B">4</span>
+<span class="floaty" style="width: 180px; height: 180px; border-radius: 50%; background: #ECECFD; display: inline-flex; align-items: center; justify-content: center; margin: 0 8px"><dc-import name="Art" kind="vase" size="110" hint-size="110px,124px"></dc-import></span>
+<span class="big" style="font-size: 220px; font-weight: 300; letter-spacing: -0.06em; line-height: 0.9; color: #18181B">4</span>
+</div>
+<div class="up d1" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">PÁGINA NÃO ENCONTRADA</div>
+<h1 class="up d1" style="margin: 0; font-size: 40px; font-weight: 300; letter-spacing: -0.03em">Esta página saiu da prateleira</h1>
+<p class="up d2" style="margin: 0; font-size: 16px; color: #6B6B72; max-width: 460px">O endereço pode estar errado ou a página foi removida. As peças continuam todas aqui.</p>
+<div class="up d3" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; padding-top: 4px">
+<a href="Main.dc.html" class="btn-p" style="height: 48px; padding: 0 22px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Voltar ao início</a>
+<a href="Listagem.dc.html" class="btn-s" style="height: 48px; padding: 0 20px; box-sizing: border-box; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Buscar produtos</a>
+</div>
+</sc-if>
+
+<!-- 37 · 500 -->
+<sc-if value="{{is500}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="position: relative; width: 160px; height: 160px; display: flex; align-items: center; justify-content: center">
+<svg class="spin" width="160" height="160" viewBox="0 0 160 160" fill="none" style="position: absolute; inset: 0"><circle cx="80" cy="80" r="74" stroke="#E6E4DE" stroke-dasharray="3 8"></circle><circle cx="80" cy="6" r="5" fill="#E8793A"></circle></svg>
+<span class="wobble" style="display: flex"><dc-import name="Art" kind="pendant" size="96" hint-size="96px,108px"></dc-import></span>
+</div>
+<div class="up d1" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">ERRO INESPERADO · 500</div>
+<h1 class="up d1" style="margin: 0; font-size: 40px; font-weight: 300; letter-spacing: -0.03em">Algo deu errado do nosso lado</h1>
+<p class="up d2" style="margin: 0; font-size: 16px; color: #6B6B72; max-width: 480px">Não foi nada que você fez. Tente de novo em instantes. Se continuar, fale com o atendimento e informe o código abaixo.</p>
+<div class="up d2" style="display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 16px; border-radius: 14px; background: #FFFFFF; border: 1px solid #E6E4DE">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #6B6B72">CÓDIGO</span>
+<code style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #18181B">{{traceId}}</code>
+<button class="btn-s" onClick="{{copy}}" style="height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; color: {{copyColor}}; font-size: 13px; font-weight: 500">{{copyLabel}}</button>
+</div>
+<div class="up d3" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; padding-top: 4px">
+<button class="btn-p" onClick="{{retry}}" style="height: 48px; padding: 0 22px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">Tentar de novo</button>
+<a href="Main.dc.html" class="btn-s" style="height: 48px; padding: 0 20px; box-sizing: border-box; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Voltar ao início</a>
+</div>
+</sc-if>
+
+<!-- 38 · 429 -->
+<sc-if value="{{is429}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="position: relative; width: 140px; height: 140px">
+<svg width="140" height="140" viewBox="0 0 120 120" fill="none" style="transform: rotate(-90deg)"><circle cx="60" cy="60" r="52" stroke="#ECECFD" stroke-width="6"></circle><circle cx="60" cy="60" r="52" stroke="{{ringColor}}" stroke-width="6" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="{{ringOffset}}" style="transition: stroke-dashoffset 1s linear"></circle></svg>
+<span style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center">
+<span style="font-size: 44px; font-weight: 300; letter-spacing: -0.03em; line-height: 1">{{secs}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">SEGUNDOS</span>
+</span>
+</div>
+<div class="up d1" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">MUITAS TENTATIVAS · 429</div>
+<h1 class="up d1" style="margin: 0; font-size: 40px; font-weight: 300; letter-spacing: -0.03em">Vamos com calma</h1>
+<p class="up d2" style="margin: 0; font-size: 16px; color: #6B6B72; max-width: 460px">Recebemos muitas tentativas seguidas deste aparelho. Por segurança, espere a contagem terminar para tentar de novo.</p>
+<button class="btn-p up d3" onClick="{{restart}}" disabled="{{waiting}}" style="height: 48px; padding: 0 22px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">{{retryLabel}}</button>
+</sc-if>
+
+<!-- 39 · Sessão expirada -->
+<sc-if value="{{isSession}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="width: 100%; max-width: 520px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 24px; padding: 40px 36px; display: flex; flex-direction: column; align-items: center; gap: 16px">
+<span style="width: 72px; height: 72px; border-radius: 20px; background: #ECECFD; display: flex; align-items: center; justify-content: center">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11h14v10H5zM8 11V8a4 4 0 0 1 8 0v3"></path><path d="M12 15v2"></path></svg></span>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">SESSÃO EXPIRADA</div>
+<h1 style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.03em">Entre de novo para continuar</h1>
+<p style="margin: 0; font-size: 15px; color: #6B6B72; line-height: 1.55">Por segurança, sua sessão terminou. Depois de entrar, você volta direto para <b style="font-weight: 500; color: #18181B">Meus pedidos</b>. Sua sacola continua salva.</p>
+<a href="Acesso.dc.html" class="btn-p" style="width: 100%; height: 52px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 500">Entrar</a>
+<a href="Main.dc.html" style="font-size: 14px; font-weight: 500; text-decoration: none">Continuar sem entrar</a>
+</div>
+</sc-if>
+
+</div>
+</section>
+
+<dc-import name="Footer" hint-size="100%,560px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"tipo":{"editor":"enum","options":["404","500","429","sessao-expirada"],"default":"404"},"retryAfter":{"editor":"int","default":30,"min":5,"max":120},"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { start: Date.now(), now: Date.now(), copied: false }; }
+  componentDidMount() { this.t = setInterval(() => this.setState({ now: Date.now() }), 1000); }
+  componentWillUnmount() { clearInterval(this.t); clearTimeout(this.ct); }
+  renderVals() {
+    const tipo = this.props.tipo || '404';
+    const total = Number(this.props.retryAfter) || 30;
+    const left = Math.max(0, total - Math.floor((this.state.now - this.state.start) / 1000));
+    return {
+      tipo, logged: tipo !== 'sessao-expirada',
+      is404: tipo === '404', is500: tipo === '500', is429: tipo === '429', isSession: tipo === 'sessao-expirada',
+      traceId: '00-4bf92f3577b34da6-a3ce929d0e0e4736',
+      copyLabel: this.state.copied ? 'Copiado' : 'Copiar', copyColor: this.state.copied ? '#15803D' : '#18181B',
+      copy: () => {
+        try { navigator.clipboard && navigator.clipboard.writeText('00-4bf92f3577b34da6-a3ce929d0e0e4736'); } catch (e) {}
+        this.setState({ copied: true }); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ copied: false }), 2000);
+      },
+      retry: () => this.setState({ start: Date.now() }),
+      secs: left, waiting: left > 0,
+      ringOffset: Math.round(327 * (1 - left / total)), ringColor: left > 0 ? '#3B3FD9' : '#15803D',
+      retryLabel: left > 0 ? 'Tentar de novo em ' + left + 's' : 'Tentar de novo',
+      restart: () => this.setState({ start: Date.now(), now: Date.now() })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Loja · Listagem, busca e promoções</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}a:hover{color:#2A2DA8}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+.wrap{width:100%;max-width:1280px;margin:0 auto;padding-left:40px;padding-right:40px;box-sizing:border-box}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes slidein{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.up{animation:up .7s cubic-bezier(.2,.7,.2,1) both}
+.pop{animation:pop .45s ease}
+.slidein{animation:slidein .45s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.spin{animation:spin 40s linear infinite}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.card{transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+.card:hover{transform:translateY(-5px);box-shadow:0 16px 36px -18px rgba(24,24,27,.22)}
+.card .art{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.card:hover .art{transform:scale(1.06) rotate(-2deg)}
+.btn-p{transition:background .2s,transform .2s}
+.btn-p:hover{background:#2A2DA8 !important;transform:translateY(-1px)}
+.btn-s{transition:background .2s}
+.btn-s:hover{background:#ECEBE6 !important}
+.icon-b{transition:background .2s}
+.icon-b:hover{background:#ECEBE6 !important}
+.pill{transition:background .2s}
+.pill:hover{background:#ECEBE6 !important}
+.nav-a:hover{color:#3B3FD9 !important}
+.foot-a:hover{color:#FFFFFF !important}
+.pname{color:#18181B;text-decoration:none}
+.pname:hover{color:#3B3FD9}
+@media (max-width:1180px){.nav{display:none !important}.g-prod{grid-template-columns:repeat(3,minmax(0,1fr)) !important}}
+@media (max-width:980px){.g-prod{grid-template-columns:repeat(2,minmax(0,1fr)) !important}.foot-cols{grid-template-columns:repeat(2,minmax(0,1fr)) !important;row-gap:40px !important}.foot-cols>*{grid-column:auto !important}.hide-md{display:none !important}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 100%; min-width: 360px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden">
+<dc-import name="Header" count="{{bagCount}}" active="{{navActive}}" hint-size="100%,108px"></dc-import>
+
+<!-- Topo: categoria -->
+<sc-if value="{{isCat}}" hint-placeholder-val="{{ true }}">
+<section style="padding: 32px 0 8px">
+<div class="wrap" style="display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72"><a href="Main.dc.html" style="color: #6B6B72; text-decoration: none">INÍCIO</a> / {{catUpper}}</div>
+<div style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap">
+<h1 key="{{catTitle}}" class="up" style="margin: 0; font-size: 44px; line-height: 1; font-weight: 300; letter-spacing: -0.03em">{{catTitle}}</h1>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #6B6B72">{{countLabel}}</span>
+</div>
+<p style="margin: 0; font-size: 15px; color: #6B6B72; max-width: 560px">{{catBlurb}}</p>
+</div>
+</section>
+</sc-if>
+
+<!-- Topo: busca -->
+<sc-if value="{{isSearch}}" hint-placeholder-val="{{ false }}">
+<section style="padding: 32px 0 8px">
+<div class="wrap" style="display: flex; flex-direction: column; gap: 16px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">BUSCA</div>
+<label style="display: flex; align-items: center; gap: 14px; height: 64px; box-sizing: border-box; padding: 0 20px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; max-width: 720px">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+<input type="search" aria-label="Buscar produtos" placeholder="Buscar por peça, ateliê ou categoria" value="{{term}}" onChange="{{onTerm}}" style="flex-grow: 1; border: none; outline: none; background: transparent; font-size: 22px; font-weight: 300; color: #18181B; min-width: 0">
+<sc-if value="{{hasTerm}}" hint-placeholder-val="{{ true }}">
+<button class="icon-b" onClick="{{clearTerm}}" aria-label="Limpar busca" style="width: 36px; height: 36px; border-radius: 10px; border: none; background: transparent; color: #6B6B72; display: flex; align-items: center; justify-content: center">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+</button>
+</sc-if>
+</label>
+<sc-if value="{{showSearchCount}}" hint-placeholder-val="{{ true }}">
+<div style="font-size: 15px; color: #44444A">{{searchLabel}}</div>
+</sc-if>
+</div>
+</section>
+</sc-if>
+
+<!-- Topo: promoções -->
+<sc-if value="{{isPromo}}" hint-placeholder-val="{{ false }}">
+<section style="padding: 28px 0 8px">
+<div class="wrap">
+<div style="position: relative; overflow: hidden; border-radius: 20px; background: #3B3FD9; color: #FFFFFF; padding: 36px 40px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap">
+<svg class="spin" width="340" height="340" viewBox="0 0 420 420" fill="none" style="position: absolute; right: -80px; top: -110px"><circle cx="210" cy="210" r="200" stroke="#FFFFFF" stroke-opacity=".18" stroke-dasharray="3 10"></circle><circle cx="210" cy="210" r="140" stroke="#FFFFFF" stroke-opacity=".12"></circle><circle cx="210" cy="10" r="7" fill="#E8793A"></circle></svg>
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 10px; position: relative">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #ECECFD">PROMOÇÕES · SEMANA DO DESIGN</div>
+<h1 style="margin: 0; font-size: 44px; font-weight: 300; letter-spacing: -0.03em; line-height: 1.05">Peças com <span style="font-weight: 500">preço especial</span></h1>
+<div style="font-size: 15px; color: #ECECFD">{{countLabel}} com desconto enquanto durar a semana.</div>
+</div>
+</div>
+</div>
+</section>
+</sc-if>
+
+<!-- Barra de filtros -->
+<section style="padding: 20px 0 0">
+<div class="wrap" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid #E6E4DE">
+<sc-if value="{{isCat}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; gap: 8px; flex-wrap: wrap" role="tablist" aria-label="Categorias">
+<sc-for list="{{cats}}" as="c" hint-placeholder-count="6">
+<button role="tab" aria-selected="{{c.active}}" class="{{c.cls}}" onClick="{{c.pick}}" style="height: 40px; padding: 0 16px; border-radius: 999px; border: none; background: {{c.bg}}; color: {{c.fg}}; font-size: 14px; font-weight: 500">{{c.label}}</button>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{notCat}}" hint-placeholder-val="{{ false }}">
+<span style="font-size: 14px; color: #44444A">{{countLabel}}</span>
+</sc-if>
+<div style="flex-grow: 1"></div>
+<label style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #6B6B72">Ordenar por
+<select value="{{sort}}" onChange="{{onSort}}" style="height: 40px; padding: 0 12px; border: 1px solid #E6E4DE; border-radius: 12px; background: #FFFFFF; font-size: 14px; color: #18181B">
+<option value="relevancia">Mais recentes</option>
+<option value="nome">Nome (A–Z)</option>
+<option value="preco-asc">Menor preço</option>
+<option value="preco-desc">Maior preço</option>
+</select>
+</label>
+</div>
+</section>
+
+<!-- Grade -->
+<section style="padding: 24px 0 64px; flex-grow: 1">
+<div class="wrap" style="display: flex; flex-direction: column; gap: 32px">
+
+<sc-if value="{{isLoading}}" hint-placeholder-val="{{ false }}">
+<div class="g-prod" aria-busy="true" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{skels}}" as="s" hint-placeholder-count="8">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 8px; display: flex; flex-direction: column; gap: 12px">
+<div class="skel" style="height: 210px; border-radius: 12px"></div>
+<div style="padding: 0 6px 8px; display: flex; flex-direction: column; gap: 8px">
+<div class="skel" style="height: 10px; width: 40%; border-radius: 6px"></div>
+<div class="skel" style="height: 14px; width: 75%; border-radius: 6px"></div>
+<div class="skel" style="height: 12px; width: 30%; border-radius: 6px"></div>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{showShort}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="padding: 56px 0; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+<div style="font-size: 24px; font-weight: 300">Continue digitando</div>
+<div style="font-size: 15px; color: #6B6B72">A busca começa a partir de 2 letras.</div>
+</div>
+</sc-if>
+
+<sc-if value="{{showEmpty}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 20px; padding: 56px 32px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+<div class="floaty" style="width: 72px; height: 72px; border-radius: 50%; background: #F1F0EC; display: flex; align-items: center; justify-content: center">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5M8 11h6"></path></svg>
+</div>
+<div style="font-size: 26px; font-weight: 300; letter-spacing: -0.02em">{{emptyTitle}}</div>
+<div style="font-size: 15px; color: #6B6B72; max-width: 420px">{{emptyText}}</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; padding-top: 6px">
+<a class="pill" href="Listagem.dc.html" style="height: 40px; padding: 0 16px; border-radius: 999px; background: #F1F0EC; color: #44444A; text-decoration: none; display: flex; align-items: center; font-size: 14px; font-weight: 500">Casa</a>
+<a class="pill" href="Listagem.dc.html" style="height: 40px; padding: 0 16px; border-radius: 999px; background: #F1F0EC; color: #44444A; text-decoration: none; display: flex; align-items: center; font-size: 14px; font-weight: 500">Cozinha</a>
+<a class="pill" href="Listagem.dc.html" style="height: 40px; padding: 0 16px; border-radius: 999px; background: #F1F0EC; color: #44444A; text-decoration: none; display: flex; align-items: center; font-size: 14px; font-weight: 500">Iluminação</a>
+<a class="pill" href="Listagem.dc.html" style="height: 40px; padding: 0 16px; border-radius: 999px; background: #F1F0EC; color: #44444A; text-decoration: none; display: flex; align-items: center; font-size: 14px; font-weight: 500">Têxteis</a>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{showGrid}}" hint-placeholder-val="{{ true }}">
+<div class="g-prod" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{items}}" as="p" hint-placeholder-count="8">
+<article class="card up" key="{{p.key}}" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 8px; display: flex; flex-direction: column; gap: 12px; animation-delay: {{p.delay}}">
+<a href="Produto.dc.html" aria-label="{{p.name}}" style="position: relative; height: 210px; border-radius: 12px; background: {{p.tint}}; overflow: hidden; display: flex; align-items: center; justify-content: center; text-decoration: none">
+<div class="art" style="display: flex; opacity: {{p.artOpacity}}">
+<dc-import name="Art" kind="{{p.kind}}" size="112" hint-size="112px,126px"></dc-import>
+</div>
+<sc-if value="{{p.hasBadge}}" hint-placeholder-val="{{ false }}">
+<span style="position: absolute; top: 10px; left: 10px; height: 24px; padding: 0 10px; border-radius: 999px; background: {{p.badgeBg}}; color: {{p.badgeFg}}; font-size: 12px; font-weight: 500; display: flex; align-items: center">{{p.badge}}</span>
+</sc-if>
+<sc-if value="{{p.hasOff}}" hint-placeholder-val="{{ false }}">
+<span style="position: absolute; top: 10px; right: 10px; height: 24px; padding: 0 8px; border-radius: 999px; background: #E8F5EC; color: #15803D; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; align-items: center">{{p.off}}</span>
+</sc-if>
+</a>
+<div style="padding: 0 6px 6px; display: flex; align-items: flex-end; gap: 10px">
+<div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+<div style="font-size: 12px; color: #6B6B72">{{p.brand}}</div>
+<a class="pname" href="Produto.dc.html" style="font-size: 16px; font-weight: 500">{{p.name}}</a>
+<div style="display: flex; align-items: center; gap: 6px; padding-top: 2px; flex-wrap: wrap">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; color: {{p.priceColor}}">{{p.price}}</span>
+<sc-if value="{{p.hasOff}}" hint-placeholder-val="{{ false }}">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72; text-decoration: line-through">{{p.old}}</span>
+</sc-if>
+</div>
+</div>
+<sc-if value="{{p.canBuy}}" hint-placeholder-val="{{ true }}">
+<button class="btn-p" onClick="{{p.add}}" aria-label="Adicionar {{p.name}} à sacola" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+</button>
+</sc-if>
+<sc-if value="{{p.soldOut}}" hint-placeholder-val="{{ false }}">
+<button disabled aria-label="{{p.name}} esgotado" style="height: 44px; padding: 0 12px; flex-shrink: 0; border-radius: 12px; border: 1px solid #E6E4DE; background: #F1F0EC; color: #6B6B72; font-size: 13px">Esgotado</button>
+</sc-if>
+</div>
+</article>
+</sc-for>
+</div>
+
+<sc-if value="{{hasPages}}" hint-placeholder-val="{{ true }}">
+<nav aria-label="Paginação" style="display: flex; align-items: center; justify-content: center; gap: 6px">
+<button class="btn-s" onClick="{{prevPage}}" disabled="{{isFirst}}" aria-label="Página anterior" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: {{prevColor}}; display: flex; align-items: center; justify-content: center">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 6l-6 6 6 6"></path></svg>
+</button>
+<sc-for list="{{pages}}" as="pg" hint-placeholder-count="2">
+<button onClick="{{pg.go}}" aria-current="{{pg.current}}" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid {{pg.border}}; background: {{pg.bg}}; color: {{pg.fg}}; font-family: 'JetBrains Mono', monospace; font-size: 14px">{{pg.n}}</button>
+</sc-for>
+<button class="btn-s" onClick="{{nextPage}}" disabled="{{isLast}}" aria-label="Próxima página" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: {{nextColor}}; display: flex; align-items: center; justify-content: center">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<span style="margin-left: 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72">{{rangeLabel}}</span>
+</nav>
+</sc-if>
+</sc-if>
+</div>
+</section>
+
+<dc-import name="Footer" hint-size="100%,560px"></dc-import>
+
+<!-- 06 · Mini-sacola -->
+<sc-if value="{{drawerOpen}}" hint-placeholder-val="{{ false }}">
+<div class="fade" onClick="{{closeDrawer}}" style="position: fixed; inset: 0; background: rgba(24,24,27,0.32); z-index: 40"></div>
+<aside class="slidein" role="dialog" aria-label="Adicionado à sacola" style="position: fixed; top: 16px; right: 16px; width: 380px; max-width: calc(100% - 32px); background: #FFFFFF; border-radius: 20px; box-shadow: 0 30px 60px -20px rgba(24,24,27,.35); z-index: 41; display: flex; flex-direction: column">
+<div style="padding: 18px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #E6E4DE">
+<span class="pop" style="width: 28px; height: 28px; border-radius: 50%; background: #E8F5EC; color: #15803D; display: flex; align-items: center; justify-content: center">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>
+</span>
+<span style="flex-grow: 1; font-size: 16px; font-weight: 500">Adicionado à sacola</span>
+<button class="icon-b" onClick="{{closeDrawer}}" aria-label="Fechar" style="width: 40px; height: 40px; border-radius: 10px; border: none; background: transparent; color: #18181B; display: flex; align-items: center; justify-content: center">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+</button>
+</div>
+<div style="padding: 18px 20px; display: flex; gap: 14px; align-items: center">
+<div style="width: 72px; height: 72px; border-radius: 12px; background: {{dItem.tint}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+<dc-import name="Art" kind="{{dItem.kind}}" size="44" hint-size="44px,50px"></dc-import>
+</div>
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 12px; color: #6B6B72">{{dItem.brand}}</span>
+<span style="font-size: 15px; font-weight: 500">{{dItem.name}}</span>
+<span style="font-size: 13px; color: #6B6B72">Quantidade: 1</span>
+</div>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">{{dItem.price}}</span>
+</div>
+<div style="margin: 0 20px; padding: 14px 0; border-top: 1px solid #E6E4DE; display: flex; justify-content: space-between; font-size: 14px">
+<span style="color: #44444A">Sacola · {{bagCountLabel}}</span>
+<span style="font-family: 'JetBrains Mono', monospace">{{bagTotal}}</span>
+</div>
+<div style="padding: 4px 20px 20px; display: flex; flex-direction: column; gap: 8px">
+<a href="Carrinho.dc.html" class="btn-p" style="height: 48px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 500">Ir para a sacola
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<button class="btn-s" onClick="{{closeDrawer}}" style="height: 48px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; font-size: 15px; font-weight: 500">Continuar comprando</button>
+</div>
+</aside>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"modo":{"editor":"enum","options":["categoria","busca","promocoes"],"default":"categoria"},"estado":{"editor":"enum","options":["normal","carregando","vazio"],"default":"normal"},"$preview":{"width":1440,"height":2000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { cat: 'casa', sort: 'relevancia', page: 1, term: 'lumin', drawer: null, bag: [359, 129, 89, 89] };
+  }
+  products() {
+    const F = 'Oficina Faísca', B = 'Estúdio Barro Cru', T = 'Oficina Tora', A = 'Tear Alto';
+    return [
+      { id: 'arco', name: 'Luminária Arco', cat: 'iluminacao', price: 489, kind: 'lamp', tint: '#ECECFD', brand: F, stock: 'InStock', order: 3 },
+      { id: 'orbe', name: 'Pendente Orbe', cat: 'iluminacao', price: 359, compareAt: 449, kind: 'pendant', tint: '#F1F0EC', brand: F, stock: 'InStock', order: 6 },
+      { id: 'fio', name: 'Arandela Fio', cat: 'iluminacao', price: 279, kind: 'sconce', tint: '#FCEEE4', brand: F, stock: 'LowStock', isNew: true, order: 1 },
+      { id: 'duna', name: 'Vaso Duna', cat: 'casa', price: 129, kind: 'vase', tint: '#F1F0EC', brand: B, stock: 'InStock', isNew: true, order: 2 },
+      { id: 'lina', name: 'Cadeira Lina', cat: 'casa', price: 1290, compareAt: 1490, kind: 'chair', tint: '#E8F5EC', brand: T, stock: 'InStock', order: 7 },
+      { id: 'banco', name: 'Banco Tora', cat: 'casa', price: 690, kind: 'bench', tint: '#ECECFD', brand: T, stock: 'OutOfStock', order: 9 },
+      { id: 'grao', name: 'Par de canecas Grão', cat: 'cozinha', price: 89, kind: 'mug', tint: '#FCEEE4', brand: B, stock: 'InStock', order: 8 },
+      { id: 'seixo', name: 'Jarra Seixo', cat: 'cozinha', price: 149, kind: 'jar', tint: '#E8F5EC', brand: B, stock: 'LowStock', order: 10 },
+      { id: 'tigela', name: 'Tigela Areia', cat: 'cozinha', price: 79, compareAt: 95, kind: 'bowl', tint: '#F1F0EC', brand: B, stock: 'InStock', isNew: true, order: 4 },
+      { id: 'trama', name: 'Manta Trama', cat: 'texteis', price: 219, kind: 'throw', tint: '#ECECFD', brand: A, stock: 'InStock', isNew: true, order: 5 },
+      { id: 'linho', name: 'Almofada Linho', cat: 'texteis', price: 119, kind: 'throw', tint: '#FCEEE4', brand: A, stock: 'InStock', order: 11 },
+      { id: 'toalha', name: 'Toalha Listra', cat: 'texteis', price: 99, kind: 'towel', tint: '#E8F5EC', brand: A, stock: 'InStock', order: 12 },
+      { id: 'vela', name: 'Castiçal Brasa', cat: 'iluminacao', price: 159, kind: 'jar', tint: '#FCEEE4', brand: F, stock: 'InStock', order: 13 },
+      { id: 'prato', name: 'Prato Raso Cinza', cat: 'cozinha', price: 69, kind: 'bowl', tint: '#ECECFD', brand: B, stock: 'InStock', order: 14 }
+    ];
+  }
+  money(n) { return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
+  norm(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  renderVals() {
+    const s = this.state;
+    const modo = this.props.modo || 'categoria';
+    const estado = this.props.estado || 'normal';
+    const all = this.products();
+    const catNames = { tudo: 'Tudo', novidades: 'Novidades', casa: 'Casa', cozinha: 'Cozinha', iluminacao: 'Iluminação', texteis: 'Têxteis' };
+    const blurbs = {
+      tudo: 'Todas as peças dos quatro ateliês, em um lugar só.',
+      novidades: 'O que acabou de sair das bancadas nesta estação.',
+      casa: 'Vasos, assentos e objetos que deixam a casa mais calma.',
+      cozinha: 'Cerâmica de alta temperatura para usar todo dia.',
+      iluminacao: 'Luminárias em latão e vidro soprado, montadas uma a uma.',
+      texteis: 'Mantas, almofadas e toalhas tecidas em tear manual.'
+    };
+
+    let list = all;
+    let tooShort = false;
+    if (modo === 'categoria') {
+      if (s.cat === 'novidades') list = all.filter((p) => p.isNew);
+      else if (s.cat !== 'tudo') list = all.filter((p) => p.cat === s.cat);
+    } else if (modo === 'promocoes') {
+      list = all.filter((p) => p.compareAt);
+    } else {
+      const t = this.norm(s.term.trim());
+      if (t.length < 2) { tooShort = true; list = []; }
+      else list = all.filter((p) => this.norm(p.name + ' ' + p.brand + ' ' + catNames[p.cat]).includes(t));
+    }
+    if (estado === 'vazio') list = [];
+
+    const sorted = list.slice().sort((a, b) => {
+      if (s.sort === 'nome') return a.name.localeCompare(b.name, 'pt-BR');
+      if (s.sort === 'preco-asc') return a.price - b.price;
+      if (s.sort === 'preco-desc') return b.price - a.price;
+      return a.order - b.order;
+    });
+    const pageSize = 8;
+    const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
+    const page = Math.min(s.page, totalPages);
+    const slice = sorted.slice((page - 1) * pageSize, page * pageSize);
+
+    const items = slice.map((p, i) => {
+      const out = p.stock === 'OutOfStock';
+      const low = p.stock === 'LowStock';
+      let badge = '', badgeBg = '', badgeFg = '';
+      if (out) { badge = 'Esgotado'; badgeBg = '#FFFFFF'; badgeFg = '#44444A'; }
+      else if (low) { badge = 'Últimas unidades'; badgeBg = '#FFFFFF'; badgeFg = '#B4501E'; }
+      else if (p.isNew) { badge = 'Novo'; badgeBg = '#FFFFFF'; badgeFg = '#3B3FD9'; }
+      return {
+        key: modo + s.cat + s.sort + page + p.id, delay: (i * 0.05).toFixed(2) + 's',
+        name: p.name, brand: p.brand, tint: out ? '#F1F0EC' : p.tint, kind: p.kind,
+        artOpacity: out ? 0.4 : 1,
+        price: this.money(p.price), priceColor: out ? '#6B6B72' : '#18181B',
+        hasOff: !!p.compareAt, old: p.compareAt ? this.money(p.compareAt) : '',
+        off: p.compareAt ? '-' + Math.round((1 - p.price / p.compareAt) * 100) + '%' : '',
+        hasBadge: !!badge, badge, badgeBg, badgeFg,
+        canBuy: !out, soldOut: out,
+        add: () => this.setState({ drawer: p.id, bag: s.bag.concat([p.price]) })
+      };
+    });
+
+    const cats = Object.keys(catNames).map((id) => {
+      const on = s.cat === id;
+      return { label: catNames[id], active: on, cls: on ? '' : 'pill', bg: on ? '#3B3FD9' : '#F1F0EC', fg: on ? '#FFFFFF' : '#44444A', pick: () => this.setState({ cat: id, page: 1 }) };
+    });
+    const pages = [];
+    for (let n = 1; n <= totalPages; n++) {
+      const cur = n === page;
+      pages.push({ n, current: cur ? 'page' : 'false', bg: cur ? '#18181B' : '#FFFFFF', fg: cur ? '#FFFFFF' : '#18181B', border: cur ? '#18181B' : '#E6E4DE', go: () => this.setState({ page: n }) });
+    }
+    const count = sorted.length;
+    const countLabel = count + (count === 1 ? ' peça' : ' peças');
+    const loading = estado === 'carregando';
+    const d = s.drawer ? all.find((p) => p.id === s.drawer) : all[0];
+    const bagTotal = s.bag.reduce((a, b) => a + b, 0);
+    const navMap = { casa: 'casa', cozinha: 'cozinha', iluminacao: 'iluminacao', texteis: 'texteis', novidades: 'novidades' };
+
+    let emptyTitle = 'Nenhuma peça nesta categoria ainda';
+    let emptyText = 'Os ateliês estão produzindo novas peças. Enquanto isso, veja as outras categorias.';
+    if (modo === 'busca') { emptyTitle = 'Nada encontrado para “' + s.term.trim() + '”'; emptyText = 'Confira a grafia ou tente um termo mais geral, como o tipo da peça ou o nome do ateliê.'; }
+    if (modo === 'promocoes') { emptyTitle = 'Nenhuma promoção no momento'; emptyText = 'A próxima Semana do Design ainda não começou. Veja as peças da coleção.'; }
+
+    return {
+      isCat: modo === 'categoria', notCat: modo !== 'categoria', isSearch: modo === 'busca', isPromo: modo === 'promocoes',
+      navActive: modo === 'categoria' ? (navMap[s.cat] || '') : '',
+      catTitle: catNames[s.cat], catUpper: catNames[s.cat].toUpperCase(), catBlurb: blurbs[s.cat],
+      cats, countLabel,
+      term: s.term, hasTerm: s.term.length > 0,
+      onTerm: (e) => this.setState({ term: e.target.value, page: 1 }),
+      clearTerm: () => this.setState({ term: '', page: 1 }),
+      showSearchCount: modo === 'busca' && !tooShort && !loading,
+      searchLabel: count + (count === 1 ? ' resultado para ' : ' resultados para ') + '“' + s.term.trim() + '”',
+      sort: s.sort, onSort: (e) => this.setState({ sort: e.target.value, page: 1 }),
+      isLoading: loading, skels: [1, 2, 3, 4, 5, 6, 7, 8],
+      showShort: !loading && tooShort,
+      showEmpty: !loading && !tooShort && count === 0,
+      showGrid: !loading && count > 0,
+      emptyTitle, emptyText,
+      items,
+      hasPages: totalPages > 1, pages,
+      isFirst: page === 1, isLast: page === totalPages,
+      prevColor: page === 1 ? '#C4C3C8' : '#18181B', nextColor: page === totalPages ? '#C4C3C8' : '#18181B',
+      prevPage: () => this.setState({ page: Math.max(1, page - 1) }),
+      nextPage: () => this.setState({ page: Math.min(totalPages, page + 1) }),
+      rangeLabel: ((page - 1) * pageSize + 1) + '–' + Math.min(page * pageSize, count) + ' DE ' + count,
+      drawerOpen: !!s.drawer, closeDrawer: () => this.setState({ drawer: null }),
+      dItem: { name: d.name, brand: d.brand, tint: d.tint, kind: d.kind, price: this.money(d.price) },
+      bagCount: s.bag.length, bagCountLabel: s.bag.length + (s.bag.length === 1 ? ' item' : ' itens'), bagTotal: this.money(bagTotal)
+    };
+  }
+}
+</script>
+</body>
+</html>

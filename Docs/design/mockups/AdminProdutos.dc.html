@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Admin · Produtos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}
+input,textarea,select{font-family:Outfit,sans-serif}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes toast{0%{opacity:0;transform:translateY(12px)}12%{opacity:1;transform:none}88%{opacity:1}100%{opacity:0}}
+.up{animation:up .45s cubic-bezier(.2,.7,.2,1) both}
+.pop{animation:pop .35s cubic-bezier(.2,.7,.2,1) both}
+.toast{animation:toast 2.6s ease both}
+.row{transition:background .15s}
+.row:hover{background:#FAFAF8 !important}
+.btn-p{transition:background .2s}
+.btn-p:hover:not(:disabled){background:#2A2DA8 !important}
+.btn-s{transition:background .2s}
+.btn-s:hover:not(:disabled){background:#ECEBE6 !important}
+.img{transition:transform .25s}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1000px; display: flex; background: #F4F3EF; overflow: hidden; position: relative">
+<dc-import name="AdminNav" active="produtos" h="1000" hint-size="248px,1000px"></dc-import>
+<main style="flex-grow: 1; min-width: 0; display: flex">
+
+<!-- Lista -->
+<section style="width: 400px; flex-shrink: 0; padding: 28px 20px 28px 32px; display: flex; flex-direction: column; gap: 14px; box-sizing: border-box">
+<div style="display: flex; align-items: flex-end; gap: 12px">
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #6B6B72">CATÁLOGO</span>
+<h1 style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.025em">Produtos</h1>
+</div>
+<button class="btn-p" onClick="{{newProduct}}" style="height: 40px; padding: 0 14px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 14px; font-weight: 500">+ Novo</button>
+</div>
+<input type="search" aria-label="Buscar produto" placeholder="Buscar por nome ou SKU" value="{{q}}" onChange="{{onQ}}" style="height: 40px; box-sizing: border-box; padding: 0 12px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 14px">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; overflow: hidden">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+<button class="row" onClick="{{r.open}}" aria-pressed="{{r.sel}}" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 10px 14px; border: none; border-top: {{r.top}}; border-left: 3px solid {{r.mark}}; background: {{r.bg}}; text-align: left; color: #18181B">
+<span style="width: 40px; height: 40px; border-radius: 10px; background: {{r.tint}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><dc-import name="Art" kind="{{r.kind}}" size="24" hint-size="24px,27px"></dc-import></span>
+<span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">{{r.price}}</span></span>
+<span style="height: 22px; padding: 0 8px; border-radius: 999px; background: {{r.sbg}}; color: {{r.sfg}}; font-size: 11px; font-weight: 500; display: inline-flex; align-items: center">{{r.status}}</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<!-- Edição -->
+<section key="{{f.id}}" class="up" style="flex-grow: 1; min-width: 0; padding: 28px 32px 28px 12px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 10px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 500; flex-grow: 1">{{f.title}}</h2>
+<span key="{{f.status}}" class="pop" style="height: 26px; padding: 0 10px; border-radius: 999px; background: {{f.sbg}}; color: {{f.sfg}}; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center">{{f.status}}</span>
+<sc-if value="{{f.dirty}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: #B4501E">Alterações não salvas</span></sc-if>
+</div>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: #44444A">Nome<input value="{{f.name}}" onChange="{{f.onName}}" style="height: 40px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{f.nameB}}; border-radius: 10px; font-size: 14px"></label>
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: #44444A">Endereço na loja<span style="display: flex; align-items: center; height: 40px; border: 1px solid #E6E4DE; border-radius: 10px; overflow: hidden"><span style="padding: 0 4px 0 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72">/produto/</span><input value="{{f.slug}}" onChange="{{f.onSlug}}" style="flex-grow: 1; height: 38px; border: none; outline: none; font-family: 'JetBrains Mono', monospace; font-size: 12px"></span></label>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: #44444A">Categoria<select value="{{f.cat}}" onChange="{{f.onCat}}" style="height: 40px; padding: 0 8px; border: 1px solid #E6E4DE; border-radius: 10px; background: #FFFFFF; font-size: 14px"><option>Casa</option><option>Cozinha</option><option>Iluminação</option><option>Têxteis</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: #44444A">Marca (ateliê)<input value="{{f.brand}}" onChange="{{f.onBrand}}" style="height: 40px; box-sizing: border-box; padding: 0 12px; border: 1px solid #E6E4DE; border-radius: 10px; font-size: 14px"></label>
+</div>
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: #44444A">Descrição<textarea rows="3" value="{{f.desc}}" onChange="{{f.onDesc}}" style="resize: none; padding: 10px 12px; border: 1px solid #E6E4DE; border-radius: 10px; font-size: 14px; line-height: 1.5"></textarea></label>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">PREÇO</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: #44444A">Preço (R$)<input inputmode="decimal" value="{{f.price}}" onChange="{{f.onPrice}}" style="height: 40px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{f.priceB}}; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px"></label>
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: #44444A">Preço “de” (R$)<input inputmode="decimal" value="{{f.compare}}" onChange="{{f.onCompare}}" placeholder="opcional" style="height: 40px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{f.compareB}}; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px"></label>
+</div>
+<sc-if value="{{f.compareErr}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: #B4501E">O preço “de” precisa ser maior que o preço.</span></sc-if>
+<div style="display: flex; align-items: baseline; gap: 8px; padding: 10px 12px; border-radius: 10px; background: #F4F3EF">
+<span style="font-size: 11px; color: #6B6B72; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em">NA LOJA</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 500">{{f.pricePreview}}</span>
+<sc-if value="{{f.hasOff}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72; text-decoration: line-through">{{f.comparePreview}}</span><span style="height: 20px; padding: 0 7px; border-radius: 999px; background: #E8F5EC; color: #15803D; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: inline-flex; align-items: center">{{f.off}}</span></sc-if>
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center"><span style="flex-grow: 1; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">VARIANTES</span><button onClick="{{f.addVariant}}" style="background: none; border: none; padding: 0; min-height: 28px; color: #3B3FD9; font-size: 13px; font-weight: 500">+ Variante</button></div>
+<sc-for list="{{f.variants}}" as="v" hint-placeholder-count="2">
+<div class="up" style="display: flex; align-items: center; gap: 8px">
+<input aria-label="Nome da variante" value="{{v.name}}" onChange="{{v.onName}}" style="flex-grow: 1; min-width: 0; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #E6E4DE; border-radius: 9px; font-size: 13px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72; width: 90px">{{v.sku}}</span>
+<button onClick="{{v.remove}}" aria-label="Remover variante" style="width: 32px; height: 32px; border-radius: 8px; border: none; background: transparent; color: #6B6B72">×</button>
+</div>
+</sc-for>
+<sc-if value="{{f.noVariants}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #6B6B72">Sem variantes.</span></sc-if>
+</div>
+</div>
+</div>
+
+<!-- Imagens -->
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center"><span style="flex-grow: 1; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">IMAGENS · A PRIMEIRA É A CAPA</span><button class="btn-s" style="height: 34px; padding: 0 12px; border-radius: 9px; border: 1px dashed #C9C7C0; background: #FFFFFF; font-size: 13px">Enviar imagem</button></div>
+<div style="display: flex; gap: 10px">
+<sc-for list="{{f.images}}" as="m" hint-placeholder-count="4">
+<div key="{{m.key}}" class="img pop" style="position: relative; width: 120px; height: 120px; border-radius: 12px; background: {{m.bg}}; border: 2px solid {{m.border}}; display: flex; align-items: center; justify-content: center">
+<dc-import name="Art" kind="{{f.kind}}" size="{{m.size}}" hint-size="60px,68px"></dc-import>
+<span style="position: absolute; top: 6px; left: 6px; height: 20px; padding: 0 6px; border-radius: 6px; background: #FFFFFF; font-family: 'JetBrains Mono', monospace; font-size: 10px; display: flex; align-items: center">{{m.label}}</span>
+<span style="position: absolute; bottom: 6px; right: 6px; display: flex; gap: 4px">
+<button onClick="{{m.left}}" disabled="{{m.first}}" aria-label="Mover para a esquerda" style="width: 26px; height: 26px; border-radius: 7px; border: none; background: #FFFFFF; font-size: 13px">←</button>
+<button onClick="{{m.right}}" disabled="{{m.last}}" aria-label="Mover para a direita" style="width: 26px; height: 26px; border-radius: 7px; border: none; background: #FFFFFF; font-size: 13px">→</button>
+</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; gap: 10px; align-items: center; padding-top: 4px">
+<button class="btn-p" onClick="{{f.save}}" style="height: 44px; padding: 0 20px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 14px; font-weight: 500">Salvar</button>
+<sc-if value="{{f.canPublish}}" hint-placeholder-val="{{ true }}"><button class="btn-s" onClick="{{f.publish}}" style="height: 44px; padding: 0 18px; border-radius: 12px; border: 1px solid #15803D; background: #FFFFFF; color: #15803D; font-size: 14px; font-weight: 500">Publicar na loja</button></sc-if>
+<span style="flex-grow: 1"></span>
+<sc-if value="{{f.canDiscontinue}}" hint-placeholder-val="{{ true }}"><button onClick="{{f.discontinue}}" style="background: none; border: none; padding: 0; min-height: 32px; color: #B4501E; font-size: 13px; font-weight: 500">Descontinuar</button></sc-if>
+</div>
+</section>
+</main>
+
+<sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{toast.key}}" class="toast" role="status" style="position: absolute; left: 50%; bottom: 24px; margin-left: -140px; width: 280px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; background: #18181B; color: #FFFFFF; font-size: 14px">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5BC583" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>{{toast.text}}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const P = (id, name, cat, brand, price, compare, kind, tint, status, variants) => ({ id, name, slug: id, cat, brand, price: String(price), compare: compare ? String(compare) : '', kind, tint, status, desc: '', variants: variants || [], order: [0, 1, 2, 3] });
+    this.state = {
+      q: '', sel: 'pendente-orbe', toast: null, toastN: 0, dirty: false, tried: false,
+      list: [
+        P('pendente-orbe', 'Pendente Orbe', 'Iluminação', 'Oficina Faísca', 359, 449, 'pendant', '#F1F0EC', 'Publicado', ['Latão escovado', 'Preto fosco']),
+        P('luminaria-arco', 'Luminária Arco', 'Iluminação', 'Oficina Faísca', 489, null, 'lamp', '#ECECFD', 'Publicado'),
+        P('arandela-fio', 'Arandela Fio', 'Iluminação', 'Oficina Faísca', 279, null, 'sconce', '#FCEEE4', 'Publicado'),
+        P('vaso-duna', 'Vaso Duna', 'Casa', 'Estúdio Barro Cru', 129, null, 'vase', '#F1F0EC', 'Publicado'),
+        P('cadeira-lina', 'Cadeira Lina', 'Casa', 'Oficina Tora', 1290, 1490, 'chair', '#E8F5EC', 'Publicado'),
+        P('banco-tora', 'Banco Tora', 'Casa', 'Oficina Tora', 690, null, 'bench', '#ECECFD', 'Rascunho'),
+        P('jarra-seixo', 'Jarra Seixo', 'Cozinha', 'Estúdio Barro Cru', 149, null, 'jar', '#E8F5EC', 'Publicado'),
+        P('manta-trama', 'Manta Trama', 'Têxteis', 'Tear Alto', 219, null, 'throw', '#ECECFD', 'Publicado'),
+        P('toalha-listra', 'Toalha Listra', 'Têxteis', 'Tear Alto', 99, null, 'towel', '#E8F5EC', 'Descontinuado')
+      ]
+    };
+    this.state.list[0].desc = 'Esfera de vidro soprado à boca com canopla em latão escovado.';
+  }
+  componentWillUnmount() { clearTimeout(this.tt); }
+  toast(text) { this.setState({ toast: text, toastN: this.state.toastN + 1 }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2600); }
+  num(v) { const n = parseFloat(String(v).replace(/\./g, '').replace(',', '.')); return isNaN(n) ? null : n; }
+  money(n) { return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  patch(fields) { const s = this.state; this.setState({ dirty: true, list: s.list.map((p) => (p.id === s.sel ? Object.assign({}, p, fields) : p)) }); }
+  renderVals() {
+    const s = this.state;
+    const ST = { Publicado: ['#E8F5EC', '#15803D'], Rascunho: ['#F1F0EC', '#44444A'], Descontinuado: ['#FCEEE4', '#B4501E'] };
+    const q = s.q.trim().toLowerCase();
+    const rows = s.list.filter((p) => !q || (p.name + ' ' + p.slug).toLowerCase().includes(q));
+    const p = s.list.find((x) => x.id === s.sel) || s.list[0];
+    const price = this.num(p.price);
+    const compare = p.compare ? this.num(p.compare) : null;
+    const compareErr = compare !== null && price !== null && compare <= price;
+    const priceBad = price === null || price <= 0;
+    const views = [['CAPA', '#F1F0EC', 64], ['ACESA', '#232327', 64], ['DETALHE', '#ECECFD', 110], ['AMBIENTE', '#FCEEE4', 44]];
+    const move = (i, dir) => { const o = p.order.slice(); const j = i + dir; [o[i], o[j]] = [o[j], o[i]]; this.patch({ order: o }); };
+    const valid = !compareErr && !priceBad && p.name.trim();
+    return {
+      q: s.q, onQ: (e) => this.setState({ q: e.target.value }),
+      newProduct: () => {
+        const id = 'novo-' + Date.now();
+        this.setState({ sel: id, dirty: true, tried: false, list: [{ id, name: 'Produto sem nome', slug: id, cat: 'Casa', brand: '', price: '', compare: '', kind: 'vase', tint: '#F1F0EC', status: 'Rascunho', desc: '', variants: [], order: [0, 1, 2, 3] }].concat(s.list) });
+      },
+      rows: rows.map((r, i) => ({
+        name: r.name, kind: r.kind, tint: r.tint, price: this.num(r.price) ? this.money(this.num(r.price)) : '—',
+        status: r.status, sbg: ST[r.status][0], sfg: ST[r.status][1], sel: r.id === p.id,
+        bg: r.id === p.id ? '#ECECFD' : '#FFFFFF', mark: r.id === p.id ? '#3B3FD9' : 'transparent', top: i ? '1px solid #E6E4DE' : 'none',
+        open: () => this.setState({ sel: r.id, dirty: false, tried: false })
+      })),
+      f: {
+        id: p.id, title: p.name || 'Produto sem nome', status: p.status, sbg: ST[p.status][0], sfg: ST[p.status][1], dirty: s.dirty, kind: p.kind,
+        name: p.name, slug: p.slug, cat: p.cat, brand: p.brand, desc: p.desc, price: p.price, compare: p.compare,
+        onName: (e) => this.patch({ name: e.target.value }), onSlug: (e) => this.patch({ slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-') }),
+        onCat: (e) => this.patch({ cat: e.target.value }), onBrand: (e) => this.patch({ brand: e.target.value }), onDesc: (e) => this.patch({ desc: e.target.value }),
+        onPrice: (e) => this.patch({ price: e.target.value }), onCompare: (e) => this.patch({ compare: e.target.value }),
+        nameB: s.tried && !p.name.trim() ? '#B4501E' : '#E6E4DE', priceB: s.tried && priceBad ? '#B4501E' : '#E6E4DE', compareB: compareErr ? '#B4501E' : '#E6E4DE',
+        compareErr,
+        pricePreview: price ? this.money(price) : '—', comparePreview: compare ? this.money(compare) : '',
+        hasOff: !!(compare && price && compare > price), off: compare && price ? '-' + Math.round((1 - price / compare) * 100) + '%' : '',
+        variants: p.variants.map((v, i) => ({
+          name: v, sku: (p.slug.slice(0, 6) + '-' + (i + 1)).toUpperCase(),
+          onName: (e) => this.patch({ variants: p.variants.map((x, j) => (j === i ? e.target.value : x)) }),
+          remove: () => this.patch({ variants: p.variants.filter((_, j) => j !== i) })
+        })),
+        noVariants: p.variants.length === 0,
+        addVariant: () => this.patch({ variants: p.variants.concat(['Nova variante']) }),
+        images: p.order.map((vi, i) => ({
+          key: p.id + '-' + vi, label: i === 0 ? 'CAPA' : views[vi][0], bg: views[vi][1], size: views[vi][2],
+          border: i === 0 ? '#3B3FD9' : 'transparent', first: i === 0, last: i === p.order.length - 1,
+          left: () => move(i, -1), right: () => move(i, 1)
+        })),
+        canPublish: p.status !== 'Publicado', canDiscontinue: p.status !== 'Descontinuado',
+        save: () => { if (!valid) { this.setState({ tried: true }); return; } this.setState({ dirty: false, tried: false }); this.toast('Produto salvo'); },
+        publish: () => { if (!valid) { this.setState({ tried: true }); return; } this.patch({ status: 'Publicado' }); this.setState({ dirty: false }); this.toast('Publicado na loja'); },
+        discontinue: () => { this.patch({ status: 'Descontinuado' }); this.setState({ dirty: false }); this.toast('Produto descontinuado'); }
+      },
+      toast: { show: !!s.toast, text: s.toast || '', key: 't' + s.toastN }
+    };
+  }
+}
+</script>
+</body>
+</html>

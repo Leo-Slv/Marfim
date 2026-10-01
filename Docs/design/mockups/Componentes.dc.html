@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Componentes da loja</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed}
+input{font-family:Outfit,sans-serif}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 3s ease both}
+.pop{animation:pop .45s ease}
+.spin{animation:spin .9s linear infinite}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.btn-p{transition:background .2s}
+.btn-p:hover:not(:disabled){background:#2A2DA8 !important}
+.btn-s{transition:background .2s}
+.btn-s:hover{background:#ECEBE6 !important}
+.nav-a:hover{color:#3B3FD9 !important}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1780px; box-sizing: border-box; padding: 56px 64px; background: #F4F3EF; display: flex; flex-direction: column; gap: 40px; position: relative; overflow: hidden">
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: #6B6B72">40 · EM QUALQUER TELA</div>
+<h1 style="margin: 0; font-size: 44px; font-weight: 300; letter-spacing: -0.03em">Componentes e <span style="font-weight: 500; color: #3B3FD9">estados</span></h1>
+</div>
+
+<!-- Cabeçalho: contador e faixa de confirmação -->
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">CONTADOR DA SACOLA · FAIXA “CONFIRME SEU E-MAIL” (10)</div>
+<div style="border: 1px solid #E6E4DE; border-radius: 16px; overflow: hidden; background: #F4F3EF">
+<dc-import name="Header" count="{{count}}" logged="{{ true }}" show-confirm="{{ true }}" email="ana@email.com" hint-size="100%,152px"></dc-import>
+</div>
+<div style="display: flex; gap: 10px; align-items: center">
+<span style="font-size: 13px; color: #44444A">Simular:</span>
+<button class="btn-s" onClick="{{setZero}}" style="height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 13px">Sacola vazia</button>
+<button class="btn-s" onClick="{{addOne}}" style="height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 13px">+1 item</button>
+<button class="btn-s" onClick="{{setMany}}" style="height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 13px">Mais de 9</button>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+
+<!-- Skeleton -->
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">CARREGANDO · SKELETON</div>
+<div aria-busy="true" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 8px; display: flex; flex-direction: column; gap: 12px">
+<div class="skel" style="height: 180px; border-radius: 12px"></div>
+<div style="padding: 0 6px 8px; display: flex; flex-direction: column; gap: 8px">
+<div class="skel" style="height: 10px; width: 40%; border-radius: 6px"></div>
+<div class="skel" style="height: 14px; width: 75%; border-radius: 6px"></div>
+<div class="skel" style="height: 12px; width: 30%; border-radius: 6px"></div>
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; gap: 12px; align-items: center"><div class="skel" style="width: 44px; height: 44px; border-radius: 10px"></div><div style="flex-grow: 1; display: flex; flex-direction: column; gap: 6px"><div class="skel" style="height: 12px; width: 60%; border-radius: 6px"></div><div class="skel" style="height: 10px; width: 35%; border-radius: 6px"></div></div></div>
+<div style="display: flex; gap: 12px; align-items: center"><div class="skel" style="width: 44px; height: 44px; border-radius: 10px"></div><div style="flex-grow: 1; display: flex; flex-direction: column; gap: 6px"><div class="skel" style="height: 12px; width: 50%; border-radius: 6px"></div><div class="skel" style="height: 10px; width: 25%; border-radius: 6px"></div></div></div>
+</div>
+</div>
+
+<!-- Toasts -->
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">AVISOS RÁPIDOS · TOASTS</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 14px; background: #18181B; color: #FFFFFF; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5BC583" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg><span style="flex-grow: 1">Adicionado à sacola</span><a href="Carrinho.dc.html" style="color: #A9ABFF; font-weight: 500; text-decoration: none">Ver</a></div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 14px; background: #18181B; color: #FFFFFF; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F0A070" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg><span style="flex-grow: 1">Não foi possível salvar. Tente de novo.</span></div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 14px; background: #18181B; color: #FFFFFF; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A9ABFF" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg><span style="flex-grow: 1">Seu pedido foi enviado. Acompanhe o rastreio.</span></div>
+<button class="btn-p" onClick="{{showToast}}" style="align-self: flex-start; height: 40px; padding: 0 16px; border-radius: 10px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 14px; font-weight: 500">Disparar um toast</button>
+</div>
+</div>
+
+<!-- Lista vazia -->
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">LISTA VAZIA</div>
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 36px 24px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+<div style="width: 56px; height: 56px; border-radius: 50%; background: #F1F0EC; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.5" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg></div>
+<div style="font-size: 20px; font-weight: 300">Nada por aqui ainda</div>
+<div style="font-size: 13px; color: #6B6B72">Ícone em círculo neutro, título em Outfit 300, uma frase de contexto e uma ação.</div>
+<button class="btn-p" style="margin-top: 6px; height: 44px; padding: 0 18px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 14px; font-weight: 500">Ação principal</button>
+</div>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<!-- Status de pedido -->
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">STATUS DO PEDIDO</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="height: 28px; padding: 0 12px; border-radius: 999px; background: #F1F0EC; color: #44444A; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center">Aguardando pagamento</span>
+<span style="height: 28px; padding: 0 12px; border-radius: 999px; background: #ECECFD; color: #3B3FD9; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center">Confirmado</span>
+<span style="height: 28px; padding: 0 12px; border-radius: 999px; background: #FCEEE4; color: #B4501E; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center">Em preparo</span>
+<span style="height: 28px; padding: 0 12px; border-radius: 999px; background: #3B3FD9; color: #FFFFFF; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center">Enviado</span>
+<span style="height: 28px; padding: 0 12px; border-radius: 999px; background: #E8F5EC; color: #15803D; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center">Entregue</span>
+<span style="height: 28px; padding: 0 12px; border-radius: 999px; background: #F1F0EC; color: #44444A; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center">Cancelado</span>
+<span style="height: 28px; padding: 0 12px; border-radius: 999px; background: #FCEEE4; color: #B4501E; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center">Pagamento não aprovado</span>
+</div>
+<div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #15803D"><span class="pulse" style="width: 7px; height: 7px; border-radius: 50%; background: #15803D"></span>Ao vivo · atualização em tempo real</div>
+</div>
+
+<!-- Estoque e preço -->
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">ESTOQUE E PREÇO</div>
+<div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px">
+<span style="display: flex; align-items: center; gap: 8px; color: #15803D"><span style="width: 8px; height: 8px; border-radius: 50%; background: #15803D"></span>Em estoque <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">INSTOCK</span></span>
+<span style="display: flex; align-items: center; gap: 8px; color: #B4501E"><span style="width: 8px; height: 8px; border-radius: 50%; background: #B4501E"></span>Últimas unidades <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">LOWSTOCK</span></span>
+<span style="display: flex; align-items: center; gap: 8px; color: #6B6B72"><span style="width: 8px; height: 8px; border-radius: 50%; background: #6B6B72"></span>Esgotado <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px">OUTOFSTOCK</span></span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 10px; padding-top: 6px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 500">R$ 359</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #6B6B72; text-decoration: line-through">R$ 449</span>
+<span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #E8F5EC; color: #15803D; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; align-items: center">-20%</span>
+<span style="font-size: 12px; color: #6B6B72">price · compareAtPrice</span>
+</div>
+</div>
+
+<!-- Futuro -->
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">DEPENDE DO BACKEND · “EM BREVE”</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="height: 20px; padding: 0 8px; border-radius: 999px; border: 1px dashed #B4501E; color: #B4501E; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; display: inline-flex; align-items: center">EM BREVE</span>
+<span style="font-size: 13px; color: #44444A">Selo para recurso que a API ainda não oferece.</span>
+</div>
+<div style="padding: 14px 16px; border: 1px dashed #E6E4DE; border-radius: 14px; color: #6B6B72; font-size: 13px; line-height: 1.5">Bloco desativado: borda tracejada, texto em cinza, controles com <span style="font-family: 'JetBrains Mono', monospace">disabled</span>. Usado em frete por CEP, cupom, presente, Pix e parcelamento, newsletter e vale-presente.</div>
+</div>
+</div>
+
+<!-- Botões e campos -->
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">BOTÕES · CONTROLE 12 · MÍN. 44 PX</div>
+<div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+<button class="btn-p" style="height: 48px; padding: 0 20px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">Primário</button>
+<button class="btn-s" style="height: 48px; padding: 0 20px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #18181B; font-size: 15px; font-weight: 500">Secundário</button>
+<button style="height: 48px; padding: 0 20px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500; display: flex; align-items: center; gap: 8px"><svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg>Enviando…</button>
+<button disabled style="height: 48px; padding: 0 20px; border-radius: 12px; border: none; background: #E6E4DE; color: #6B6B72; font-size: 15px; font-weight: 500">Desativado</button>
+<button style="height: 48px; padding: 0 20px; border-radius: 12px; border: none; background: #B4501E; color: #FFFFFF; font-size: 15px; font-weight: 500">Destrutivo</button>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">CAMPOS</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Padrão<input placeholder="voce@email.com" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 15px"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Com erro<input value="ana@" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: 1px solid #B4501E; border-radius: 12px; font-size: 15px"><span style="font-size: 12px; color: #B4501E">Digite um e-mail válido.</span></label>
+</div>
+</div>
+</div>
+
+<sc-if value="{{toastOn}}" hint-placeholder-val="{{ false }}">
+<div key="{{toastKey}}" class="toast" role="status" style="position: absolute; right: 64px; bottom: 56px; display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 14px; background: #18181B; color: #FFFFFF; font-size: 14px; box-shadow: 0 20px 40px -16px rgba(24,24,27,.4)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5BC583" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>Tudo certo. Este é um toast de exemplo.</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1780}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { count: 3, toastN: 0, toastOn: false }; }
+  componentWillUnmount() { clearTimeout(this.tt); }
+  renderVals() {
+    const s = this.state;
+    return {
+      count: s.count,
+      setZero: () => this.setState({ count: 0 }),
+      addOne: () => this.setState({ count: s.count + 1 }),
+      setMany: () => this.setState({ count: 12 }),
+      toastOn: s.toastOn, toastKey: 't' + s.toastN,
+      showToast: () => { this.setState({ toastOn: true, toastN: s.toastN + 1 }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toastOn: false }), 3000); }
+    };
+  }
+}
+</script>
+</body>
+</html>
