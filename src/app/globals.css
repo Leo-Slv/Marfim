@@ -11,6 +11,12 @@
   --color-surface-2: var(--surface-2);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-ink-soft: var(--ink-soft);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-soft: var(--primary-soft);
+  --color-success-soft: var(--success-soft);
+  --color-clay: var(--clay);
+  --color-clay-soft: var(--clay-soft);
   --font-sans: var(--font-outfit);
   --font-heading: var(--font-outfit);
   --font-mono: var(--font-jetbrains-mono);
@@ -60,6 +66,12 @@
   --surface-2: #ecebe6;
   --success: #15803d;
   --warning: #e8793a;
+  --ink-soft: #44444a;
+  --primary-strong: #2a2da8;
+  --primary-soft: #ececfd;
+  --success-soft: #e8f5ec;
+  --clay: #b4501e;
+  --clay-soft: #fceee4;
   --card: #ffffff;
   --card-foreground: #18181b;
   --popover: #ffffff;
@@ -70,7 +82,7 @@
   --secondary-foreground: #18181b;
   --muted: #f1f0ec;
   --muted-foreground: #6b6b72;
-  --accent: #ecebfd;
+  --accent: #ececfd;
   --accent-foreground: #2a2da8;
   --destructive: #b4501e;
   --border: #e6e4de;
@@ -101,5 +113,90 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Motion from the mockups (Docs/design/mockups/Main.dc.html). */
+@theme {
+  --animate-up: up 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-floaty: floaty 5s ease-in-out infinite;
+  --animate-spin-slow: spin 40s linear infinite;
+  --animate-pulse-dot: pulse-dot 1.8s ease-out infinite;
+  --animate-pop: pop 0.45s ease;
+  --animate-swing: swing 6s ease-in-out infinite;
+
+  @keyframes up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes floaty {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes pulse-dot {
+    0% {
+      box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.45);
+    }
+    100% {
+      box-shadow: 0 0 0 8px rgba(21, 128, 61, 0);
+    }
+  }
+  @keyframes pop {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.35);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes swing {
+    0%,
+    100% {
+      transform: rotate(-2.2deg);
+    }
+    50% {
+      transform: rotate(2.2deg);
+    }
+  }
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 600;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
+@layer components {
+  /* Strokes of an inline SVG drawing themselves in. */
+  .line-draw :is(path, line, ellipse, rect, circle) {
+    stroke-dasharray: 600;
+    animation: draw 2.2s cubic-bezier(0.4, 0, 0.2, 1) both 0.3s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
   }
 }
