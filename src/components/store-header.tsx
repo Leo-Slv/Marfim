@@ -1,6 +1,7 @@
 'use client';
 
 import {
+	EnvelopeSimpleIcon,
 	HandbagIcon,
 	MagnifyingGlassIcon,
 	UserIcon,
@@ -9,8 +10,11 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
+import { useRequestEmailConfirmation } from '@/features/auth/hooks/auth.queries';
 import { useCart } from '@/features/cart/hooks/use-cart';
 import { useCategories } from '@/features/catalog/hooks/catalog.queries';
+import { useSession } from '@/lib/auth/use-session';
+import { useIsHydrated } from '@/lib/hooks/use-is-hydrated';
 import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
 
@@ -23,7 +27,16 @@ const promises = [
 /** Storefront header from Docs/design/mockups/Header.dc.html. */
 function StoreHeader() {
 	const { count } = useCart();
-	const onBag = usePathname() === appRoutes.cart.index;
+	const pathname = usePathname();
+	const onBag = pathname === appRoutes.cart.index;
+	const hydrated = useIsHydrated();
+	const session = useSession();
+	const accountLabel = session ? 'Minha conta' : 'Entrar';
+	const showConfirmBanner =
+		hydrated &&
+		session?.role === 'Customer' &&
+		!session.emailConfirmed &&
+		pathname !== appRoutes.auth.confirmEmail;
 
 	return (
 		<div className="w-full bg-background">
@@ -75,12 +88,18 @@ function StoreHeader() {
 					</Link>
 					<div className="flex gap-1.5">
 						<Link
-							href={appRoutes.auth.login}
-							aria-label="Entrar"
+							href={
+								session
+									? appRoutes.account.index
+									: pathname === appRoutes.system.home
+										? appRoutes.auth.login
+										: appRoutes.auth.loginThen(pathname)
+							}
+							aria-label={accountLabel}
 							className="flex h-11 min-w-11 items-center justify-center gap-2 rounded-xl px-2.5 text-sm text-foreground transition-colors hover:bg-surface-2"
 						>
-							<UserIcon size={19} />
-							<span className="hidden min-[980px]:inline">Entrar</span>
+							<UserIcon size={19} weight={session ? 'fill' : 'regular'} />
+							<span className="hidden min-[980px]:inline">{accountLabel}</span>
 						</Link>
 						<Link
 							href={appRoutes.cart.index}
@@ -110,6 +129,42 @@ function StoreHeader() {
 					</div>
 				</div>
 			</header>
+			{showConfirmBanner ? <ConfirmEmailBanner email={session.email} /> : null}
+		</div>
+	);
+}
+
+/** "Confirme seu e-mail para poder finalizar compras" (Header.dc.html). */
+function ConfirmEmailBanner({ email }: { email: string }) {
+	const resend = useRequestEmailConfirmation();
+
+	return (
+		<div role="status" className="border-b border-[#F3D9C6] bg-clay-soft">
+			<div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-3 px-5 py-2.5 text-sm text-foreground sm:px-10">
+				<EnvelopeSimpleIcon size={18} className="text-clay" />
+				<span className="grow">
+					Confirme seu e-mail para poder finalizar compras. Enviamos o link para{' '}
+					<b className="font-medium">{email}</b>.
+				</span>
+				{resend.isSuccess ? (
+					<span className="text-[13px] text-success">
+						Link reenviado. Confira também o spam.
+					</span>
+				) : resend.isError ? (
+					<span className="text-[13px] text-clay">
+						Não deu para reenviar agora. Tente de novo em instantes.
+					</span>
+				) : (
+					<button
+						type="button"
+						onClick={() => resend.mutate()}
+						disabled={resend.isPending}
+						className="h-9 rounded-[10px] border border-clay px-3.5 text-[13px] font-medium text-clay transition-colors hover:bg-clay hover:text-white disabled:opacity-55"
+					>
+						{resend.isPending ? 'Enviando…' : 'Reenviar link'}
+					</button>
+				)}
+			</div>
 		</div>
 	);
 }
