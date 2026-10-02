@@ -1,5 +1,5 @@
 const env = {
-	apiUrl: process.env.NEXT_PUBLIC_API_URL ?? 'https://localhost:23346',
+	apiUrl: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080',
 };
 
 export { env };
