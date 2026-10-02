@@ -23,6 +23,7 @@ const promises = [
 /** Storefront header from Docs/design/mockups/Header.dc.html. */
 function StoreHeader() {
 	const { count } = useCart();
+	const onBag = usePathname() === appRoutes.cart.index;
 
 	return (
 		<div className="w-full bg-background">
@@ -84,7 +85,13 @@ function StoreHeader() {
 						<Link
 							href={appRoutes.cart.index}
 							aria-label={`Sacola, ${count} itens`}
-							className="flex h-11 items-center gap-2 rounded-xl border bg-card pr-3 pl-2.5 text-sm text-foreground transition-colors hover:bg-surface-2"
+							aria-current={onBag ? 'page' : undefined}
+							className={cn(
+								'flex h-11 items-center gap-2 rounded-xl border pr-3 pl-2.5 text-sm transition-colors',
+								onBag
+									? 'border-primary bg-primary-soft font-medium text-primary'
+									: 'bg-card text-foreground hover:bg-surface-2',
+							)}
 						>
 							<HandbagIcon size={19} />
 							<span>Sacola</span>

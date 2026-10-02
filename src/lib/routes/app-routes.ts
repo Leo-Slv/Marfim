@@ -15,6 +15,10 @@ const appRoutes = {
 	cart: {
 		index: '/cart',
 	},
+	checkout: {
+		delivery: '/checkout/delivery',
+		payment: '/checkout/payment',
+	},
 	auth: {
 		login: '/login',
 	},

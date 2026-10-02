@@ -213,7 +213,37 @@
   }
 }
 
+@keyframes shine {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
 @layer components {
+  /* A light sweep across a primary call to action (Carrinho.dc.html). */
+  .shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 40%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.55),
+      transparent
+    );
+    animation: shine 2.6s ease-in-out infinite;
+  }
+
   /* Loading placeholder with a moving highlight. */
   .skeleton {
     background: linear-gradient(90deg, #f1f0ec 0, #e9e8e3 50%, #f1f0ec 100%);
