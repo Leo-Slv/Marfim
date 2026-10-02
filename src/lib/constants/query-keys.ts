@@ -26,6 +26,10 @@ const queryKeys = {
 		product: (slug: string) => ['catalog', 'product', slug] as const,
 		categories: ['catalog', 'categories'] as const,
 	},
+	auth: {
+		/** Single-use: one confirmation per link token. */
+		confirmEmail: (token: string) => ['auth', 'confirm-email', token] as const,
+	},
 	cart: {
 		/** `signature` = the bag's `productId:quantity:unitPrice` lines. */
 		quote: (signature: string) => ['cart', 'quote', signature] as const,

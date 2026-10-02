@@ -213,6 +213,57 @@
   }
 }
 
+/* Acesso.dc.html: error shake, flying envelope, popping status icon and a
+   short check mark that draws itself. */
+@theme {
+  --animate-shake: shake 0.35s ease;
+  --animate-fly: fly 3s ease-in-out infinite;
+  --animate-pop-in: pop-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: none;
+    }
+    25% {
+      transform: translateX(-6px);
+    }
+    75% {
+      transform: translateX(6px);
+    }
+  }
+  @keyframes fly {
+    0%,
+    100% {
+      transform: translate(0, 0) rotate(0);
+    }
+    50% {
+      transform: translate(6px, -8px) rotate(-4deg);
+    }
+  }
+  @keyframes pop-in {
+    0% {
+      transform: scale(0.6);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.12);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes check-draw {
+    from {
+      stroke-dashoffset: 60;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
 @keyframes shine {
   from {
     transform: translateX(-100%);
@@ -223,6 +274,11 @@
 }
 
 @layer components {
+  .check-draw path {
+    stroke-dasharray: 60;
+    animation: check-draw 0.6s ease 0.25s both;
+  }
+
   /* A light sweep across a primary call to action (Carrinho.dc.html). */
   .shine {
     position: relative;

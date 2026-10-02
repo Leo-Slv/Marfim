@@ -21,8 +21,17 @@ const appRoutes = {
 	},
 	auth: {
 		login: '/login',
+		/** `next` = where to return after signing in (same-origin path). */
+		loginThen: (next: string) => `/login?next=${encodeURIComponent(next)}`,
+		register: '/register',
+		forgotPassword: '/forgot-password',
+		// Deliberate pt-BR paths: OrderCore's e-mails link here
+		// (`Identity:Links` in the backend's appsettings.json).
+		confirmEmail: '/confirmar-email',
+		resetPassword: '/redefinir-senha',
 	},
 	account: {
+		index: '/account',
 		orders: '/account/orders',
 	},
 	content: {
