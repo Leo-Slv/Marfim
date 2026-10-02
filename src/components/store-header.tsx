@@ -66,7 +66,7 @@ function StoreHeader() {
 					</Suspense>
 					<div className="grow" />
 					<Link
-						href={appRoutes.products.list}
+						href={appRoutes.products.search()}
 						className="hidden h-10 w-60 items-center gap-2 rounded-xl border bg-card px-3.5 text-sm text-muted-foreground min-[980px]:flex"
 					>
 						<MagnifyingGlassIcon size={16} />
@@ -107,12 +107,12 @@ function StoreHeader() {
 	);
 }
 
-/** Reads `?categoria=` (home only) to highlight the active category. */
+/** Highlights the listing's `?categoria=` (incl. "novidades") in the nav. */
 function CategoryNav() {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const activeSlug =
-		pathname === appRoutes.system.home ? searchParams.get('categoria') : null;
+		pathname === appRoutes.products.list ? searchParams.get('categoria') : null;
 
 	return <CategoryNavLinks activeSlug={activeSlug} />;
 }
@@ -125,13 +125,16 @@ function CategoryNavLinks({ activeSlug }: { activeSlug: string | null }) {
 			aria-label="Categorias"
 			className="hidden gap-7 text-sm min-[1180px]:flex"
 		>
-			<NavLink href={appRoutes.products.newest} active={false}>
+			<NavLink
+				href={appRoutes.products.newest}
+				active={activeSlug === 'novidades'}
+			>
 				Novidades
 			</NavLink>
 			{categories.data?.map((category) => (
 				<NavLink
 					key={category.id}
-					href={appRoutes.storefront.homeCategory(category.slug)}
+					href={appRoutes.products.category(category.slug)}
 					active={category.slug === activeSlug}
 				>
 					{category.name}

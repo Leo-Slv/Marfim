@@ -1,6 +1,8 @@
 import { ArrowRightIcon } from '@phosphor-icons/react';
+import Link from 'next/link';
 
 import { Eyebrow } from '@/components/eyebrow';
+import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
 
 import { formatAtelierProductsLine } from '../lib/atelier-products';
@@ -114,13 +116,15 @@ function AtelierCard({
 					<span className="grow text-[13px] text-ink-soft">
 						{productNames ? formatAtelierProductsLine(productNames) : ' '}
 					</span>
-					<a
-						href="#produtos"
+					{/* No brand filter in OrderCore (listing pendency #3): the full
+					    listing. */}
+					<Link
+						href={appRoutes.products.list}
 						className="flex items-center gap-1.5 text-sm font-medium whitespace-nowrap text-primary hover:text-primary-strong"
 					>
 						Ver peças
 						<ArrowRightIcon size={14} />
-					</a>
+					</Link>
 				</div>
 			</div>
 		</div>

@@ -2,16 +2,14 @@ const appRoutes = {
 	system: {
 		home: '/',
 	},
-	storefront: {
-		// The home's products grid filters by `?categoria=` until the product
-		// listing screen exists (Docs/specs/storefront/home.md).
-		homeCategory: (categorySlug: string) =>
-			`/?categoria=${categorySlug}#produtos`,
-		productsAnchor: '/#produtos',
-	},
 	products: {
+		/** Listing in category mode — "Tudo". */
 		list: '/products',
-		newest: '/products?sort=newest',
+		category: (categorySlug: string) => `/products?categoria=${categorySlug}`,
+		newest: '/products?categoria=novidades',
+		search: (term?: string) =>
+			term ? `/search?q=${encodeURIComponent(term)}` : '/search',
+		promotions: '/promotions',
 		detail: (slug: string) => `/products/${slug}`,
 	},
 	cart: {

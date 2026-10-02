@@ -9,13 +9,13 @@ type FooterLink = { label: string; href: string };
 
 const storeLinks: FooterLink[] = [
 	{ label: 'Novidades', href: appRoutes.products.newest },
-	{ label: 'Casa', href: appRoutes.storefront.homeCategory('casa') },
-	{ label: 'Cozinha', href: appRoutes.storefront.homeCategory('cozinha') },
+	{ label: 'Casa', href: appRoutes.products.category('casa') },
+	{ label: 'Cozinha', href: appRoutes.products.category('cozinha') },
 	{
 		label: 'Iluminação',
-		href: appRoutes.storefront.homeCategory('iluminacao'),
+		href: appRoutes.products.category('iluminacao'),
 	},
-	{ label: 'Têxteis', href: appRoutes.storefront.homeCategory('texteis') },
+	{ label: 'Têxteis', href: appRoutes.products.category('texteis') },
 ];
 
 const helpLinks: FooterLink[] = [

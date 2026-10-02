@@ -1,6 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
+
+import { appRoutes } from '@/lib/routes/app-routes';
 
 import { countdownToEndOfSunday } from '../lib/countdown';
 
@@ -88,12 +91,12 @@ function PromoBanner() {
 							</div>
 						))}
 					</div>
-					<a
-						href="#produtos"
+					<Link
+						href={appRoutes.products.promotions}
 						className="relative flex h-12 items-center rounded-xl bg-white px-[22px] text-[15px] font-medium text-primary-strong"
 					>
 						Aproveitar
-					</a>
+					</Link>
 				</div>
 			</div>
 		</section>

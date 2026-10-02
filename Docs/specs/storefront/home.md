@@ -19,9 +19,9 @@ It replaces the scaffold's placeholder product grid.
 - Logo linking home; category nav ("Novidades" + one entry per catalog
   category, live from the API); "Buscar produtos" entry; "Entrar" account
   entry; "Sacola" button with the number of items in the cart.
-- On the home, a category in the nav filters the products grid (until the
-  product listing screen exists). "Novidades", search, account and the bag
-  point at their future routes.
+- Category nav, "Novidades" and search lead to the product listing
+  (`Docs/specs/storefront/listing.md`; until it existed they filtered the
+  home grid). Account and the bag point at their future routes.
 
 ### Hero
 
