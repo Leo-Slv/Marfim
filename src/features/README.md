@@ -57,9 +57,19 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   `/admin/login` (AdminLogin.dc.html — form, "Sem acesso ao painel",
   "Bem-vindo de volta", the "sessão terminou" notice, "Manter conectado")
   through the BFF's `admin-sign-in`; `AdminGate` for every `/admin/*`
-  screen (`useRequireAdmin` in `src/lib/auth`) and the provisional `/admin`
-  placeholder until AdminDashboard. `lib/admin-login.ts` maps errors, keeps
+  screen (`useRequireAdmin` in `src/lib/auth`). `lib/admin-login.ts` maps errors, keeps
   `?next=` inside the panel and names the section to go back to.
+- `admin-shell/` — the admin frame (AdminNav.dc.html) for every screen in
+  `src/app/admin/(panel)`: side menu (top bar on narrow screens) with live
+  counters — confirmed orders, stock alerts, pending failed messages —
+  the admin's e-mail and Sair. Unbuilt sections: `href: null` → muted +
+  EM BREVE.
+- `admin-dashboard/` — `/admin` (`Docs/specs/admin/admin-dashboard.md`):
+  `GET /api/admin/dashboard` for the period and the previous one (KPIs,
+  funnel, recent orders), "Receita por dia" summed per São Paulo day from
+  `GET /api/admin/orders` (all pages of the period), the preparation queue
+  and the low-stock list from the admin product list (`Stock=`). Period in
+  `?periodo=` (7 / 30); everything polls every 30 s ("Ao vivo").
 - `auth/` — maps to OrderCore's Identity module: the Acesso screens
   (`Docs/specs/auth/access.md`) — `/login`, `/register`,
   `/forgot-password`, `/confirmar-email` and `/redefinir-senha` (the last

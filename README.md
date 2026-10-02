@@ -129,11 +129,23 @@ public/
   cliente → "Sem acesso ao painel" (sem deixar sessão aberta); sessão
   expirada → aviso "Sua sessão terminou" e volta para a seção onde estava;
   "Manter conectado neste computador" desmarcado faz a sessão acabar ao
-  fechar o navegador. `/admin` é provisório (protegido, "O painel está
-  chegando") até o dashboard ser implementado. Para testar localmente, o
+  fechar o navegador. Para testar localmente, o
   admin é o de `ADMIN_EMAIL`/`ADMIN_PASSWORD` no `.env` do OrderCore. Spec
   em `Docs/specs/admin/admin-login.md`; lacunas em
   `Docs/backend-pendencies/admin/admin-login.md`.
+
+- **Admin · Dashboard** (`/admin`) — telas `AdminDashboard.dc.html` e
+  `AdminNav.dc.html`: menu lateral do painel com contadores ao vivo
+  (pedidos a preparar, estoque baixo, mensagens com falha; seções ainda não
+  feitas aparecem como EM BREVE), receita, pedidos pagos e ticket médio do
+  período com a variação contra o período anterior, pedidos a preparar
+  (e quantos há mais de 24 h), gráfico de receita por dia, pedidos por
+  etapa, últimos pedidos e produtos abaixo do ponto de reposição. Período de
+  7 ou 30 dias (`?periodo=`); atualiza a cada 30 s. Consome
+  `/api/admin/dashboard`, `/api/admin/orders`,
+  `/api/admin/catalog/products` e `/api/messaging/failed-messages`. Spec
+  em `Docs/specs/admin/admin-dashboard.md`; lacunas em
+  `Docs/backend-pendencies/admin/admin-dashboard.md`.
 
 ## Telas (design)
 

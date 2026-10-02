@@ -45,12 +45,11 @@ clearly when a shopper's account tries it.
   goes there at once.
 - Opening `/admin/login` already signed in as an admin skips the form.
 
-## `/admin` (provisional)
+## Gate for `/admin/*`
 
-Until the AdminDashboard screen is implemented, `/admin` is a protected
-placeholder: admins see "Dashboard em breve" with Sair; signed-out visitors
-go to `/admin/login?next=…`; an expired session goes there too, with the
-notice; a signed-in shopper sees the 403 state.
+Signed-out visitors go to `/admin/login?next=…`; an expired session goes
+there too, with the notice; a signed-in shopper sees the 403 state. (`/admin`
+was a placeholder until the dashboard — `Docs/specs/admin/admin-dashboard.md`.)
 
 ## Decisions
 
