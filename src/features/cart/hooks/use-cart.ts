@@ -7,6 +7,9 @@ import {
 	addToCart,
 	getCartSnapshot,
 	getServerCartSnapshot,
+	removeFromCart,
+	repriceCartItem,
+	setCartQuantity,
 	subscribeToCart,
 } from '../lib/cart-store';
 
@@ -22,6 +25,9 @@ function useCart() {
 		count: countCartItems(lines),
 		subtotal: cartSubtotal(lines),
 		addItem: addToCart,
+		setQuantity: setCartQuantity,
+		removeItem: removeFromCart,
+		repriceItem: repriceCartItem,
 	};
 }
 

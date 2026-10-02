@@ -7,6 +7,9 @@ import {
 	countCartItems,
 	formatItemCount,
 	parseCartLines,
+	removeCartLine,
+	repriceCartLine,
+	setCartLineQuantity,
 } from './cart-lines';
 
 const arco = {
@@ -68,5 +71,45 @@ describe('formatItemCount', () => {
 		assert.equal(formatItemCount(1), '1 item');
 		assert.equal(formatItemCount(0), '0 itens');
 		assert.equal(formatItemCount(3), '3 itens');
+	});
+});
+
+describe('setCartLineQuantity', () => {
+	const lines = addCartLine(addCartLine([], arco), grao);
+
+	it('sets the quantity, capped at 9', () => {
+		assert.equal(setCartLineQuantity(lines, 'p-arco', 3)[0].quantity, 3);
+		assert.equal(setCartLineQuantity(lines, 'p-arco', 42)[0].quantity, 9);
+	});
+
+	it('removes the line at 0', () => {
+		assert.deepEqual(
+			setCartLineQuantity(lines, 'p-arco', 0).map((line) => line.productId),
+			['p-grao'],
+		);
+	});
+
+	it('caps additions too', () => {
+		assert.equal(addCartLine([], arco, 20)[0].quantity, 9);
+		assert.equal(
+			addCartLine(setCartLineQuantity(lines, 'p-arco', 9), arco)[0].quantity,
+			9,
+		);
+	});
+});
+
+describe('removeCartLine / repriceCartLine', () => {
+	const lines = addCartLine(addCartLine([], arco), grao);
+
+	it('removes only the given product', () => {
+		assert.deepEqual(
+			removeCartLine(lines, 'p-grao').map((line) => line.productId),
+			['p-arco'],
+		);
+	});
+
+	it('updates the stored unit price', () => {
+		assert.equal(repriceCartLine(lines, 'p-grao', 95)[1].unitPrice, 95);
+		assert.equal(repriceCartLine(lines, 'p-grao', 95)[0].unitPrice, 489);
 	});
 });

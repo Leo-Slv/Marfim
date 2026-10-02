@@ -1,5 +1,8 @@
 import type { CartLine } from '../model/cart';
 
+/** Per-line cap, as in the Sacola mockup's stepper. */
+const MAX_LINE_QUANTITY = 9;
+
 /** Adds the item as a new line, or bumps the quantity of its existing line. */
 function addCartLine(
 	lines: readonly CartLine[],
@@ -8,13 +11,50 @@ function addCartLine(
 ): CartLine[] {
 	const existing = lines.find((line) => line.productId === item.productId);
 	if (!existing) {
-		return [...lines, { ...item, quantity }];
+		return [
+			...lines,
+			{ ...item, quantity: Math.min(MAX_LINE_QUANTITY, quantity) },
+		];
 	}
 
+	return setCartLineQuantity(
+		lines,
+		item.productId,
+		existing.quantity + quantity,
+	);
+}
+
+/** Sets a line's quantity (capped at 9); 0 or less removes the line. */
+function setCartLineQuantity(
+	lines: readonly CartLine[],
+	productId: string,
+	quantity: number,
+): CartLine[] {
+	if (quantity <= 0) {
+		return removeCartLine(lines, productId);
+	}
 	return lines.map((line) =>
-		line.productId === item.productId
-			? { ...line, quantity: line.quantity + quantity }
+		line.productId === productId
+			? { ...line, quantity: Math.min(MAX_LINE_QUANTITY, quantity) }
 			: line,
+	);
+}
+
+function removeCartLine(
+	lines: readonly CartLine[],
+	productId: string,
+): CartLine[] {
+	return lines.filter((line) => line.productId !== productId);
+}
+
+/** Accepts a new price for a line (after the backend reports a change). */
+function repriceCartLine(
+	lines: readonly CartLine[],
+	productId: string,
+	unitPrice: number,
+): CartLine[] {
+	return lines.map((line) =>
+		line.productId === productId ? { ...line, unitPrice } : line,
 	);
 }
 
@@ -67,5 +107,9 @@ export {
 	cartSubtotal,
 	countCartItems,
 	formatItemCount,
+	MAX_LINE_QUANTITY,
 	parseCartLines,
+	removeCartLine,
+	repriceCartLine,
+	setCartLineQuantity,
 };

@@ -1,5 +1,11 @@
 import type { CartLine } from '../model/cart';
-import { addCartLine, parseCartLines } from './cart-lines';
+import {
+	addCartLine,
+	parseCartLines,
+	removeCartLine,
+	repriceCartLine,
+	setCartLineQuantity,
+} from './cart-lines';
 
 /**
  * Minimal client-side cart store, persisted in localStorage and read through
@@ -61,8 +67,7 @@ function getServerCartSnapshot() {
 	return EMPTY_CART;
 }
 
-function addToCart(item: Omit<CartLine, 'quantity'>, quantity = 1) {
-	const next = addCartLine(getCartSnapshot(), item, quantity);
+function commit(next: readonly CartLine[]) {
 	cachedLines = next;
 	if (canUseWebStorage()) {
 		window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(next));
@@ -70,4 +75,28 @@ function addToCart(item: Omit<CartLine, 'quantity'>, quantity = 1) {
 	emit();
 }
 
-export { addToCart, getCartSnapshot, getServerCartSnapshot, subscribeToCart };
+function addToCart(item: Omit<CartLine, 'quantity'>, quantity = 1) {
+	commit(addCartLine(getCartSnapshot(), item, quantity));
+}
+
+function setCartQuantity(productId: string, quantity: number) {
+	commit(setCartLineQuantity(getCartSnapshot(), productId, quantity));
+}
+
+function removeFromCart(productId: string) {
+	commit(removeCartLine(getCartSnapshot(), productId));
+}
+
+function repriceCartItem(productId: string, unitPrice: number) {
+	commit(repriceCartLine(getCartSnapshot(), productId, unitPrice));
+}
+
+export {
+	addToCart,
+	getCartSnapshot,
+	getServerCartSnapshot,
+	removeFromCart,
+	repriceCartItem,
+	setCartQuantity,
+	subscribeToCart,
+};
