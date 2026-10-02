@@ -101,6 +101,17 @@ public/
   em `Docs/specs/checkout/payment.md`; lacunas em
   `Docs/backend-pendencies/checkout/payment.md`.
 
+- **Minha conta** (`/account/*`) — tela `Conta.dc.html`: **Meus pedidos**
+  (lista paginada com miniaturas e status; detalhe com linha do tempo a
+  partir do histórico do OrderCore, envio/rastreio, itens e **cancelamento**
+  enquanto o ateliê não começou o preparo — atualiza sozinho enquanto o
+  pedido anda), **Meus dados** (nome, sobrenome, telefone com máscara),
+  **Endereços** (adicionar, editar, excluir, tornar entrega/cobrança
+  padrão), **Trocar senha** (mantém esta sessão e encerra as outras, pelo
+  BFF) e **Sair**. Cada seção tem sua URL. Spec em
+  `Docs/specs/account/account.md`; lacunas em
+  `Docs/backend-pendencies/account/account.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra

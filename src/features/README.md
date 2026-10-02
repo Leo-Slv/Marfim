@@ -40,6 +40,19 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   shipping label. Atelier details are editorial (`lib/ateliers.ts`, keyed
   by product `brand`); each atelier's product list is live.
 
+- `account/` — Minha conta (`Docs/specs/account/account.md`), one route per
+  section under `src/app/account/*` sharing `AccountLayout` (greeting, side
+  menu, Sair; gated with `useRequireSession`). Orders: `GET
+  /api/orders/me` + one `GET /api/orders/{id}` per listed order for the
+  thumbnails (the list has no items — useQueries, page of 10); the detail
+  polls while the order is still moving and builds the timeline from
+  `status-history` (`lib/order-timeline.ts`: always shows the current
+  status, never the backend's raw English `reason`). Addresses reuse
+  checkout's API/form (`AddressFormCard` edits too, via `addressToForm`).
+  The password change goes through the BFF
+  (`/api/session/change-password`) so the cookie's session is the one kept.
+  Order lines have no slug, so drawings come from `slugify(productName)`
+  (catalog).
 - `auth/` — maps to OrderCore's Identity module: the Acesso screens
   (`Docs/specs/auth/access.md`) — `/login`, `/register`,
   `/forgot-password`, `/confirmar-email` and `/redefinir-senha` (the last

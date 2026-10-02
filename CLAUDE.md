@@ -79,8 +79,8 @@ Current features: `catalog/` (products, categories, `ProductCard`,
 `ListingProductCard`, `ProductArt`), `cart/` (client-side cart store,
 mini-sacola and the Sacola screen), `home/` (the storefront home),
 `listing/` (category, search and promotions listing), `auth/` (sign
-in/up, e-mail confirmation, password recovery) and `checkout/` (Entrega
-and Pagamento with Stripe) — see
+in/up, e-mail confirmation, password recovery), `checkout/` (Entrega
+and Pagamento with Stripe) and `account/` (Minha conta) — see
 `src/features/README.md`. Screen state that defines what's shown (filters,
 sort, page, search term) lives in the URL so it can be shared and survives
 back/forward; components reading it with `useSearchParams` sit inside a
@@ -188,7 +188,12 @@ token, both returned in the JSON body. Decided in
   and retries. Refreshes are single-flight (the refresh token rotates); a
   rejected refresh (401) clears the session.
 - Other `auth/*` calls (forgot/reset password, confirm e-mail, resend
-  confirmation) go straight from the browser with `apiFetch`.
+  confirmation) go straight from the browser with `apiFetch` — except
+  `password/change`, which needs the refresh token of the session to keep
+  and therefore goes through `/api/session/change-password`.
+- **Never show OrderCore's free-text fields as shopper copy** without
+  checking: operational texts like an order's status `reason` are English
+  and internal; map to pt-BR copy instead.
 - The backend's e-mails link to `/confirmar-email?token=` and
   `/redefinir-senha?token=` (OrderCore's `Identity:Links` config) — those
   two routes keep their pt-BR paths.
