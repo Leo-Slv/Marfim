@@ -53,6 +53,13 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   (`/api/session/change-password`) so the cookie's session is the one kept.
   Order lines have no slug, so drawings come from `slugify(productName)`
   (catalog).
+- `admin-auth/` — the admin panel's door (`Docs/specs/admin/admin-login.md`):
+  `/admin/login` (AdminLogin.dc.html — form, "Sem acesso ao painel",
+  "Bem-vindo de volta", the "sessão terminou" notice, "Manter conectado")
+  through the BFF's `admin-sign-in`; `AdminGate` for every `/admin/*`
+  screen (`useRequireAdmin` in `src/lib/auth`) and the provisional `/admin`
+  placeholder until AdminDashboard. `lib/admin-login.ts` maps errors, keeps
+  `?next=` inside the panel and names the section to go back to.
 - `auth/` — maps to OrderCore's Identity module: the Acesso screens
   (`Docs/specs/auth/access.md`) — `/login`, `/register`,
   `/forgot-password`, `/confirmar-email` and `/redefinir-senha` (the last

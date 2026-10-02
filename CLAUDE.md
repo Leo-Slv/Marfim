@@ -80,8 +80,8 @@ Current features: `catalog/` (products, categories, `ProductCard`,
 mini-sacola and the Sacola screen), `home/` (the storefront home),
 `listing/` (category, search and promotions listing), `auth/` (sign
 in/up, e-mail confirmation, password recovery), `checkout/` (Entrega
-and Pagamento with Stripe), `account/` (Minha conta) and `errors/` (error
-states) — see
+and Pagamento with Stripe), `account/` (Minha conta), `errors/` (error
+states) and `admin-auth/` (admin sign-in + `/admin` gate) — see
 `src/features/README.md`. Screen state that defines what's shown (filters,
 sort, page, search term) lives in the URL so it can be shared and survives
 back/forward; components reading it with `useSearchParams` sit inside a
@@ -209,8 +209,17 @@ token, both returned in the JSON body. Decided in
   session is read, a signed-out visitor goes to Entrar and comes back to the
   same URL — unless the session expired (the backend refused to renew
   it): then `expired` is true and the screen renders the "Sessão
-  expirada" state. It's UX only — the backend authorizes every call. Admin gating
-  (role) comes with the admin panel.
+  expirada" state. It's UX only — the backend authorizes every call.
+- **Admin panel** (`/admin/*`, `Docs/specs/admin/admin-login.md`): admins
+  sign in at `/admin/login` through `/api/session/admin-sign-in`, which
+  only lets the `Admin` role through (a non-admin's new session is signed
+  out at once → `403 not_admin`) and ends the session it replaces on this
+  browser. "Manter conectado" off makes `marfim_refresh` a session cookie
+  (`marfim_persist=0` keeps it so on renewals). Every admin screen sits
+  inside `AdminGate` (`useRequireAdmin()`): signed out or expired →
+  `/admin/login?next=` (which shows "Sua sessão terminou" from the expired
+  flag), a shopper → the 403 state, an expired token renewed on arrival.
+  One session per browser, shared with the storefront.
 
 ## Implementation Workflow
 

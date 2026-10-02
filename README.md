@@ -123,6 +123,18 @@ public/
   Spec em `Docs/specs/storefront/error-states.md`; lacunas em
   `Docs/backend-pendencies/storefront/error-states.md`.
 
+- **Admin · Entrar** (`/admin/login`) — tela `AdminLogin.dc.html`: entrada
+  do painel administrativo, só para contas com papel Admin. Erros de
+  credenciais, conta desativada e muitas tentativas (com contagem); conta de
+  cliente → "Sem acesso ao painel" (sem deixar sessão aberta); sessão
+  expirada → aviso "Sua sessão terminou" e volta para a seção onde estava;
+  "Manter conectado neste computador" desmarcado faz a sessão acabar ao
+  fechar o navegador. `/admin` é provisório (protegido, "O painel está
+  chegando") até o dashboard ser implementado. Para testar localmente, o
+  admin é o de `ADMIN_EMAIL`/`ADMIN_PASSWORD` no `.env` do OrderCore. Spec
+  em `Docs/specs/admin/admin-login.md`; lacunas em
+  `Docs/backend-pendencies/admin/admin-login.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra
