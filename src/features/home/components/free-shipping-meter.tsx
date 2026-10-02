@@ -2,8 +2,7 @@
 
 import { ComingSoonBadge } from '@/components/coming-soon-badge';
 import { useCart } from '@/features/cart/hooks/use-cart';
-
-import { freeShippingProgress } from '../lib/free-shipping';
+import { freeShippingProgress } from '@/features/cart/lib/free-shipping';
 
 /** Muted preview of the free-shipping goal (EM BREVE in the mockup). */
 function FreeShippingMeter() {
