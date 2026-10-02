@@ -1,5 +1,6 @@
 import {
 	clearRefreshToken,
+	isPersistentSession,
 	passThrough,
 	postToOrderCore,
 	problem,
@@ -22,5 +23,7 @@ export async function POST(request: Request) {
 		return passThrough(upstream);
 	}
 
-	return respondWithSession(upstream);
+	return respondWithSession(upstream, {
+		persistent: await isPersistentSession(),
+	});
 }

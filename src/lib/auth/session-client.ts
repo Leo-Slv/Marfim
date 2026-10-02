@@ -15,13 +15,20 @@ const REFRESH_MARGIN_MS = 30_000;
 
 type SignInInput = { email: string; password: string };
 type SignUpInput = { name: string; email: string; password: string };
+type AdminSignInInput = SignInInput & { keepSignedIn: boolean };
 
 /** What the BFF returns: OrderCore's tokens minus the refresh token. */
 type SessionTokens = { accessToken: string };
 
 /** POSTs to the storefront's own BFF (`src/app/api/session/*`). */
 async function postSession(
-	action: 'sign-in' | 'sign-up' | 'refresh' | 'sign-out' | 'change-password',
+	action:
+		| 'sign-in'
+		| 'admin-sign-in'
+		| 'sign-up'
+		| 'refresh'
+		| 'sign-out'
+		| 'change-password',
 	body?: unknown,
 	accessToken?: string,
 ) {
@@ -61,6 +68,21 @@ function startSession(tokens: SessionTokens | null) {
 
 async function signIn(input: SignInInput) {
 	return startSession(await postSession('sign-in', input));
+}
+
+/**
+ * The admin panel's sign-in: only an admin gets a session (`not_admin`
+ * otherwise, with no session left behind). The current session, if any, is
+ * sent so the BFF can end it once replaced.
+ */
+async function signInAdmin(input: AdminSignInInput) {
+	return startSession(
+		await postSession(
+			'admin-sign-in',
+			input,
+			getSessionSnapshot()?.accessToken,
+		),
+	);
 }
 
 async function signUp(input: SignUpInput) {
@@ -130,13 +152,14 @@ async function signOut() {
 	}
 }
 
-export type { SignInInput, SignUpInput };
+export type { AdminSignInInput, SignInInput, SignUpInput };
 export {
 	changePassword,
 	getValidAccessToken,
 	hasSession,
 	refreshSession,
 	signIn,
+	signInAdmin,
 	signOut,
 	signUp,
 };

@@ -11,6 +11,8 @@ import { z } from 'zod';
  */
 const REFRESH_COOKIE = 'marfim_refresh';
 const REFRESH_COOKIE_PATH = '/api/session';
+/** "0" when the session must end with the browser ("Manter conectado" off). */
+const PERSIST_COOKIE = 'marfim_persist';
 
 const orderCoreUrl = (
 	process.env.ORDERCORE_API_URL ??
@@ -76,24 +78,54 @@ async function passThrough(upstream: Response) {
 	});
 }
 
+type SessionOptions = {
+	/**
+	 * Keep the refresh cookie until the token expires (default); false makes
+	 * it a session cookie, gone when the browser closes, and remembers that
+	 * for the renewals.
+	 */
+	persistent?: boolean;
+	/** Only this role may sign in; any other gets `403 not_admin`. */
+	requireRole?: 'Admin';
+};
+
 /**
  * On success, stores the refresh token in the cookie and answers with the
  * tokens minus the refresh token; otherwise passes the error through.
  */
-async function respondWithSession(upstream: Response) {
+async function respondWithSession(
+	upstream: Response,
+	{ persistent = true, requireRole }: SessionOptions = {},
+) {
 	if (!upstream.ok) {
 		return passThrough(upstream);
 	}
 
 	const tokens = authTokensSchema.parse(await upstream.json());
+
+	if (requireRole && tokens.role !== requireRole) {
+		// OrderCore has no role-restricted sign-in (admin pendency #1): end
+		// the session it just opened, so it never reaches the browser.
+		await revokeSession(tokens.refreshToken, tokens.accessToken);
+		return problem(403, 'not_admin', 'This account is not an administrator.');
+	}
+
 	const cookieStore = await cookies();
-	cookieStore.set(REFRESH_COOKIE, tokens.refreshToken, {
+	const cookieOptions = {
 		httpOnly: true,
 		sameSite: 'lax',
 		secure: process.env.NODE_ENV === 'production',
 		path: REFRESH_COOKIE_PATH,
-		expires: new Date(tokens.refreshTokenExpiresAt),
+	} as const;
+	cookieStore.set(REFRESH_COOKIE, tokens.refreshToken, {
+		...cookieOptions,
+		...(persistent ? { expires: new Date(tokens.refreshTokenExpiresAt) } : {}),
 	});
+	if (persistent) {
+		cookieStore.delete({ name: PERSIST_COOKIE, path: REFRESH_COOKIE_PATH });
+	} else {
+		cookieStore.set(PERSIST_COOKIE, '0', cookieOptions);
+	}
 
 	// Everything except the refresh token, which only lives in the cookie.
 	return Response.json(
@@ -109,12 +141,37 @@ async function respondWithSession(upstream: Response) {
 	);
 }
 
+/** Ends a session upstream (best effort; needs both of its tokens). */
+async function revokeSession(refreshToken: string, accessToken: string) {
+	try {
+		await fetch(`${orderCoreUrl}/api/auth/sign-out`, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${accessToken}`,
+			},
+			body: JSON.stringify({ refreshToken }),
+			cache: 'no-store',
+		});
+	} catch {
+		// The token still expires on its own.
+	}
+}
+
+/** Whether the current session asked to stay signed in. */
+async function isPersistentSession() {
+	return (await cookies()).get(PERSIST_COOKIE)?.value !== '0';
+}
+
 async function readRefreshToken() {
 	return (await cookies()).get(REFRESH_COOKIE)?.value ?? null;
 }
 
 async function clearRefreshToken() {
-	(await cookies()).delete({ name: REFRESH_COOKIE, path: REFRESH_COOKIE_PATH });
+	const cookieStore = await cookies();
+	cookieStore.delete({ name: REFRESH_COOKIE, path: REFRESH_COOKIE_PATH });
+	cookieStore.delete({ name: PERSIST_COOKIE, path: REFRESH_COOKIE_PATH });
 }
 
 /** A ProblemDetails response in OrderCore's shape. */
@@ -144,10 +201,12 @@ async function readFields<TKey extends string>(
 
 export {
 	clearRefreshToken,
+	isPersistentSession,
 	passThrough,
 	postToOrderCore,
 	problem,
 	readFields,
 	readRefreshToken,
 	respondWithSession,
+	revokeSession,
 };
