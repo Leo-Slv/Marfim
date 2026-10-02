@@ -10,6 +10,8 @@ const queryKeys = {
 			pageSize: number;
 			categoryId?: string;
 			sort?: string;
+			searchTerm?: string;
+			onSale?: boolean;
 		}) =>
 			[
 				'catalog',
@@ -18,6 +20,8 @@ const queryKeys = {
 				params.pageSize,
 				params.categoryId ?? 'all',
 				params.sort ?? 'default',
+				params.searchTerm ?? '',
+				params.onSale ?? false,
 			] as const,
 		product: (slug: string) => ['catalog', 'product', slug] as const,
 		categories: ['catalog', 'categories'] as const,
