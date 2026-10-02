@@ -28,11 +28,6 @@ function categoryBlurb(slug: string | null) {
 	return categoryBlurbs[slug] ?? DEFAULT_CATEGORY_BLURB;
 }
 
-/** "1 peça" / "8 peças". */
-function formatPieceCount(count: number) {
-	return `${count} ${count === 1 ? 'peça' : 'peças'}`;
-}
-
 /** `3 resultados para “lumin”`. */
 function formatResultCount(count: number, term: string) {
 	const noun = count === 1 ? 'resultado' : 'resultados';
@@ -66,7 +61,6 @@ function emptyStateCopy(mode: ListingMode, term: string) {
 export {
 	categoryBlurb,
 	emptyStateCopy,
-	formatPieceCount,
 	formatResultCount,
 	isSearchable,
 	MIN_SEARCH_LENGTH,

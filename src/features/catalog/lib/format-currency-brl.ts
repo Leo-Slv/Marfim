@@ -22,4 +22,9 @@ function formatCurrencyBrl(amount: number) {
 	return formatter.format(amount).replace(/\s/g, ' ');
 }
 
-export { formatCurrencyBrl };
+/** Always two decimals (`R$ 488,00`) — the order summary's style. */
+function formatCurrencyBrlCents(amount: number) {
+	return centsFormatter.format(amount).replace(/\s/g, ' ');
+}
+
+export { formatCurrencyBrl, formatCurrencyBrlCents };

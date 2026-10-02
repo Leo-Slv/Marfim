@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
+import { formatPieceCount } from '@/features/catalog/lib/format-piece-count';
+
 import {
 	categoryBlurb,
 	emptyStateCopy,
-	formatPieceCount,
 	formatResultCount,
 	isSearchable,
 } from './listing-copy';

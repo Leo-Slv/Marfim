@@ -12,12 +12,12 @@ import {
 	useCategories,
 	useProducts,
 } from '@/features/catalog/hooks/catalog.queries';
+import { formatPieceCount } from '@/features/catalog/lib/format-piece-count';
 import type { ProductSummary } from '@/features/catalog/model/product';
 
 import {
 	categoryBlurb,
 	emptyStateCopy,
-	formatPieceCount,
 	formatResultCount,
 	isSearchable,
 	NEWEST_SLUG,
