@@ -43,6 +43,17 @@ public/
   sacola local (localStorage); favoritos valem só durante a visita. Spec em
   `Docs/specs/storefront/home.md`; lacunas do backend em
   `Docs/backend-pendencies/storefront/home.md`.
+- **Listagem** (`/products`, `/search`, `/promotions`) — tela
+  `Listagem.dc.html` em três modos: por categoria (`?categoria=` com Tudo,
+  Novidades e as categorias cadastradas no banco), busca (`?q=`, a partir de
+  2 letras) e promoções (peças com preço "de/por"). Ordenação (`?ordem=`),
+  paginação de 8 em 8 (`?pagina=`), selos de estoque (Esgotado / Últimas
+  unidades) e mini-sacola ao adicionar. O menu de categorias do header e os
+  links do rodapé levam para cá. Consome `GET /api/catalog/products` (com
+  `categoryId`, `searchTerm`, `onSale`, `sort`) e
+  `GET /api/catalog/categories`. Spec em `Docs/specs/storefront/listing.md`;
+  lacunas do backend (busca só por nome e sensível a acento, sem filtro por
+  ateliê) em `Docs/backend-pendencies/storefront/listing.md`.
 
 ## Telas (design)
 

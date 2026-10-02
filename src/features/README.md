@@ -33,6 +33,14 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   shipping label. Atelier details are editorial (`lib/ateliers.ts`, keyed
   by product `brand`); each atelier's product list is live.
 
+- `listing/` — the product listing (`Docs/specs/storefront/listing.md`),
+  one screen in three modes routed by `src/app/products`, `search` and
+  `promotions`. Everything that defines the result set lives in the URL
+  (`categoria`, `q`, `ordem`, `pagina`; `lib/listing-url.ts` builds hrefs
+  and resets the page on any other change), read inside `Suspense`. Uses
+  catalog's `ListingProductCard` and cart's `AddedToCartDrawer`
+  (mini-sacola, a Radix Dialog).
+
 `src/components/store-header.tsx` and `store-footer.tsx` are the
 storefront chrome shared by every store page.
 

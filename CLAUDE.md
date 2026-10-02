@@ -74,8 +74,12 @@ schemas/     # Zod schemas for API responses and form validation
 ```
 
 Current features: `catalog/` (products, categories, `ProductCard`,
-`ProductArt`), `cart/` (client-side cart store) and `home/` (the storefront
-home) — see `src/features/README.md`. New features are added following the
+`ListingProductCard`, `ProductArt`), `cart/` (client-side cart store +
+mini-sacola), `home/` (the storefront home) and `listing/` (category,
+search and promotions listing) — see `src/features/README.md`. Screen state
+that defines what's shown (filters, sort, page, search term) lives in the
+URL so it can be shared and survives back/forward; components reading it
+with `useSearchParams` sit inside a `Suspense` boundary. New features are added following the
 Implementation Workflow below, one feature at a time.
 
 ### Product imagery
