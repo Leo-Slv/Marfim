@@ -19,4 +19,5 @@ Cosmetic / Config).
 | Account access (`/login`, `/register`, `/forgot-password`, `/confirmar-email`, `/redefinir-senha`) | [auth/access.md](auth/access.md) | Rate limits behind the BFF (config), `Retry-After` not exposed by CORS, no name in the session |
 | Checkout · Entrega (`/checkout/delivery`) | [checkout/delivery.md](checkout/delivery.md) | No shipping options/cost, label/neighborhood/country required, first address not default, no CEP/UF validation |
 | Checkout · Pagamento (`/checkout/payment`) | [checkout/payment.md](checkout/payment.md) | No Pix with Stripe, no card last4, stock/price conflicts without item detail, Stripe CLI needed locally |
+| Minha conta (`/account/*`) | [account/account.md](account/account.md) | Order list without items (N+1), single name field, no phone validation, generic timeline notes, no card last4 |
 | Storefront cart (`/cart`) | [storefront/cart.md](storefront/cart.md) | No available quantity on stock issues, quote lines lack brand/category/compare-at, no shipping, coupons, gift wrap, Pix/installments, recommendations or lead time |
