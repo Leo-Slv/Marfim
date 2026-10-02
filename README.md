@@ -31,10 +31,18 @@ public/
 
 ## Módulos ativos
 
-- **Catálogo (scaffold)** (`/`) — lista a primeira página de produtos via
-  `GET /catalog/products`. Existe só como exemplo do formato de uma feature
-  (`api` → `schemas` → `hooks` → `components`); será substituído pela página
-  inicial especificada.
+- **Início da loja** (`/`) — tela `Main.dc.html`: header com categorias
+  reais e contador da sacola, hero com a Luminária Arco (preço e estoque
+  vivos), grade "Escolhidos da semana" com filtro por categoria
+  (`?categoria=`, também acionado pelo menu do header), banner de promoção
+  com contagem regressiva, ateliês com as peças de cada um (agrupadas por
+  `brand`), etiqueta de envio e rodapé. Consome
+  `GET /api/catalog/products`, `GET /api/catalog/products/by-slug/{slug}` e
+  `GET /api/catalog/categories`. As imagens dos produtos são os desenhos dos
+  mocks, escolhidos por slug (não ficam no banco). "Adicionar" grava numa
+  sacola local (localStorage); favoritos valem só durante a visita. Spec em
+  `Docs/specs/storefront/home.md`; lacunas do backend em
+  `Docs/backend-pendencies/storefront/home.md`.
 
 ## Telas (design)
 
@@ -44,14 +52,23 @@ As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra
 
 ## Como rodar
 
+Suba o OrderCore (API + Postgres com seed) pelo Docker, no repositório
+dele:
+
+```bash
+docker compose up -d --build
+```
+
+Depois, aqui:
+
 ```bash
 cp .env.example .env.local
 npm install
 npm run dev
 ```
 
-`NEXT_PUBLIC_API_URL` aponta para o OrderCore rodando localmente
-(`https://localhost:23346` por padrão).
+`NEXT_PUBLIC_API_URL` aponta para a API do OrderCore no Docker
+(`http://localhost:8080` por padrão).
 
 ## Scripts
 

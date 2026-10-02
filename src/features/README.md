@@ -17,12 +17,24 @@ src/features/<feature>/
 of implementing business logic inline. `src/components/**` only holds
 cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
 
-- `catalog/` — maps to the backend's Catalog module. Currently only the
-  scaffold example: `GET /catalog/products` (public, paged) validated by
-  `schemas/product.schema.ts`, exposed through `useProducts`, and rendered
-  as a grid of `ProductCard` on `/`. Replace it with the specced home and
-  listing screens (`Docs/design/mockups/Main.dc.html`,
-  `Listagem.dc.html`).
+- `catalog/` — maps to the backend's Catalog module: products
+  (`GET /api/catalog/products`, `…/by-slug/{slug}`) and categories
+  (`GET /api/catalog/categories`), all public. Owns the reusable
+  `ProductCard` and `ProductArt` (the mockups' SVG drawings — product photos
+  aren't stored in the backend; `lib/product-visuals.ts` maps slug →
+  drawing, tint and editorial tag), plus price helpers.
+- `cart/` — the client-side cart (OrderCore keeps the cart on the client and
+  only re-prices it). A localStorage-backed external store read through
+  `useSyncExternalStore` (`useCart`); no state library. Currently only
+  adds lines and exposes count/subtotal — the Sacola screen will build on it.
+- `home/` — the storefront home `/` (`Docs/specs/storefront/home.md`):
+  hero, "Escolhidos da semana" grid filtered by `?categoria=` (wrapped in
+  `Suspense` because of `useSearchParams`), promo countdown, ateliers and
+  shipping label. Atelier details are editorial (`lib/ateliers.ts`, keyed
+  by product `brand`); each atelier's product list is live.
+
+`src/components/store-header.tsx` and `store-footer.tsx` are the
+storefront chrome shared by every store page.
 
 Each new feature is added following the workflow in the root `CLAUDE.md`
 (spec → resolve open decisions → backend pendencies → implementation plan →

@@ -27,12 +27,14 @@ convention over inventing a new one.
 - `motion` for animations (wrapped in `MotionConfig reducedMotion="user"`)
 - Prettier + `prettier-plugin-tailwindcss`, ESLint (`eslint-config-next`)
 
-There is no global client-state store (Redux/Zustand/etc.) yet. Server state
-goes through TanStack Query; keep local UI state in component state. Only
-introduce a global store if a concrete feature needs cross-tree client state
-that query caching and component state can't reasonably cover (the
-"sacola"/cart is the likely first candidate — decide it when that feature is
-specced, don't add one preemptively).
+There is no global client-state library (Redux/Zustand/etc.). Server state
+goes through TanStack Query; keep local UI state in component state. The one
+piece of cross-tree client state, the cart (header count ↔ product cards), is
+a tiny localStorage-backed external store read with React's
+`useSyncExternalStore` (`src/features/cart/lib/cart-store.ts`,
+`hooks/use-cart.ts`) — follow that pattern before reaching for a library.
+The cart lives on the client by OrderCore's design; the API only re-prices
+it (`POST /api/orders/cart/quote`).
 
 ## Folder structure
 
@@ -41,7 +43,8 @@ src/app/         # Routes (App Router). Stay thin: import and render feature
                  # components/hooks instead of implementing business logic inline.
 src/components/
   ui/            # shadcn/ui primitives (generated via `npx shadcn add <name>`)
-  ...            # cross-feature shared composites (header, footer, etc.)
+  ...            # cross-feature shared composites (store-header, store-footer,
+                 # eyebrow, coming-soon-badge)
 src/features/    # One folder per business feature — see src/features/README.md
 src/lib/
   http/          # apiFetch client + ApiError (adapted to OrderCore's ProblemDetails)
@@ -70,10 +73,19 @@ model/       # TypeScript types for the feature's domain
 schemas/     # Zod schemas for API responses and form validation
 ```
 
-The only feature in the scaffold is `catalog/`, a minimal Product slice
-(`GET /catalog/products` → schema → `useProducts` → `ProductCard`) that
-exists so the shape has a real example. Every other feature is added
-following the Implementation Workflow below, one feature at a time.
+Current features: `catalog/` (products, categories, `ProductCard`,
+`ProductArt`), `cart/` (client-side cart store) and `home/` (the storefront
+home) — see `src/features/README.md`. New features are added following the
+Implementation Workflow below, one feature at a time.
+
+### Product imagery
+
+Product photos are deliberately **not** stored in OrderCore. Products are
+drawn with the mockups' inline-SVG illustrations (`Art.dc.html`): drawing
+kind, background tint and editorial tag are mapped by product slug in
+`src/features/catalog/lib/product-visuals.ts` and rendered by
+`components/product-art.tsx`. A new product only needs an entry there
+(unknown slugs fall back to a default drawing).
 
 ## Backend / API contract
 
@@ -83,11 +95,20 @@ The OrderCore backend lives in a sibling repo on this machine:
 the modules Catalog, Customers, Identity, Inventory, Orders, Payments,
 Notifications, Messaging and AuditLogs.
 
-- **Live contract**: run the backend locally (`dotnet run`, Development
-  environment, `https://localhost:23346`) and read the OpenAPI spec at
-  `https://localhost:23346/openapi/v1.json`, or browse it via the Scalar UI
-  at `https://localhost:23346/scalar`. This is the source of truth — it's
-  generated straight from the actual controllers/DTOs.
+- **Always check the API first.** Before working on (or verifying) any
+  screen, check that the API answers at `http://localhost:8080/`. If it
+  doesn't, start it with Docker from the OrderCore repo
+  (`docker compose up -d --build`; start Docker Desktop first if the daemon
+  is down). The compose stack seeds the local database with real catalog
+  data, so screens are built against the live API — never against mocked
+  responses.
+- **Routes are prefixed with `/api`** (`ApiRoutePrefixConvention` in the
+  backend): e.g. `GET /api/catalog/products`.
+- **Live contract**: with the API running in Development, read the OpenAPI
+  spec at `http://localhost:8080/openapi/v1.json` or browse the Scalar UI at
+  `http://localhost:8080/scalar`. This is the source of truth — it's
+  generated straight from the actual controllers/DTOs. (`dotnet run` outside
+  Docker serves the same API at `https://localhost:23346`.)
 - **Offline fallback**: when the API isn't running, read the backend's
   `README.md`, `Docs/` (ADRs, specs, api) and the controllers/`Responses`
   under `Modules/<Module>/Presentation/` directly (Claude Code can read files
@@ -107,7 +128,7 @@ Notifications, Messaging and AuditLogs.
     "title": "Business rule violated.",
     "status": 400,
     "detail": "...",
-    "instance": "/catalog/products",
+    "instance": "/api/catalog/products",
     "code": "validation_error"
   }
   ```
