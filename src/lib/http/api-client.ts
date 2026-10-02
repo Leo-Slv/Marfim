@@ -1,7 +1,11 @@
-import { getAccessToken } from '@/lib/auth/access-token';
+import {
+	getValidAccessToken,
+	hasSession,
+	refreshSession,
+} from '@/lib/auth/session-client';
 import { env } from '@/lib/env';
 
-import { ApiError, type ApiErrorPayload } from './api-error';
+import { ApiError, parseResponseBody, toApiError } from './api-error';
 
 type ApiFetchOptions = Omit<RequestInit, 'body'> & {
 	body?: BodyInit | FormData | URLSearchParams | Record<string, unknown> | null;
@@ -27,58 +31,38 @@ function isPlainObjectBody(
 	);
 }
 
-function isApiErrorPayload(payload: unknown): payload is ApiErrorPayload {
-	return (
-		typeof payload === 'object' &&
-		payload !== null &&
-		'status' in payload &&
-		typeof payload.status === 'number'
-	);
-}
-
-function toApiError(status: number, payload: unknown) {
-	if (isApiErrorPayload(payload)) {
-		const message =
-			payload.detail ??
-			payload.title ??
-			`API request failed with status ${status}.`;
-
-		return new ApiError(message, status, {
-			title: payload.title,
-			code: payload.code,
-			fieldErrors: payload.errors,
-			traceId: payload.traceId,
-		});
-	}
-
-	return new ApiError(`API request failed with status ${status}.`, status);
-}
-
-async function parseResponseBody(response: Response) {
-	if (response.status === 204) {
-		return null;
-	}
-
-	// Covers both `application/json` and ProblemDetails'
-	// `application/problem+json`.
-	const contentType = response.headers.get('content-type') ?? '';
-	if (!contentType.includes('json')) {
-		return null;
-	}
-
-	return (await response.json()) as unknown;
-}
-
 /**
  * The OrderCore API returns success responses as the raw DTO (no
  * envelope) and errors as RFC 7807 ProblemDetails with a stable `code`
  * extension (see Shared/Presentation/ExceptionHandling/ApiExceptionHandler.cs
  * in the backend repo).
+ *
+ * With a session, the bearer token is renewed before it expires and, if the
+ * API still answers 401, renewed once more and the request retried.
  */
-async function apiFetch<TData>(path: string, options: ApiFetchOptions = {}) {
+async function apiFetch<TData>(
+	path: string,
+	options: ApiFetchOptions = {},
+): Promise<TData> {
+	const response = await send(path, options, await getValidAccessToken());
+
+	if (response.status === 401 && hasSession()) {
+		const renewed = await refreshSession();
+		if (renewed) {
+			return read<TData>(await send(path, options, renewed.accessToken));
+		}
+	}
+
+	return read<TData>(response);
+}
+
+async function send(
+	path: string,
+	options: ApiFetchOptions,
+	accessToken: string | null,
+) {
 	const headers = new Headers(options.headers);
 	headers.set('Accept', 'application/json');
-	const accessToken = getAccessToken();
 	if (accessToken && !headers.has('Authorization')) {
 		headers.set('Authorization', `Bearer ${accessToken}`);
 	}
@@ -96,7 +80,7 @@ async function apiFetch<TData>(path: string, options: ApiFetchOptions = {}) {
 	}
 
 	try {
-		const response = await fetch(buildApiUrl(path), {
+		return await fetch(buildApiUrl(path), {
 			...options,
 			body,
 			cache: options.cache ?? 'no-store',
@@ -104,14 +88,6 @@ async function apiFetch<TData>(path: string, options: ApiFetchOptions = {}) {
 			headers,
 			signal: options.signal ?? controller.signal,
 		});
-
-		const payload = await parseResponseBody(response);
-
-		if (!response.ok) {
-			throw toApiError(response.status, payload);
-		}
-
-		return payload as TData;
 	} catch (error) {
 		if (error instanceof DOMException && error.name === 'AbortError') {
 			throw new ApiError('The request timed out.', 408);
@@ -125,6 +101,16 @@ async function apiFetch<TData>(path: string, options: ApiFetchOptions = {}) {
 	} finally {
 		clearTimeout(timeoutId);
 	}
+}
+
+async function read<TData>(response: Response) {
+	const payload = await parseResponseBody(response);
+
+	if (!response.ok) {
+		throw toApiError(response, payload);
+	}
+
+	return payload as TData;
 }
 
 export { apiFetch, buildApiUrl };
