@@ -5,6 +5,7 @@ import {
 	addCartLine,
 	cartSubtotal,
 	countCartItems,
+	formatItemCount,
 	parseCartLines,
 } from './cart-lines';
 
@@ -59,5 +60,13 @@ describe('parseCartLines', () => {
 			{ ...grao, quantity: 0 },
 		]);
 		assert.deepEqual(parseCartLines(raw), [{ ...arco, quantity: 1 }]);
+	});
+});
+
+describe('formatItemCount', () => {
+	it('uses the singular only for one item', () => {
+		assert.equal(formatItemCount(1), '1 item');
+		assert.equal(formatItemCount(0), '0 itens');
+		assert.equal(formatItemCount(3), '3 itens');
 	});
 });

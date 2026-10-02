@@ -29,6 +29,11 @@ function cartSubtotal(lines: readonly CartLine[]) {
 	);
 }
 
+/** "1 item" / "3 itens". */
+function formatItemCount(count: number) {
+	return `${count} ${count === 1 ? 'item' : 'itens'}`;
+}
+
 function isCartLine(value: unknown): value is CartLine {
 	if (typeof value !== 'object' || value === null) {
 		return false;
@@ -57,4 +62,10 @@ function parseCartLines(raw: string | null): CartLine[] {
 	}
 }
 
-export { addCartLine, cartSubtotal, countCartItems, parseCartLines };
+export {
+	addCartLine,
+	cartSubtotal,
+	countCartItems,
+	formatItemCount,
+	parseCartLines,
+};
