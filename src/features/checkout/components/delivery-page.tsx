@@ -14,6 +14,7 @@ import {
 	useCategories,
 	useProducts,
 } from '@/features/catalog/hooks/catalog.queries';
+import { ErrorState } from '@/features/errors/components/error-state';
 import { useRequireSession } from '@/lib/auth/use-require-session';
 import { useIsHydrated } from '@/lib/hooks/use-is-hydrated';
 import { appRoutes } from '@/lib/routes/app-routes';
@@ -58,7 +59,7 @@ function DeliveryPage() {
 function DeliveryContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const session = useRequireSession();
+	const { session, expired } = useRequireSession();
 	const hydrated = useIsHydrated();
 	const { lines } = useCart();
 	const addresses = useAddresses();
@@ -90,6 +91,9 @@ function DeliveryContent() {
 		categories: categories.data ?? [],
 	});
 
+	if (expired) {
+		return <ErrorState kind="session-expired" />;
+	}
 	if (!session || addresses.isPending || lines.length === 0) {
 		return <DeliverySkeleton />;
 	}

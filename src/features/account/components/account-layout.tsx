@@ -16,6 +16,7 @@ import { Eyebrow } from '@/components/eyebrow';
 import { StoreFooter } from '@/components/store-footer';
 import { StoreHeader } from '@/components/store-header';
 import { signOut } from '@/lib/auth/session-client';
+import { ErrorState } from '@/features/errors/components/error-state';
 import { useRequireSession } from '@/lib/auth/use-require-session';
 import type { Session } from '@/lib/auth/session-store';
 import { appRoutes } from '@/lib/routes/app-routes';
@@ -68,7 +69,10 @@ function AccountLayout({ children }: { children: React.ReactNode }) {
 }
 
 function AccountGate({ children }: { children: React.ReactNode }) {
-	const session = useRequireSession();
+	const { session, expired } = useRequireSession();
+	if (expired) {
+		return <ErrorState kind="session-expired" />;
+	}
 	return session ? (
 		<AccountFrame session={session}>{children}</AccountFrame>
 	) : (

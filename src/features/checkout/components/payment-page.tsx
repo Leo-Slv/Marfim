@@ -22,6 +22,8 @@ import {
 	formatCurrencyBrl,
 	formatCurrencyBrlCents,
 } from '@/features/catalog/lib/format-currency-brl';
+import { ErrorState } from '@/features/errors/components/error-state';
+import { QueryErrorState } from '@/features/errors/components/query-error-state';
 import { useRequireSession } from '@/lib/auth/use-require-session';
 import { queryKeys } from '@/lib/constants/query-keys';
 import { useIsHydrated } from '@/lib/hooks/use-is-hydrated';
@@ -80,7 +82,7 @@ function PaymentContent() {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const queryClient = useQueryClient();
-	const session = useRequireSession();
+	const { session, expired } = useRequireSession();
 	const hydrated = useIsHydrated();
 	const { lines, repriceItem, clear } = useCart();
 
@@ -254,26 +256,20 @@ function PaymentContent() {
 		);
 	}
 
+	if (expired) {
+		return <ErrorState kind="session-expired" />;
+	}
 	if (!session || (orderId && orderQuery.isPending)) {
 		return <PaymentSkeleton />;
 	}
 
 	if (orderId && orderQuery.isError) {
 		return (
-			<section className="mx-auto flex max-w-[640px] flex-col items-center gap-4 px-5 py-24 text-center">
-				<h1 className="text-[34px] font-light tracking-[-0.03em]">
-					Não encontramos este pedido
-				</h1>
-				<p className="text-[15px] text-muted-foreground">
-					Ele pode ser de outra conta ou o link está incompleto.
-				</p>
-				<Link
-					href={appRoutes.cart.index}
-					className="flex h-12 items-center rounded-xl bg-primary px-[22px] text-[15px] font-medium text-primary-foreground"
-				>
-					Voltar para a sacola
-				</Link>
-			</section>
+			<QueryErrorState
+				key={orderQuery.errorUpdatedAt}
+				error={orderQuery.error}
+				onRetry={() => void orderQuery.refetch()}
+			/>
 		);
 	}
 

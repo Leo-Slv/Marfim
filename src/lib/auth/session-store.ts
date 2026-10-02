@@ -10,6 +10,8 @@ import { parseAccessTokenClaims, type AccessTokenClaims } from './jwt-claims';
 type Session = AccessTokenClaims & { accessToken: string };
 
 const SESSION_STORAGE_KEY = 'marfim.auth.session';
+/** Per tab: the last session ended because the backend refused to renew it. */
+const EXPIRED_STORAGE_KEY = 'marfim.auth.expired';
 
 let cached: Session | null | undefined;
 const listeners = new Set<() => void>();
@@ -68,8 +70,15 @@ function getServerSessionSnapshot(): Session | null {
 	return null;
 }
 
-/** Stores a new access token; null signs out locally. */
-function setSessionAccessToken(accessToken: string | null) {
+/**
+ * Stores a new access token; null signs out locally. `expired` marks a
+ * session the backend refused to renew, so gated screens can say so
+ * ("Sessão expirada") instead of silently sending the shopper to Entrar.
+ */
+function setSessionAccessToken(
+	accessToken: string | null,
+	options?: { expired?: boolean },
+) {
 	cached = accessToken ? sessionFromAccessToken(accessToken) : null;
 	if (canUseWebStorage()) {
 		if (cached) {
@@ -78,7 +87,29 @@ function setSessionAccessToken(accessToken: string | null) {
 			window.localStorage.removeItem(SESSION_STORAGE_KEY);
 		}
 	}
+	writeExpired(!cached && options?.expired === true);
 	emit();
+}
+
+function writeExpired(expired: boolean) {
+	try {
+		if (expired) {
+			window.sessionStorage.setItem(EXPIRED_STORAGE_KEY, '1');
+		} else {
+			window.sessionStorage.removeItem(EXPIRED_STORAGE_KEY);
+		}
+	} catch {
+		// Storage unavailable (private mode, SSR): the notice is best effort.
+	}
+}
+
+/** Whether this tab's last session expired (read after hydration only). */
+function wasSessionExpired() {
+	try {
+		return window.sessionStorage.getItem(EXPIRED_STORAGE_KEY) === '1';
+	} catch {
+		return false;
+	}
 }
 
 export type { Session };
@@ -87,4 +118,5 @@ export {
 	getSessionSnapshot,
 	setSessionAccessToken,
 	subscribeToSession,
+	wasSessionExpired,
 };

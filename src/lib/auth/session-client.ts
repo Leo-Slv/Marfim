@@ -80,7 +80,7 @@ function refreshSession(): Promise<Session | null> {
 		.then(startSession)
 		.catch((error: unknown) => {
 			if (isApiError(error) && error.status === 401) {
-				setSessionAccessToken(null);
+				setSessionAccessToken(null, { expired: true });
 			}
 			return null;
 		})
