@@ -32,6 +32,9 @@ const queryKeys = {
 	},
 	checkout: {
 		addresses: (userId: string) => ['checkout', 'addresses', userId] as const,
+		paymentMethods: ['checkout', 'payment-methods'] as const,
+		order: (orderId: string) => ['checkout', 'order', orderId] as const,
+		profile: (userId: string) => ['checkout', 'profile', userId] as const,
 	},
 	cart: {
 		/** `signature` = the bag's `productId:quantity:unitPrice` lines. */
