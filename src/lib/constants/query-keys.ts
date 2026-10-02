@@ -30,6 +30,9 @@ const queryKeys = {
 		/** Single-use: one confirmation per link token. */
 		confirmEmail: (token: string) => ['auth', 'confirm-email', token] as const,
 	},
+	checkout: {
+		addresses: (userId: string) => ['checkout', 'addresses', userId] as const,
+	},
 	cart: {
 		/** `signature` = the bag's `productId:quantity:unitPrice` lines. */
 		quote: (signature: string) => ['cart', 'quote', signature] as const,
