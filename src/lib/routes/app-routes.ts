@@ -38,6 +38,10 @@ const appRoutes = {
 	account: {
 		index: '/account',
 		orders: '/account/orders',
+		order: (orderId: string) => `/account/orders/${orderId}`,
+		profile: '/account/profile',
+		addresses: '/account/addresses',
+		password: '/account/password',
 	},
 	content: {
 		page: (slug: string) => `/content/${slug}`,

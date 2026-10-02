@@ -271,6 +271,15 @@
   --animate-loading-dot: loading-dot 1.2s infinite;
   --animate-confetti: confetti 1.6s ease-out both;
 
+  /* Conta.dc.html: the timeline's connector growing downwards. */
+  @keyframes grow {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
   @keyframes loading-dot {
     0%,
     20% {
