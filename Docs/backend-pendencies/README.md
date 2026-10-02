@@ -12,4 +12,6 @@ Cosmetic / Config).
 
 ## Index
 
-_No screens specced yet._
+| Screen | File | Pendencies |
+| --- | --- | --- |
+| Storefront home (`/`) | [storefront/home.md](storefront/home.md) | Product imagery, merchandising tags, curated selection, wishlist, atelier details, free shipping/installments, promotion campaign, newsletter, store contact data |
