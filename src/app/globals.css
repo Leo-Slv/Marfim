@@ -130,6 +130,7 @@
   --animate-fade-in: fade-in 0.3s ease both;
   --animate-float-tilt: float-tilt 6s ease-in-out infinite;
   --animate-wobble: wobble 3s ease-in-out infinite;
+  --animate-bar: bar 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 
   @keyframes shimmer {
     from {
@@ -175,6 +176,14 @@
     }
     50% {
       transform: translateY(-14px) rotate(4deg);
+    }
+  }
+  @keyframes bar {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
     }
   }
   @keyframes wobble {

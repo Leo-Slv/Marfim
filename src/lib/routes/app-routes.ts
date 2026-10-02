@@ -43,6 +43,14 @@ const appRoutes = {
 		addresses: '/account/addresses',
 		password: '/account/password',
 	},
+	admin: {
+		/** The dashboard (a protected placeholder until AdminDashboard). */
+		index: '/admin',
+		login: '/admin/login',
+		/** `next` = the admin page to return to after signing in. */
+		loginThen: (next: string) =>
+			`/admin/login?next=${encodeURIComponent(next)}`,
+	},
 	content: {
 		page: (slug: string) => `/content/${slug}`,
 	},
