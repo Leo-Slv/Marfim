@@ -43,6 +43,16 @@ const queryKeys = {
 		order: (orderId: string) => ['account', 'order', orderId] as const,
 		history: (orderId: string) => ['account', 'history', orderId] as const,
 	},
+	admin: {
+		/** Side-menu counters (orders to prepare, stock alerts, failures). */
+		counts: ['admin', 'counts'] as const,
+		dashboard: (from: string, to: string) =>
+			['admin', 'dashboard', from, to] as const,
+		revenue: (from: string, to: string) =>
+			['admin', 'revenue', from, to] as const,
+		preparation: ['admin', 'preparation'] as const,
+		lowStock: ['admin', 'low-stock'] as const,
+	},
 	cart: {
 		/** `signature` = the bag's `productId:quantity:unitPrice` lines. */
 		quote: (signature: string) => ['cart', 'quote', signature] as const,
