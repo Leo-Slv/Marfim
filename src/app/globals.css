@@ -264,6 +264,37 @@
   }
 }
 
+/* Pagamento.dc.html: processing orbit, loading dots and confetti. */
+@theme {
+  --animate-orbit: spin 2.4s linear infinite;
+  --animate-spin-fast: spin 0.9s linear infinite;
+  --animate-loading-dot: loading-dot 1.2s infinite;
+  --animate-confetti: confetti 1.6s ease-out both;
+
+  @keyframes loading-dot {
+    0%,
+    20% {
+      opacity: 0.2;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.2;
+    }
+  }
+  @keyframes confetti {
+    0% {
+      transform: translateY(-10px) rotate(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(120px) rotate(200deg);
+      opacity: 0;
+    }
+  }
+}
+
 @keyframes shine {
   from {
     transform: translateX(-100%);
