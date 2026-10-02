@@ -25,8 +25,15 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   drawing, tint and editorial tag), plus price helpers.
 - `cart/` — the client-side cart (OrderCore keeps the cart on the client and
   only re-prices it). A localStorage-backed external store read through
-  `useSyncExternalStore` (`useCart`); no state library. Currently only
-  adds lines and exposes count/subtotal — the Sacola screen will build on it.
+  `useSyncExternalStore` (`useCart`: add, set quantity 1–9, remove,
+  reprice); no state library. Owns the Sacola `/cart`
+  (`Docs/specs/storefront/cart.md`) and the mini-sacola panel.
+  `useCartQuote` re-prices the bag with `POST /api/orders/cart/quote`
+  (debounced, keyed by the bag's lines); `lib/cart-view.ts` joins bag +
+  quote + catalog (the quote has no brand/category/compare-at) into what
+  the screen renders and decides whether checkout is allowed. Components
+  that read the bag on first paint use `useIsHydrated` to avoid flashing
+  the empty state before localStorage is read.
 - `home/` — the storefront home `/` (`Docs/specs/storefront/home.md`):
   hero, "Escolhidos da semana" grid filtered by `?categoria=` (wrapped in
   `Suspense` because of `useSearchParams`), promo countdown, ateliers and

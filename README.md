@@ -54,6 +54,16 @@ public/
   `GET /api/catalog/categories`. Spec em `Docs/specs/storefront/listing.md`;
   lacunas do backend (busca só por nome e sensível a acento, sem filtro por
   ateliê) em `Docs/backend-pendencies/storefront/listing.md`.
+- **Sacola** (`/cart`) — tela `Carrinho.dc.html`: itens com quantidade
+  (1–9), remover, resumo do pedido e "Combina com a sua sacola". A sacola
+  fica no navegador e é revalidada no backend ao abrir e a cada mudança
+  (`POST /api/orders/cart/quote`): preço que mudou ("Entendi"), estoque
+  insuficiente ("Diminuir quantidade") e peça indisponível ou removida
+  aparecem na linha, e "Continuar para entrega" só libera sem avisos
+  pendentes. Total, preços e promoções vêm da API; frete por CEP, cupom,
+  presente, Pix e parcelamento aparecem como EM BREVE. Spec em
+  `Docs/specs/storefront/cart.md`; lacunas em
+  `Docs/backend-pendencies/storefront/cart.md`.
 
 ## Telas (design)
 

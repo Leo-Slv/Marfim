@@ -74,13 +74,20 @@ schemas/     # Zod schemas for API responses and form validation
 ```
 
 Current features: `catalog/` (products, categories, `ProductCard`,
-`ListingProductCard`, `ProductArt`), `cart/` (client-side cart store +
-mini-sacola), `home/` (the storefront home) and `listing/` (category,
-search and promotions listing) — see `src/features/README.md`. Screen state
-that defines what's shown (filters, sort, page, search term) lives in the
-URL so it can be shared and survives back/forward; components reading it
-with `useSearchParams` sit inside a `Suspense` boundary. New features are added following the
-Implementation Workflow below, one feature at a time.
+`ListingProductCard`, `ProductArt`), `cart/` (client-side cart store,
+mini-sacola and the Sacola screen), `home/` (the storefront home) and
+`listing/` (category, search and promotions listing) — see
+`src/features/README.md`. Screen state that defines what's shown (filters,
+sort, page, search term) lives in the URL so it can be shared and survives
+back/forward; components reading it with `useSearchParams` sit inside a
+`Suspense` boundary. New features are added following the Implementation
+Workflow below, one feature at a time.
+
+Features the mockups show but OrderCore doesn't support yet (shipping,
+coupons, gift wrap, Pix, installments, newsletter…) are rendered disabled
+and muted with `ComingSoonBadge` ("EM BREVE"), never faked. Note that
+`animate-up` ends at `opacity: 1`, so put it on a wrapper when the element
+itself is muted with an opacity class.
 
 ### Product imagery
 
