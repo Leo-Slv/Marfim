@@ -80,12 +80,19 @@ Current features: `catalog/` (products, categories, `ProductCard`,
 mini-sacola and the Sacola screen), `home/` (the storefront home),
 `listing/` (category, search and promotions listing), `auth/` (sign
 in/up, e-mail confirmation, password recovery), `checkout/` (Entrega
-and Pagamento with Stripe) and `account/` (Minha conta) — see
+and Pagamento with Stripe), `account/` (Minha conta) and `errors/` (error
+states) — see
 `src/features/README.md`. Screen state that defines what's shown (filters,
 sort, page, search term) lives in the URL so it can be shared and survives
 back/forward; components reading it with `useSearchParams` sit inside a
 `Suspense` boundary. New features are added following the Implementation
 Workflow below, one feature at a time.
+
+Error screens come from `src/features/errors`: unknown routes hit
+`src/app/not-found.tsx`, render errors `error.tsx`; when the query a page
+is about fails without data, render `QueryErrorState` (404/403/429/sem
+conexão/500 by error) instead of an ad-hoc notice — secondary sections keep
+inline errors. Queries don't retry 4xx (`src/lib/query/query-client.ts`).
 
 Features the mockups show but OrderCore doesn't support yet (shipping,
 coupons, gift wrap, Pix, installments, newsletter…) are rendered disabled
@@ -200,7 +207,9 @@ token, both returned in the JSON body. Decided in
 - **Screens that need a signed-in shopper** call `useRequireSession()`
   (`src/lib/auth/use-require-session.ts`, inside `Suspense`): once the
   session is read, a signed-out visitor goes to Entrar and comes back to the
-  same URL. It's UX only — the backend authorizes every call. Admin gating
+  same URL — unless the session expired (the backend refused to renew
+  it): then `expired` is true and the screen renders the "Sessão
+  expirada" state. It's UX only — the backend authorizes every call. Admin gating
   (role) comes with the admin panel.
 
 ## Implementation Workflow

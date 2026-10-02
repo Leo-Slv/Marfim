@@ -86,6 +86,14 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   new key. With Stripe the payment is `Processing` from checkout on, so
   "card already sent" comes from this tab or from Stripe's PaymentIntent
   status, never from OrderCore's payment status.
+- `errors/` — the error states of Erro.dc.html
+  (`Docs/specs/storefront/error-states.md`): `ErrorState` (404, 403, 500
+  with the trace code, sem conexão, 429 countdown, sessão expirada),
+  `ErrorPage` (store chrome around it) and `QueryErrorState` for a page's
+  main query; `lib/error-kind.ts` maps an error to its state. Used by
+  `src/app/not-found.tsx`, `error.tsx` and `global-error.tsx`, the order
+  detail, the payment step's `?pedido=` and the session gates
+  (`useRequireSession().expired`).
 - `listing/` — the product listing (`Docs/specs/storefront/listing.md`),
   one screen in three modes routed by `src/app/products`, `search` and
   `promotions`. Everything that defines the result set lives in the URL

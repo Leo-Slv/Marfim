@@ -112,6 +112,17 @@ public/
   `Docs/specs/account/account.md`; lacunas em
   `Docs/backend-pendencies/account/account.md`.
 
+- **Estados de erro** — tela `Erro.dc.html`: **404** (rota inexistente ou
+  registro que não existe/não é seu), **403** (acesso negado), **500** (com o
+  código de rastreio do OrderCore e "Copiar"), **sem conexão** (API fora do
+  ar), **429** (contagem regressiva até poder tentar de novo) e **sessão
+  expirada** (quando o backend recusa renovar a sessão: "Entre de novo para
+  continuar", voltando para a mesma tela). Rotas inexistentes caem no 404;
+  erros de renderização no `error.tsx`; a consulta principal de uma página
+  (detalhe do pedido, pedido do pagamento) mostra o estado conforme o erro.
+  Spec em `Docs/specs/storefront/error-states.md`; lacunas em
+  `Docs/backend-pendencies/storefront/error-states.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra
