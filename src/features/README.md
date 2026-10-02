@@ -60,6 +60,19 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   derived (pick → `?entrega=`/`?cobranca=` → default → first) instead of
   synced in effects, and travels to the payment step in the URL. Gated with
   `useRequireSession` (`src/lib/auth`).
+  And Pagamento (`/checkout/payment`, `Docs/specs/checkout/payment.md`):
+  `POST /api/orders/checkout` creates the order (stock reserved) and returns
+  Stripe's client secret; the card is confirmed in Stripe's Payment Element
+  (`card-payment-form.tsx`, `@stripe/react-stripe-js`) and the page polls
+  `GET /api/orders/{id}` until Confirmed / PaymentFailed. The screen is
+  derived from the order (`lib/order-stage.ts`); `?pedido=` makes reloads
+  land on the right screen. The idempotency key lives per tab in
+  sessionStorage keyed by bag + addresses + total
+  (`lib/checkout-attempt.ts`): a reload replays the same order (and gets its
+  client secret back) instead of creating another; "Tentar de novo" starts a
+  new key. With Stripe the payment is `Processing` from checkout on, so
+  "card already sent" comes from this tab or from Stripe's PaymentIntent
+  status, never from OrderCore's payment status.
 - `listing/` — the product listing (`Docs/specs/storefront/listing.md`),
   one screen in three modes routed by `src/app/products`, `search` and
   `promotions`. Everything that defines the result set lives in the URL

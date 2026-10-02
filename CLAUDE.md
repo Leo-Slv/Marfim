@@ -79,8 +79,8 @@ Current features: `catalog/` (products, categories, `ProductCard`,
 `ListingProductCard`, `ProductArt`), `cart/` (client-side cart store,
 mini-sacola and the Sacola screen), `home/` (the storefront home),
 `listing/` (category, search and promotions listing), `auth/` (sign
-in/up, e-mail confirmation, password recovery) and `checkout/` (Entrega:
-addresses) — see
+in/up, e-mail confirmation, password recovery) and `checkout/` (Entrega
+and Pagamento with Stripe) — see
 `src/features/README.md`. Screen state that defines what's shown (filters,
 sort, page, search term) lives in the URL so it can be shared and survives
 back/forward; components reading it with `useSearchParams` sit inside a
@@ -117,6 +117,15 @@ Notifications, Messaging and AuditLogs.
   is down). The compose stack seeds the local database with real catalog
   data, so screens are built against the live API — never against mocked
   responses.
+- **Payments are Stripe (test mode)** when OrderCore's `.env` has the Stripe
+  keys (it does locally). Card authorizations reach the API by Stripe
+  webhook, so for checkout work also run the Stripe CLI:
+  `docker compose --profile stripe up -d stripe-cli` in the OrderCore repo
+  (without it, outcomes only arrive via reconciliation, up to ~15 min).
+  Test with Stripe's published test cards (4242 4242 4242 4242 approves,
+  4000 0000 0000 0002 declines, 4000 0025 0000 3155 asks for 3-D Secure).
+  Card data is only ever typed into Stripe's Payment Element — never build
+  card inputs in this app.
 - **Routes are prefixed with `/api`** (`ApiRoutePrefixConvention` in the
   backend): e.g. `GET /api/catalog/products`.
 - **Live contract**: with the API running in Development, read the OpenAPI

@@ -89,6 +89,18 @@ public/
   `Docs/specs/checkout/delivery.md`; lacunas em
   `Docs/backend-pendencies/checkout/delivery.md`.
 
+- **Checkout · Pagamento** (`/checkout/payment`) — tela `Pagamento.dc.html`:
+  revisão (cartão; Pix em EM BREVE), criação do pedido no OrderCore
+  (`POST /api/orders/checkout`, com chave de idempotência — recarregar ou
+  clicar duas vezes nunca duplica o pedido), dados do cartão no **Payment
+  Element do Stripe** (o número do cartão nunca passa pela Marfim nem pelo
+  OrderCore; 3-D Secure acontece na própria página), "Confirmando o
+  pagamento…" acompanhando o pedido até **Pedido confirmado** (a sacola é
+  esvaziada) ou **Pagamento não aprovado** (com "Tentar de novo"). Avisos de
+  preço alterado, estoque, e-mail não confirmado e muitas tentativas. Spec
+  em `Docs/specs/checkout/payment.md`; lacunas em
+  `Docs/backend-pendencies/checkout/payment.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra
@@ -103,6 +115,17 @@ dele:
 ```bash
 docker compose up -d --build
 ```
+
+Para testar o pagamento (Stripe em modo teste), suba também o Stripe CLI,
+que entrega os webhooks do Stripe para a API local:
+
+```bash
+docker compose --profile stripe up -d stripe-cli
+```
+
+Cartões de teste do Stripe: `4242 4242 4242 4242` (aprovado),
+`4000 0000 0000 0002` (recusado), `4000 0025 0000 3155` (pede 3-D Secure) —
+qualquer validade futura e qualquer CVC.
 
 Depois, aqui:
 
