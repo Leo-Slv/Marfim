@@ -28,7 +28,9 @@ const promises = [
 function StoreHeader() {
 	const { count } = useCart();
 	const pathname = usePathname();
-	const onBag = pathname === appRoutes.cart.index;
+	// The bag stays highlighted through the checkout steps (Entrega.dc.html).
+	const onBag =
+		pathname === appRoutes.cart.index || pathname.startsWith('/checkout/');
 	const hydrated = useIsHydrated();
 	const session = useSession();
 	const accountLabel = session ? 'Minha conta' : 'Entrar';

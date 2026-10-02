@@ -17,7 +17,12 @@ const appRoutes = {
 	},
 	checkout: {
 		delivery: '/checkout/delivery',
+		/** Back from the payment step, keeping the chosen addresses. */
+		deliveryWith: (shippingAddressId: string, billingAddressId: string) =>
+			`/checkout/delivery?entrega=${shippingAddressId}&cobranca=${billingAddressId}`,
 		payment: '/checkout/payment',
+		paymentWith: (shippingAddressId: string, billingAddressId: string) =>
+			`/checkout/payment?entrega=${shippingAddressId}&cobranca=${billingAddressId}`,
 	},
 	auth: {
 		login: '/login',
