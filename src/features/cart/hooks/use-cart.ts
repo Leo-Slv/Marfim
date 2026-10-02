@@ -5,6 +5,7 @@ import { useSyncExternalStore } from 'react';
 import { cartSubtotal, countCartItems } from '../lib/cart-lines';
 import {
 	addToCart,
+	clearCart,
 	getCartSnapshot,
 	getServerCartSnapshot,
 	removeFromCart,
@@ -28,6 +29,7 @@ function useCart() {
 		setQuantity: setCartQuantity,
 		removeItem: removeFromCart,
 		repriceItem: repriceCartItem,
+		clear: clearCart,
 	};
 }
 

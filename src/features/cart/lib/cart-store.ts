@@ -87,12 +87,18 @@ function removeFromCart(productId: string) {
 	commit(removeCartLine(getCartSnapshot(), productId));
 }
 
+/** Empties the bag (after an order is confirmed). */
+function clearCart() {
+	commit(EMPTY_CART);
+}
+
 function repriceCartItem(productId: string, unitPrice: number) {
 	commit(repriceCartLine(getCartSnapshot(), productId, unitPrice));
 }
 
 export {
 	addToCart,
+	clearCart,
 	getCartSnapshot,
 	getServerCartSnapshot,
 	removeFromCart,
