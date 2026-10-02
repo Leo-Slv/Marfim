@@ -1,5 +1,5 @@
-import { ProductList } from '@/features/catalog/components/product-list';
+import { HomePage } from '@/features/home/components/home-page';
 
 export default function Home() {
-	return <ProductList />;
+	return <HomePage />;
 }
