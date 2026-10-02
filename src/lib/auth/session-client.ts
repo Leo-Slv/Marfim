@@ -21,7 +21,7 @@ type SessionTokens = { accessToken: string };
 
 /** POSTs to the storefront's own BFF (`src/app/api/session/*`). */
 async function postSession(
-	action: 'sign-in' | 'sign-up' | 'refresh' | 'sign-out',
+	action: 'sign-in' | 'sign-up' | 'refresh' | 'sign-out' | 'change-password',
 	body?: unknown,
 	accessToken?: string,
 ) {
@@ -106,6 +106,20 @@ async function getValidAccessToken() {
 	return (await refreshSession())?.accessToken ?? null;
 }
 
+/**
+ * Changes the password, keeping this session (its refresh token is in the
+ * BFF cookie) and ending the others. Errors: `invalid_current_password`,
+ * `weak_password`.
+ */
+async function changePassword(currentPassword: string, newPassword: string) {
+	const accessToken = await getValidAccessToken();
+	await postSession(
+		'change-password',
+		{ currentPassword, newPassword },
+		accessToken ?? undefined,
+	);
+}
+
 /** Ends the session on the server (best effort) and locally. */
 async function signOut() {
 	const session = getSessionSnapshot();
@@ -118,6 +132,7 @@ async function signOut() {
 
 export type { SignInInput, SignUpInput };
 export {
+	changePassword,
 	getValidAccessToken,
 	hasSession,
 	refreshSession,
