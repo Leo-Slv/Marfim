@@ -18,25 +18,36 @@ const fieldClassName =
 	'h-11 w-full rounded-xl border bg-card px-3 text-[15px] text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-invalid:border-clay';
 
 type AddressFormProps = {
-	/** First address: always becomes the default, so no checkbox. */
+	/**
+	 * Hides "Usar como padrão de entrega": the first address always becomes
+	 * the default, and when editing defaults are set from the card.
+	 */
 	isFirst: boolean;
 	saving: boolean;
 	saveError: unknown;
 	onSave: (form: AddressForm) => void;
 	onCancel: (() => void) | null;
+	/** Editing an existing address (Minha conta). */
+	initialValues?: AddressForm;
+	title?: string;
+	/** Drops the top divider when the form stands alone in a card. */
+	standalone?: boolean;
 };
 
-/** "Novo endereço" (Entrega.dc.html). */
+/** "Novo endereço" (Entrega.dc.html) / "Editar endereço" (Conta.dc.html). */
 function AddressFormCard({
 	isFirst,
 	saving,
 	saveError,
 	onSave,
 	onCancel,
+	initialValues,
+	title = 'Novo endereço',
+	standalone = false,
 }: AddressFormProps) {
 	const form = useForm<AddressForm>({
 		resolver: zodResolver(addressFormSchema),
-		defaultValues: emptyAddressForm,
+		defaultValues: initialValues ?? emptyAddressForm,
 	});
 	const errors = form.formState.errors;
 	const invalid = (name: FieldPath<AddressForm>) =>
@@ -48,9 +59,12 @@ function AddressFormCard({
 		<form
 			onSubmit={form.handleSubmit(onSave)}
 			noValidate
-			className="flex animate-up flex-col gap-3.5 border-t pt-4"
+			className={cn(
+				'flex animate-up flex-col gap-3.5',
+				!standalone && 'border-t pt-4',
+			)}
 		>
-			<div className="text-[15px] font-medium">Novo endereço</div>
+			<div className="text-[15px] font-medium">{title}</div>
 			<div className="grid grid-cols-1 gap-3 sm:grid-cols-6">
 				<Field
 					htmlFor="address-label"
