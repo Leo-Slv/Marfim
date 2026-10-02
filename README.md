@@ -78,6 +78,17 @@ public/
   `Docs/backend-pendencies/auth/access.md`. Para testar localmente, os
   e-mails chegam no Mailpit do OrderCore: http://localhost:8025.
 
+- **Checkout · Entrega** (`/checkout/delivery`) — tela `Entrega.dc.html`:
+  escolhe o endereço de entrega entre os salvos no OrderCore
+  (`/api/customers/me/addresses`) ou cadastra um novo (o primeiro vira o
+  padrão), e o de cobrança ("Igual ao endereço de entrega" ou outro salvo).
+  Frete e prazo aparecem como EM BREVE. O resumo "Seu pedido" usa os preços
+  revalidados da sacola. Exige login (volta para cá depois de entrar); os
+  endereços escolhidos seguem para o pagamento na URL
+  (`/checkout/payment?entrega=…&cobranca=…`). Spec em
+  `Docs/specs/checkout/delivery.md`; lacunas em
+  `Docs/backend-pendencies/checkout/delivery.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra

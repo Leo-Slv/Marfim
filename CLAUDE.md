@@ -78,8 +78,9 @@ schemas/     # Zod schemas for API responses and form validation
 Current features: `catalog/` (products, categories, `ProductCard`,
 `ListingProductCard`, `ProductArt`), `cart/` (client-side cart store,
 mini-sacola and the Sacola screen), `home/` (the storefront home),
-`listing/` (category, search and promotions listing) and `auth/` (sign
-in/up, e-mail confirmation, password recovery) — see
+`listing/` (category, search and promotions listing), `auth/` (sign
+in/up, e-mail confirmation, password recovery) and `checkout/` (Entrega:
+addresses) — see
 `src/features/README.md`. Screen state that defines what's shown (filters,
 sort, page, search term) lives in the URL so it can be shared and survives
 back/forward; components reading it with `useSearchParams` sit inside a
@@ -182,8 +183,11 @@ token, both returned in the JSON body. Decided in
 - The backend's e-mails link to `/confirmar-email?token=` and
   `/redefinir-senha?token=` (OrderCore's `Identity:Links` config) — those
   two routes keep their pt-BR paths.
-- Route gating for admin screens and the customer profile
-  (`GET customers/me`) come with Minha conta / the admin panel.
+- **Screens that need a signed-in shopper** call `useRequireSession()`
+  (`src/lib/auth/use-require-session.ts`, inside `Suspense`): once the
+  session is read, a signed-out visitor goes to Entrar and comes back to the
+  same URL. It's UX only — the backend authorizes every call. Admin gating
+  (role) comes with the admin panel.
 
 ## Implementation Workflow
 

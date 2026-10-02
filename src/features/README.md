@@ -51,6 +51,15 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   `src/lib/session` since every feature uses it. E-mail confirmation runs as
   a query keyed by the link's token so it fires once even under React's
   double mount in development.
+- `checkout/` — the checkout steps after the bag. Currently Entrega
+  (`/checkout/delivery`, `Docs/specs/checkout/delivery.md`): the customer's
+  addresses (`/api/customers/me/addresses`, query keyed by user id), the
+  new-address form (Zod rules mirror OrderCore's `Address.Create` plus an
+  8-digit CEP; blank label → "Endereço N", country `BR`) and the "Seu
+  pedido" summary (reuses cart's quote + `buildCartView`). The selection is
+  derived (pick → `?entrega=`/`?cobranca=` → default → first) instead of
+  synced in effects, and travels to the payment step in the URL. Gated with
+  `useRequireSession` (`src/lib/auth`).
 - `listing/` — the product listing (`Docs/specs/storefront/listing.md`),
   one screen in three modes routed by `src/app/products`, `search` and
   `promotions`. Everything that defines the result set lives in the URL
