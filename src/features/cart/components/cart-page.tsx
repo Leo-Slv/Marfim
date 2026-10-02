@@ -16,7 +16,7 @@ import { appRoutes } from '@/lib/routes/app-routes';
 
 import { useCartQuote } from '../hooks/cart.queries';
 import { useCart } from '../hooks/use-cart';
-import { useIsHydrated } from '../hooks/use-is-hydrated';
+import { useIsHydrated } from '@/lib/hooks/use-is-hydrated';
 import {
 	buildCartView,
 	checkoutGate,
