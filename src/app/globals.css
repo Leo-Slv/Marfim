@@ -125,6 +125,36 @@
   --animate-pulse-dot: pulse-dot 1.8s ease-out infinite;
   --animate-pop: pop 0.45s ease;
   --animate-swing: swing 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+  --animate-slide-in: slide-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade-in: fade-in 0.3s ease both;
+
+  @keyframes shimmer {
+    from {
+      background-position: -400px 0;
+    }
+    to {
+      background-position: 400px 0;
+    }
+  }
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(24px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 
   @keyframes up {
     from {
@@ -184,6 +214,13 @@
 }
 
 @layer components {
+  /* Loading placeholder with a moving highlight. */
+  .skeleton {
+    background: linear-gradient(90deg, #f1f0ec 0, #e9e8e3 50%, #f1f0ec 100%);
+    background-size: 800px 100%;
+    animation: var(--animate-shimmer);
+  }
+
   /* Strokes of an inline SVG drawing themselves in. */
   .line-draw :is(path, line, ellipse, rect, circle) {
     stroke-dasharray: 600;
