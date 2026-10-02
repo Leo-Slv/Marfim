@@ -9,6 +9,7 @@ import { formatCurrencyBrl } from '@/features/catalog/lib/format-currency-brl';
 import { getProductVisual } from '@/features/catalog/lib/product-visuals';
 import { slugify } from '@/features/catalog/lib/slugify';
 import { maskPostalCode } from '@/features/checkout/lib/format-address';
+import { QueryErrorState } from '@/features/errors/components/query-error-state';
 import { isApiError } from '@/lib/http/api-error';
 import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
@@ -59,9 +60,11 @@ function OrderDetailSection({ orderId }: { orderId: string }) {
 		return (
 			<>
 				{back}
-				<p role="alert" className="rounded-2xl bg-clay-soft px-5 py-4 text-sm">
-					Não encontramos este pedido na sua conta.
-				</p>
+				<QueryErrorState
+					key={order.errorUpdatedAt}
+					error={order.error}
+					onRetry={() => void order.refetch()}
+				/>
 			</>
 		);
 	}
