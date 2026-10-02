@@ -48,7 +48,9 @@ src/components/
 src/features/    # One folder per business feature — see src/features/README.md
 src/lib/
   http/          # apiFetch client + ApiError (adapted to OrderCore's ProblemDetails)
-  auth/          # access-token storage (client-side, localStorage)
+  auth/          # client session: access-token store, JWT claims, BFF client
+  session/       # server-only BFF helpers (refresh-token cookie)
+  hooks/         # cross-feature hooks (useIsHydrated)
   query/         # QueryClient + provider
   routes/        # app-routes.ts — centralized route path constants
   constants/     # query-keys.ts — centralized React Query key registry
@@ -75,8 +77,9 @@ schemas/     # Zod schemas for API responses and form validation
 
 Current features: `catalog/` (products, categories, `ProductCard`,
 `ListingProductCard`, `ProductArt`), `cart/` (client-side cart store,
-mini-sacola and the Sacola screen), `home/` (the storefront home) and
-`listing/` (category, search and promotions listing) — see
+mini-sacola and the Sacola screen), `home/` (the storefront home),
+`listing/` (category, search and promotions listing) and `auth/` (sign
+in/up, e-mail confirmation, password recovery) — see
 `src/features/README.md`. Screen state that defines what's shown (filters,
 sort, page, search term) lives in the URL so it can be shared and survives
 back/forward; components reading it with `useSearchParams` sit inside a
@@ -155,13 +158,32 @@ reintroduce a `{ success, data, errors }` envelope when adding new API calls.
 
 ### Auth
 
-- OrderCore authenticates with JWT bearer tokens (Identity module). Store the
-  access token client-side via `src/lib/auth/access-token.ts` (localStorage);
-  `apiFetch` sends it as `Authorization: Bearer <token>` automatically and
-  uses `credentials: 'include'` by default.
-- Refresh-token handling, route gating (customer vs admin) and the
-  current-user endpoint are not wired yet — decide them when the
-  `auth`/`account` feature is specced, against the live OrderCore contract.
+OrderCore authenticates with JWT bearer tokens (Identity module, routes
+`/api/auth/*`): a 15-minute access token and a 14-day rotating refresh
+token, both returned in the JSON body. Decided in
+`Docs/specs/auth/access.md`:
+
+- **BFF for the refresh token.** Sign-in, sign-up, refresh and sign-out go
+  through the app's own Route Handlers, `src/app/api/session/*`
+  (`src/lib/session/ordercore-server.ts`, `server-only`). They store the
+  refresh token in the httpOnly cookie `marfim_refresh`
+  (`Path=/api/session`) and hand the page the tokens **without** it. Page
+  JavaScript never sees the refresh token — don't add code that does.
+- **Access token on the client**: `src/lib/auth/session-store.ts` keeps it in
+  localStorage (`marfim.auth.session`) as an external store (same pattern as
+  the cart; `useSession()`), with claims decoded by `jwt-claims.ts` for the
+  UI only (`email`, `role`, `email_confirmed`, `customer_id`).
+- **Renewal is automatic**: `apiFetch` asks `getValidAccessToken()`
+  (renews when < 30 s are left) and, on a 401 with a session, refreshes once
+  and retries. Refreshes are single-flight (the refresh token rotates); a
+  rejected refresh (401) clears the session.
+- Other `auth/*` calls (forgot/reset password, confirm e-mail, resend
+  confirmation) go straight from the browser with `apiFetch`.
+- The backend's e-mails link to `/confirmar-email?token=` and
+  `/redefinir-senha?token=` (OrderCore's `Identity:Links` config) — those
+  two routes keep their pt-BR paths.
+- Route gating for admin screens and the customer profile
+  (`GET customers/me`) come with Minha conta / the admin panel.
 
 ## Implementation Workflow
 
@@ -229,7 +251,11 @@ exported files by hand — re-export from the canvas and replace them.
 - **Reduced starter dependency set**: Turnstile and `lucide-react` from
   Plataforma VDG were not installed (no feature needs them; icons are
   Phosphor, per `components.json`). Add dependencies when the feature that
-  needs them is specced.
+  needs them is specced (`server-only` came with the session BFF).
+- **Session via BFF**: Plataforma VDG keeps the access token in
+  localStorage and relies on a backend-set refresh cookie; OrderCore returns
+  the refresh token in the body, so this app stores it in its own httpOnly
+  cookie through `src/app/api/session/*` — see "Auth" above.
 - **No branch-flow model**: this repo commits directly to `main`.
 
 <!-- BEGIN:nextjs-agent-rules -->

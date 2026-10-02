@@ -65,6 +65,19 @@ public/
   `Docs/specs/storefront/cart.md`; lacunas em
   `Docs/backend-pendencies/storefront/cart.md`.
 
+- **Acesso** (`/login`, `/register`, `/forgot-password`,
+  `/confirmar-email`, `/redefinir-senha`) — tela `Acesso.dc.html`: entrar,
+  criar conta (com medidor de força da senha), confirmar e-mail (o link do
+  e-mail do backend cai em `/confirmar-email?token=`), reenviar
+  confirmação, esqueci a senha e nova senha (`/redefinir-senha?token=`). A
+  sessão se renova sozinha: o refresh token fica num cookie httpOnly do
+  próprio Next (`/api/session/*`) e nunca chega ao JavaScript da página. O
+  header mostra "Minha conta" e, enquanto o e-mail não for confirmado, a
+  faixa "Confirme seu e-mail" com "Reenviar link". Spec em
+  `Docs/specs/auth/access.md`; lacunas em
+  `Docs/backend-pendencies/auth/access.md`. Para testar localmente, os
+  e-mails chegam no Mailpit do OrderCore: http://localhost:8025.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra

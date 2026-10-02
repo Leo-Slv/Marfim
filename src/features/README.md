@@ -40,6 +40,17 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   shipping label. Atelier details are editorial (`lib/ateliers.ts`, keyed
   by product `brand`); each atelier's product list is live.
 
+- `auth/` — maps to OrderCore's Identity module: the Acesso screens
+  (`Docs/specs/auth/access.md`) — `/login`, `/register`,
+  `/forgot-password`, `/confirmar-email` and `/redefinir-senha` (the last
+  two are where the backend's e-mails link to). Forms use React Hook Form +
+  Zod (`schemas/auth-forms.schema.ts`, password rules mirroring OrderCore's
+  `PasswordPolicy`); backend error codes map to the mockup's copy in
+  `lib/auth-messages.ts`; `?next=` is sanitized by `lib/safe-next.ts`. The
+  session itself (BFF, store, renewal) lives in `src/lib/auth` and
+  `src/lib/session` since every feature uses it. E-mail confirmation runs as
+  a query keyed by the link's token so it fires once even under React's
+  double mount in development.
 - `listing/` — the product listing (`Docs/specs/storefront/listing.md`),
   one screen in three modes routed by `src/app/products`, `search` and
   `promotions`. Everything that defines the result set lives in the URL
