@@ -26,6 +26,10 @@ const queryKeys = {
 		product: (slug: string) => ['catalog', 'product', slug] as const,
 		categories: ['catalog', 'categories'] as const,
 	},
+	cart: {
+		/** `signature` = the bag's `productId:quantity:unitPrice` lines. */
+		quote: (signature: string) => ['cart', 'quote', signature] as const,
+	},
 } as const;
 
 export { queryKeys };
