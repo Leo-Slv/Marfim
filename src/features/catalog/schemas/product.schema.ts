@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
-/** Mirrors OrderCore's `ProductSummaryResponse` (GET /catalog/products). */
+/** `StockAvailability` in OrderCore's Catalog module. */
+const availabilitySchema = z.enum(['InStock', 'LowStock', 'OutOfStock']);
+
+/** Mirrors OrderCore's `ProductSummaryResponse` (GET /api/catalog/products). */
 const productSummarySchema = z.object({
 	id: z.string(),
 	sku: z.string(),
@@ -14,7 +17,7 @@ const productSummarySchema = z.object({
 	currency: z.string(),
 	status: z.string(),
 	primaryImageUrl: z.string().nullable(),
-	availability: z.string(),
+	availability: availabilitySchema,
 });
 
 /** Mirrors OrderCore's `PagedResponse<T>`. */
@@ -26,4 +29,22 @@ const productSummaryPageSchema = z.object({
 	totalPages: z.number(),
 });
 
-export { productSummarySchema, productSummaryPageSchema };
+/**
+ * Mirrors OrderCore's `ProductResponse`
+ * (GET /api/catalog/products/by-slug/{slug}). Images and variants are kept
+ * loose until a screen actually renders them.
+ */
+const productDetailSchema = productSummarySchema
+	.omit({ primaryImageUrl: true })
+	.extend({
+		description: z.string().nullable(),
+		images: z.array(z.unknown()),
+		variants: z.array(z.unknown()),
+	});
+
+export {
+	availabilitySchema,
+	productDetailSchema,
+	productSummaryPageSchema,
+	productSummarySchema,
+};

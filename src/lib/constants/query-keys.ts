@@ -5,8 +5,22 @@
  */
 const queryKeys = {
 	catalog: {
-		products: (page: number, pageSize: number) =>
-			['catalog', 'products', page, pageSize] as const,
+		products: (params: {
+			page: number;
+			pageSize: number;
+			categoryId?: string;
+			sort?: string;
+		}) =>
+			[
+				'catalog',
+				'products',
+				params.page,
+				params.pageSize,
+				params.categoryId ?? 'all',
+				params.sort ?? 'default',
+			] as const,
+		product: (slug: string) => ['catalog', 'product', slug] as const,
+		categories: ['catalog', 'categories'] as const,
 	},
 } as const;
 

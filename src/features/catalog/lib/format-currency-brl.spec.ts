@@ -3,15 +3,16 @@ import { describe, it } from 'node:test';
 
 import { formatCurrencyBrl } from './format-currency-brl';
 
-// Intl separates the symbol from the amount with a non-breaking space.
-const normalize = (value: string) => value.replace(/\s/g, ' ');
-
 describe('formatCurrencyBrl', () => {
-	it('formats with the R$ symbol and a comma decimal separator', () => {
-		assert.equal(normalize(formatCurrencyBrl(189.9)), 'R$ 189,90');
+	it('drops the cents for whole amounts', () => {
+		assert.equal(formatCurrencyBrl(489), 'R$ 489');
 	});
 
 	it('groups thousands with a dot', () => {
-		assert.equal(normalize(formatCurrencyBrl(1299)), 'R$ 1.299,00');
+		assert.equal(formatCurrencyBrl(1290), 'R$ 1.290');
+	});
+
+	it('shows two decimals with a comma for fractional amounts', () => {
+		assert.equal(formatCurrencyBrl(189.9), 'R$ 189,90');
 	});
 });
