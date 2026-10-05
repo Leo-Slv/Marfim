@@ -88,7 +88,8 @@ frame: AdminNav with live counters), `admin-dashboard/`, `admin-orders/`
 `admin-categories/` (Categorias: list + create; the rest EM BREVE) and
 `admin-inventory/` (Estoque: levels, receive/adjust/reorder point, reservations,
 movements), `admin-customers/` (Clientes: list, panel, deactivate) and
-`admin-payments/` (Pagamentos: list, Stripe check, refunds) — see
+`admin-payments/` (Pagamentos: list, Stripe check, refunds) and `admin-audit/`
+(Auditoria: read-only log) — see
 `src/features/README.md`. Screen state that defines what's shown (filters,
 sort, page, search term) lives in the URL so it can be shared and survives
 back/forward; components reading it with `useSearchParams` sit inside a

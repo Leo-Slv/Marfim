@@ -200,6 +200,13 @@ public/
   confirmados. Spec em `Docs/specs/admin/admin-payments.md`; lacunas em
   `Docs/backend-pendencies/admin/admin-payments.md`.
 
+- **Admin · Auditoria** (`/admin/audit`) — tela `AdminAuditoria.dc.html`:
+  registro somente leitura de quem fez o quê e quando (pedidos, produtos,
+  estoque, clientes, pagamentos, contas), com filtro por tipo, busca por ID
+  completo, filtro por usuário, detalhes de cada evento e links para abrir o
+  registro na tela dele. Spec em `Docs/specs/admin/admin-audit.md`; lacunas
+  em `Docs/backend-pendencies/admin/admin-audit.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra

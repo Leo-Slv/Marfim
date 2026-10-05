@@ -53,6 +53,12 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   (`/api/session/change-password`) so the cookie's session is the one kept.
   Order lines have no slug, so drawings come from `slugify(productName)`
   (catalog).
+- `admin-audit/` — `/admin/audit` (`Docs/specs/admin/admin-audit.md`):
+  `GET /api/audit-logs` by entity tab, a full ID (entity, then user) and
+  a user filter; actions and metadata in pt-BR (`lib/audit.ts`), actors
+  resolved from `userId` (Você / Sistema / the customer's name through
+  their `UserAccountCreated` record / Administrador), expandable rows with
+  the details and links to the record's admin screen. Read only.
 - `admin-auth/` — the admin panel's door (`Docs/specs/admin/admin-login.md`):
   `/admin/login` (AdminLogin.dc.html — form, "Sem acesso ao painel",
   "Bem-vindo de volta", the "sessão terminou" notice, "Manter conectado")
