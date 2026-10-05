@@ -53,6 +53,16 @@ const appRoutes = {
 		inventory: '/admin/inventory',
 		customers: '/admin/customers',
 		payments: '/admin/payments',
+		audit: '/admin/audit',
+		/** Opens one record in its admin screen. */
+		product: (productId: string) =>
+			`/admin/products?produto=${encodeURIComponent(productId)}`,
+		customer: (customerId: string) =>
+			`/admin/customers?cliente=${encodeURIComponent(customerId)}`,
+		payment: (paymentId: string) =>
+			`/admin/payments?pagamento=${encodeURIComponent(paymentId)}`,
+		stockOf: (productId: string) =>
+			`/admin/inventory?produto=${encodeURIComponent(productId)}`,
 		/** Pedidos filtered to one customer. */
 		ordersOfCustomer: (customerId: string) =>
 			`/admin/orders?cliente=${encodeURIComponent(customerId)}`,

@@ -85,6 +85,22 @@ const queryKeys = {
 			['admin', 'inventory', 'movements', productId] as const,
 		stockReservations: (productId: string) =>
 			['admin', 'inventory', 'reservations', productId] as const,
+		audit: (
+			entityName: string | null,
+			id: string | null,
+			userId: string | null,
+			page: number,
+		) =>
+			[
+				'admin',
+				'audit',
+				entityName ?? 'all',
+				id ?? '',
+				userId ?? '',
+				page,
+			] as const,
+		/** Who a user id is (role, customer name) — it never changes. */
+		auditActor: (userId: string) => ['admin', 'audit-actor', userId] as const,
 		/** Everything payment-related, invalidated after a refund or check. */
 		paymentsRoot: ['admin', 'payments'] as const,
 		payments: (status: string | null, page: number) =>

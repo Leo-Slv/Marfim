@@ -81,7 +81,7 @@ const adminNavGroups: AdminNavGroup[] = [
 				id: 'audit',
 				label: 'Auditoria',
 				icon: 'M9 5h10v16H5V9zM9 5v4H5M9 14h6M9 17h4',
-				href: null,
+				href: appRoutes.admin.audit,
 			},
 			{
 				id: 'failures',
