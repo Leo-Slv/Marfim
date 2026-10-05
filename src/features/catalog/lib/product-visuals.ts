@@ -58,5 +58,10 @@ function getProductVisual(slug: string): ProductVisual {
 	return productVisualsBySlug[slug] ?? defaultProductVisual;
 }
 
+/** Whether the store has a drawing of its own for this slug. */
+function hasProductVisual(slug: string) {
+	return Object.hasOwn(productVisualsBySlug, slug);
+}
+
 export type { ProductArtKind, ProductVisual };
-export { getProductVisual, productArtKinds, productTints };
+export { getProductVisual, hasProductVisual, productArtKinds, productTints };
