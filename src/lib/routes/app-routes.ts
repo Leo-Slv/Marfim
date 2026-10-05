@@ -49,6 +49,7 @@ const appRoutes = {
 		login: '/admin/login',
 		orders: '/admin/orders',
 		products: '/admin/products',
+		categories: '/admin/categories',
 		/** Opens one order in the list's detail panel. */
 		order: (orderId: string) =>
 			`/admin/orders?pedido=${encodeURIComponent(orderId)}`,

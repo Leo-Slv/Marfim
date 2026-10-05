@@ -45,7 +45,7 @@ const adminNavGroups: AdminNavGroup[] = [
 				id: 'categories',
 				label: 'Categorias',
 				icon: 'M4 6h7v7H4zM13 6h7v7h-7zM4 15h7v5H4zM13 15h7v5h-7z',
-				href: null,
+				href: appRoutes.admin.categories,
 			},
 			{
 				id: 'inventory',

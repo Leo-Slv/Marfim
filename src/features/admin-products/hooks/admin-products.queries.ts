@@ -66,6 +66,9 @@ function useRefreshProducts() {
 			}),
 			queryClient.invalidateQueries({ queryKey: queryKeys.admin.counts }),
 			queryClient.invalidateQueries({ queryKey: queryKeys.admin.lowStock }),
+			queryClient.invalidateQueries({
+				queryKey: ['admin', 'category-counts'],
+			}),
 		]);
 }
 

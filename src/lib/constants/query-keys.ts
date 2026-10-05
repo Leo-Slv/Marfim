@@ -74,6 +74,9 @@ const queryKeys = {
 			['admin', 'products', 'list', searchTerm, page] as const,
 		product: (productId: string) =>
 			['admin', 'products', 'detail', productId] as const,
+		/** Product count of each category, keyed by the category ids. */
+		categoryCounts: (categoryIds: readonly string[]) =>
+			['admin', 'category-counts', ...categoryIds] as const,
 		customer: (customerId: string) =>
 			['admin', 'customer', customerId] as const,
 		customerSearch: (term: string) =>
