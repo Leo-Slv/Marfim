@@ -30,4 +30,5 @@ Cosmetic / Config).
 | Admin · Clientes (`/admin/customers`) | [admin/admin-customers.md](admin/admin-customers.md) | E-mail confirmation not on the customer, no order count/total spent on the list |
 | Admin · Pagamentos (`/admin/payments`) | [admin/admin-payments.md](admin/admin-payments.md) | Payment list without order number/Stripe reference, no card last4, one status per filter, refund reason required, tab counts one call each |
 | Admin · Auditoria (`/admin/audit`) | [admin/admin-audit.md](admin/admin-audit.md) | No before/after (metadata only), actor is an id, no free-text search, UUID references and unaudited categories/stock changes, partial refunds not audited |
+| Admin · Mensagens com falha (`/admin/failures`) | [admin/admin-failed-messages.md](admin/admin-failed-messages.md) | No bulk replay, no stack trace, no impact description, e-mail send failures not listed |
 | Storefront cart (`/cart`) | [storefront/cart.md](storefront/cart.md) | No available quantity on stock issues, quote lines lack brand/category/compare-at, no shipping, coupons, gift wrap, Pix/installments, recommendations or lead time |
