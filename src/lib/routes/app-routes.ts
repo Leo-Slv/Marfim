@@ -54,6 +54,7 @@ const appRoutes = {
 		customers: '/admin/customers',
 		payments: '/admin/payments',
 		audit: '/admin/audit',
+		failures: '/admin/failures',
 		/** Opens one record in its admin screen. */
 		product: (productId: string) =>
 			`/admin/products?produto=${encodeURIComponent(productId)}`,

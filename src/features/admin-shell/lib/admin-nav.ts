@@ -87,7 +87,7 @@ const adminNavGroups: AdminNavGroup[] = [
 				id: 'failures',
 				label: 'Mensagens com falha',
 				icon: 'M12 3 2 21h20L12 3ZM12 10v5M12 18h.01',
-				href: null,
+				href: appRoutes.admin.failures,
 				counter: 'failedMessages',
 				counterTone: 'alert',
 			},

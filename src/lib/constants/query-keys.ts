@@ -85,6 +85,13 @@ const queryKeys = {
 			['admin', 'inventory', 'movements', productId] as const,
 		stockReservations: (productId: string) =>
 			['admin', 'inventory', 'reservations', productId] as const,
+		/** Everything about failed messages, invalidated after each action. */
+		failedMessagesRoot: ['admin', 'failed-messages'] as const,
+		failedMessages: (status: string) =>
+			['admin', 'failed-messages', 'list', status] as const,
+		failedMessageCounts: ['admin', 'failed-messages', 'counts'] as const,
+		failedMessage: (id: string) =>
+			['admin', 'failed-messages', 'detail', id] as const,
 		audit: (
 			entityName: string | null,
 			id: string | null,

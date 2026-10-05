@@ -24,9 +24,8 @@ describe('isActiveItem', () => {
 		assert.equal(isActiveItem(dashboard, '/admin/orders'), false);
 	});
 
-	it('never marks a screen that is not built yet', () => {
-		const failures = adminNavGroups[2].items[1];
-		assert.equal(failures.href, null);
-		assert.equal(isActiveItem(failures, '/admin/failures'), false);
+	it('has every admin screen built', () => {
+		const items = adminNavGroups.flatMap((group) => group.items);
+		assert.equal(items.filter((item) => item.href === null).length, 0);
 	});
 });

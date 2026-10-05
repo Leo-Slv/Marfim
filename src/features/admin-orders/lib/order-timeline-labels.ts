@@ -62,6 +62,11 @@ const labels: Record<string, { label: string; tone: TimelineTone }> = {
 	'inventory.stock-returned': { label: 'Estoque devolvido', tone: 'neutral' },
 };
 
+/** pt-BR name of an integration event ('orders.order-shipped' → 'Enviado'). */
+function eventTypeLabel(type: string) {
+	return labels[type]?.label ?? null;
+}
+
 function units(entry: TimelineEntry) {
 	const quantity = Number(entry.details.quantity);
 	return Number.isFinite(quantity) ? quantity : 0;
@@ -115,4 +120,4 @@ function timelineItems(
 }
 
 export type { TimelineItem, TimelineTone };
-export { timelineItems };
+export { eventTypeLabel, timelineItems };
