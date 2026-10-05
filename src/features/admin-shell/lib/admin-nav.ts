@@ -70,7 +70,7 @@ const adminNavGroups: AdminNavGroup[] = [
 				id: 'payments',
 				label: 'Pagamentos',
 				icon: 'M2 6h20v12H2zM2 10h20',
-				href: null,
+				href: appRoutes.admin.payments,
 			},
 		],
 	},

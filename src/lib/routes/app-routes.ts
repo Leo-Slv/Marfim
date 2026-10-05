@@ -52,6 +52,7 @@ const appRoutes = {
 		categories: '/admin/categories',
 		inventory: '/admin/inventory',
 		customers: '/admin/customers',
+		payments: '/admin/payments',
 		/** Pedidos filtered to one customer. */
 		ordersOfCustomer: (customerId: string) =>
 			`/admin/orders?cliente=${encodeURIComponent(customerId)}`,

@@ -85,6 +85,13 @@ const queryKeys = {
 			['admin', 'inventory', 'movements', productId] as const,
 		stockReservations: (productId: string) =>
 			['admin', 'inventory', 'reservations', productId] as const,
+		/** Everything payment-related, invalidated after a refund or check. */
+		paymentsRoot: ['admin', 'payments'] as const,
+		payments: (status: string | null, page: number) =>
+			['admin', 'payments', 'list', status ?? 'all', page] as const,
+		paymentCounts: ['admin', 'payments', 'counts'] as const,
+		payment: (paymentId: string) =>
+			['admin', 'payments', 'detail', paymentId] as const,
 		/** Everything customer-related, invalidated after a status change. */
 		customersRoot: ['admin', 'customers'] as const,
 		customers: (searchTerm: string, page: number) =>
