@@ -207,6 +207,14 @@ public/
   registro na tela dele. Spec em `Docs/specs/admin/admin-audit.md`; lacunas
   em `Docs/backend-pendencies/admin/admin-audit.md`.
 
+- **Admin · Mensagens com falha** (`/admin/failures`) — tela
+  `AdminFalhas.dc.html`: eventos entre os módulos do OrderCore que
+  esgotaram as tentativas automáticas, com o que deixou de acontecer, o erro
+  e a mensagem original; Reprocessar (uma ou todas) e Descartar (com
+  confirmação e a consequência), além do histórico de reprocessadas e
+  descartadas. Spec em `Docs/specs/admin/admin-failed-messages.md`; lacunas
+  em `Docs/backend-pendencies/admin/admin-failed-messages.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra

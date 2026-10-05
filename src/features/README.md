@@ -95,6 +95,12 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   `lib/stock.ts`), and the panel: receive, adjust with a reason, reorder
   point, active reservations (with order numbers) and movements (infinite,
   pt-BR labels). Filter, page and open product live in the URL.
+- `admin-failed-messages/` — `/admin/failures`
+  (`Docs/specs/admin/admin-failed-messages.md`): `/api/messaging/failed-messages`
+  by status (Pendentes / Reprocessadas / Descartadas), cards with the event
+  and consumer in pt-BR (event names shared with admin-orders' timeline
+  labels), the recorded error and body, replay (one or all, in sequence)
+  and discard with the consumer's consequence. Refreshes the menu badge.
 - `admin-orders/` — `/admin/orders` (`Docs/specs/admin/admin-orders.md`):
   list (`GET /api/admin/orders`, one tab per status with counts from
   `PageSize=1` calls, customer search via `GET /api/customers` →
