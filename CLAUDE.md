@@ -84,7 +84,8 @@ and Pagamento with Stripe), `account/` (Minha conta), `errors/` (error
 states), `admin-auth/` (admin sign-in + gate), `admin-shell/` (admin
 frame: AdminNav with live counters), `admin-dashboard/`, `admin-orders/`
 (Pedidos: list + detail panel, fulfilment actions, internal notes) and
-`admin-products/` (Produtos: list + editor, price, variants, publish) — see
+`admin-products/` (Produtos: list + editor, price, variants, publish) and
+`admin-categories/` (Categorias: list + create; the rest EM BREVE) — see
 `src/features/README.md`. Screen state that defines what's shown (filters,
 sort, page, search term) lives in the URL so it can be shared and survives
 back/forward; components reading it with `useSearchParams` sit inside a

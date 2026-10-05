@@ -167,6 +167,14 @@ public/
   Spec em `Docs/specs/admin/admin-products.md`; lacunas em
   `Docs/backend-pendencies/admin/admin-products.md`.
 
+- **Admin · Categorias** (`/admin/categories`) — tela
+  `AdminCategorias.dc.html`: as categorias na ordem do menu, com o endereço
+  e quantos produtos cada uma tem, e o formulário de nova categoria (com
+  prévia do endereço e checagem de nome repetido). Reordenar, renomear,
+  tirar do menu e excluir aparecem como EM BREVE — o OrderCore ainda não
+  tem essas operações. Spec em `Docs/specs/admin/admin-categories.md`;
+  lacunas em `Docs/backend-pendencies/admin/admin-categories.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra

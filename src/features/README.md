@@ -64,6 +64,12 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   counters — confirmed orders, stock alerts, pending failed messages —
   the admin's e-mail and Sair. Unbuilt sections: `href: null` → muted +
   EM BREVE.
+- `admin-categories/` — `/admin/categories`
+  (`Docs/specs/admin/admin-categories.md`): catalog's category list with a
+  product count per category (admin product list, `CategoryId`) and the
+  new-category form (address preview, duplicate check by slug, warning that
+  it enters the store menu at once). Reorder, rename, menu visibility and
+  delete are EM BREVE — OrderCore has no endpoints for them yet.
 - `admin-dashboard/` — `/admin` (`Docs/specs/admin/admin-dashboard.md`):
   `GET /api/admin/dashboard` for the period and the previous one (KPIs,
   funnel, recent orders), "Receita por dia" summed per São Paulo day from
