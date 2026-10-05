@@ -147,6 +147,17 @@ public/
   em `Docs/specs/admin/admin-dashboard.md`; lacunas em
   `Docs/backend-pendencies/admin/admin-dashboard.md`.
 
+- **Admin · Pedidos** (`/admin/orders`) — tela `AdminPedidos.dc.html`: lista
+  de pedidos com abas por status (com contagens), busca por cliente,
+  paginação e painel de detalhe com a próxima ação — iniciar preparo, marcar
+  como enviado (transportadora, rastreio e link; captura o pagamento no
+  Stripe e o cliente recebe o e-mail), marcar como entregue —, cancelamento
+  com estorno/liberação do cartão, itens, endereço de entrega, linha do
+  tempo do pedido e notas internas da equipe. Tudo na URL (`?status=`,
+  `?cliente=`, `?pagina=`, `?pedido=`); o dashboard e o menu levam para cá.
+  Spec em `Docs/specs/admin/admin-orders.md`; lacunas em
+  `Docs/backend-pendencies/admin/admin-orders.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra

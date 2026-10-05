@@ -70,6 +70,15 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   `GET /api/admin/orders` (all pages of the period), the preparation queue
   and the low-stock list from the admin product list (`Stock=`). Period in
   `?periodo=` (7 / 30); everything polls every 30 s ("Ao vivo").
+- `admin-orders/` — `/admin/orders` (`Docs/specs/admin/admin-orders.md`):
+  list (`GET /api/admin/orders`, one tab per status with counts from
+  `PageSize=1` calls, customer search via `GET /api/customers` →
+  `CustomerId`) and the detail panel (`GET /api/admin/orders/{id}` +
+  `/timeline`): start preparing, ship (captures the payment; carrier +
+  code required), deliver, cancel, and internal notes kept as a list on top
+  of OrderCore's single notes text (`lib/internal-notes.ts`). Status, customer,
+  page and open order live in the URL; on narrow screens the detail replaces
+  the list.
 - `auth/` — maps to OrderCore's Identity module: the Acesso screens
   (`Docs/specs/auth/access.md`) — `/login`, `/register`,
   `/forgot-password`, `/confirmar-email` and `/redefinir-senha` (the last

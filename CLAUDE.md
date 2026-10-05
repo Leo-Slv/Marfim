@@ -82,7 +82,8 @@ mini-sacola and the Sacola screen), `home/` (the storefront home),
 in/up, e-mail confirmation, password recovery), `checkout/` (Entrega
 and Pagamento with Stripe), `account/` (Minha conta), `errors/` (error
 states), `admin-auth/` (admin sign-in + gate), `admin-shell/` (admin
-frame: AdminNav with live counters) and `admin-dashboard/` — see
+frame: AdminNav with live counters), `admin-dashboard/` and `admin-orders/`
+(Pedidos: list + detail panel, fulfilment actions, internal notes) — see
 `src/features/README.md`. Screen state that defines what's shown (filters,
 sort, page, search term) lives in the URL so it can be shared and survives
 back/forward; components reading it with `useSearchParams` sit inside a
@@ -225,7 +226,10 @@ token, both returned in the JSON body. Decided in
   layout wraps them in `AdminGate` + `AdminShell` (`/admin/login` stays
   outside). Sections not built yet are muted with EM BREVE in
   `src/features/admin-shell/lib/admin-nav.ts` (`href: null`) — a new admin
-  screen sets its `href` there. Admin figures refresh by polling (30 s).
+  screen sets its `href` there (and dashboard links pointing to it swap
+  `SoonLink` for `PanelLink`). Admin figures refresh by polling (30 s);
+  after an admin action, invalidate `queryKeys.admin.ordersRoot`, the menu
+  counters and the dashboard keys.
 
 ## Implementation Workflow
 
