@@ -1,10 +1,12 @@
+import { appRoutes } from '@/lib/routes/app-routes';
+
 import type { AdminProductSummary } from '../schemas/admin-dashboard.schema';
 import {
 	Panel,
 	PanelError,
+	PanelLink,
 	PanelTitle,
 	Skeleton,
-	SoonLink,
 } from './dashboard-ui';
 
 /** "Abaixo do ponto de reposição": out of stock first, then low. */
@@ -58,7 +60,9 @@ function LowStockCard({
 				))
 			)}
 			<div className="mt-1.5">
-				<SoonLink>Registrar recebimento →</SoonLink>
+				<PanelLink href={appRoutes.admin.inventoryLow}>
+					Registrar recebimento →
+				</PanelLink>
 			</div>
 		</Panel>
 	);
