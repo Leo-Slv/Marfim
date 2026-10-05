@@ -54,6 +54,16 @@ public/
   `GET /api/catalog/categories`. Spec em `Docs/specs/storefront/listing.md`;
   lacunas do backend (busca só por nome e sensível a acento, sem filtro por
   ateliê) em `Docs/backend-pendencies/storefront/listing.md`.
+- **Produto** (`/products/[slug]`) — tela `Produto.dc.html`: o desenho da
+  peça em vistas (frente, acesa para iluminação, detalhe, ambiente), ateliê,
+  descrição, preço com preço "de" e desconto, estoque (em estoque, últimas
+  unidades, esgotado), variantes (EM BREVE para o pedido), quantidade e
+  "Adicionar à sacola" com a mini-sacola, frete por CEP (EM BREVE), medidas e
+  materiais, cuidados, trocas e "Combina com" peças da mesma categoria; peça
+  inexistente ou fora de linha mostra "Essa peça não está mais na loja".
+  Consome `GET /api/catalog/products/by-slug/{slug}`. Spec em
+  `Docs/specs/storefront/product.md`; lacunas em
+  `Docs/backend-pendencies/storefront/product.md`.
 - **Sacola** (`/cart`) — tela `Carrinho.dc.html`: itens com quantidade
   (1–9), remover, resumo do pedido e "Combina com a sua sacola". A sacola
   fica no navegador e é revalidada no backend ao abrir e a cada mudança

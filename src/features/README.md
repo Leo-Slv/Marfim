@@ -166,6 +166,14 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   `src/app/not-found.tsx`, `error.tsx` and `global-error.tsx`, the order
   detail, the payment step's `?pedido=` and the session gates
   (`useRequireSession().expired`).
+- `product/` — the product page `/products/[slug]`
+  (`Docs/specs/storefront/product.md`): catalog's `useProductBySlug` (404 →
+  "Essa peça não está mais na loja"), the drawing in views (Frente, Acesa
+  for lighting — `ProductArt lit`, Detalhe, Ambiente), atelier line from
+  home's `ateliers.ts`, stock line, variants (EM BREVE note), quantity up
+  to what fits in the bag (9 per piece), mini-sacola with the quantity,
+  accordions (materials from the short description, care text per category
+  in `lib/product-content.ts`) and "Combina com" from the same category.
 - `listing/` — the product listing (`Docs/specs/storefront/listing.md`),
   one screen in three modes routed by `src/app/products`, `search` and
   `promotions`. Everything that defines the result set lives in the URL
