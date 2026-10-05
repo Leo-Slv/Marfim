@@ -132,6 +132,7 @@
   --animate-wobble: wobble 3s ease-in-out infinite;
   --animate-bar: bar 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   --animate-draw-line: draw-line 1.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+  --animate-glow: glow 3.2s ease-in-out infinite;
 
   @keyframes shimmer {
     from {
@@ -177,6 +178,17 @@
     }
     50% {
       transform: translateY(-14px) rotate(4deg);
+    }
+  }
+  @keyframes glow {
+    0%,
+    100% {
+      opacity: 0.75;
+      transform: scale(0.96);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.04);
     }
   }
   @keyframes draw-line {
