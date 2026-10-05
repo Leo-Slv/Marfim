@@ -31,15 +31,22 @@ const productSummaryPageSchema = z.object({
 
 /**
  * Mirrors OrderCore's `ProductResponse`
- * (GET /api/catalog/products/by-slug/{slug}). Images and variants are kept
- * loose until a screen actually renders them.
+ * (GET /api/catalog/products/by-slug/{slug}). Images stay loose: the store
+ * draws its products instead of showing photos.
  */
 const productDetailSchema = productSummarySchema
 	.omit({ primaryImageUrl: true })
 	.extend({
 		description: z.string().nullable(),
 		images: z.array(z.unknown()),
-		variants: z.array(z.unknown()),
+		variants: z.array(
+			z.object({
+				id: z.string(),
+				sku: z.string(),
+				name: z.string(),
+				additionalPrice: z.number(),
+			}),
+		),
 	});
 
 export {

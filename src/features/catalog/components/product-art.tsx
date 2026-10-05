@@ -5,6 +5,7 @@ const INDIGO = '#3B3FD9';
 const ORANGE = '#E8793A';
 const GREEN = '#15803D';
 const WHITE = '#FFFFFF';
+const GROUND = '#F4F3EF';
 
 type ProductArtProps = {
 	kind: ProductArtKind;
@@ -13,6 +14,8 @@ type ProductArtProps = {
 	strokeWidth?: number;
 	/** Hero-only extra detail (the lamp's light ray). */
 	detailed?: boolean;
+	/** Light strokes for a dark ground (the product page's "Acesa" view). */
+	lit?: boolean;
 	className?: string;
 };
 
@@ -22,6 +25,7 @@ function ProductArt({
 	size,
 	strokeWidth,
 	detailed = false,
+	lit = false,
 	className,
 }: ProductArtProps) {
 	return (
@@ -30,7 +34,7 @@ function ProductArt({
 			height={Math.round(size * 1.125)}
 			viewBox="0 0 160 180"
 			fill="none"
-			stroke={INK}
+			stroke={lit ? GROUND : INK}
 			strokeWidth={strokeWidth ?? (size < 90 ? 3 : 2)}
 			strokeLinecap="round"
 			strokeLinejoin="round"

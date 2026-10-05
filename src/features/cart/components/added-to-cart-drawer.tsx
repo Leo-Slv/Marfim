@@ -17,6 +17,8 @@ type AddedItem = {
 	name: string;
 	brand: string | null;
 	unitPrice: number;
+	/** Units just added (1 from a card; the product page can add more). */
+	quantity?: number;
 };
 
 type AddedToCartDrawerProps = {
@@ -66,11 +68,11 @@ function AddedToCartDrawer({ item, onClose }: AddedToCartDrawerProps) {
 										</span>
 										<span className="text-[15px] font-medium">{item.name}</span>
 										<span className="text-[13px] text-muted-foreground">
-											Quantidade: 1
+											Quantidade: {item.quantity ?? 1}
 										</span>
 									</div>
 									<span className="font-mono text-sm font-medium">
-										{formatCurrencyBrl(item.unitPrice)}
+										{formatCurrencyBrl(item.unitPrice * (item.quantity ?? 1))}
 									</span>
 								</div>
 							</DialogPrimitive.Description>
