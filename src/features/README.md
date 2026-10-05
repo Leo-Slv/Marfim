@@ -98,6 +98,13 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   of OrderCore's single notes text (`lib/internal-notes.ts`). Status, customer,
   page and open order live in the URL; on narrow screens the detail replaces
   the list.
+- `admin-payments/` — `/admin/payments` (`Docs/specs/admin/admin-payments.md`):
+  `GET /api/payments` with one tab per status (counts by `PageSize=1`),
+  order numbers fetched per row, and the panel: Stripe reference, decline
+  reason (Stripe code + pt-BR), "Conferir agora" (`/reconcile`), refunds
+  of captured payments (amount up to the balance, reason, confirmation;
+  Stripe completes them by webhook) and the events built from the
+  payment's timestamps and refunds.
 - `admin-products/` — `/admin/products` (`Docs/specs/admin/admin-products.md`):
   list with name/SKU search (`GET /api/admin/catalog/products`), new draft
   (name, SKU, category, price) and the editor. Salvar runs

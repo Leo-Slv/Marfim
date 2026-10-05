@@ -191,6 +191,15 @@ public/
   BREVE. Spec em `Docs/specs/admin/admin-customers.md`; lacunas em
   `Docs/backend-pendencies/admin/admin-customers.md`.
 
+- **Admin · Pagamentos** (`/admin/payments`) — tela `AdminPagamentos.dc.html`:
+  pagamentos por status com o pedido, valor e quanto já foi estornado, e o
+  painel com a referência do Stripe, o motivo de recusa (código do Stripe
+  explicado em português), "Conferir agora" com o Stripe, estorno total ou
+  parcial de pagamentos capturados (com motivo e confirmação) e os eventos
+  do pagamento. Precisa do Stripe CLI rodando para os estornos serem
+  confirmados. Spec em `Docs/specs/admin/admin-payments.md`; lacunas em
+  `Docs/backend-pendencies/admin/admin-payments.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra
