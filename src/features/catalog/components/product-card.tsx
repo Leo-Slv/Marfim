@@ -1,5 +1,7 @@
 import { CheckIcon, HeartIcon, PlusIcon } from '@phosphor-icons/react';
+import Link from 'next/link';
 
+import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
 
 import { formatDiscountPercent } from '../lib/discount-percent';
@@ -33,6 +35,7 @@ function ProductCard({
 	const soldOut = product.availability === 'OutOfStock';
 	const tag = soldOut ? 'Esgotado' : visual.tag;
 	const compareAtPrice = isOnSale(product) ? product.compareAtPrice : null;
+	const href = appRoutes.products.detail(product.slug);
 
 	return (
 		<article
@@ -40,22 +43,28 @@ function ProductCard({
 			style={{ animationDelay: `${(index * 0.06).toFixed(2)}s` }}
 		>
 			<div
-				className="relative flex h-[210px] items-center justify-center overflow-hidden rounded-xl"
+				className="relative h-[210px] overflow-hidden rounded-xl"
 				style={{ background: visual.tint }}
 			>
-				<div
-					className={cn(
-						'flex transition-transform duration-600 ease-[cubic-bezier(.2,.7,.2,1)] group-hover:scale-[1.06] group-hover:-rotate-2',
-						soldOut && 'opacity-60',
-					)}
+				<Link
+					href={href}
+					aria-label={product.name}
+					className="absolute inset-0 flex items-center justify-center"
 				>
-					<ProductArt kind={visual.kind} size={112} />
-				</div>
-				{tag ? (
-					<span className="absolute top-2.5 left-2.5 flex h-6 items-center rounded-full bg-white px-2.5 text-xs font-medium text-clay">
-						{tag}
-					</span>
-				) : null}
+					<div
+						className={cn(
+							'flex transition-transform duration-600 ease-[cubic-bezier(.2,.7,.2,1)] group-hover:scale-[1.06] group-hover:-rotate-2',
+							soldOut && 'opacity-60',
+						)}
+					>
+						<ProductArt kind={visual.kind} size={112} />
+					</div>
+					{tag ? (
+						<span className="absolute top-2.5 left-2.5 flex h-6 items-center rounded-full bg-white px-2.5 text-xs font-medium text-clay">
+							{tag}
+						</span>
+					) : null}
+				</Link>
 				<button
 					type="button"
 					onClick={onToggleFavorite}
@@ -78,7 +87,12 @@ function ProductCard({
 					<div className="text-xs text-muted-foreground">
 						{categoryName ?? ' '}
 					</div>
-					<div className="text-base font-medium">{product.name}</div>
+					<Link
+						href={href}
+						className="text-base font-medium text-foreground transition-colors hover:text-primary"
+					>
+						{product.name}
+					</Link>
 					<div className="flex flex-wrap items-center gap-1.5 pt-0.5">
 						<span className="font-mono text-sm font-medium">
 							{formatCurrencyBrl(product.currentPrice)}
