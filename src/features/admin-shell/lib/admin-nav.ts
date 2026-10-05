@@ -39,7 +39,7 @@ const adminNavGroups: AdminNavGroup[] = [
 				id: 'products',
 				label: 'Produtos',
 				icon: 'M12 3 3 8l9 5 9-5-9-5ZM3 8v8l9 5 9-5V8',
-				href: null,
+				href: appRoutes.admin.products,
 			},
 			{
 				id: 'categories',

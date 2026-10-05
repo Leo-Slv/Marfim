@@ -68,6 +68,12 @@ const queryKeys = {
 		order: (orderId: string) => ['admin', 'orders', 'detail', orderId] as const,
 		orderTimeline: (orderId: string) =>
 			['admin', 'orders', 'timeline', orderId] as const,
+		/** Everything product-related, invalidated after each product change. */
+		productsRoot: ['admin', 'products'] as const,
+		products: (searchTerm: string, page: number) =>
+			['admin', 'products', 'list', searchTerm, page] as const,
+		product: (productId: string) =>
+			['admin', 'products', 'detail', productId] as const,
 		customer: (customerId: string) =>
 			['admin', 'customer', customerId] as const,
 		customerSearch: (term: string) =>
