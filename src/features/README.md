@@ -70,6 +70,12 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   new-category form (address preview, duplicate check by slug, warning that
   it enters the store menu at once). Reorder, rename, menu visibility and
   delete are EM BREVE — OrderCore has no endpoints for them yet.
+- `admin-customers/` — `/admin/customers` (`Docs/specs/admin/admin-customers.md`):
+  customer list with name/e-mail search, orders and total spent per row
+  (each customer's orders; paid statuses as in the dashboard), and the
+  panel — data, addresses, recent orders (links to Pedidos, "Ver todos"
+  filters Pedidos by the customer) and deactivate/reactivate. E-mail
+  confirmation is EM BREVE (it lives in Identity).
 - `admin-dashboard/` — `/admin` (`Docs/specs/admin/admin-dashboard.md`):
   `GET /api/admin/dashboard` for the period and the previous one (KPIs,
   funnel, recent orders), "Receita por dia" summed per São Paulo day from

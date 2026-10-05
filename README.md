@@ -183,6 +183,14 @@ public/
   histórico de movimentações. Spec em `Docs/specs/admin/admin-inventory.md`;
   lacunas em `Docs/backend-pendencies/admin/admin-inventory.md`.
 
+- **Admin · Clientes** (`/admin/customers`) — tela `AdminClientes.dc.html`:
+  clientes com busca por nome ou e-mail, quantos pedidos fizeram e quanto
+  gastaram, e o painel com telefone, endereços, pedidos recentes (que abrem
+  em Pedidos) e desativar/reativar a conta (a pessoa deixa de entrar e
+  comprar; pedidos e dados ficam). Confirmação de e-mail aparece como EM
+  BREVE. Spec em `Docs/specs/admin/admin-customers.md`; lacunas em
+  `Docs/backend-pendencies/admin/admin-customers.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra
