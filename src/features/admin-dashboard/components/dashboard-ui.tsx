@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { ComingSoonBadge } from '@/components/coming-soon-badge';
 import { cn } from '@/lib/utils';
 
@@ -65,4 +67,22 @@ function SoonLink({ children }: { children: React.ReactNode }) {
 	);
 }
 
-export { Panel, PanelError, PanelTitle, Skeleton, SoonLink };
+/** A link from a dashboard block to its admin screen. */
+function PanelLink({
+	href,
+	children,
+}: {
+	href: string;
+	children: React.ReactNode;
+}) {
+	return (
+		<Link
+			href={href}
+			className="text-[13px] font-medium text-primary hover:text-primary-strong"
+		>
+			{children}
+		</Link>
+	);
+}
+
+export { Panel, PanelError, PanelLink, PanelTitle, Skeleton, SoonLink };

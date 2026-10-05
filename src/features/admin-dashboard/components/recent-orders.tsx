@@ -1,8 +1,11 @@
+import Link from 'next/link';
+
 import {
 	orderStatusClass,
 	orderStatusLabel,
 } from '@/features/account/lib/order-status';
 import { formatCurrencyBrl } from '@/features/catalog/lib/format-currency-brl';
+import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
 
 import { timeAgo } from '../lib/dashboard-metrics';
@@ -10,9 +13,9 @@ import type { AdminOrderSummary } from '../schemas/admin-dashboard.schema';
 import {
 	Panel,
 	PanelError,
+	PanelLink,
 	PanelTitle,
 	Skeleton,
-	SoonLink,
 } from './dashboard-ui';
 
 const SHOWN = 5;
@@ -36,7 +39,7 @@ function RecentOrders({
 		<Panel className="overflow-hidden [animation-delay:.15s] min-[1180px]:col-span-8">
 			<div className="flex items-center gap-3 px-[22px] py-4">
 				<PanelTitle>Últimos pedidos</PanelTitle>
-				<SoonLink>Ver todos</SoonLink>
+				<PanelLink href={appRoutes.admin.orders}>Ver todos</PanelLink>
 			</div>
 			{failed ? (
 				<div className="px-[22px]">
@@ -68,11 +71,12 @@ function RecentOrders({
 							<span>HÁ</span>
 						</div>
 						{orders.slice(0, SHOWN).map((order) => (
-							<div
+							<Link
 								key={order.id}
+								href={appRoutes.admin.order(order.id)}
 								className={cn(
 									columns,
-									'items-center border-t px-[22px] py-3 text-sm',
+									'items-center border-t px-[22px] py-3 text-sm text-foreground transition-colors hover:bg-[#FAFAF8]',
 								)}
 							>
 								<span className="truncate font-mono text-[13px]">
@@ -97,7 +101,7 @@ function RecentOrders({
 								<span className="font-mono text-xs text-muted-foreground">
 									{timeAgo(order.createdAt, new Date(updatedAt))}
 								</span>
-							</div>
+							</Link>
 						))}
 					</div>
 				</div>

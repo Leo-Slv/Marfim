@@ -1,12 +1,13 @@
+import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
 
 import type { FunnelStage } from '../lib/dashboard-metrics';
 import {
 	Panel,
 	PanelError,
+	PanelLink,
 	PanelTitle,
 	Skeleton,
-	SoonLink,
 } from './dashboard-ui';
 
 /** "Pedidos por etapa": orders created in the period, by stage. */
@@ -55,12 +56,12 @@ function OrdersFunnel({
 			)}
 			{waiting !== undefined ? (
 				<div className="mt-auto pt-1">
-					<SoonLink>
+					<PanelLink href={appRoutes.admin.ordersWithStatus('a-preparar')}>
 						{waiting === 1
 							? '1 pedido espera preparo'
 							: `${waiting} pedidos esperam preparo`}{' '}
 						→
-					</SoonLink>
+					</PanelLink>
 				</div>
 			) : null}
 		</Panel>
