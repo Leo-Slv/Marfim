@@ -76,6 +76,13 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   `GET /api/admin/orders` (all pages of the period), the preparation queue
   and the low-stock list from the admin product list (`Stock=`). Period in
   `?periodo=` (7 / 30); everything polls every 30 s ("Ao vivo").
+- `admin-inventory/` — `/admin/inventory` (`Docs/specs/admin/admin-inventory.md`):
+  stock levels from the admin product list (`Stock=` filter; the inventory
+  list has no names), tiles from one 100-row call, the level bar and state
+  by OrderCore's rule (low = at or below the reorder point,
+  `lib/stock.ts`), and the panel: receive, adjust with a reason, reorder
+  point, active reservations (with order numbers) and movements (infinite,
+  pt-BR labels). Filter, page and open product live in the URL.
 - `admin-orders/` — `/admin/orders` (`Docs/specs/admin/admin-orders.md`):
   list (`GET /api/admin/orders`, one tab per status with counts from
   `PageSize=1` calls, customer search via `GET /api/customers` →

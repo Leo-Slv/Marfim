@@ -175,6 +175,14 @@ public/
   tem essas operações. Spec em `Docs/specs/admin/admin-categories.md`;
   lacunas em `Docs/backend-pendencies/admin/admin-categories.md`.
 
+- **Admin · Estoque** (`/admin/inventory`) — tela `AdminEstoque.dc.html`:
+  níveis de estoque de todos os produtos (disponível, reservado, ponto de
+  reposição e barra de nível), filtros Abaixo da reposição e Esgotados, totais
+  e o painel do produto para registrar recebimento, ajuste (com motivo) e
+  ponto de reposição, com as reservas ativas (e o pedido de cada uma) e o
+  histórico de movimentações. Spec em `Docs/specs/admin/admin-inventory.md`;
+  lacunas em `Docs/backend-pendencies/admin/admin-inventory.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra
