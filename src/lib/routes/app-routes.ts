@@ -47,6 +47,13 @@ const appRoutes = {
 		/** The dashboard (a protected placeholder until AdminDashboard). */
 		index: '/admin',
 		login: '/admin/login',
+		orders: '/admin/orders',
+		/** Opens one order in the list's detail panel. */
+		order: (orderId: string) =>
+			`/admin/orders?pedido=${encodeURIComponent(orderId)}`,
+		/** The list on one status tab (`?status=` of `admin-orders/lib/order-tabs`). */
+		ordersWithStatus: (tab: string) =>
+			`/admin/orders?status=${encodeURIComponent(tab)}`,
 		/** `next` = the admin page to return to after signing in. */
 		loginThen: (next: string) =>
 			`/admin/login?next=${encodeURIComponent(next)}`,

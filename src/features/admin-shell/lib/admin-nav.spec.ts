@@ -18,9 +18,15 @@ describe('isActiveItem', () => {
 		assert.equal(isActiveItem(dashboard, '/admin/orders'), false);
 	});
 
-	it('never marks a screen that is not built yet', () => {
+	it('matches a section and its sub-pages', () => {
 		const orders = adminNavGroups[0].items[1];
-		assert.equal(orders.href, null);
-		assert.equal(isActiveItem(orders, '/admin/orders'), false);
+		assert.equal(isActiveItem(orders, '/admin/orders'), true);
+		assert.equal(isActiveItem(dashboard, '/admin/orders'), false);
+	});
+
+	it('never marks a screen that is not built yet', () => {
+		const products = adminNavGroups[0].items[2];
+		assert.equal(products.href, null);
+		assert.equal(isActiveItem(products, '/admin/products'), false);
 	});
 });

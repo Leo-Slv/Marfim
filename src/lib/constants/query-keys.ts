@@ -52,6 +52,26 @@ const queryKeys = {
 			['admin', 'revenue', from, to] as const,
 		preparation: ['admin', 'preparation'] as const,
 		lowStock: ['admin', 'low-stock'] as const,
+		/** Everything order-related, invalidated after each admin action. */
+		ordersRoot: ['admin', 'orders'] as const,
+		orders: (status: string | null, customerId: string | null, page: number) =>
+			[
+				'admin',
+				'orders',
+				'list',
+				status ?? 'all',
+				customerId ?? 'all',
+				page,
+			] as const,
+		orderCounts: (customerId: string | null) =>
+			['admin', 'orders', 'counts', customerId ?? 'all'] as const,
+		order: (orderId: string) => ['admin', 'orders', 'detail', orderId] as const,
+		orderTimeline: (orderId: string) =>
+			['admin', 'orders', 'timeline', orderId] as const,
+		customer: (customerId: string) =>
+			['admin', 'customer', customerId] as const,
+		customerSearch: (term: string) =>
+			['admin', 'customer-search', term] as const,
 	},
 	cart: {
 		/** `signature` = the bag's `productId:quantity:unitPrice` lines. */

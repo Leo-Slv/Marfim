@@ -31,7 +31,7 @@ const adminNavGroups: AdminNavGroup[] = [
 				id: 'orders',
 				label: 'Pedidos',
 				icon: 'M5 8h14l-1 12H6L5 8ZM9 8V6a3 3 0 0 1 6 0v2',
-				href: null,
+				href: appRoutes.admin.orders,
 				counter: 'toPrepare',
 				counterTone: 'info',
 			},
