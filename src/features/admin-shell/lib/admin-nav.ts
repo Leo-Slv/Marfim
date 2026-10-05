@@ -64,7 +64,7 @@ const adminNavGroups: AdminNavGroup[] = [
 				id: 'customers',
 				label: 'Clientes',
 				icon: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM2 21c1-4 4-6 7-6s6 2 7 6M17 11a3 3 0 1 0 0-6M19 15c2 1 3 3 3 6',
-				href: null,
+				href: appRoutes.admin.customers,
 			},
 			{
 				id: 'payments',

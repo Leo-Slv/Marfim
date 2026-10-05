@@ -85,6 +85,18 @@ const queryKeys = {
 			['admin', 'inventory', 'movements', productId] as const,
 		stockReservations: (productId: string) =>
 			['admin', 'inventory', 'reservations', productId] as const,
+		/** Everything customer-related, invalidated after a status change. */
+		customersRoot: ['admin', 'customers'] as const,
+		customers: (searchTerm: string, page: number) =>
+			['admin', 'customers', 'list', searchTerm, page] as const,
+		customerStats: (customerIds: readonly string[]) =>
+			['admin', 'customers', 'stats', ...customerIds] as const,
+		customerDetail: (customerId: string) =>
+			['admin', 'customers', 'detail', customerId] as const,
+		customerAddresses: (customerId: string) =>
+			['admin', 'customers', 'addresses', customerId] as const,
+		customerOrders: (customerId: string) =>
+			['admin', 'customers', 'orders', customerId] as const,
 		/** Product count of each category, keyed by the category ids. */
 		categoryCounts: (categoryIds: readonly string[]) =>
 			['admin', 'category-counts', ...categoryIds] as const,

@@ -51,6 +51,10 @@ const appRoutes = {
 		products: '/admin/products',
 		categories: '/admin/categories',
 		inventory: '/admin/inventory',
+		customers: '/admin/customers',
+		/** Pedidos filtered to one customer. */
+		ordersOfCustomer: (customerId: string) =>
+			`/admin/orders?cliente=${encodeURIComponent(customerId)}`,
 		/** Stock filtered to what is below its reorder point. */
 		inventoryLow: '/admin/inventory?nivel=abaixo',
 		/** Opens one order in the list's detail panel. */
