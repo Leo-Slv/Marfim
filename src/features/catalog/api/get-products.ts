@@ -1,5 +1,6 @@
 import { apiFetch } from '@/lib/http/api-client';
 
+import { isOnShelf } from '../lib/is-on-shelf';
 import type { ProductSortOrder, ProductSummaryPage } from '../model/product';
 import { productSummaryPageSchema } from '../schemas/product.schema';
 
@@ -25,6 +26,8 @@ async function getProducts({
 	const query = new URLSearchParams({
 		page: String(page),
 		pageSize: String(pageSize),
+		// An admin session would list deactivated products too.
+		active: 'true',
 	});
 	if (categoryId) {
 		query.set('categoryId', categoryId);
@@ -40,7 +43,9 @@ async function getProducts({
 	}
 	const payload = await apiFetch<unknown>(`/api/catalog/products?${query}`);
 
-	return productSummaryPageSchema.parse(payload);
+	const result = productSummaryPageSchema.parse(payload);
+
+	return { ...result, items: result.items.filter(isOnShelf) };
 }
 
 export type { GetProductsParams };
