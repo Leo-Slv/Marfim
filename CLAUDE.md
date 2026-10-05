@@ -82,8 +82,9 @@ mini-sacola and the Sacola screen), `home/` (the storefront home),
 in/up, e-mail confirmation, password recovery), `checkout/` (Entrega
 and Pagamento with Stripe), `account/` (Minha conta), `errors/` (error
 states), `admin-auth/` (admin sign-in + gate), `admin-shell/` (admin
-frame: AdminNav with live counters), `admin-dashboard/` and `admin-orders/`
-(Pedidos: list + detail panel, fulfilment actions, internal notes) — see
+frame: AdminNav with live counters), `admin-dashboard/`, `admin-orders/`
+(Pedidos: list + detail panel, fulfilment actions, internal notes) and
+`admin-products/` (Produtos: list + editor, price, variants, publish) — see
 `src/features/README.md`. Screen state that defines what's shown (filters,
 sort, page, search term) lives in the URL so it can be shared and survives
 back/forward; components reading it with `useSearchParams` sit inside a
@@ -109,7 +110,9 @@ drawn with the mockups' inline-SVG illustrations (`Art.dc.html`): drawing
 kind, background tint and editorial tag are mapped by product slug in
 `src/features/catalog/lib/product-visuals.ts` and rendered by
 `components/product-art.tsx`. A new product only needs an entry there
-(unknown slugs fall back to a default drawing).
+(unknown slugs fall back to a default drawing). The admin product editor
+shows that drawing as the product's "image" and flags products without
+one (`hasProductVisual`).
 
 ## Backend / API contract
 

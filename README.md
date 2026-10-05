@@ -158,6 +158,15 @@ public/
   Spec em `Docs/specs/admin/admin-orders.md`; lacunas em
   `Docs/backend-pendencies/admin/admin-orders.md`.
 
+- **Admin · Produtos** (`/admin/products`) — tela `AdminProdutos.dc.html`:
+  lista com busca por nome ou SKU e editor do produto — nome, marca
+  (ateliê), descrição, preço e preço "de" com a prévia "Na loja",
+  variantes (adicionar com SKU gerado e remover), o desenho que a loja usa
+  como imagem (envio de fotos EM BREVE), Salvar, Publicar na loja e
+  Descontinuar. "+ Novo" cria um rascunho (nome, SKU, categoria e preço).
+  Spec em `Docs/specs/admin/admin-products.md`; lacunas em
+  `Docs/backend-pendencies/admin/admin-products.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra

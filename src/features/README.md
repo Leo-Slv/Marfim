@@ -79,6 +79,14 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   of OrderCore's single notes text (`lib/internal-notes.ts`). Status, customer,
   page and open order live in the URL; on narrow screens the detail replaces
   the list.
+- `admin-products/` — `/admin/products` (`Docs/specs/admin/admin-products.md`):
+  list with name/SKU search (`GET /api/admin/catalog/products`), new draft
+  (name, SKU, category, price) and the editor. Salvar runs
+  `lib/product-form.ts`'s `savePlan` — details, then price and "de" price
+  in an order OrderCore accepts, then new variants (SKU generated) — and
+  reports the step that failed. Publish (drafts), discontinue, remove
+  variant. The "image" is the store's drawing (`ProductArtPreview`).
+  Search, page and open product live in the URL.
 - `auth/` — maps to OrderCore's Identity module: the Acesso screens
   (`Docs/specs/auth/access.md`) — `/login`, `/register`,
   `/forgot-password`, `/confirmar-email` and `/redefinir-senha` (the last
