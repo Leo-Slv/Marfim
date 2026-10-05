@@ -3,10 +3,10 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { queryKeys } from '@/lib/constants/query-keys';
+import { useDebouncedValue } from '@/lib/hooks/use-debounced-value';
 
 import { quoteCart } from '../api/quote-cart';
 import type { CartLine } from '../model/cart';
-import { useDebouncedValue } from './use-debounced-value';
 
 const QUOTE_DEBOUNCE_MS = 300;
 
