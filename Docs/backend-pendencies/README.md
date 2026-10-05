@@ -28,4 +28,5 @@ Cosmetic / Config).
 | Admin · Categorias (`/admin/categories`) | [admin/admin-categories.md](admin/admin-categories.md) | No rename/reorder/visibility/delete endpoints, new categories go straight to the menu, duplicates answer 500, no product count |
 | Admin · Estoque (`/admin/inventory`) | [admin/admin-inventory.md](admin/admin-inventory.md) | Stock list without product data, no available-units total, reservations without order number/expiry, reorder-point changes not recorded, movements without the order |
 | Admin · Clientes (`/admin/customers`) | [admin/admin-customers.md](admin/admin-customers.md) | E-mail confirmation not on the customer, no order count/total spent on the list |
+| Admin · Pagamentos (`/admin/payments`) | [admin/admin-payments.md](admin/admin-payments.md) | Payment list without order number/Stripe reference, no card last4, one status per filter, refund reason required, tab counts one call each |
 | Storefront cart (`/cart`) | [storefront/cart.md](storefront/cart.md) | No available quantity on stock issues, quote lines lack brand/category/compare-at, no shipping, coupons, gift wrap, Pix/installments, recommendations or lead time |
