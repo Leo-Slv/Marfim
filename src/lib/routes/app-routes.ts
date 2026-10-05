@@ -50,6 +50,9 @@ const appRoutes = {
 		orders: '/admin/orders',
 		products: '/admin/products',
 		categories: '/admin/categories',
+		inventory: '/admin/inventory',
+		/** Stock filtered to what is below its reorder point. */
+		inventoryLow: '/admin/inventory?nivel=abaixo',
 		/** Opens one order in the list's detail panel. */
 		order: (orderId: string) =>
 			`/admin/orders?pedido=${encodeURIComponent(orderId)}`,

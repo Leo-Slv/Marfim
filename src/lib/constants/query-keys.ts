@@ -74,6 +74,17 @@ const queryKeys = {
 			['admin', 'products', 'list', searchTerm, page] as const,
 		product: (productId: string) =>
 			['admin', 'products', 'detail', productId] as const,
+		/** Everything stock-related, invalidated after each stock action. */
+		inventoryRoot: ['admin', 'inventory'] as const,
+		inventory: (filter: string, page: number) =>
+			['admin', 'inventory', 'list', filter, page] as const,
+		inventorySummary: ['admin', 'inventory', 'summary'] as const,
+		stockItem: (productId: string) =>
+			['admin', 'inventory', 'item', productId] as const,
+		stockMovements: (productId: string) =>
+			['admin', 'inventory', 'movements', productId] as const,
+		stockReservations: (productId: string) =>
+			['admin', 'inventory', 'reservations', productId] as const,
 		/** Product count of each category, keyed by the category ids. */
 		categoryCounts: (categoryIds: readonly string[]) =>
 			['admin', 'category-counts', ...categoryIds] as const,

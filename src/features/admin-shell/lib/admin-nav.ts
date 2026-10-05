@@ -51,7 +51,7 @@ const adminNavGroups: AdminNavGroup[] = [
 				id: 'inventory',
 				label: 'Estoque',
 				icon: 'M3 7h18v13H3zM3 7l3-4h12l3 4M9 12h6',
-				href: null,
+				href: appRoutes.admin.inventory,
 				counter: 'stockAlerts',
 				counterTone: 'alert',
 			},

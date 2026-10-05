@@ -25,8 +25,8 @@ describe('isActiveItem', () => {
 	});
 
 	it('never marks a screen that is not built yet', () => {
-		const inventory = adminNavGroups[0].items[4];
-		assert.equal(inventory.href, null);
-		assert.equal(isActiveItem(inventory, '/admin/inventory'), false);
+		const customers = adminNavGroups[1].items[0];
+		assert.equal(customers.href, null);
+		assert.equal(isActiveItem(customers, '/admin/customers'), false);
 	});
 });
