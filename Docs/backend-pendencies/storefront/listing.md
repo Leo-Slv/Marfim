@@ -17,8 +17,10 @@ Product imagery and editorial tags follow the home's pendencies #1–#2
   category name returns nothing).
 - **To close**: also match `Brand` and the category name, and compare
   unaccented (`unaccent` extension or a normalized search column).
-- **Workaround**: the term is sent as typed; the placeholder still says
-  "peça, ateliê ou categoria" per the mockup, but only names match.
+- **Workaround**: since the mobile navigation
+  (`mobile-navigation.md` #1), search runs in the front over the catalog
+  (name, atelier, category, short description, unaccented); the API's
+  `searchTerm` is no longer used.
 - **Severity**: Feature gap.
 
 ## 2. No "new" flag for "Novidades"
