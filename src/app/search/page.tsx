@@ -1,5 +1,5 @@
-import { ListingPage } from '@/features/listing/components/listing-page';
+import { SearchPage } from '@/features/listing/components/search-page';
 
 export default function Page() {
-	return <ListingPage mode="search" />;
+	return <SearchPage />;
 }
