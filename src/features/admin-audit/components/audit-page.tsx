@@ -116,16 +116,20 @@ function AuditContent() {
 	const totalPages = logs.data?.totalPages ?? 1;
 
 	return (
-		<div className="flex flex-col gap-4 px-5 py-7 min-[980px]:px-8">
+		<div className="flex flex-col gap-3 px-4 py-3.5 min-[980px]:gap-4 min-[980px]:px-8 min-[980px]:py-7">
 			<div className="flex flex-wrap items-end gap-4">
-				<div className="flex grow flex-col gap-1">
+				<div className="flex grow flex-col gap-1 max-[979px]:sr-only">
+					{' '}
 					<Eyebrow className="tracking-[0.16em]">SISTEMA</Eyebrow>
 					<h1 className="text-[34px] font-light tracking-[-0.025em]">
 						Auditoria
 					</h1>
 				</div>
-				<form onSubmit={handleSearch} className="flex flex-col gap-1">
-					<label className="flex h-10 w-full items-center gap-2 rounded-xl border bg-card px-3 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary min-[720px]:w-[300px]">
+				<form
+					onSubmit={handleSearch}
+					className="flex w-full flex-col gap-1 min-[720px]:w-auto"
+				>
+					<label className="flex h-[46px] w-full items-center gap-2 rounded-xl border bg-card px-3 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary min-[720px]:w-[300px] min-[980px]:h-10">
 						<MagnifyingGlassIcon size={16} />
 						<input
 							type="search"
@@ -136,7 +140,7 @@ function AuditContent() {
 								setTerm(event.target.value);
 								setTermHint(false);
 							}}
-							className="w-full bg-transparent font-mono text-xs text-foreground outline-none"
+							className="w-full bg-transparent font-mono text-base text-foreground outline-none min-[980px]:text-xs"
 						/>
 					</label>
 					{termHint ? (
@@ -151,7 +155,8 @@ function AuditContent() {
 				</form>
 			</div>
 
-			<div className="flex flex-wrap items-center gap-1.5">
+			<div className="-mx-4 flex [scrollbar-width:none] items-center gap-1.5 overflow-x-auto px-4 min-[980px]:mx-0 min-[980px]:flex-wrap min-[980px]:overflow-visible min-[980px]:px-0 [&::-webkit-scrollbar]:hidden">
+				{' '}
 				{entityTabs.map((option) => {
 					const selected = option.id === tab.id;
 					return (
@@ -163,7 +168,7 @@ function AuditContent() {
 								update({ entidade: option.id === 'todos' ? null : option.id })
 							}
 							className={cn(
-								'h-[34px] rounded-full px-3 text-[13px] font-medium transition-colors',
+								'h-[34px] shrink-0 rounded-full px-3 text-[13px] font-medium whitespace-nowrap transition-colors',
 								selected
 									? 'bg-foreground text-white'
 									: 'bg-card text-ink-soft hover:bg-surface-2',
@@ -194,13 +199,15 @@ function AuditContent() {
 				) : null}
 			</div>
 
-			<div className="overflow-hidden rounded-2xl border bg-card">
-				<div className="overflow-x-auto">
-					<div className="min-w-[700px]">
+			<div className="min-[980px]:overflow-hidden min-[980px]:rounded-2xl min-[980px]:border min-[980px]:bg-card">
+				{' '}
+				<div className="min-[980px]:overflow-x-auto">
+					{' '}
+					<div className="min-[980px]:min-w-[700px]">
 						<div
 							className={cn(
 								columns,
-								'bg-surface px-[18px] py-2.5 font-mono text-[10px] tracking-[0.12em] text-muted-foreground',
+								'hidden bg-surface px-[18px] py-2.5 font-mono text-[10px] tracking-[0.12em] text-muted-foreground min-[980px]:grid',
 							)}
 						>
 							<span>QUANDO</span>
@@ -213,7 +220,7 @@ function AuditContent() {
 						{logs.isError && !logs.data ? (
 							<div
 								role="alert"
-								className="flex flex-col items-center gap-2 border-t p-10 text-sm text-ink-soft"
+								className="flex flex-col items-center gap-2 p-8 text-sm text-ink-soft min-[980px]:border-t min-[980px]:p-10"
 							>
 								Não foi possível carregar o registro.
 								<button
@@ -225,18 +232,19 @@ function AuditContent() {
 								</button>
 							</div>
 						) : !items ? (
-							<div className="flex flex-col gap-2 border-t p-[18px]">
+							<div className="flex flex-col gap-2 min-[980px]:border-t min-[980px]:p-[18px]">
 								{[0, 1, 2, 3, 4, 5].map((index) => (
 									<div key={index} className="skeleton h-10 rounded-lg" />
 								))}
 							</div>
 						) : items.length === 0 ? (
-							<p className="border-t p-10 text-center text-sm text-muted-foreground">
+							<p className="p-8 text-center text-sm text-muted-foreground min-[980px]:border-t min-[980px]:p-10">
 								Nada encontrado.
 							</p>
 						) : (
 							<div
 								className={cn(
+									'flex flex-col gap-2 min-[980px]:block',
 									logs.isPlaceholderData && 'opacity-60 transition-opacity',
 								)}
 							>
@@ -336,12 +344,48 @@ function AuditRow({
 	const links = auditLinks(log);
 
 	return (
-		<div className="border-t">
+		<div className="overflow-hidden rounded-2xl border bg-card min-[980px]:rounded-none min-[980px]:border-0 min-[980px]:border-t min-[980px]:bg-transparent">
+			{/* Below 980 px: a compact card (MobileAdminAuditoria.dc.html). */}
+			<button
+				type="button"
+				onClick={onToggle}
+				aria-expanded={open}
+				className="flex w-full items-center gap-3 px-3.5 py-3 text-left min-[980px]:hidden"
+			>
+				<span className="flex min-w-0 grow flex-col gap-1">
+					<span className="flex items-center justify-between gap-2">
+						<span className="truncate text-sm">{actionLabel(log.action)}</span>
+						<span className="inline-flex h-[22px] shrink-0 items-center rounded-full bg-surface px-2 font-mono text-[10px] tracking-[0.08em] text-ink-soft uppercase">
+							{entityLabel(log.entityName)}
+						</span>
+					</span>
+					<span className="flex items-center gap-2 text-xs text-muted-foreground">
+						<span
+							className={cn(
+								'size-2 shrink-0 rounded-full',
+								dotClass[actor.kind],
+							)}
+						/>
+						<span className="truncate">{actor.name}</span>
+						<span className="shrink-0 font-mono">
+							· {formatTimelineMoment(log.createdAt)}
+						</span>
+					</span>
+				</span>
+				<ChevronIcon
+					size={13}
+					className={cn(
+						'shrink-0 text-muted-foreground transition-transform duration-200',
+						open && 'rotate-90',
+					)}
+				/>
+			</button>
 			<button
 				type="button"
 				onClick={onToggle}
 				aria-expanded={open}
 				className={cn(
+					'hidden min-[980px]:grid',
 					columns,
 					'w-full px-[18px] py-3 text-left text-sm transition-colors hover:bg-[#FAFAF8]',
 					open && 'bg-[#FAFAF8]',
@@ -377,7 +421,7 @@ function AuditRow({
 				/>
 			</button>
 			{open ? (
-				<div className="flex animate-up flex-col gap-3 px-[18px] pt-1 pb-4 min-[980px]:pl-[318px]">
+				<div className="flex animate-up flex-col gap-3 px-3.5 pt-1 pb-4 min-[980px]:px-[18px] min-[980px]:pl-[318px]">
 					<div className="rounded-[10px] bg-background px-3.5 py-3 font-mono text-xs leading-relaxed">
 						<span className="block pb-1 text-[10px] tracking-[0.12em] text-muted-foreground">
 							DETALHES
