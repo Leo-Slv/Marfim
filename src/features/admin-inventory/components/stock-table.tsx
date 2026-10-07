@@ -44,7 +44,97 @@ function StockTable({
 }) {
 	return (
 		<div className="flex flex-col gap-3">
-			<div className="overflow-hidden rounded-2xl border bg-card">
+			{/* Below 980 px: one card per product (MobileAdminEstoque.dc.html). */}
+			<div className="flex flex-col gap-2 min-[980px]:hidden">
+				{failed ? (
+					<div
+						role="alert"
+						className="flex flex-col items-center gap-2 rounded-2xl border bg-card p-8 text-sm text-ink-soft"
+					>
+						Não foi possível carregar o estoque.
+						<button
+							type="button"
+							onClick={onRetry}
+							className="font-medium text-primary"
+						>
+							Tentar de novo
+						</button>
+					</div>
+				) : !rows ? (
+					[0, 1, 2, 3].map((index) => (
+						<div key={index} className="skeleton h-[88px] rounded-2xl" />
+					))
+				) : rows.length === 0 ? (
+					<p className="p-8 text-center text-sm text-muted-foreground">
+						{emptyText}
+					</p>
+				) : (
+					rows.map((row) => {
+						const visual = getProductVisual(row.slug);
+						const level = stockLevelView(row.stock);
+						return (
+							<button
+								key={row.id}
+								type="button"
+								onClick={() => onOpen(row.id)}
+								className={cn(
+									'flex animate-up flex-col gap-2.5 rounded-2xl border bg-card p-3 text-left',
+									loading && 'opacity-60 transition-opacity',
+								)}
+							>
+								<span className="flex w-full items-center gap-3">
+									<span
+										className="flex size-11 shrink-0 items-center justify-center rounded-xl"
+										style={{ background: visual.tint }}
+									>
+										<ProductArt kind={visual.kind} size={26} />
+									</span>
+									<span className="flex min-w-0 grow flex-col gap-0.5">
+										<span className="truncate text-[15px]">{row.name}</span>
+										<span className="font-mono text-[11px] text-muted-foreground">
+											{row.sku} · res. {level.reserved} · rep.{' '}
+											{level.reorderLevel}
+										</span>
+									</span>
+									<span className="flex flex-col items-end gap-0.5">
+										<span
+											className={cn(
+												'font-mono text-lg',
+												level.available === 0 && 'text-clay',
+											)}
+										>
+											{level.available}
+										</span>
+										<span
+											className={cn(
+												'text-[11px] font-medium',
+												stateText[level.state],
+											)}
+										>
+											{level.label}
+										</span>
+									</span>
+								</span>
+								<span className="relative block h-1.5 w-full overflow-hidden rounded-full bg-surface">
+									<span
+										className={cn(
+											'absolute inset-y-0 left-0 origin-left animate-bar rounded-full',
+											level.state === 'ok' ? 'bg-primary' : 'bg-warning',
+										)}
+										style={{ width: `${level.barPercent}%` }}
+									/>
+									<span
+										className="absolute inset-y-0 w-0.5 bg-foreground opacity-35"
+										style={{ left: `${level.tickPercent}%` }}
+									/>
+								</span>
+							</button>
+						);
+					})
+				)}
+			</div>
+			<div className="hidden overflow-hidden rounded-2xl border bg-card min-[980px]:block">
+				{' '}
 				<div className="overflow-x-auto">
 					<div className="min-w-[540px]">
 						<div

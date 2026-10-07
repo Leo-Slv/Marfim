@@ -76,12 +76,13 @@ function InventoryContent() {
 		<div className="flex min-h-full grow">
 			<section
 				className={cn(
-					'min-w-0 grow flex-col gap-4 px-5 py-7 min-[980px]:pr-6 min-[980px]:pl-8',
+					'min-w-0 grow flex-col gap-3 px-4 py-3.5 min-[980px]:gap-4 min-[980px]:py-7 min-[980px]:pr-6 min-[980px]:pl-8',
 					productId ? 'hidden min-[1280px]:flex' : 'flex',
 				)}
 			>
 				<div className="flex flex-wrap items-end gap-4">
-					<div className="flex grow flex-col gap-1">
+					<div className="flex grow flex-col gap-1 max-[979px]:sr-only">
+						{' '}
 						<Eyebrow className="tracking-[0.16em]">OPERAÇÃO</Eyebrow>
 						<h1 className="text-[34px] font-light tracking-[-0.025em]">
 							Estoque
@@ -90,7 +91,7 @@ function InventoryContent() {
 					<div
 						role="tablist"
 						aria-label="Filtro"
-						className="flex flex-wrap gap-1.5"
+						className="-mx-4 flex [scrollbar-width:none] gap-1.5 overflow-x-auto px-4 min-[980px]:mx-0 min-[980px]:flex-wrap min-[980px]:overflow-visible min-[980px]:px-0 [&::-webkit-scrollbar]:hidden"
 					>
 						{stockFilters.map((option) => {
 							const selected = option.id === filter.id;
@@ -107,7 +108,7 @@ function InventoryContent() {
 										})
 									}
 									className={cn(
-										'flex h-9 items-center gap-2 rounded-full px-3 text-[13px] font-medium transition-colors',
+										'flex h-9 shrink-0 items-center gap-2 rounded-full px-3 text-[13px] font-medium whitespace-nowrap transition-colors',
 										selected
 											? 'bg-foreground text-white'
 											: 'bg-card text-ink-soft hover:bg-surface-2',
@@ -123,20 +124,22 @@ function InventoryContent() {
 					</div>
 				</div>
 
-				<div className="grid grid-cols-1 gap-3 min-[560px]:grid-cols-3">
+				<div className="order-first grid grid-cols-3 gap-2 min-[980px]:order-none min-[980px]:gap-3">
 					{tiles.map((tile) => (
 						<div
 							key={tile.label}
-							className="flex flex-col gap-1.5 rounded-[14px] border bg-card px-[18px] py-3.5"
+							className="flex min-h-[92px] flex-col justify-between gap-2 rounded-[14px] border bg-card px-3 py-3 min-[980px]:min-h-0 min-[980px]:justify-start min-[980px]:gap-1.5 min-[980px]:px-[18px] min-[980px]:py-3.5"
 						>
-							<span className="text-[13px] text-ink-soft">{tile.label}</span>
+							<span className="text-xs leading-tight text-ink-soft min-[980px]:text-[13px]">
+								{tile.label}
+							</span>
 							{tile.value === undefined ? (
 								<span className="skeleton h-[30px] w-12 rounded" />
 							) : (
 								<span
 									key={tile.value}
 									className={cn(
-										'animate-pop-in text-[30px] leading-none font-light tracking-[-0.03em]',
+										'animate-pop-in text-[28px] leading-none font-light tracking-[-0.03em] min-[980px]:text-[30px]',
 										tile.label === 'Unidades disponíveis'
 											? 'text-foreground'
 											: tile.alert

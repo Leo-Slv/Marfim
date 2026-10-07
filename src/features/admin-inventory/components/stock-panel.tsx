@@ -89,7 +89,7 @@ function StockPanel({
 	const visual = getProductVisual(row?.slug ?? '');
 
 	return (
-		<aside className="flex w-full shrink-0 animate-slide-in flex-col gap-[18px] border-l bg-card px-6 py-7 min-[1280px]:sticky min-[1280px]:top-0 min-[1280px]:h-screen min-[1280px]:w-[400px] min-[1280px]:overflow-y-auto">
+		<aside className="flex w-full shrink-0 animate-slide-in flex-col gap-[18px] bg-card px-4 py-4 min-[980px]:border-l min-[980px]:px-6 min-[980px]:py-7 min-[1280px]:sticky min-[1280px]:top-0 min-[1280px]:h-screen min-[1280px]:w-[400px] min-[1280px]:overflow-y-auto">
 			<button
 				type="button"
 				onClick={onClose}
