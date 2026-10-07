@@ -12,6 +12,7 @@ import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
 
 import { useAdminCounts } from '../hooks/admin-shell.queries';
+import { AdminMobileBar } from './admin-mobile-bar';
 import {
 	adminInitials,
 	adminNavGroups,
@@ -33,15 +34,14 @@ function AdminShell({
 }) {
 	return (
 		<div className="flex min-h-screen min-w-[360px] flex-col bg-background min-[980px]:flex-row">
-			<aside className="flex flex-col gap-4 border-b px-4 pt-4 pb-3 min-[980px]:sticky min-[980px]:top-0 min-[980px]:h-screen min-[980px]:w-[248px] min-[980px]:shrink-0 min-[980px]:gap-6 min-[980px]:border-r min-[980px]:border-b-0 min-[980px]:py-6">
+			{/* Below 980 px the top bar and its menu replace the sidebar. */}
+			<AdminMobileBar session={session} />
+			<aside className="hidden flex-col gap-4 min-[980px]:sticky min-[980px]:top-0 min-[980px]:flex min-[980px]:h-screen min-[980px]:w-[248px] min-[980px]:shrink-0 min-[980px]:gap-6 min-[980px]:border-r min-[980px]:px-4 min-[980px]:py-6">
 				<div className="flex items-center gap-2 px-2">
 					<Link href={appRoutes.admin.index} className="text-foreground">
 						<AdminWordmark tone="light" />
 					</Link>
 					<div className="grow" />
-					<div className="min-[980px]:hidden">
-						<SignOutButton />
-					</div>
 				</div>
 				<AdminNav />
 				<AdminProfile email={session.email} />
@@ -56,16 +56,10 @@ function AdminNav() {
 	const counts = useAdminCounts();
 
 	return (
-		<nav
-			aria-label="Administração"
-			className="-mx-4 flex gap-1 overflow-x-auto px-4 min-[980px]:mx-0 min-[980px]:flex-col min-[980px]:gap-[18px] min-[980px]:overflow-visible min-[980px]:px-0"
-		>
+		<nav aria-label="Administração" className="flex flex-col gap-[18px]">
 			{adminNavGroups.map((group) => (
-				<div
-					key={group.title}
-					className="flex shrink-0 gap-1 min-[980px]:flex-col min-[980px]:gap-0.5"
-				>
-					<div className="hidden px-2.5 pb-1.5 font-mono text-[10px] tracking-[0.16em] text-muted-foreground min-[980px]:block">
+				<div key={group.title} className="flex flex-col gap-0.5">
+					<div className="px-2.5 pb-1.5 font-mono text-[10px] tracking-[0.16em] text-muted-foreground">
 						{group.title}
 					</div>
 					{group.items.map((item) => (

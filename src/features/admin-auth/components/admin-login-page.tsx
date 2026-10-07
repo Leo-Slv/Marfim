@@ -33,7 +33,7 @@ import {
 	adminLoginFormSchema,
 	type AdminLoginForm,
 } from '../schemas/admin-login.schema';
-import { AdminBrandPanel, AdminWordmark } from './admin-brand';
+import { AdminBrandPanel, AdminMobileBanner } from './admin-brand';
 
 /** How long "Bem-vindo de volta" shows before going on. */
 const WELCOME_REDIRECT_MS = 1200;
@@ -43,10 +43,8 @@ function AdminLoginPage() {
 	return (
 		<div className="grid min-h-screen min-w-[360px] bg-background min-[980px]:grid-cols-2">
 			<AdminBrandPanel />
-			<main className="flex flex-col items-center justify-center gap-10 px-5 py-12 min-[980px]:p-12">
-				<div className="w-full max-w-[400px] min-[980px]:hidden">
-					<AdminWordmark tone="light" />
-				</div>
+			<AdminMobileBanner />
+			<main className="flex flex-col items-center justify-center gap-10 px-5 py-8 min-[980px]:p-12">
 				{/* Reads ?next=, so it sits inside Suspense. */}
 				<Suspense fallback={<div className="h-[460px] w-full max-w-[400px]" />}>
 					<AdminLoginContent />

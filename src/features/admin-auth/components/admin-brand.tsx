@@ -110,4 +110,41 @@ function AdminBrandPanel() {
 	);
 }
 
-export { AdminBrandPanel, AdminWordmark };
+/**
+ * Below 980 px the same illustration as a banner above the form
+ * (MobileAdminLogin.dc.html); no sample numbers, like the desktop panel.
+ */
+function AdminMobileBanner() {
+	return (
+		<div className="relative flex flex-col gap-3.5 overflow-hidden bg-foreground px-5 py-6 text-background min-[980px]:hidden">
+			<svg
+				width="300"
+				height="300"
+				viewBox="0 0 520 520"
+				fill="none"
+				aria-hidden="true"
+				className="absolute -top-[110px] -right-[120px] animate-[spin_60s_linear_infinite]"
+			>
+				<circle
+					cx="260"
+					cy="260"
+					r="240"
+					stroke="#3B3FD9"
+					strokeOpacity=".5"
+					strokeDasharray="3 9"
+				/>
+				<circle cx="260" cy="20" r="7" fill="#E8793A" />
+			</svg>
+			<div className="relative">
+				<AdminWordmark tone="dark" />
+			</div>
+			<p className="relative text-[26px] leading-[1.1] font-light tracking-[-0.03em]">
+				Pedidos, peças e ateliês
+				<br />
+				<span className="font-medium text-[#8F92FF]">num só painel.</span>
+			</p>
+		</div>
+	);
+}
+
+export { AdminBrandPanel, AdminMobileBanner, AdminWordmark };
