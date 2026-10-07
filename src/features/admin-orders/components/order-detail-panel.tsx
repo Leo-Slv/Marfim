@@ -3,6 +3,7 @@
 import { ArrowLeftIcon, WarningIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 
+import { BottomSheet } from '@/components/bottom-sheet';
 import { notify } from '@/features/account/components/account-toast';
 import { formatTimelineMoment } from '@/features/account/lib/account-format';
 import {
@@ -16,6 +17,7 @@ import { slugify } from '@/features/catalog/lib/slugify';
 import { maskPostalCode } from '@/features/checkout/lib/format-address';
 import { QueryErrorState } from '@/features/errors/components/query-error-state';
 import { useSession } from '@/lib/auth/use-session';
+import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { cn } from '@/lib/utils';
 
 import {
@@ -56,7 +58,7 @@ function OrderDetailPanel({
 	const details = useAdminOrder(orderId);
 
 	return (
-		<aside className="flex w-full shrink-0 animate-slide-in flex-col gap-[18px] border-l bg-card px-6 py-7 min-[1280px]:sticky min-[1280px]:top-0 min-[1280px]:h-screen min-[1280px]:w-[420px] min-[1280px]:overflow-y-auto">
+		<aside className="flex w-full shrink-0 animate-slide-in flex-col gap-[18px] bg-card px-4 py-4 min-[980px]:border-l min-[980px]:px-6 min-[980px]:py-7 min-[1280px]:sticky min-[1280px]:top-0 min-[1280px]:h-screen min-[1280px]:w-[420px] min-[1280px]:overflow-y-auto">
 			<button
 				type="button"
 				onClick={onClose}
@@ -90,6 +92,8 @@ function OrderDetail({ details }: { details: AdminOrderDetails }) {
 	const timeline = useOrderTimeline(order.id);
 	const actions = useOrderActions(order.id);
 	const [asking, setAsking] = useState(false);
+	// Below 980 px the cancel confirm is a bottom sheet (MobileAdminPedidos).
+	const mobile = useMediaQuery('(max-width: 979px)') === true;
 	const [error, setError] = useState<string | null>(null);
 	const action = nextAction(order.status);
 	const busy =
@@ -228,7 +232,7 @@ function OrderDetail({ details }: { details: AdminOrderDetails }) {
 				)}
 
 				{canCancel(order.status) ? (
-					asking ? (
+					asking && !mobile ? (
 						<div className="flex animate-pop-in flex-col gap-2 rounded-[10px] bg-clay-soft p-3 text-[13px]">
 							Cancelar e estornar o pagamento? O estoque reservado é liberado.
 							<div className="flex gap-2">
@@ -374,6 +378,38 @@ function OrderDetail({ details }: { details: AdminOrderDetails }) {
 					)
 				}
 			/>
+			<BottomSheet
+				open={asking && mobile}
+				onOpenChange={setAsking}
+				title={`Cancelar ${order.orderNumber}?`}
+				description="Os itens voltam ao estoque e o pagamento é estornado. O cliente recebe um e-mail."
+			>
+				<button
+					type="button"
+					disabled={busy}
+					onClick={() =>
+						run(() =>
+							actions.cancel.mutate(undefined, {
+								onSuccess: (result) => {
+									setAsking(false);
+									notify(cancelToast(result.paymentSettlement));
+								},
+								onError,
+							}),
+						)
+					}
+					className="h-[50px] rounded-xl bg-clay text-[15px] font-medium text-white disabled:opacity-55"
+				>
+					{actions.cancel.isPending ? 'Cancelando…' : 'Sim, cancelar'}
+				</button>
+				<button
+					type="button"
+					onClick={() => setAsking(false)}
+					className="h-12 rounded-xl border bg-card text-[15px] font-medium"
+				>
+					Manter pedido
+				</button>
+			</BottomSheet>
 		</>
 	);
 }

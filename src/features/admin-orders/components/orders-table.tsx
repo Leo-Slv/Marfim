@@ -31,7 +31,7 @@ function StatusTabs({
 		<div
 			role="tablist"
 			aria-label="Filtrar por status"
-			className="flex flex-wrap gap-1.5"
+			className="-mx-4 flex [scrollbar-width:none] gap-1.5 overflow-x-auto px-4 min-[980px]:mx-0 min-[980px]:flex-wrap min-[980px]:overflow-visible min-[980px]:px-0 [&::-webkit-scrollbar]:hidden"
 		>
 			{orderTabs.map((tab) => {
 				const selected = tab.id === current.id;
@@ -43,7 +43,7 @@ function StatusTabs({
 						aria-selected={selected}
 						onClick={() => onPick(tab)}
 						className={cn(
-							'flex h-9 items-center gap-2 rounded-full px-3 text-[13px] font-medium transition-colors',
+							'flex h-9 shrink-0 items-center gap-2 rounded-full px-3 text-[13px] font-medium whitespace-nowrap transition-colors',
 							selected
 								? 'bg-foreground text-white'
 								: 'bg-card text-ink-soft hover:bg-surface-2',
@@ -83,7 +83,72 @@ function OrdersTable({
 }) {
 	return (
 		<div className="flex flex-col gap-3">
-			<div className="overflow-hidden rounded-2xl border bg-card">
+			{/* Below 980 px: one card per order (MobileAdminPedidos.dc.html). */}
+			<div className="flex flex-col gap-2 min-[980px]:hidden">
+				{failed ? (
+					<div
+						role="alert"
+						className="flex flex-col items-center gap-2 rounded-2xl border bg-card p-8 text-sm text-ink-soft"
+					>
+						Não foi possível carregar os pedidos.
+						<button
+							type="button"
+							onClick={onRetry}
+							className="font-medium text-primary"
+						>
+							Tentar de novo
+						</button>
+					</div>
+				) : !orders ? (
+					[0, 1, 2, 3].map((index) => (
+						<div key={index} className="skeleton h-[76px] rounded-2xl" />
+					))
+				) : orders.length === 0 ? (
+					<p className="p-8 text-center text-sm text-muted-foreground">
+						Nenhum pedido neste filtro.
+					</p>
+				) : (
+					orders.map((order) => (
+						<button
+							key={order.id}
+							type="button"
+							onClick={() => onOpen(order.id)}
+							className={cn(
+								'flex animate-up flex-col gap-2 rounded-2xl border bg-card px-3.5 py-3 text-left',
+								loading && 'opacity-60 transition-opacity',
+							)}
+						>
+							<span className="flex w-full items-center justify-between">
+								<span className="font-mono text-[13px]">
+									{order.orderNumber}
+								</span>
+								<span
+									className={cn(
+										'inline-flex h-6 items-center rounded-full px-[9px] text-[11px] font-medium whitespace-nowrap',
+										orderStatusClass(order.status),
+									)}
+								>
+									{orderStatusLabel(order.status)}
+								</span>
+							</span>
+							<span className="flex w-full items-center justify-between gap-3 text-sm">
+								<span className="flex min-w-0 flex-col gap-0.5">
+									<span className="truncate">
+										{order.customer?.name ?? '—'}
+									</span>
+									<span className="text-xs text-muted-foreground">
+										{formatOrderMoment(order.createdAt)} · {order.itemCount} un.
+									</span>
+								</span>
+								<span className="font-mono text-[13px] whitespace-nowrap">
+									{formatCurrencyBrlCents(order.totalAmount)} ›
+								</span>
+							</span>
+						</button>
+					))
+				)}
+			</div>
+			<div className="hidden overflow-hidden rounded-2xl border bg-card min-[980px]:block">
 				<div className="overflow-x-auto">
 					<div className="min-w-[480px]">
 						<div

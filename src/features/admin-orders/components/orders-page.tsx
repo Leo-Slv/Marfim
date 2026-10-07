@@ -57,12 +57,12 @@ function OrdersContent() {
 		<div className="flex min-h-full grow">
 			<section
 				className={cn(
-					'min-w-0 grow flex-col gap-4 px-5 py-7 min-[980px]:pr-6 min-[980px]:pl-8',
+					'min-w-0 grow flex-col gap-3 px-4 py-3 min-[980px]:gap-4 min-[980px]:py-7 min-[980px]:pr-6 min-[980px]:pl-8',
 					orderId ? 'hidden min-[1280px]:flex' : 'flex',
 				)}
 			>
 				<div className="flex flex-wrap items-end gap-4">
-					<div className="flex grow flex-col gap-1">
+					<div className="flex grow flex-col gap-1 max-[979px]:sr-only">
 						<Eyebrow className="tracking-[0.16em]">OPERAÇÃO</Eyebrow>
 						<h1 className="text-[34px] font-light tracking-[-0.025em]">
 							Pedidos
