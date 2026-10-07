@@ -78,7 +78,7 @@ function ProductPage({ slug }: { slug: string }) {
 					<ProductContent key={product.data.id} product={product.data} />
 				)}
 			</main>
-			<StoreFooter />
+			<StoreFooter hideOnMobile />
 		</div>
 	);
 }
@@ -114,7 +114,7 @@ function ProductContent({ product }: { product: ProductDetail }) {
 			<title>{`${product.name} · Marfim`}</title>
 			<nav
 				aria-label="Você está em"
-				className="px-5 pt-6 pb-2 font-mono text-[11px] tracking-[0.14em] text-muted-foreground min-[980px]:px-10"
+				className="hidden px-5 pt-6 pb-2 font-mono text-[11px] tracking-[0.14em] text-muted-foreground min-[980px]:block min-[980px]:px-10"
 			>
 				<div className="mx-auto max-w-[1280px]">
 					<Link href={appRoutes.system.home} className="hover:text-foreground">
@@ -138,8 +138,8 @@ function ProductContent({ product }: { product: ProductDetail }) {
 				</div>
 			</nav>
 
-			<section className="px-5 pt-3 pb-14 min-[980px]:px-10">
-				<div className="mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-8 min-[980px]:grid-cols-12">
+			<section className="px-4 pt-0 pb-6 min-[980px]:px-10 min-[980px]:pt-3 min-[980px]:pb-14">
+				<div className="mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-5 min-[980px]:grid-cols-12 min-[980px]:gap-8">
 					<div className="min-[980px]:col-span-7">
 						<ProductGallery
 							visual={visual}
@@ -148,12 +148,12 @@ function ProductContent({ product }: { product: ProductDetail }) {
 						/>
 					</div>
 
-					<div className="flex animate-up flex-col gap-[22px] [animation-delay:.08s] min-[980px]:sticky min-[980px]:top-6 min-[980px]:col-span-5">
+					<div className="flex animate-fade-in flex-col gap-[22px] [animation-delay:.08s] min-[980px]:sticky min-[980px]:top-6 min-[980px]:col-span-5">
 						<div className="flex flex-col gap-2.5">
 							{atelier ? (
 								<Eyebrow className="tracking-[0.16em]">{atelier}</Eyebrow>
 							) : null}
-							<h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.03em]">
+							<h1 className="text-[32px] leading-[1.05] font-light tracking-[-0.03em] min-[980px]:text-[40px]">
 								{product.name}
 							</h1>
 							{product.shortDescription ? (
@@ -171,7 +171,7 @@ function ProductContent({ product }: { product: ProductDetail }) {
 						<div className="flex flex-wrap items-baseline gap-3">
 							<span
 								className={cn(
-									'text-4xl font-light tracking-[-0.03em]',
+									'text-[28px] font-light tracking-[-0.03em] min-[980px]:text-4xl',
 									stock.tone === 'out' && 'text-muted-foreground',
 								)}
 							>

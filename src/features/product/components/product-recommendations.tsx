@@ -4,7 +4,10 @@ import { ArrowRightIcon } from '@phosphor-icons/react';
 import Link from 'next/link';
 
 import { Eyebrow } from '@/components/eyebrow';
+import { ProductArt } from '@/features/catalog/components/product-art';
 import { ListingProductCard } from '@/features/catalog/components/listing-product-card';
+import { formatCurrencyBrl } from '@/features/catalog/lib/format-currency-brl';
+import { getProductVisual } from '@/features/catalog/lib/product-visuals';
 import { useProducts } from '@/features/catalog/hooks/catalog.queries';
 import type {
 	ProductDetail,
@@ -38,17 +41,44 @@ function ProductRecommendations({
 	}
 
 	return (
-		<section className="px-5 pt-2 pb-[72px] min-[980px]:px-10">
-			<div className="mx-auto flex max-w-[1280px] flex-col gap-[22px]">
+		<section className="px-4 pt-2 pb-6 min-[980px]:px-10 min-[980px]:pb-[72px]">
+			<div className="mx-auto flex max-w-[1280px] flex-col gap-3 min-[980px]:gap-[22px]">
 				<div className="flex flex-col gap-2">
-					<Eyebrow>
+					<Eyebrow className="hidden min-[980px]:block">
 						MAIS EM {category ? category.name.toUpperCase() : 'NA LOJA'}
 					</Eyebrow>
-					<h2 className="text-[34px] font-light tracking-[-0.025em]">
+					<h2 className="text-xl font-light min-[980px]:text-[34px] min-[980px]:tracking-[-0.025em]">
 						Combina com {product.name}
 					</h2>
 				</div>
-				<div className="grid grid-cols-1 gap-4 min-[560px]:grid-cols-2 min-[980px]:grid-cols-4">
+				{/* Below 980 px: small cards in a scrolling row (MobileProduto). */}
+				<ul className="-mx-4 flex [scrollbar-width:none] gap-2.5 overflow-x-auto px-4 min-[980px]:hidden [&::-webkit-scrollbar]:hidden">
+					{picks.map((pick) => {
+						const visual = getProductVisual(pick.slug);
+						return (
+							<li key={pick.id} className="w-[150px] shrink-0">
+								<Link
+									href={appRoutes.products.detail(pick.slug)}
+									className="flex flex-col gap-1.5 rounded-[14px] border bg-card p-1.5 text-foreground"
+								>
+									<span
+										className="flex h-[120px] items-center justify-center rounded-[10px]"
+										style={{ background: visual.tint }}
+									>
+										<ProductArt kind={visual.kind} size={64} />
+									</span>
+									<span className="px-1 pt-0.5 text-[13px] font-medium">
+										{pick.name}
+									</span>
+									<span className="px-1 pb-1 font-mono text-xs">
+										{formatCurrencyBrl(pick.currentPrice)}
+									</span>
+								</Link>
+							</li>
+						);
+					})}
+				</ul>
+				<div className="hidden grid-cols-1 gap-4 min-[560px]:grid-cols-2 min-[980px]:grid min-[980px]:grid-cols-4">
 					{products.isPending
 						? [0, 1, 2].map((index) => (
 								<div key={index} className="skeleton h-[300px] rounded-2xl" />
