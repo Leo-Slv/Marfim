@@ -32,4 +32,5 @@ Cosmetic / Config).
 | Admin · Auditoria (`/admin/audit`) | [admin/admin-audit.md](admin/admin-audit.md) | No before/after (metadata only), actor is an id, no free-text search, UUID references and unaudited categories/stock changes, partial refunds not audited |
 | Admin · Mensagens com falha (`/admin/failures`) | [admin/admin-failed-messages.md](admin/admin-failed-messages.md) | No bulk replay, no stack trace, no impact description, e-mail send failures not listed |
 | Produto (`/products/[slug]`) | [storefront/product.md](storefront/product.md) | No dimensions/care fields, no exact stock, no lead time/shipping, variants don't reach the order, no atelier data |
+| Institucional e ajuda (`/content/[slug]`) | [content/content-pages.md](content/content-pages.md) | No guest tracking, no returns flow, no shipping/lead time, no LGPD export/erasure, editorial content in the front, no support channel |
 | Storefront cart (`/cart`) | [storefront/cart.md](storefront/cart.md) | No available quantity on stock issues, quote lines lack brand/category/compare-at, no shipping, coupons, gift wrap, Pix/installments, recommendations or lead time |
