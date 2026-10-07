@@ -3,16 +3,16 @@
 import Link from 'next/link';
 
 import { ProductArt } from '@/features/catalog/components/product-art';
-import { useProducts } from '@/features/catalog/hooks/catalog.queries';
+import { useCatalog } from '@/features/catalog/hooks/catalog.queries';
 import { appRoutes } from '@/lib/routes/app-routes';
 
-import { ALL_PRODUCTS, piecesInCatalog } from '../../lib/catalog-pieces';
+import { piecesInCatalog } from '../../lib/catalog-pieces';
 import { lookbookScenes } from '../../lib/content-copy';
 import { Lead, PageHeading } from '../content-ui';
 
 /** 28 · Lookbook — tags only for pieces that are in the catalog. */
 function LookbookPage() {
-	const products = useProducts(ALL_PRODUCTS);
+	const products = useCatalog();
 
 	return (
 		<>

@@ -1,8 +1,5 @@
 import type { ProductSummary } from '@/features/catalog/model/product';
 
-/** OrderCore's largest page: the whole demo catalog in one call. */
-const ALL_PRODUCTS = { page: 1, pageSize: 100 } as const;
-
 type Piece = Pick<ProductSummary, 'slug' | 'name'>;
 
 /** The catalog's pieces made by an atelier (its `brand`). */
@@ -27,4 +24,4 @@ function piecesInCatalog(
 }
 
 export type { Piece };
-export { ALL_PRODUCTS, piecesInCatalog, piecesOfAtelier };
+export { piecesInCatalog, piecesOfAtelier };

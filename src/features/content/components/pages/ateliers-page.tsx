@@ -3,17 +3,17 @@
 import Link from 'next/link';
 
 import { ProductArt } from '@/features/catalog/components/product-art';
-import { useProducts } from '@/features/catalog/hooks/catalog.queries';
+import { useCatalog } from '@/features/catalog/hooks/catalog.queries';
 import { ateliers } from '@/features/home/lib/ateliers';
 import { appRoutes } from '@/lib/routes/app-routes';
 
-import { ALL_PRODUCTS, piecesOfAtelier } from '../../lib/catalog-pieces';
+import { piecesOfAtelier } from '../../lib/catalog-pieces';
 import { atelierStories } from '../../lib/content-copy';
 import { Lead, PageHeading } from '../content-ui';
 
 /** 26 · Ateliês parceiros — pieces from the live catalog, by brand. */
 function AteliersPage() {
-	const products = useProducts(ALL_PRODUCTS);
+	const products = useCatalog();
 
 	return (
 		<>

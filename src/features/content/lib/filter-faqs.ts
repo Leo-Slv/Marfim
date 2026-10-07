@@ -1,9 +1,6 @@
-import type { FaqCategory, FaqEntry } from '../model/content';
+import { normalizeSearch } from '@/lib/text/normalize-search';
 
-/** Lowercase without accents, so "devolucao" finds "devolução". */
-function normalizeSearch(value: string) {
-	return value.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
-}
+import type { FaqCategory, FaqEntry } from '../model/content';
 
 /** FAQ entries of a category whose question or answer contains the term. */
 function filterFaqs(
@@ -20,4 +17,4 @@ function filterFaqs(
 	);
 }
 
-export { filterFaqs, normalizeSearch };
+export { filterFaqs };

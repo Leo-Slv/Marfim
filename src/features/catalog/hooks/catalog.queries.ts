@@ -7,6 +7,10 @@ import { queryKeys } from '@/lib/constants/query-keys';
 import { getCategories } from '../api/get-categories';
 import { getProductBySlug } from '../api/get-product-by-slug';
 import { getProducts, type GetProductsParams } from '../api/get-products';
+import type { ProductSortOrder } from '../model/product';
+
+/** OrderCore's largest page (`ListProductsFilter.MaximumPageSize`). */
+const CATALOG_PAGE_SIZE = 100;
 
 function useProducts(
 	params: GetProductsParams,
@@ -20,6 +24,17 @@ function useProducts(
 		// flashing the loading state.
 		placeholderData: keepPreviousData,
 	});
+}
+
+/**
+ * The whole catalog in one call (the demo has 8 products), for what OrderCore
+ * can't filter itself: search by atelier/category and pieces by brand.
+ */
+function useCatalog(
+	sort?: ProductSortOrder,
+	options: { enabled?: boolean } = {},
+) {
+	return useProducts({ page: 1, pageSize: CATALOG_PAGE_SIZE, sort }, options);
 }
 
 function useProductBySlug(slug: string) {
@@ -37,4 +52,4 @@ function useCategories() {
 	});
 }
 
-export { useCategories, useProductBySlug, useProducts };
+export { useCatalog, useCategories, useProductBySlug, useProducts };
