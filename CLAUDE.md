@@ -105,6 +105,16 @@ title? }}` for its Voltar variant, as the mobile mockups show. Store search
 runs in the front over the catalog (`useCatalog`, `searchProducts`) because
 OrderCore only matches names.
 
+The other store screens have a mobile layout of their own below 980 px
+(`Docs/specs/storefront/mobile-screens.md`): desktop markup stays and the
+mobile one is added next to it with `min-[980px]` classes. The main action
+of Produto, Sacola, Entrega and Pagamento is a fixed bar
+(`MobileActionBar`, `components/mobile-action-bar.tsx`) — never put it
+inside an element with `animate-up` (its end state keeps a `transform`,
+which traps `position: fixed`; use `animate-fade-in` there). Side panels
+become bottom sheets (`BottomSheet`), and those screens pass
+`StoreFooter hideOnMobile` (the others get the compact footer).
+
 Error screens come from `src/features/errors`: unknown routes hit
 `src/app/not-found.tsx`, render errors `error.tsx`; when the query a page
 is about fails without data, render `QueryErrorState` (404/403/429/sem

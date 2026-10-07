@@ -201,6 +201,13 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
 storefront chrome shared by every store page. Below 980 px the header is
 `mobile-top-bar.tsx` (MobileTopo.dc.html) with `mobile-menu.tsx`; screens
 pass `mobileBack={{ href, title? }}` for the Voltar + title variant.
+Below 980 px `StoreFooter` is the compact footer (`hideOnMobile` on the
+screens with the fixed bar), `mobile-action-bar.tsx` is that bar and
+`bottom-sheet.tsx` the sheet used by the sort options and the order
+cancellation (the mini-sacola is a bottom sheet too). Both layouts of a
+screen stay in the DOM and CSS picks one; where a component can only exist
+once (a field bound to the URL, a Radix dialog) `useMediaQuery` mounts just
+the current one.
 
 Each new feature is added following the workflow in the root `CLAUDE.md`
 (spec → resolve open decisions → backend pendencies → implementation plan →

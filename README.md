@@ -64,6 +64,14 @@ public/
   categorias e ateliês reais, "Continue digitando", "Nada para…" e
   resultados em lista. Spec em `Docs/specs/storefront/mobile-navigation.md`;
   lacunas em `Docs/backend-pendencies/storefront/mobile-navigation.md`.
+- **Telas da loja no celular** (abaixo de 980 px) — `MobileInicio`,
+  `MobileListagem`, `MobileProduto`, `MobileSacola`, `MobileCheckout`,
+  `MobileAcesso`, `MobileConta` e `MobileErro`: barra de ação fixa no rodapé
+  (Produto, Sacola, Entrega e Pagamento, com a ação e o total), painéis que
+  sobem de baixo (mini-sacola, ordenar, cancelar pedido), rodapé compacto,
+  galeria em carrossel, grade de 2 colunas com "Carregar mais", ateliês em
+  acordeão e aviso ao adicionar na home. O desktop não muda. Spec em
+  `Docs/specs/storefront/mobile-screens.md`; sem lacunas novas no backend.
 - **Produto** (`/products/[slug]`) — tela `Produto.dc.html`: o desenho da
   peça em vistas (frente, acesa para iluminação, detalhe, ambiente), ateliê,
   descrição, preço com preço "de" e desconto, estoque (em estoque, últimas
