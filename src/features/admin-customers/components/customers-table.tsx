@@ -67,7 +67,80 @@ function CustomersTable({
 }) {
 	return (
 		<div className="flex flex-col gap-3">
-			<div className="overflow-hidden rounded-2xl border bg-card">
+			{/* Below 980 px: one card per customer (MobileAdminClientes.dc.html). */}
+			<div className="flex flex-col gap-2 min-[980px]:hidden">
+				{failed ? (
+					<div
+						role="alert"
+						className="flex flex-col items-center gap-2 rounded-2xl border bg-card p-8 text-sm text-ink-soft"
+					>
+						Não foi possível carregar os clientes.
+						<button
+							type="button"
+							onClick={onRetry}
+							className="font-medium text-primary"
+						>
+							Tentar de novo
+						</button>
+					</div>
+				) : !customers ? (
+					[0, 1, 2, 3].map((index) => (
+						<div key={index} className="skeleton h-[88px] rounded-2xl" />
+					))
+				) : customers.length === 0 ? (
+					<p className="p-8 text-center text-sm text-muted-foreground">
+						{searching
+							? 'Nenhum cliente com esse nome ou e-mail.'
+							: 'Nenhum cliente ainda.'}
+					</p>
+				) : (
+					customers.map((customer) => {
+						const stat = stats?.[customer.id];
+						return (
+							<button
+								key={customer.id}
+								type="button"
+								onClick={() => onOpen(customer.id)}
+								className={cn(
+									'flex animate-up items-center gap-3 rounded-2xl border bg-card px-3.5 py-3 text-left',
+									loading && 'opacity-60 transition-opacity',
+								)}
+							>
+								<span
+									aria-hidden="true"
+									className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-soft text-[13px] font-medium text-primary"
+								>
+									{customerInitials(customer.name)}
+								</span>
+								<span className="flex min-w-0 grow flex-col gap-1">
+									<span className="flex items-center justify-between gap-2">
+										<span className="truncate text-[15px]">
+											{customer.name}
+										</span>
+										<AccountPill active={customer.active} />
+									</span>
+									<span className="truncate text-xs text-muted-foreground">
+										{customer.email}
+									</span>
+									<span className="flex items-center justify-between text-xs text-ink-soft">
+										<span>
+											<span className="font-mono">
+												{stat ? stat.orders : '·'}
+											</span>{' '}
+											pedidos
+										</span>
+										<span className="font-mono text-[13px] text-foreground">
+											{stat ? formatCurrencyBrlCents(stat.spent) : '·'} ›
+										</span>
+									</span>
+								</span>
+							</button>
+						);
+					})
+				)}
+			</div>
+			<div className="hidden overflow-hidden rounded-2xl border bg-card min-[980px]:block">
+				{' '}
 				<div className="overflow-x-auto">
 					<div className="min-w-[460px]">
 						<div

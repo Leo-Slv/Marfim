@@ -1,5 +1,6 @@
 'use client';
 
+import { BottomSheet } from '@/components/bottom-sheet';
 import { ArrowLeftIcon } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -13,6 +14,7 @@ import {
 import { formatCurrencyBrlCents } from '@/features/catalog/lib/format-currency-brl';
 import { addressLines } from '@/features/checkout/lib/format-address';
 import { QueryErrorState } from '@/features/errors/components/query-error-state';
+import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
 
@@ -47,7 +49,7 @@ function CustomerPanel({
 	const customer = useCustomer(customerId);
 
 	return (
-		<aside className="flex w-full shrink-0 animate-slide-in flex-col gap-[18px] border-l bg-card px-6 py-7 min-[1280px]:sticky min-[1280px]:top-0 min-[1280px]:h-screen min-[1280px]:w-[400px] min-[1280px]:overflow-y-auto">
+		<aside className="flex w-full shrink-0 animate-slide-in flex-col gap-[18px] bg-card px-4 py-4 min-[980px]:border-l min-[980px]:px-6 min-[980px]:py-7 min-[1280px]:sticky min-[1280px]:top-0 min-[1280px]:h-screen min-[1280px]:w-[400px] min-[1280px]:overflow-y-auto">
 			<button
 				type="button"
 				onClick={onClose}
@@ -80,6 +82,8 @@ function CustomerDetail({ customer }: { customer: AdminCustomer }) {
 	const orders = useCustomerOrders(customer.id);
 	const status = useSetCustomerActive(customer.id);
 	const [asking, setAsking] = useState(false);
+	// Below 980 px the confirm is a bottom sheet (MobileAdminClientes.dc.html).
+	const mobile = useMediaQuery('(max-width: 979px)') === true;
 	const stats = orders.data
 		? orderStats(orders.data.items, orders.data.totalItems)
 		: null;
@@ -234,7 +238,7 @@ function CustomerDetail({ customer }: { customer: AdminCustomer }) {
 						? 'A pessoa não consegue mais entrar nem comprar. Pedidos e histórico continuam guardados.'
 						: 'Ao reativar, a pessoa volta a entrar com a mesma senha.'}
 				</span>
-				{asking ? (
+				{asking && !mobile ? (
 					<div className="flex animate-pop-in gap-2">
 						<button
 							type="button"
@@ -277,6 +281,39 @@ function CustomerDetail({ customer }: { customer: AdminCustomer }) {
 					</span>
 				) : null}
 			</div>
+			<BottomSheet
+				open={asking && mobile}
+				onOpenChange={setAsking}
+				title={`${active ? 'Desativar' : 'Reativar'} ${customer.name}?`}
+				description={
+					active
+						? 'A pessoa não consegue mais entrar nem comprar. Pedidos e histórico continuam guardados.'
+						: 'Ao reativar, a pessoa volta a entrar com a mesma senha.'
+				}
+			>
+				<button
+					type="button"
+					disabled={status.isPending}
+					onClick={confirm}
+					className={cn(
+						'h-[50px] rounded-xl text-[15px] font-medium text-white disabled:opacity-55',
+						active ? 'bg-clay' : 'bg-success',
+					)}
+				>
+					{status.isPending
+						? 'Salvando…'
+						: active
+							? 'Sim, desativar'
+							: 'Sim, reativar'}
+				</button>
+				<button
+					type="button"
+					onClick={() => setAsking(false)}
+					className="h-12 rounded-xl border bg-card text-[15px] font-medium"
+				>
+					Voltar
+				</button>
+			</BottomSheet>
 		</>
 	);
 }
