@@ -4,9 +4,11 @@ import { CheckIcon, WarningIcon } from '@phosphor-icons/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
 
+import { BottomSheet } from '@/components/bottom-sheet';
 import { Eyebrow } from '@/components/eyebrow';
 import { notify } from '@/features/account/components/account-toast';
 import { formatTimelineMoment } from '@/features/account/lib/account-format';
+import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { cn } from '@/lib/utils';
 
 import {
@@ -82,9 +84,11 @@ function FailedMessagesContent() {
 	}
 
 	return (
-		<div className="flex flex-col gap-4 px-5 py-7 min-[980px]:px-8">
-			<div className="flex flex-wrap items-end gap-4">
-				<div className="flex grow flex-col gap-1">
+		<div className="flex flex-col gap-3 px-4 py-3.5 min-[980px]:gap-4 min-[980px]:px-8 min-[980px]:py-7">
+			<div className="flex flex-wrap items-end gap-4 max-[979px]:order-2">
+				{' '}
+				<div className="flex grow flex-col gap-1 max-[979px]:sr-only">
+					{' '}
 					<Eyebrow className="tracking-[0.16em]">SISTEMA</Eyebrow>
 					<h1 className="text-[34px] font-light tracking-[-0.025em]">
 						Mensagens com falha
@@ -95,7 +99,7 @@ function FailedMessagesContent() {
 						type="button"
 						onClick={replayAll}
 						disabled={actions.replayAll.isPending}
-						className="h-10 rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-strong disabled:opacity-55"
+						className="h-[46px] w-full rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-strong disabled:opacity-55 min-[980px]:h-10 min-[980px]:w-auto"
 					>
 						{actions.replayAll.isPending
 							? 'Reprocessando…'
@@ -112,7 +116,7 @@ function FailedMessagesContent() {
 			<div
 				role="tablist"
 				aria-label="Status"
-				className="flex flex-wrap gap-1.5"
+				className="-mx-4 flex [scrollbar-width:none] gap-1.5 overflow-x-auto px-4 min-[980px]:mx-0 min-[980px]:flex-wrap min-[980px]:overflow-visible min-[980px]:px-0 [&::-webkit-scrollbar]:hidden"
 			>
 				{failureTabs.map((option) => {
 					const selected = option.id === tab.id;
@@ -124,7 +128,7 @@ function FailedMessagesContent() {
 							aria-selected={selected}
 							onClick={() => pickTab(option.id)}
 							className={cn(
-								'flex h-9 items-center gap-2 rounded-full px-3 text-[13px] font-medium transition-colors',
+								'flex h-9 shrink-0 items-center gap-2 rounded-full px-3 text-[13px] font-medium whitespace-nowrap transition-colors',
 								selected
 									? 'bg-foreground text-white'
 									: 'bg-card text-ink-soft hover:bg-surface-2',
@@ -160,7 +164,7 @@ function FailedMessagesContent() {
 				</div>
 			) : items.length === 0 ? (
 				pending ? (
-					<div className="flex animate-up flex-col items-center gap-3 rounded-[20px] border bg-card p-14 text-center">
+					<div className="flex animate-up flex-col items-center gap-3 rounded-[20px] border bg-card p-10 text-center min-[980px]:p-14">
 						<span className="flex size-16 animate-floaty items-center justify-center rounded-full bg-success-soft">
 							<CheckIcon size={30} weight="bold" className="text-success" />
 						</span>
@@ -205,6 +209,8 @@ function MessageCard({
 }) {
 	const details = useFailedMessageDetails(message.id, open);
 	const [asking, setAsking] = useState(false);
+	// Below 980 px the discard confirm is a bottom sheet (MobileAdminFalhas.dc.html).
+	const mobile = useMediaQuery('(max-width: 979px)') === true;
 	const [error, setError] = useState<string | null>(null);
 	const replaying =
 		(actions.replay.isPending && actions.replay.variables === message.id) ||
@@ -226,13 +232,16 @@ function MessageCard({
 		setError(null);
 		actions.discard.mutate(message.id, {
 			onSuccess: () => notify('Mensagem descartada'),
-			onError: (failure) => setError(failureErrorCopy(failure)),
+			onError: (failure) => {
+				setAsking(false);
+				setError(failureErrorCopy(failure));
+			},
 		});
 	}
 
 	return (
 		<article className="animate-up overflow-hidden rounded-2xl border bg-card">
-			<div className="flex flex-wrap items-center gap-4 px-5 py-4">
+			<div className="flex flex-wrap items-center gap-3 px-3.5 py-3.5 min-[980px]:gap-4 min-[980px]:px-5 min-[980px]:py-4">
 				<span className="flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-clay-soft">
 					<WarningIcon size={18} className="text-clay" />
 				</span>
@@ -252,7 +261,8 @@ function MessageCard({
 					<br />
 					{formatTimelineMoment(message.resolvedAt ?? message.lastFailedAt)}
 				</span>
-				<span className="flex items-center gap-2">
+				<span className="flex w-full items-center gap-2 min-[980px]:w-auto">
+					{' '}
 					<button
 						type="button"
 						onClick={onToggle}
@@ -313,7 +323,7 @@ function MessageCard({
 				</span>
 			</div>
 
-			{asking && pending && !replaying ? (
+			{asking && pending && !replaying && !mobile ? (
 				<div className="mx-5 mb-4 flex animate-pop-in flex-wrap items-center gap-2.5 rounded-xl bg-clay-soft px-3.5 py-3 text-[13px]">
 					<span className="grow">
 						Descartar esta mensagem? {consequenceOf(message.consumer)}
@@ -337,13 +347,16 @@ function MessageCard({
 			) : null}
 
 			{error ? (
-				<p role="alert" className="mx-5 mb-4 text-[13px] text-clay">
+				<p
+					role="alert"
+					className="mx-3.5 mb-4 text-[13px] text-clay min-[980px]:mx-5"
+				>
 					{error}
 				</p>
 			) : null}
 
 			{open ? (
-				<div className="grid animate-up grid-cols-1 gap-3 px-5 pb-[18px] min-[980px]:grid-cols-2">
+				<div className="grid animate-up grid-cols-1 gap-3 px-3.5 pb-[18px] min-[980px]:grid-cols-2 min-[980px]:px-5">
 					{details.isPending ? (
 						<div className="skeleton h-40 rounded-[10px] min-[980px]:col-span-2" />
 					) : details.isError ? (
@@ -367,6 +380,28 @@ function MessageCard({
 					)}
 				</div>
 			) : null}
+			<BottomSheet
+				open={asking && pending && mobile}
+				onOpenChange={setAsking}
+				title="Descartar esta mensagem?"
+				description={consequenceOf(message.consumer)}
+			>
+				<button
+					type="button"
+					onClick={discard}
+					disabled={discarding}
+					className="h-[50px] rounded-xl bg-clay text-[15px] font-medium text-white disabled:opacity-55"
+				>
+					{discarding ? 'Descartando…' : 'Descartar'}
+				</button>
+				<button
+					type="button"
+					onClick={() => setAsking(false)}
+					className="h-12 rounded-xl border bg-card text-[15px] font-medium"
+				>
+					Manter
+				</button>
+			</BottomSheet>
 		</article>
 	);
 }
