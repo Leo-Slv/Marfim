@@ -1,12 +1,18 @@
 import { ArrowLeftIcon, ArrowRightIcon } from '@phosphor-icons/react';
 import Link from 'next/link';
 
+import {
+	ActionBarLabel,
+	actionBarPrimary,
+	MobileActionBar,
+} from '@/components/mobile-action-bar';
 import type { CartView } from '@/features/cart/lib/cart-view';
 import { ProductArt } from '@/features/catalog/components/product-art';
 import {
 	formatCurrencyBrl,
 	formatCurrencyBrlCents,
 } from '@/features/catalog/lib/format-currency-brl';
+import { formatPieceCount } from '@/features/catalog/lib/format-piece-count';
 import { getProductVisual } from '@/features/catalog/lib/product-visuals';
 import { appRoutes } from '@/lib/routes/app-routes';
 
@@ -20,7 +26,10 @@ type CheckoutSummaryProps = {
 	blockedReason: string | null;
 };
 
-/** "Seu pedido" aside of the checkout steps. */
+/**
+ * "Seu pedido" aside of the checkout steps; below 980 px a totals card,
+ * with "Continuar" in the action bar (MobileCheckout.dc.html).
+ */
 function CheckoutSummary({
 	view,
 	continueHref,
@@ -28,8 +37,63 @@ function CheckoutSummary({
 	blockedLabel,
 	blockedReason,
 }: CheckoutSummaryProps) {
+	const total = formatCurrencyBrlCents(view.total);
+
 	return (
-		<aside className="flex animate-up flex-col gap-[18px] rounded-[20px] border bg-card p-6 [animation-delay:.12s] min-[980px]:sticky min-[980px]:top-6">
+		<>
+			<TotalsCard view={view} />
+			<MobileActionBar>
+				{blockedReason && !continueHref ? (
+					<span role="status" className="text-xs text-ink-soft">
+						{blockedReason}
+					</span>
+				) : null}
+				{continueHref ? (
+					<Link href={continueHref} className={actionBarPrimary}>
+						<ActionBarLabel label={continueLabel} amount={total} />
+					</Link>
+				) : (
+					<button type="button" disabled className={actionBarPrimary}>
+						<ActionBarLabel label={blockedLabel} amount={total} />
+					</button>
+				)}
+			</MobileActionBar>
+			<FullSummary
+				view={view}
+				continueHref={continueHref}
+				continueLabel={continueLabel}
+				blockedLabel={blockedLabel}
+				blockedReason={blockedReason}
+			/>
+		</>
+	);
+}
+
+/** Below 980 px: "N peças · Frete" (MobileCheckout.dc.html). */
+function TotalsCard({ view }: { view: CartView }) {
+	return (
+		<dl className="flex flex-col gap-2 rounded-2xl border bg-card px-4 py-3.5 text-sm min-[980px]:hidden">
+			<div className="flex justify-between">
+				<dt className="text-ink-soft">{formatPieceCount(view.pieceCount)}</dt>
+				<dd className="font-mono">{formatCurrencyBrlCents(view.total)}</dd>
+			</div>
+			<div className="flex items-center justify-between">
+				<dt className="text-ink-soft">Frete</dt>
+				<dd className="font-mono text-[10px] text-clay">EM BREVE</dd>
+			</div>
+		</dl>
+	);
+}
+
+function FullSummary({
+	view,
+	continueHref,
+	continueLabel,
+	blockedLabel,
+	blockedReason,
+}: CheckoutSummaryProps) {
+	return (
+		<aside className="hidden animate-up flex-col gap-[18px] rounded-[20px] border bg-card p-6 [animation-delay:.12s] min-[980px]:sticky min-[980px]:top-6 min-[980px]:flex">
 			<div className="flex items-baseline justify-between">
 				<span className="text-xl font-medium">Seu pedido</span>
 				<Link
@@ -123,4 +187,4 @@ function CheckoutSummary({
 	);
 }
 
-export { CheckoutSummary };
+export { CheckoutSummary, TotalsCard };

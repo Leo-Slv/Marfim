@@ -4,6 +4,10 @@ import { CreditCardIcon, WarningCircleIcon } from '@phosphor-icons/react';
 import Link from 'next/link';
 
 import { ComingSoonBadge } from '@/components/coming-soon-badge';
+import {
+	ActionBarLabel,
+	actionBarPrimary,
+} from '@/components/mobile-action-bar';
 import type { CartView } from '@/features/cart/lib/cart-view';
 import { ProductArt } from '@/features/catalog/components/product-art';
 import {
@@ -200,7 +204,7 @@ function OrderReviewAside({
 	children: React.ReactNode;
 }) {
 	return (
-		<aside className="flex animate-up flex-col gap-[18px] rounded-[20px] border bg-card p-6 [animation-delay:.16s] min-[980px]:sticky min-[980px]:top-6">
+		<aside className="hidden animate-up flex-col gap-[18px] rounded-[20px] border bg-card p-6 [animation-delay:.16s] min-[980px]:sticky min-[980px]:top-6 min-[980px]:flex">
 			<span className="text-xl font-medium">Revisão do pedido</span>
 			<ul className="flex flex-col gap-3">
 				{view.lines.map((line) => {
@@ -256,18 +260,65 @@ function OrderReviewAside({
 	);
 }
 
-/** "Ir para o pagamento" with its spinner/lock states. */
+/**
+ * "Ir para o pagamento" with its spinner/lock states; `bar` is its mobile
+ * action-bar form (label + total).
+ */
 function PlaceOrderButton({
 	onClick,
 	placing,
 	lockSeconds,
 	disabled,
+	total,
+	bar = false,
 }: {
 	onClick: () => void;
 	placing: boolean;
 	lockSeconds: number;
 	disabled: boolean;
+	total: string;
+	bar?: boolean;
 }) {
+	const label =
+		lockSeconds > 0
+			? `Aguarde ${lockSeconds}s`
+			: placing
+				? 'Criando pedido…'
+				: 'Ir para o pagamento';
+
+	if (bar) {
+		return (
+			<>
+				<p className="text-[11px] leading-snug text-muted-foreground">
+					Ao continuar, você concorda com os{' '}
+					<Link
+						href={appRoutes.content.page('termos')}
+						className="text-primary"
+					>
+						termos de uso
+					</Link>
+					.
+				</p>
+				<button
+					type="button"
+					onClick={onClick}
+					disabled={disabled || placing || lockSeconds > 0}
+					className={actionBarPrimary}
+				>
+					<ActionBarLabel
+						label={
+							<>
+								{placing ? <Spinner /> : null}
+								{label}
+							</>
+						}
+						amount={total}
+					/>
+				</button>
+			</>
+		);
+	}
+
 	return (
 		<>
 			<button
@@ -277,11 +328,7 @@ function PlaceOrderButton({
 				className="flex h-[52px] items-center justify-center gap-2.5 rounded-xl bg-primary text-base font-medium text-primary-foreground transition-[background-color,transform] duration-200 enabled:hover:-translate-y-px enabled:hover:bg-primary-strong disabled:cursor-not-allowed disabled:opacity-55"
 			>
 				{placing ? <Spinner /> : null}
-				{lockSeconds > 0
-					? `Aguarde ${lockSeconds}s`
-					: placing
-						? 'Criando pedido…'
-						: 'Ir para o pagamento'}
+				{label}
 			</button>
 			<p className="text-center text-xs leading-normal text-muted-foreground">
 				Ao continuar, você concorda com os{' '}

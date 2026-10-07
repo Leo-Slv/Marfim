@@ -6,6 +6,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 
 import { CheckoutSteps } from '@/components/checkout-steps';
+import { MobileActionBar } from '@/components/mobile-action-bar';
 import { StoreFooter } from '@/components/store-footer';
 import { StoreHeader } from '@/components/store-header';
 import { useRequestEmailConfirmation } from '@/features/auth/hooks/auth.queries';
@@ -47,6 +48,7 @@ import { paymentStage } from '../lib/order-stage';
 import { checkoutAlert, type CheckoutAlert } from '../lib/payment-messages';
 import type { CheckoutRequest, Order } from '../model/order';
 import { CardPaymentForm } from './card-payment-form';
+import { TotalsCard } from './checkout-summary';
 import {
 	OrderConfirmed,
 	PaymentFailed,
@@ -74,7 +76,7 @@ function PaymentPage() {
 					<PaymentContent />
 				</Suspense>
 			</main>
-			<StoreFooter />
+			<StoreFooter hideOnMobile />
 		</div>
 	);
 }
@@ -299,22 +301,29 @@ function PaymentContent() {
 			? appRoutes.checkout.deliveryWith(shippingId, billingId)
 			: appRoutes.checkout.delivery;
 	const pixAvailable = methods.data?.methods.includes('Pix') ?? false;
+	const placeOrderProps = {
+		onClick: handlePlaceOrder,
+		placing: placeOrder.isPending,
+		lockSeconds: countdown.secondsLeft,
+		disabled: lines.length === 0 || !shipping || !billing || quote.isOutdated,
+		total: formatCurrencyBrlCents(view.total),
+	};
 
 	return (
 		<>
-			<section className="pt-8 pb-2">
-				<div className="mx-auto flex max-w-[1280px] flex-col gap-6 px-5 sm:px-10">
+			<section className="pt-4 min-[980px]:pt-8 min-[980px]:pb-2">
+				<div className="mx-auto flex max-w-[1280px] flex-col gap-4 px-4 min-[980px]:gap-6 sm:px-10">
 					<CheckoutSteps current="payment" hrefs={{ delivery: deliveryHref }} />
 					<h1
 						key={stage}
-						className="animate-up text-[36px] leading-none font-light tracking-[-0.03em] [animation-duration:.6s] sm:text-[44px]"
+						className="animate-up text-[30px] leading-none font-light tracking-[-0.03em] [animation-duration:.6s] min-[980px]:text-[44px]"
 					>
 						{stage === 'card' ? 'Dados do cartão' : 'Revise e pague'}
 					</h1>
 				</div>
 			</section>
-			<section className="pt-6 pb-16">
-				<div className="mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-x-6 gap-y-7 px-5 min-[980px]:grid-cols-12 sm:px-10">
+			<section className="pt-4 pb-6 min-[980px]:pt-6 min-[980px]:pb-16">
+				<div className="mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-x-6 gap-y-4 px-4 min-[980px]:grid-cols-12 min-[980px]:gap-y-7 sm:px-10">
 					<div className="flex flex-col gap-4 min-[980px]:col-span-8">
 						{stage === 'review' && alertState ? (
 							<PaymentAlert
@@ -359,26 +368,24 @@ function PaymentContent() {
 							/>
 						)}
 					</div>
-					<div className="min-[980px]:col-span-4 min-[980px]:col-start-9">
+					<div className="flex flex-col gap-4 min-[980px]:col-span-4 min-[980px]:col-start-9">
+						<TotalsCard view={view} />
 						<OrderReviewAside
 							view={view}
 							changedIds={new Set(changedLines.map((line) => line.productId))}
 						>
 							{stage === 'review' ? (
-								<PlaceOrderButton
-									onClick={handlePlaceOrder}
-									placing={placeOrder.isPending}
-									lockSeconds={countdown.secondsLeft}
-									disabled={
-										lines.length === 0 ||
-										!shipping ||
-										!billing ||
-										quote.isOutdated
-									}
-								/>
+								<PlaceOrderButton {...placeOrderProps} />
 							) : null}
 						</OrderReviewAside>
 					</div>
+					{/* Below 980 px the button lives in the action bar; the card
+					    step's own submit row becomes that bar. */}
+					{stage === 'review' ? (
+						<MobileActionBar>
+							<PlaceOrderButton {...placeOrderProps} bar />
+						</MobileActionBar>
+					) : null}
 				</div>
 			</section>
 		</>

@@ -169,31 +169,55 @@ function CardForm({
 					}}
 				/>
 			</div>
-			<div className="flex flex-wrap items-center gap-2.5">
+			{/* Below 980 px the submit row is the fixed action bar
+			    (MobileCheckout.dc.html); the spacer lets the page scroll past it. */}
+			<div aria-hidden="true" className="h-[60px] min-[980px]:hidden" />
+			<div className="fixed inset-x-0 bottom-0 z-30 border-t bg-card px-4 pt-2.5 pb-[max(14px,env(safe-area-inset-bottom))] min-[980px]:static min-[980px]:z-auto min-[980px]:flex min-[980px]:flex-wrap min-[980px]:items-center min-[980px]:gap-2.5 min-[980px]:border-0 min-[980px]:bg-transparent min-[980px]:p-0">
 				<button
 					type="submit"
 					disabled={!stripe || !elements || !ready || submitting}
-					className="flex h-[52px] items-center gap-2.5 rounded-xl bg-primary px-6 text-base font-medium text-primary-foreground transition-[background-color,transform] duration-200 enabled:hover:-translate-y-px enabled:hover:bg-primary-strong disabled:cursor-not-allowed disabled:opacity-55"
+					className="flex h-[52px] w-full items-center justify-between gap-2.5 rounded-xl bg-primary px-[18px] text-base font-medium text-primary-foreground transition-[background-color,transform] duration-200 enabled:hover:-translate-y-px enabled:hover:bg-primary-strong disabled:cursor-not-allowed disabled:opacity-55 min-[980px]:w-auto min-[980px]:justify-center min-[980px]:px-6"
 				>
-					{submitting ? <Spinner /> : null}
-					{submitting
-						? 'Confirmando…'
-						: `Pagar ${formatCurrencyBrlCents(total)}`}
+					<span className="flex items-center gap-2.5">
+						{submitting ? <Spinner /> : null}
+						{submitting ? 'Confirmando…' : 'Pagar'}
+					</span>
+					{submitting ? null : (
+						<span className="font-mono text-[15px] min-[980px]:font-sans min-[980px]:text-base">
+							{formatCurrencyBrlCents(total)}
+						</span>
+					)}
 				</button>
-				<button
-					type="button"
-					onClick={onBack}
-					disabled={submitting}
-					className="min-h-8 text-sm font-medium text-primary hover:text-primary-strong disabled:opacity-55"
-				>
-					Voltar
-				</button>
+				<BackButton onBack={onBack} disabled={submitting} desktop />
 			</div>
+			<BackButton onBack={onBack} disabled={submitting} />
 			<p className="text-xs leading-normal text-muted-foreground">
 				Os dados do cartão vão direto para o processador de pagamento. A Marfim
 				não armazena o número do cartão.
 			</p>
 		</form>
+	);
+}
+
+/** "Voltar" next to Pagar on desktop, under the card form on mobile. */
+function BackButton({
+	onBack,
+	disabled,
+	desktop = false,
+}: {
+	onBack: () => void;
+	disabled: boolean;
+	desktop?: boolean;
+}) {
+	return (
+		<button
+			type="button"
+			onClick={onBack}
+			disabled={disabled}
+			className={`min-h-8 self-start text-sm font-medium text-primary hover:text-primary-strong disabled:opacity-55 ${desktop ? 'hidden min-[980px]:block' : 'min-[980px]:hidden'}`}
+		>
+			Voltar
+		</button>
 	);
 }
 

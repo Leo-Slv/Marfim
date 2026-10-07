@@ -39,12 +39,15 @@ function DeliveryPage() {
 				mobileBack={{ href: appRoutes.cart.index, title: 'Finalizar compra' }}
 			/>
 			<main className="flex grow flex-col">
-				<section className="pt-8 pb-2">
-					<div className="mx-auto flex max-w-[1280px] flex-col gap-6 px-5 sm:px-10">
+				<section className="pt-4 pb-0 min-[980px]:pt-8 min-[980px]:pb-2">
+					<div className="mx-auto flex max-w-[1280px] flex-col gap-4 px-4 min-[980px]:gap-6 sm:px-10">
 						<CheckoutSteps current="delivery" />
-						<h1 className="animate-up text-[36px] leading-none font-light tracking-[-0.03em] [animation-duration:.6s] sm:text-[44px]">
+						<h1 className="animate-up text-[30px] leading-none font-light tracking-[-0.03em] [animation-duration:.6s] min-[980px]:text-[44px]">
 							Para onde{' '}
-							<span className="font-medium text-primary">vamos enviar?</span>
+							<span className="min-[980px]:font-medium min-[980px]:text-primary">
+								<span className="hidden min-[980px]:inline">vamos </span>
+								enviar?
+							</span>
 						</h1>
 					</div>
 				</section>
@@ -53,7 +56,7 @@ function DeliveryPage() {
 					<DeliveryContent />
 				</Suspense>
 			</main>
-			<StoreFooter />
+			<StoreFooter hideOnMobile />
 		</div>
 	);
 }
@@ -134,8 +137,8 @@ function DeliveryContent() {
 	}
 
 	return (
-		<section className="pt-6 pb-16">
-			<div className="mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-x-6 gap-y-7 px-5 min-[980px]:grid-cols-12 sm:px-10">
+		<section className="pt-4 pb-6 min-[980px]:pt-6 min-[980px]:pb-16">
+			<div className="mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-x-6 gap-y-4 px-4 min-[980px]:grid-cols-12 min-[980px]:gap-y-7 sm:px-10">
 				<div className="flex flex-col gap-4 min-[980px]:col-span-8">
 					<CheckoutSection
 						letter="A"
