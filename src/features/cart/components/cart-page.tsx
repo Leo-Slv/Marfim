@@ -74,10 +74,11 @@ function CartPage() {
 				mobileBack={{ href: appRoutes.system.home, title: 'Sacola' }}
 			/>
 			<main className="flex grow flex-col">
-				<section className="pt-8 pb-2">
-					<div className="mx-auto flex max-w-[1280px] flex-col gap-6 px-5 sm:px-10">
+				<section className="pt-4 min-[980px]:pt-8 min-[980px]:pb-2">
+					<div className="mx-auto flex max-w-[1280px] flex-col gap-6 px-4 sm:px-10">
 						<CheckoutSteps current="cart" />
-						<div className="flex flex-wrap items-baseline gap-4">
+						{/* The mobile top bar already says "Sacola". */}
+						<div className="sr-only flex-wrap items-baseline gap-4 min-[980px]:not-sr-only min-[980px]:flex">
 							<h1 className="animate-up text-[44px] leading-none font-light tracking-[-0.03em] [animation-duration:.7s]">
 								Sua <span className="font-medium text-primary">sacola</span>
 							</h1>
@@ -98,10 +99,12 @@ function CartPage() {
 					</div>
 				</section>
 
-				<section className="pt-4 pb-12">
-					<div className="mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-x-6 gap-y-7 px-5 min-[980px]:grid-cols-12 sm:px-10">
-						<div className="flex flex-col gap-4 min-[980px]:col-span-8">
-							<FreeShippingCard subtotal={view.total} />
+				<section className="pt-3 pb-4 min-[980px]:pt-4 min-[980px]:pb-12">
+					<div className="mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-x-6 gap-y-3 px-4 min-[980px]:grid-cols-12 min-[980px]:gap-y-7 sm:px-10">
+						<div className="flex flex-col gap-3 min-[980px]:col-span-8 min-[980px]:gap-4">
+							<div className="hidden min-[980px]:block">
+								<FreeShippingCard subtotal={view.total} />
+							</div>
 							{!hydrated ? (
 								<div
 									aria-busy="true"
@@ -112,7 +115,7 @@ function CartPage() {
 								<CartEmptyState />
 							) : (
 								<>
-									<div className="animate-up rounded-[20px] border bg-card px-5 [animation-delay:.12s]">
+									<div className="flex animate-up flex-col gap-3 [animation-delay:.12s] min-[980px]:block min-[980px]:rounded-[20px] min-[980px]:border min-[980px]:bg-card min-[980px]:px-5">
 										{view.lines.map((line) => (
 											<CartLineItem
 												key={line.productId}
@@ -134,7 +137,9 @@ function CartPage() {
 											/>
 										))}
 									</div>
-									<GiftWrapOption />
+									<div className="hidden min-[980px]:block">
+										<GiftWrapOption />
+									</div>
 								</>
 							)}
 						</div>
@@ -157,7 +162,7 @@ function CartPage() {
 					/>
 				) : null}
 			</main>
-			<StoreFooter />
+			<StoreFooter hideOnMobile />
 		</div>
 	);
 }

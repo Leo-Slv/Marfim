@@ -1,4 +1,4 @@
-import { ProhibitIcon } from '@phosphor-icons/react';
+import { ProhibitIcon, XIcon } from '@phosphor-icons/react';
 
 import type { UnavailableLine } from '../lib/cart-view';
 import { unavailableCopy } from '../lib/line-issue-copy';
@@ -14,29 +14,34 @@ function CartGhostLine({
 	const copy = unavailableCopy(line.issue);
 
 	return (
-		<div className="flex animate-up flex-wrap items-center gap-5 border-t py-5 first:border-t-0 sm:flex-nowrap">
-			<div className="flex size-28 shrink-0 items-center justify-center rounded-xl bg-surface opacity-45">
+		// Below 980 px a dashed card with an × (MobileSacola.dc.html).
+		<div className="flex animate-up items-center gap-3 rounded-2xl border border-dashed bg-card p-3 min-[980px]:flex-wrap min-[980px]:gap-5 min-[980px]:rounded-none min-[980px]:border-0 min-[980px]:border-t min-[980px]:border-solid min-[980px]:bg-transparent min-[980px]:px-0 min-[980px]:py-5 min-[980px]:first:border-t-0">
+			<div className="flex size-[60px] shrink-0 items-center justify-center rounded-xl bg-surface opacity-45 min-[980px]:size-28">
 				<ProhibitIcon
 					size={40}
 					weight="light"
 					className="text-muted-foreground"
 				/>
 			</div>
-			<div className="flex grow basis-48 flex-col gap-1.5">
-				<div className="font-mono text-[11px] tracking-[0.12em] text-muted-foreground">
+			<div className="flex grow flex-col gap-0.5 min-[980px]:basis-48 min-[980px]:gap-1.5">
+				<div className="font-mono text-[10px] tracking-[0.12em] text-clay min-[980px]:text-[11px] min-[980px]:text-muted-foreground">
 					{copy.code}
 				</div>
-				<div className="text-lg font-medium text-muted-foreground line-through">
+				<div className="text-[15px] font-medium text-muted-foreground line-through min-[980px]:text-lg">
 					{line.name}
 				</div>
-				<div className="text-[13px] text-ink-soft">{copy.text}</div>
+				<div className="text-xs text-ink-soft min-[980px]:text-[13px]">
+					{copy.text}
+				</div>
 			</div>
 			<button
 				type="button"
 				onClick={onRemove}
-				className="h-10 rounded-[10px] border bg-card px-3.5 text-[13px] font-medium text-foreground transition-colors hover:bg-surface-2"
+				aria-label={`Remover ${line.name} da sacola`}
+				className="flex size-11 items-center justify-center rounded-xl border bg-card text-foreground transition-colors hover:bg-surface-2 min-[980px]:h-10 min-[980px]:w-auto min-[980px]:rounded-[10px] min-[980px]:px-3.5 min-[980px]:text-[13px] min-[980px]:font-medium"
 			>
-				Remover da sacola
+				<XIcon size={16} className="min-[980px]:hidden" />
+				<span className="hidden min-[980px]:inline">Remover da sacola</span>
 			</button>
 		</div>
 	);

@@ -2,6 +2,11 @@ import { ArrowRightIcon, LockSimpleIcon } from '@phosphor-icons/react';
 import Link from 'next/link';
 
 import { ComingSoonBadge } from '@/components/coming-soon-badge';
+import {
+	ActionBarLabel,
+	actionBarPrimary,
+	MobileActionBar,
+} from '@/components/mobile-action-bar';
 import { formatCurrencyBrlCents } from '@/features/catalog/lib/format-currency-brl';
 import { formatPieceCount } from '@/features/catalog/lib/format-piece-count';
 import { appRoutes } from '@/lib/routes/app-routes';
@@ -15,10 +20,83 @@ type CartSummaryProps = {
 	onRetry: (() => void) | null;
 };
 
-/** "Resumo do pedido" aside. */
+/**
+ * "Resumo do pedido" aside; below 980 px a totals card, the EM BREVE note
+ * and "Continuar · total" in the action bar (MobileSacola.dc.html).
+ */
 function CartSummary({ view, gate, onRetry }: CartSummaryProps) {
+	const total = formatCurrencyBrlCents(view.total);
+
 	return (
-		<aside className="flex animate-up flex-col gap-5 rounded-[20px] border bg-card p-6 [animation-delay:.12s] min-[980px]:sticky min-[980px]:top-6">
+		<>
+			<div className="flex flex-col gap-3 min-[980px]:hidden">
+				<dl className="flex animate-up flex-col gap-2.5 rounded-2xl border bg-card p-4 text-sm">
+					<SummaryRow
+						label={`Subtotal · ${formatPieceCount(view.pieceCount)}`}
+						value={formatCurrencyBrlCents(view.listSubtotal)}
+					/>
+					{view.savings > 0 ? (
+						<SummaryRow
+							label="Promoções"
+							value={`− ${formatCurrencyBrlCents(view.savings)}`}
+							valueClassName="text-success"
+						/>
+					) : null}
+					<div className="flex items-center justify-between">
+						<dt className="text-ink-soft">Frete</dt>
+						<dd className="font-mono text-[10px] text-clay">EM BREVE</dd>
+					</div>
+					<div className="flex items-baseline justify-between border-t pt-2.5">
+						<dt className="text-[15px] font-medium">Total</dt>
+						<dd
+							key={view.total}
+							className="animate-fade-in text-[28px] font-light"
+						>
+							{total}
+						</dd>
+					</div>
+				</dl>
+				<div className="flex flex-wrap items-center gap-2 rounded-[14px] border border-dashed px-3.5 py-3 text-[13px] leading-normal text-muted-foreground">
+					Frete por CEP, cupom, embrulho para presente e Pix com desconto
+					<ComingSoonBadge />
+				</div>
+			</div>
+			<MobileActionBar>
+				{!gate.canCheckout && gate.reason ? (
+					<span
+						role="status"
+						className="flex flex-wrap items-center gap-x-2 text-xs text-ink-soft"
+					>
+						{gate.reason}
+						{onRetry ? (
+							<button
+								type="button"
+								onClick={onRetry}
+								className="font-medium text-primary underline underline-offset-3"
+							>
+								Tentar de novo
+							</button>
+						) : null}
+					</span>
+				) : null}
+				{gate.canCheckout ? (
+					<Link href={appRoutes.checkout.delivery} className={actionBarPrimary}>
+						<ActionBarLabel label="Continuar" amount={total} />
+					</Link>
+				) : (
+					<button type="button" disabled className={actionBarPrimary}>
+						<ActionBarLabel label="Continuar" amount={total} />
+					</button>
+				)}
+			</MobileActionBar>
+			<FullSummary view={view} gate={gate} onRetry={onRetry} />
+		</>
+	);
+}
+
+function FullSummary({ view, gate, onRetry }: CartSummaryProps) {
+	return (
+		<aside className="hidden animate-up flex-col gap-5 rounded-[20px] border bg-card p-6 [animation-delay:.12s] min-[980px]:sticky min-[980px]:top-6 min-[980px]:flex">
 			<div className="text-xl font-medium tracking-[-0.01em]">
 				Resumo do pedido
 			</div>
