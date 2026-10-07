@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import { StoreFooter } from '@/components/store-footer';
 import { StoreHeader } from '@/components/store-header';
 import { ProductArt } from '@/features/catalog/components/product-art';
+import { appRoutes } from '@/lib/routes/app-routes';
 
 const benefits = [
 	'Acompanhe o pedido em tempo real',
@@ -19,7 +20,7 @@ const benefits = [
 function AuthLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<div className="flex min-h-screen min-w-[360px] flex-col overflow-hidden bg-background">
-			<StoreHeader />
+			<StoreHeader mobileBack={{ href: appRoutes.system.home }} />
 			<main className="grow pt-12 pb-[72px]">
 				<div className="mx-auto grid max-w-[1280px] grid-cols-1 items-stretch gap-x-8 px-5 min-[980px]:grid-cols-12 sm:px-10">
 					<AuthSidePanel />

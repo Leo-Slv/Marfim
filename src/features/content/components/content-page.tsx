@@ -1,5 +1,6 @@
 import { StoreFooter } from '@/components/store-footer';
 import { StoreHeader } from '@/components/store-header';
+import { appRoutes } from '@/lib/routes/app-routes';
 
 import { sectionsPages } from '../lib/content-copy';
 import type { ContentSlug } from '../model/content';
@@ -18,7 +19,9 @@ import { SectionsPageBody } from './sections-page';
 function ContentPage({ slug }: { slug: ContentSlug }) {
 	return (
 		<div className="flex min-h-screen min-w-[360px] flex-col overflow-hidden bg-background">
-			<StoreHeader />
+			<StoreHeader
+				mobileBack={{ href: appRoutes.system.home, title: 'Ajuda' }}
+			/>
 			<ContentChipNav current={slug} />
 			<main className="grow px-4 pt-[22px] pb-6 min-[980px]:px-10 min-[980px]:pt-10 min-[980px]:pb-[72px]">
 				<div className="mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-x-8 min-[980px]:grid-cols-12">

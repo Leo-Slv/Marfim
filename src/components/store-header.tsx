@@ -18,14 +18,19 @@ import { useIsHydrated } from '@/lib/hooks/use-is-hydrated';
 import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
 
+import { MobileTopBar, type MobileBack } from './mobile-top-bar';
+
 const promises = [
 	'TROCA FÁCIL EM 30 DIAS',
 	'PEÇAS FEITAS À MÃO POR QUATRO ATELIÊS',
 	'COLEÇÃO OUTONO 2026',
 ];
 
-/** Storefront header from Docs/design/mockups/Header.dc.html. */
-function StoreHeader() {
+/**
+ * Storefront header from Docs/design/mockups/Header.dc.html; below 980 px,
+ * the mobile bar of MobileTopo.dc.html (`mobileBack` = its Voltar variant).
+ */
+function StoreHeader({ mobileBack }: { mobileBack?: MobileBack } = {}) {
 	const { count } = useCart();
 	const pathname = usePathname();
 	// The bag stays highlighted through the checkout steps (Entrega.dc.html).
@@ -39,10 +44,24 @@ function StoreHeader() {
 		session?.role === 'Customer' &&
 		!session.emailConfirmed &&
 		pathname !== appRoutes.auth.confirmEmail;
+	const accountHref = session
+		? appRoutes.account.index
+		: pathname === appRoutes.system.home
+			? appRoutes.auth.login
+			: appRoutes.auth.loginThen(pathname);
 
 	return (
 		<div className="w-full bg-background">
-			<div className="flex h-9 items-center justify-center gap-7 overflow-hidden bg-primary font-mono text-[11px] tracking-[0.08em] whitespace-nowrap text-primary-foreground">
+			<MobileTopBar
+				back={mobileBack}
+				count={count}
+				onBag={onBag}
+				account={{
+					label: session ? 'Minha conta' : 'Entrar ou criar conta',
+					href: accountHref,
+				}}
+			/>
+			<div className="hidden h-9 items-center justify-center gap-7 overflow-hidden bg-primary font-mono text-[11px] tracking-[0.08em] whitespace-nowrap text-primary-foreground min-[980px]:flex">
 				{promises.map((promise, index) => (
 					<span key={promise} className="contents">
 						{index > 0 ? <span aria-hidden="true">·</span> : null}
@@ -52,7 +71,7 @@ function StoreHeader() {
 					</span>
 				))}
 			</div>
-			<header className="border-b">
+			<header className="hidden border-b min-[980px]:block">
 				<div className="mx-auto flex h-[72px] max-w-[1280px] items-center gap-10 px-5 sm:px-10">
 					<Link
 						href={appRoutes.system.home}
@@ -90,13 +109,7 @@ function StoreHeader() {
 					</Link>
 					<div className="flex gap-1.5">
 						<Link
-							href={
-								session
-									? appRoutes.account.index
-									: pathname === appRoutes.system.home
-										? appRoutes.auth.login
-										: appRoutes.auth.loginThen(pathname)
-							}
+							href={accountHref}
 							aria-label={accountLabel}
 							className="flex h-11 min-w-11 items-center justify-center gap-2 rounded-xl px-2.5 text-sm text-foreground transition-colors hover:bg-surface-2"
 						>

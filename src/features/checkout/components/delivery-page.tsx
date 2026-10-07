@@ -35,7 +35,9 @@ const CATALOG_PAGE_SIZE = 100;
 function DeliveryPage() {
 	return (
 		<div className="flex min-h-screen min-w-[360px] flex-col overflow-hidden bg-background">
-			<StoreHeader />
+			<StoreHeader
+				mobileBack={{ href: appRoutes.cart.index, title: 'Finalizar compra' }}
+			/>
 			<main className="flex grow flex-col">
 				<section className="pt-8 pb-2">
 					<div className="mx-auto flex max-w-[1280px] flex-col gap-6 px-5 sm:px-10">

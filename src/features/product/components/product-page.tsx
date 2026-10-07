@@ -44,11 +44,25 @@ import { ProductRecommendations } from './product-recommendations';
 /** Produto (Produto.dc.html). */
 function ProductPage({ slug }: { slug: string }) {
 	const product = useProductBySlug(slug);
+	const categories = useCategories();
 	const notFound = isApiError(product.error) && product.error.status === 404;
+	const category = product.data
+		? (categories.data?.find((item) => item.id === product.data.categoryId) ??
+			null)
+		: null;
 
 	return (
 		<div className="flex min-h-screen min-w-[360px] flex-col overflow-hidden bg-background">
-			<StoreHeader />
+			<StoreHeader
+				mobileBack={
+					category
+						? {
+								href: appRoutes.products.category(category.slug),
+								title: category.name,
+							}
+						: { href: appRoutes.products.list }
+				}
+			/>
 			<main className="flex grow flex-col">
 				{product.isPending ? (
 					<ProductSkeleton />
