@@ -57,7 +57,7 @@ function ProductsContent() {
 		<div className="flex min-h-full grow">
 			<section
 				className={cn(
-					'w-full shrink-0 flex-col px-5 py-7 min-[980px]:pr-5 min-[980px]:pl-8 min-[1280px]:w-[400px]',
+					'w-full shrink-0 flex-col px-4 py-3 min-[980px]:py-7 min-[980px]:pr-5 min-[980px]:pl-8 min-[1280px]:w-[400px]',
 					editing ? 'hidden min-[1280px]:flex' : 'flex',
 				)}
 			>
@@ -74,7 +74,7 @@ function ProductsContent() {
 			</section>
 			<section
 				className={cn(
-					'min-w-0 grow flex-col px-5 py-7 min-[1280px]:pr-8 min-[1280px]:pl-3',
+					'min-w-0 grow flex-col px-4 py-3 min-[980px]:px-5 min-[980px]:py-7 min-[1280px]:pr-8 min-[1280px]:pl-3',
 					editing ? 'flex' : 'hidden min-[1280px]:flex',
 				)}
 			>

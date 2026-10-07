@@ -51,7 +51,7 @@ function ProductsList({
 
 	return (
 		<div className="flex flex-col gap-3.5">
-			<div className="flex items-end gap-3">
+			<div className="hidden items-end gap-3 min-[980px]:flex">
 				<div className="flex grow flex-col gap-1">
 					<Eyebrow className="tracking-[0.16em]">CATÁLOGO</Eyebrow>
 					<h1 className="text-[34px] font-light tracking-[-0.025em]">
@@ -67,18 +67,29 @@ function ProductsList({
 					+ Novo
 				</button>
 			</div>
-			<label className="flex h-10 items-center gap-2 rounded-xl border bg-card px-3 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary">
-				<MagnifyingGlassIcon size={16} />
-				<input
-					type="search"
-					aria-label="Buscar produto"
-					placeholder="Buscar por nome ou SKU"
-					value={term}
-					onChange={(event) => setTerm(event.target.value)}
-					className="w-full bg-transparent text-sm text-foreground outline-none"
-				/>
-			</label>
-			<div className="overflow-hidden rounded-2xl border bg-card">
+			<h1 className="sr-only min-[980px]:hidden">Produtos</h1>
+			<div className="flex gap-2">
+				<label className="flex h-[46px] min-w-0 grow items-center gap-2 rounded-xl border bg-card px-3 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary min-[980px]:h-10">
+					<MagnifyingGlassIcon size={16} />
+					<input
+						type="search"
+						aria-label="Buscar produto"
+						placeholder="Buscar por nome ou SKU"
+						value={term}
+						onChange={(event) => setTerm(event.target.value)}
+						className="w-full bg-transparent text-base text-foreground outline-none min-[980px]:text-sm"
+					/>
+				</label>
+				<button
+					type="button"
+					onClick={onNew}
+					aria-label="Novo produto"
+					className="h-[46px] shrink-0 rounded-xl bg-primary px-3.5 text-sm font-medium text-primary-foreground min-[980px]:hidden"
+				>
+					+ Novo
+				</button>
+			</div>
+			<div className="min-[980px]:overflow-hidden min-[980px]:rounded-2xl min-[980px]:border min-[980px]:bg-card">
 				{products.isError && !products.data ? (
 					<div
 						role="alert"
@@ -108,6 +119,7 @@ function ProductsList({
 				) : (
 					<div
 						className={cn(
+							'flex flex-col gap-2 min-[980px]:block',
 							products.isPlaceholderData && 'opacity-60 transition-opacity',
 						)}
 					>
@@ -121,8 +133,8 @@ function ProductsList({
 									onClick={() => onOpen(product.id)}
 									aria-pressed={selected}
 									className={cn(
-										'flex w-full items-center gap-3 border-l-[3px] px-3.5 py-2.5 text-left transition-colors',
-										index > 0 && 'border-t',
+										'flex min-h-[68px] w-full items-center gap-3 rounded-2xl border bg-card px-3 py-2.5 text-left transition-colors min-[980px]:min-h-0 min-[980px]:rounded-none min-[980px]:border-0 min-[980px]:border-l-[3px] min-[980px]:bg-transparent min-[980px]:px-3.5',
+										index > 0 && 'min-[980px]:border-t',
 										selected
 											? 'border-l-primary bg-primary-soft'
 											: 'border-l-transparent hover:bg-[#FAFAF8]',

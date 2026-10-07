@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { BottomSheet } from '@/components/bottom-sheet';
 import { ArrowLeftIcon, XIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
@@ -9,6 +10,7 @@ import { notify } from '@/features/account/components/account-toast';
 import { useCategories } from '@/features/catalog/hooks/catalog.queries';
 import { formatCurrencyBrlCents } from '@/features/catalog/lib/format-currency-brl';
 import { QueryErrorState } from '@/features/errors/components/query-error-state';
+import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { cn } from '@/lib/utils';
 
 import {
@@ -112,6 +114,8 @@ function EditorForm({
 	const categories = useCategories();
 	const actions = useProductActions(product.id);
 	const [confirmDiscontinue, setConfirmDiscontinue] = useState(false);
+	// Below 980 px the confirm is a bottom sheet (MobileAdminProdutos.dc.html).
+	const mobile = useMediaQuery('(max-width: 979px)') === true;
 	const [removingVariant, setRemovingVariant] = useState<string | null>(null);
 
 	const form = useForm<EditorForm>({
@@ -201,7 +205,7 @@ function EditorForm({
 		<form
 			onSubmit={onSave}
 			noValidate
-			className="flex animate-up flex-col gap-3.5"
+			className="flex animate-fade-in flex-col gap-3.5"
 		>
 			<div className="flex flex-wrap items-center gap-2.5">
 				<h2 className="min-w-0 grow truncate text-[22px] font-medium">
@@ -422,7 +426,7 @@ function EditorForm({
 				</p>
 			) : null}
 
-			{confirmDiscontinue ? (
+			{confirmDiscontinue && !mobile ? (
 				<div className="flex animate-pop-in flex-wrap items-center gap-2.5 rounded-[14px] bg-clay-soft p-3.5 text-[13px]">
 					<span className="grow">
 						Descontinuar “{product.name}”? Ele sai da loja e não pode voltar a
@@ -446,37 +450,74 @@ function EditorForm({
 				</div>
 			) : null}
 
-			<div className="flex flex-wrap items-center gap-2.5 pt-1">
+			{/* Below 980 px: Descontinuar in the page, Salvar and Publicar in the
+			    fixed bar (MobileAdminProdutos.dc.html). */}
+			{product.status !== 'Discontinued' ? (
 				<button
-					type="submit"
-					disabled={busy}
-					className="h-11 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-strong disabled:opacity-55"
+					type="button"
+					onClick={() => setConfirmDiscontinue(true)}
+					className="h-12 rounded-xl border bg-card text-[15px] font-medium text-clay min-[980px]:hidden"
 				>
-					{actions.save.isPending && !actions.publish.isPending
-						? 'Salvando…'
-						: 'Salvar'}
+					Descontinuar
 				</button>
+			) : null}
+			<div aria-hidden="true" className="h-20 min-[980px]:hidden" />
+			<div className="fixed inset-x-0 bottom-0 z-30 flex gap-2 border-t bg-card px-4 pt-3 pb-[max(16px,env(safe-area-inset-bottom))] min-[980px]:static min-[980px]:z-auto min-[980px]:flex-wrap min-[980px]:items-center min-[980px]:gap-2.5 min-[980px]:border-0 min-[980px]:bg-transparent min-[980px]:p-0 min-[980px]:pt-1">
 				{product.status === 'Draft' ? (
 					<button
 						type="button"
 						disabled={busy}
 						onClick={() => void onPublish()}
-						className="h-11 rounded-xl border border-success bg-card px-[18px] text-sm font-medium text-success transition-colors hover:bg-success-soft disabled:opacity-55"
+						className="h-[50px] flex-1 rounded-xl border border-success bg-card px-[18px] text-sm font-medium text-success transition-colors hover:bg-success-soft disabled:opacity-55 min-[980px]:order-2 min-[980px]:h-11 min-[980px]:flex-none"
 					>
 						{actions.publish.isPending ? 'Publicando…' : 'Publicar na loja'}
 					</button>
 				) : null}
-				<span className="grow" />
+				<button
+					type="submit"
+					disabled={busy}
+					className="h-[50px] flex-1 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-strong disabled:opacity-55 min-[980px]:order-1 min-[980px]:h-11 min-[980px]:flex-none"
+				>
+					{actions.save.isPending && !actions.publish.isPending
+						? 'Salvando…'
+						: 'Salvar'}
+				</button>
+				<span className="hidden grow min-[980px]:order-3 min-[980px]:block" />
 				{product.status !== 'Discontinued' && !confirmDiscontinue ? (
 					<button
 						type="button"
 						onClick={() => setConfirmDiscontinue(true)}
-						className="min-h-8 text-[13px] font-medium text-clay hover:underline"
+						className="hidden min-h-8 text-[13px] font-medium text-clay hover:underline min-[980px]:order-4 min-[980px]:block"
 					>
 						Descontinuar
 					</button>
 				) : null}
 			</div>
+
+			<BottomSheet
+				open={confirmDiscontinue && mobile}
+				onOpenChange={setConfirmDiscontinue}
+				title={`Descontinuar ${product.name}?`}
+				description="Ele sai da loja e não pode voltar a ser publicado."
+			>
+				<button
+					type="button"
+					disabled={busy}
+					onClick={onDiscontinue}
+					className="h-[50px] rounded-xl bg-clay text-[15px] font-medium text-white disabled:opacity-55"
+				>
+					{actions.discontinue.isPending
+						? 'Descontinuando…'
+						: 'Sim, descontinuar'}
+				</button>
+				<button
+					type="button"
+					onClick={() => setConfirmDiscontinue(false)}
+					className="h-12 rounded-xl border bg-card text-[15px] font-medium"
+				>
+					Manter produto
+				</button>
+			</BottomSheet>
 		</form>
 	);
 }
