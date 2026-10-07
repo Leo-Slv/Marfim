@@ -25,7 +25,7 @@ function RevenueChart({
 	onRetry: () => void;
 }) {
 	return (
-		<Panel className="gap-3 px-[22px] py-5 [animation-delay:.1s] min-[1180px]:col-span-8">
+		<Panel className="gap-3 px-3.5 py-3.5 [animation-delay:.1s] min-[980px]:px-[22px] min-[980px]:py-5 min-[1180px]:col-span-8">
 			<div className="flex items-baseline gap-3">
 				<PanelTitle>Receita por dia</PanelTitle>
 				<span className="text-xs text-muted-foreground">

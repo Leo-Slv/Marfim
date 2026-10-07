@@ -12,6 +12,7 @@ import {
 	usePreparationQueue,
 	useRevenueOrders,
 } from '../hooks/admin-dashboard.queries';
+import { greeting, greetingDate } from '../lib/dashboard-greeting';
 import { funnelStages, revenueByDay } from '../lib/dashboard-metrics';
 import {
 	parsePeriod,
@@ -76,15 +77,25 @@ function DashboardContent() {
 	}
 
 	return (
-		<div className="flex flex-col gap-5 px-5 py-7 min-[980px]:px-8">
-			<div className="flex flex-wrap items-center gap-4">
+		<div className="flex flex-col gap-3 px-4 py-4 min-[980px]:gap-5 min-[980px]:px-8 min-[980px]:py-7">
+			<div className="flex flex-wrap items-center gap-4 max-[979px]:justify-between max-[979px]:gap-2">
 				<div className="flex grow flex-col gap-1">
-					<Eyebrow className="tracking-[0.16em]">VISÃO GERAL</Eyebrow>
-					<h1 className="text-[34px] font-light tracking-[-0.025em]">
+					{/* The mobile top bar already names the screen: date and
+					    greeting instead (MobileAdminDashboard.dc.html). */}
+					<Eyebrow className="tracking-[0.16em] max-[979px]:hidden">
+						VISÃO GERAL
+					</Eyebrow>
+					<h1 className="text-[34px] font-light tracking-[-0.025em] max-[979px]:sr-only">
 						Dashboard
 					</h1>
+					<span className="font-mono text-[10px] tracking-[0.14em] text-muted-foreground min-[980px]:hidden">
+						{greetingDate(openedAt)}
+					</span>
+					<span className="text-2xl font-light tracking-[-0.02em] min-[980px]:hidden">
+						{greeting(openedAt)}
+					</span>
 				</div>
-				<span className="flex items-center gap-2 text-[13px] text-success">
+				<span className="flex items-center gap-2 text-[13px] text-success max-[979px]:hidden">
 					<span className="size-[7px] animate-pulse-dot rounded-full bg-success" />
 					Ao vivo
 				</span>
@@ -126,7 +137,7 @@ function DashboardContent() {
 				}}
 			/>
 
-			<div className="grid grid-cols-1 gap-4 min-[1180px]:grid-cols-12">
+			<div className="grid grid-cols-1 gap-3 min-[980px]:gap-4 min-[1180px]:grid-cols-12">
 				<RevenueChart
 					days={range.days}
 					values={

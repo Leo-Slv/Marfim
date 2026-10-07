@@ -25,7 +25,7 @@ function OrdersFunnel({
 	const max = Math.max(1, ...(stages ?? []).map((stage) => stage.count));
 
 	return (
-		<Panel className="gap-3.5 px-[22px] py-5 [animation-delay:.15s] min-[1180px]:col-span-4">
+		<Panel className="gap-3.5 px-3.5 py-3.5 [animation-delay:.15s] min-[980px]:px-[22px] min-[980px]:py-5 min-[1180px]:col-span-4">
 			<PanelTitle>Pedidos por etapa</PanelTitle>
 			{failed ? (
 				<PanelError onRetry={onRetry} />

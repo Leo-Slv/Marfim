@@ -55,7 +55,7 @@ function KpiCards({
 	}
 	if (!current || !previous || !preparation) {
 		return (
-			<div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[1180px]:grid-cols-4">
+			<div className="grid grid-cols-2 gap-2 min-[980px]:gap-4 min-[1180px]:grid-cols-4">
 				{[0, 1, 2, 3].map((index) => (
 					<Skeleton key={index} className="h-[124px] rounded-2xl" />
 				))}
@@ -105,18 +105,20 @@ function KpiCards({
 	];
 
 	return (
-		<div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[1180px]:grid-cols-4">
+		<div className="grid grid-cols-2 gap-2 min-[980px]:gap-4 min-[1180px]:grid-cols-4">
 			{kpis.map((kpi, index) => (
 				<Panel
 					key={kpi.label}
-					className="gap-2.5 px-5 py-[18px]"
+					className="gap-1.5 px-3 py-3 min-[980px]:gap-2.5 min-[980px]:px-5 min-[980px]:py-[18px]"
 					style={{ animationDelay: `${index * 0.05}s` }}
 				>
-					<span className="text-[13px] text-ink-soft">{kpi.label}</span>
-					<span className="text-[34px] leading-none font-light tracking-[-0.03em]">
+					<span className="text-xs text-ink-soft min-[980px]:text-[13px]">
+						{kpi.label}
+					</span>
+					<span className="text-2xl leading-none font-light tracking-[-0.03em] min-[980px]:text-[34px]">
 						{kpi.value}
 					</span>
-					<span className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+					<span className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground max-[979px]:self-start">
 						<span
 							className={cn(
 								'inline-flex h-[22px] items-center rounded-full px-2 font-mono text-[11px]',
@@ -125,7 +127,7 @@ function KpiCards({
 						>
 							{kpi.chip.text}
 						</span>
-						{kpi.note}
+						<span className="hidden min-[980px]:inline">{kpi.note}</span>
 					</span>
 				</Panel>
 			))}

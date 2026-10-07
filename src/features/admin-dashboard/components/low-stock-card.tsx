@@ -20,7 +20,7 @@ function LowStockCard({
 	onRetry: () => void;
 }) {
 	return (
-		<Panel className="gap-1 px-[22px] py-4 [animation-delay:.2s] min-[1180px]:col-span-4">
+		<Panel className="gap-1 px-3.5 py-3 [animation-delay:.2s] min-[980px]:px-[22px] min-[980px]:py-4 min-[1180px]:col-span-4">
 			<div className="flex items-center gap-3 pb-2">
 				<PanelTitle>Abaixo do ponto de reposição</PanelTitle>
 				{data ? (
