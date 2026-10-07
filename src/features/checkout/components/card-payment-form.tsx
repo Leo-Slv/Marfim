@@ -135,10 +135,12 @@ function CardForm({
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className="flex animate-up flex-col gap-4 rounded-[20px] border bg-card p-6 [animation-duration:.6s]"
+			className="flex animate-fade-in flex-col gap-4 rounded-2xl border bg-card p-6 min-[980px]:rounded-[20px]"
 		>
 			<div className="flex items-center gap-3">
-				<h2 className="grow text-xl font-medium">Dados do cartão</h2>
+				<h2 className="hidden grow text-xl font-medium min-[980px]:block">
+					Dados do cartão
+				</h2>
 				<span className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.1em] text-muted-foreground">
 					<LockSimpleIcon size={12} />
 					PROCESSADO PELO STRIPE

@@ -43,18 +43,20 @@ function CheckoutSummary({
 		<>
 			<TotalsCard view={view} />
 			<MobileActionBar>
-				{blockedReason && !continueHref ? (
+				{/* The bar keeps the short action; what blocks it goes above. */}
+				{continueHref ||
+				!(blockedReason ?? blockedLabel !== continueLabel) ? null : (
 					<span role="status" className="text-xs text-ink-soft">
-						{blockedReason}
+						{blockedReason ?? blockedLabel}
 					</span>
-				) : null}
+				)}
 				{continueHref ? (
 					<Link href={continueHref} className={actionBarPrimary}>
-						<ActionBarLabel label={continueLabel} amount={total} />
+						<ActionBarLabel label="Ir para o pagamento" amount={total} />
 					</Link>
 				) : (
 					<button type="button" disabled className={actionBarPrimary}>
-						<ActionBarLabel label={blockedLabel} amount={total} />
+						<ActionBarLabel label="Ir para o pagamento" amount={total} />
 					</button>
 				)}
 			</MobileActionBar>
