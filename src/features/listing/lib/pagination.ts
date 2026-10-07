@@ -15,4 +15,16 @@ function formatRange(page: number, pageSize: number, totalItems: number) {
 	return `${start}–${end} DE ${totalItems}`;
 }
 
-export { formatRange, pageNumbers, parsePage };
+/** One page of a list the front filtered itself, shaped like `PagedResponse<T>`. */
+function paginate<T>(items: readonly T[], page: number, pageSize: number) {
+	const start = (page - 1) * pageSize;
+	return {
+		items: items.slice(start, start + pageSize),
+		page,
+		pageSize,
+		totalItems: items.length,
+		totalPages: Math.ceil(items.length / pageSize),
+	};
+}
+
+export { formatRange, pageNumbers, paginate, parsePage };

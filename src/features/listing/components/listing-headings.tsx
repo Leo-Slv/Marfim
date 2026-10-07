@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { appRoutes } from '@/lib/routes/app-routes';
 
-const SEARCH_DEBOUNCE_MS = 300;
+import { SEARCH_DEBOUNCE_MS } from '../lib/listing-copy';
 
 /** Category mode: breadcrumb, title, count and blurb. */
 function CategoryHeading({

@@ -9,10 +9,12 @@ import {
 } from '@/features/cart/components/added-to-cart-drawer';
 import { useCart } from '@/features/cart/hooks/use-cart';
 import {
+	useCatalog,
 	useCategories,
 	useProducts,
 } from '@/features/catalog/hooks/catalog.queries';
 import { formatPieceCount } from '@/features/catalog/lib/format-piece-count';
+import { searchProducts } from '@/features/catalog/lib/search-products';
 import type { ProductSummary } from '@/features/catalog/model/product';
 
 import {
@@ -24,7 +26,7 @@ import {
 } from '../lib/listing-copy';
 import { parseSort } from '../lib/listing-sort';
 import { buildListingHref } from '../lib/listing-url';
-import { parsePage } from '../lib/pagination';
+import { paginate, parsePage } from '../lib/pagination';
 import type { ListingMode } from '../model/listing';
 import { KeepTypingHint, ListingEmptyState } from './listing-empty-state';
 import { ListingGrid, ListingGridSkeleton } from './listing-grid';
@@ -63,7 +65,7 @@ function ListingContent({ mode }: { mode: ListingMode }) {
 		categoryParam !== null && !isNewest && categories.isPending;
 	const searchable = mode !== 'search' || isSearchable(term);
 
-	const products = useProducts(
+	const listing = useProducts(
 		{
 			page,
 			pageSize: PAGE_SIZE,
@@ -71,11 +73,32 @@ function ListingContent({ mode }: { mode: ListingMode }) {
 			// Novidades is every product; its newest-first order is the default
 			// sort (pendency #2).
 			sort: sort.apiSort,
-			searchTerm: mode === 'search' ? term.trim() : undefined,
 			onSale: mode === 'promotions' ? true : undefined,
 		},
-		{ enabled: !waitingForCategory && searchable },
+		{ enabled: mode !== 'search' && !waitingForCategory },
 	);
+	// Search runs in the front over the whole catalog, in the API's sort
+	// order: OrderCore only matches names, accent-sensitively (mobile
+	// navigation pendency #1).
+	const catalog = useCatalog(sort.apiSort, {
+		enabled: mode === 'search' && searchable,
+	});
+	const searchPage = catalog.data
+		? paginate(
+				searchProducts(catalog.data.items, categories.data ?? [], term),
+				page,
+				PAGE_SIZE,
+			)
+		: undefined;
+	const products =
+		mode === 'search'
+			? {
+					data: searchPage,
+					isError: catalog.isError,
+					isPlaceholderData: catalog.isPlaceholderData,
+					refetch: catalog.refetch,
+				}
+			: listing;
 
 	const navigate = useCallback(
 		(changes: Record<string, string | null>, replace = false) => {

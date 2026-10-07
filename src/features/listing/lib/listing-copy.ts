@@ -3,6 +3,8 @@ import type { ListingMode } from '../model/listing';
 /** Special `?categoria=` value: every product, newest first. */
 const NEWEST_SLUG = 'novidades';
 const MIN_SEARCH_LENGTH = 2;
+/** The search field writes `?q=` after the shopper pauses typing. */
+const SEARCH_DEBOUNCE_MS = 300;
 
 const ALL_BLURB = 'Todas as peças dos quatro ateliês, em um lugar só.';
 const NEWEST_BLURB = 'O que acabou de sair das bancadas nesta estação.';
@@ -65,4 +67,5 @@ export {
 	isSearchable,
 	MIN_SEARCH_LENGTH,
 	NEWEST_SLUG,
+	SEARCH_DEBOUNCE_MS,
 };
