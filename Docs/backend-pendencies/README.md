@@ -31,6 +31,7 @@ Cosmetic / Config).
 | Admin · Pagamentos (`/admin/payments`) | [admin/admin-payments.md](admin/admin-payments.md) | Payment list without order number/Stripe reference, no card last4, one status per filter, refund reason required, tab counts one call each |
 | Admin · Auditoria (`/admin/audit`) | [admin/admin-audit.md](admin/admin-audit.md) | No before/after (metadata only), actor is an id, no free-text search, UUID references and unaudited categories/stock changes, partial refunds not audited |
 | Admin · Mensagens com falha (`/admin/failures`) | [admin/admin-failed-messages.md](admin/admin-failed-messages.md) | No bulk replay, no stack trace, no impact description, e-mail send failures not listed |
+| Admin on mobile (all `/admin/*` screens below 980 px) | [admin/mobile-admin.md](admin/mobile-admin.md) | None new — the mockups hit gaps already recorded per admin screen |
 | Produto (`/products/[slug]`) | [storefront/product.md](storefront/product.md) | No dimensions/care fields, no exact stock, no lead time/shipping, variants don't reach the order, no atelier data |
 | Store screens on mobile (Início, Listagem, Produto, Sacola, Checkout, Acesso, Conta, Erros) | [storefront/mobile-screens.md](storefront/mobile-screens.md) | None new — the mockups hit gaps already recorded per screen |
 | Mobile navigation (top bar, menu, `/search` on mobile) | [storefront/mobile-navigation.md](storefront/mobile-navigation.md) | Name-only accent-sensitive search (front search over ≤100 products), no search statistics, recent searches per device |
