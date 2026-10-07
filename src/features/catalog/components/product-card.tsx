@@ -39,11 +39,11 @@ function ProductCard({
 
 	return (
 		<article
-			className="group flex animate-up flex-col gap-3 rounded-2xl border bg-card p-2 transition-[transform,box-shadow] duration-350 ease-[cubic-bezier(.2,.7,.2,1)] hover:-translate-y-[5px] hover:shadow-[0_16px_36px_-18px_rgba(24,24,27,.22)]"
+			className="group flex animate-up flex-col gap-2 rounded-[14px] border bg-card p-1.5 transition-[transform,box-shadow] duration-350 ease-[cubic-bezier(.2,.7,.2,1)] hover:-translate-y-[5px] hover:shadow-[0_16px_36px_-18px_rgba(24,24,27,.22)] min-[980px]:gap-3 min-[980px]:rounded-2xl min-[980px]:p-2"
 			style={{ animationDelay: `${(index * 0.06).toFixed(2)}s` }}
 		>
 			<div
-				className="relative h-[210px] overflow-hidden rounded-xl"
+				className="relative h-[150px] overflow-hidden rounded-[10px] min-[980px]:h-[210px] min-[980px]:rounded-xl"
 				style={{ background: visual.tint }}
 			>
 				<Link
@@ -57,7 +57,11 @@ function ProductCard({
 							soldOut && 'opacity-60',
 						)}
 					>
-						<ProductArt kind={visual.kind} size={112} />
+						<ProductArt
+							kind={visual.kind}
+							size={112}
+							className="h-auto w-20 min-[980px]:w-28"
+						/>
 					</div>
 					{tag ? (
 						<span className="absolute top-2.5 left-2.5 flex h-6 items-center rounded-full bg-white px-2.5 text-xs font-medium text-clay">
@@ -70,7 +74,7 @@ function ProductCard({
 					onClick={onToggleFavorite}
 					aria-label={`Favoritar ${product.name}`}
 					aria-pressed={isFavorite}
-					className="absolute top-1 right-1 flex size-11 items-center justify-center rounded-full text-foreground"
+					className="absolute top-1 right-1 hidden size-11 items-center justify-center rounded-full text-foreground min-[980px]:flex"
 				>
 					<span className="flex size-8 items-center justify-center rounded-full bg-white transition-colors hover:bg-surface-2">
 						<HeartIcon
@@ -82,14 +86,14 @@ function ProductCard({
 					</span>
 				</button>
 			</div>
-			<div className="flex items-end gap-2.5 px-1.5 pb-1.5">
+			<div className="flex items-end gap-2.5 px-1 pb-1 min-[980px]:px-1.5 min-[980px]:pb-1.5">
 				<div className="flex min-w-0 grow flex-col gap-[3px]">
-					<div className="text-xs text-muted-foreground">
+					<div className="hidden text-xs text-muted-foreground min-[980px]:block">
 						{categoryName ?? ' '}
 					</div>
 					<Link
 						href={href}
-						className="text-base font-medium text-foreground transition-colors hover:text-primary"
+						className="text-sm leading-tight font-medium text-foreground transition-colors hover:text-primary min-[980px]:text-base"
 					>
 						{product.name}
 					</Link>
@@ -113,7 +117,7 @@ function ProductCard({
 					<span
 						role="status"
 						aria-label="Adicionado"
-						className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-success text-white"
+						className="flex size-10 shrink-0 items-center justify-center rounded-[10px] bg-success text-white min-[980px]:size-11 min-[980px]:rounded-xl"
 					>
 						<CheckIcon size={16} weight="bold" className="animate-pop" />
 					</span>
@@ -123,7 +127,7 @@ function ProductCard({
 						onClick={onAdd}
 						disabled={soldOut}
 						aria-label={`Adicionar ${product.name} à sacola`}
-						className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-[background-color,transform] duration-200 hover:-translate-y-px hover:bg-primary-strong disabled:pointer-events-none disabled:bg-surface-2 disabled:text-muted-foreground"
+						className="flex size-10 shrink-0 items-center justify-center rounded-[10px] bg-primary text-primary-foreground transition-[background-color,transform] duration-200 hover:-translate-y-px hover:bg-primary-strong disabled:pointer-events-none disabled:bg-surface-2 disabled:text-muted-foreground min-[980px]:size-11 min-[980px]:rounded-xl"
 					>
 						<PlusIcon size={16} weight="bold" />
 					</button>

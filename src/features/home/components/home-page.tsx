@@ -8,6 +8,7 @@ import { useProducts } from '@/features/catalog/hooks/catalog.queries';
 
 import { atelierProductNames } from '../lib/atelier-products';
 import { ateliers } from '../lib/ateliers';
+import { AteliersAccordion } from './ateliers-accordion';
 import { AteliersSection } from './ateliers-section';
 import { FeaturedProductsSection } from './featured-products-section';
 import { HomeHero } from './home-hero';
@@ -37,15 +38,19 @@ function HomePage() {
 				<HomeHero />
 				<FeaturedProductsSection />
 				<PromoBanner />
-				<AteliersSection
-					selectedIndex={atelierIndex}
-					onSelect={setAtelierIndex}
-					productNames={productNames}
-				/>
-				<ShippingSection
-					atelier={atelier}
-					firstProductName={productNames?.[0] ?? null}
-				/>
+				<AteliersAccordion />
+				{/* Below 980 px the home ends at the ateliers (MobileInicio). */}
+				<div className="hidden min-[980px]:block">
+					<AteliersSection
+						selectedIndex={atelierIndex}
+						onSelect={setAtelierIndex}
+						productNames={productNames}
+					/>
+					<ShippingSection
+						atelier={atelier}
+						firstProductName={productNames?.[0] ?? null}
+					/>
+				</div>
 			</main>
 			<StoreFooter />
 		</div>

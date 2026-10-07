@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useRef, useState } from 'react';
 
@@ -12,26 +13,42 @@ import {
 } from '@/features/catalog/hooks/catalog.queries';
 import type { Category } from '@/features/catalog/model/category';
 import type { ProductSummary } from '@/features/catalog/model/product';
+import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
 
+import { toastAddedToBag } from '../lib/added-toast';
 import { FreeShippingMeter } from './free-shipping-meter';
 
 const GRID_SIZE = 8;
+/** Below 980 px the home shows four pieces (MobileInicio). */
+const MOBILE_GRID_SIZE = 4;
 const JUST_ADDED_MS = 1400;
 
 /** "Escolhidos da semana": category chips + live products grid. */
 function FeaturedProductsSection() {
 	return (
-		<section id="produtos" className="scroll-mt-6 pt-8 pb-4">
-			<div className="mx-auto flex max-w-[1280px] flex-col gap-[22px] px-5 sm:px-10">
+		<section id="produtos" className="scroll-mt-6 pt-7 pb-4 min-[980px]:pt-8">
+			<div className="mx-auto flex max-w-[1280px] flex-col gap-3.5 px-4 min-[980px]:gap-[22px] sm:px-10">
 				<div className="flex flex-wrap items-end gap-6">
 					<div className="flex grow flex-col gap-2">
-						<Eyebrow>ESCOLHIDOS DA SEMANA</Eyebrow>
-						<h2 className="text-[34px] font-light tracking-[-0.025em]">
-							Feito para ficar
-						</h2>
+						<Eyebrow className="hidden min-[980px]:block">
+							ESCOLHIDOS DA SEMANA
+						</Eyebrow>
+						<div className="flex items-baseline justify-between">
+							<h2 className="text-[26px] font-light tracking-[-0.02em] min-[980px]:text-[34px] min-[980px]:tracking-[-0.025em]">
+								Feito para ficar
+							</h2>
+							<Link
+								href={appRoutes.products.list}
+								className="text-sm font-medium text-primary min-[980px]:hidden"
+							>
+								Ver tudo
+							</Link>
+						</div>
 					</div>
-					<FreeShippingMeter />
+					<div className="hidden min-[980px]:block">
+						<FreeShippingMeter />
+					</div>
 				</div>
 				{/* `?categoria=` drives the filter; Next 16 needs a Suspense boundary
 				    around useSearchParams for the page to prerender. */}
@@ -76,7 +93,7 @@ function FilteredProducts() {
 	return (
 		<>
 			<div
-				className="flex flex-wrap gap-2"
+				className="-mx-4 flex [scrollbar-width:none] gap-2 overflow-x-auto px-4 min-[980px]:mx-0 min-[980px]:flex-wrap min-[980px]:overflow-visible min-[980px]:px-0 [&::-webkit-scrollbar]:hidden"
 				role="group"
 				aria-label="Filtrar por categoria"
 			>
@@ -133,6 +150,7 @@ function ProductsGrid({
 	categories: Category[];
 	dimmed: boolean;
 }) {
+	const router = useRouter();
 	const { addItem } = useCart();
 	// Favorites are per-visit only: OrderCore has no wishlist (pendency #4).
 	const [favorites, setFavorites] = useState<Record<string, boolean>>({});
@@ -152,6 +170,7 @@ function ProductsGrid({
 			name: product.name,
 			unitPrice: product.currentPrice,
 		});
+		toastAddedToBag(product.name, router.push);
 		clearTimeout(justAddedTimer.current);
 		setJustAddedId(product.id);
 		justAddedTimer.current = setTimeout(
@@ -165,12 +184,15 @@ function ProductsGrid({
 			// A new product set remounts the cards so their enter animation replays.
 			key={products.map((product) => product.id).join()}
 			className={cn(
-				'grid grid-cols-1 gap-4 transition-opacity min-[420px]:grid-cols-2 min-[980px]:grid-cols-3 min-[1180px]:grid-cols-4',
+				'grid grid-cols-2 gap-2.5 transition-opacity min-[980px]:grid-cols-3 min-[980px]:gap-4 min-[1180px]:grid-cols-4',
 				dimmed && 'opacity-60',
 			)}
 		>
 			{products.map((product, index) => (
-				<li key={product.id}>
+				<li
+					key={product.id}
+					className={cn(index >= MOBILE_GRID_SIZE && 'max-[979px]:hidden')}
+				>
 					<ProductCard
 						product={product}
 						categoryName={categoryNames.get(product.categoryId) ?? null}
@@ -206,7 +228,7 @@ function CategoryChip({
 			onClick={onClick}
 			aria-pressed={active}
 			className={cn(
-				'h-10 rounded-full px-[18px] text-sm font-medium transition-colors duration-200',
+				'h-10 shrink-0 rounded-full px-4 text-sm font-medium transition-colors duration-200 min-[980px]:px-[18px]',
 				active
 					? 'bg-primary text-primary-foreground'
 					: 'bg-surface text-ink-soft hover:bg-surface-2',
@@ -233,12 +255,12 @@ function ProductsGridSkeleton({ withChips = true }: { withChips?: boolean }) {
 			<div
 				aria-busy="true"
 				aria-label="Carregando peças"
-				className="grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 min-[980px]:grid-cols-3 min-[1180px]:grid-cols-4"
+				className="grid grid-cols-2 gap-2.5 min-[980px]:grid-cols-3 min-[980px]:gap-4 min-[1180px]:grid-cols-4"
 			>
 				{Array.from({ length: GRID_SIZE }, (_, index) => (
 					<div
 						key={index}
-						className="h-[300px] animate-pulse rounded-2xl border bg-card"
+						className="h-[230px] animate-pulse rounded-2xl border bg-card min-[980px]:h-[300px]"
 					/>
 				))}
 			</div>
