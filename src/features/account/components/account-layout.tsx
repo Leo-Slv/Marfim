@@ -102,7 +102,14 @@ function AccountFrame({
 
 	return (
 		<>
-			<section className="pt-9 pb-2">
+			<AccountMobileHeader
+				firstName={firstName}
+				name={profile.data?.name ?? null}
+				email={session.email}
+				signingOut={signingOut}
+				onSignOut={handleSignOut}
+			/>
+			<section className="hidden pt-9 pb-2 min-[980px]:block">
 				<div className="mx-auto flex max-w-[1280px] flex-wrap items-end gap-4 px-5 sm:px-10">
 					<div className="flex grow flex-col gap-2">
 						<Eyebrow>MINHA CONTA</Eyebrow>
@@ -131,11 +138,11 @@ function AccountFrame({
 					)}
 				</div>
 			</section>
-			<section className="pt-6 pb-[72px]">
-				<div className="mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-x-6 gap-y-6 px-5 min-[980px]:grid-cols-12 sm:px-10">
+			<section className="pt-0 pb-10 min-[980px]:pt-6 min-[980px]:pb-[72px]">
+				<div className="mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-x-6 gap-y-3 px-4 min-[980px]:grid-cols-12 min-[980px]:gap-y-6 sm:px-10">
 					<nav
 						aria-label="Seções da conta"
-						className="flex flex-col gap-1 min-[980px]:sticky min-[980px]:top-6 min-[980px]:col-span-3"
+						className="-mx-4 flex [scrollbar-width:none] gap-1.5 overflow-x-auto px-4 py-2.5 min-[980px]:sticky min-[980px]:top-6 min-[980px]:col-span-3 min-[980px]:mx-0 min-[980px]:flex-col min-[980px]:gap-1 min-[980px]:overflow-visible min-[980px]:px-0 min-[980px]:py-0 [&::-webkit-scrollbar]:hidden"
 					>
 						{menu.map(({ href, label, Icon, counts }) => {
 							const current =
@@ -148,16 +155,17 @@ function AccountFrame({
 									href={href}
 									aria-current={current ? 'page' : undefined}
 									className={cn(
-										'flex h-12 items-center gap-3 rounded-xl px-3.5 text-[15px] transition-colors hover:bg-surface-2',
+										// Chips below 980 px (MobileConta), the side menu above.
+										'flex h-10 shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-sm whitespace-nowrap transition-colors hover:bg-surface-2 min-[980px]:h-12 min-[980px]:gap-3 min-[980px]:rounded-xl min-[980px]:border-0 min-[980px]:text-[15px]',
 										current
-											? 'bg-card font-medium text-primary'
-											: 'text-foreground',
+											? 'border-primary bg-primary font-medium text-primary-foreground min-[980px]:bg-card min-[980px]:text-primary'
+											: 'bg-card text-foreground min-[980px]:bg-transparent',
 									)}
 								>
-									<Icon size={18} />
-									<span className="grow">{label}</span>
+									<Icon size={18} className="hidden min-[980px]:block" />
+									<span className="min-[980px]:grow">{label}</span>
 									{counts && orders.data ? (
-										<span className="font-mono text-xs text-muted-foreground">
+										<span className="font-mono text-[11px] opacity-70 min-[980px]:text-xs min-[980px]:text-muted-foreground min-[980px]:opacity-100">
 											{orders.data.totalItems}
 										</span>
 									) : null}
@@ -168,7 +176,7 @@ function AccountFrame({
 							type="button"
 							onClick={handleSignOut}
 							disabled={signingOut}
-							className="mt-2 flex h-12 items-center gap-3 border-t px-3.5 text-[15px] text-muted-foreground transition-colors hover:bg-surface-2 disabled:opacity-55"
+							className="mt-2 hidden h-12 items-center gap-3 border-t px-3.5 text-[15px] text-muted-foreground transition-colors hover:bg-surface-2 disabled:opacity-55 min-[980px]:flex"
 						>
 							<SignOutIcon size={18} />
 							{signingOut ? 'Saindo…' : 'Sair'}
@@ -183,6 +191,53 @@ function AccountFrame({
 				</div>
 			</section>
 		</>
+	);
+}
+
+/** Below 980 px: avatar, greeting, e-mail and Sair (MobileConta.dc.html). */
+function AccountMobileHeader({
+	firstName,
+	name,
+	email,
+	signingOut,
+	onSignOut,
+}: {
+	firstName: string | null;
+	name: string | null;
+	email: string;
+	signingOut: boolean;
+	onSignOut: () => void;
+}) {
+	const { first, last } = splitName(name ?? '');
+	const initials =
+		`${first.charAt(0)}${last.charAt(0)}`.toUpperCase() ||
+		email.charAt(0).toUpperCase();
+
+	return (
+		<section className="flex items-center gap-3 px-4 pt-[18px] pb-1.5 min-[980px]:hidden">
+			<span
+				aria-hidden="true"
+				className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#E3E1F9] text-[17px] font-medium text-primary-strong"
+			>
+				{initials}
+			</span>
+			<div className="flex min-w-0 grow flex-col">
+				<h1 className="animate-up text-[22px] font-light tracking-[-0.02em]">
+					Olá{firstName ? `, ${firstName}` : ''}
+				</h1>
+				<span className="truncate text-[13px] text-muted-foreground">
+					{email}
+				</span>
+			</div>
+			<button
+				type="button"
+				onClick={onSignOut}
+				disabled={signingOut}
+				className="flex min-h-11 items-center text-sm text-ink-soft disabled:opacity-55"
+			>
+				{signingOut ? 'Saindo…' : 'Sair'}
+			</button>
+		</section>
 	);
 }
 

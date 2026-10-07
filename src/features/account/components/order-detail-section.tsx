@@ -4,12 +4,15 @@ import { ArrowLeftIcon, ArrowUpRightIcon } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { BottomSheet } from '@/components/bottom-sheet';
+
 import { ProductArt } from '@/features/catalog/components/product-art';
 import { formatCurrencyBrl } from '@/features/catalog/lib/format-currency-brl';
 import { getProductVisual } from '@/features/catalog/lib/product-visuals';
 import { slugify } from '@/features/catalog/lib/slugify';
 import { maskPostalCode } from '@/features/checkout/lib/format-address';
 import { QueryErrorState } from '@/features/errors/components/query-error-state';
+import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { isApiError } from '@/lib/http/api-error';
 import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
@@ -37,6 +40,8 @@ function OrderDetailSection({ orderId }: { orderId: string }) {
 	const history = useOrderHistory(orderId, live);
 	const cancel = useCancelOrder(orderId);
 	const [confirming, setConfirming] = useState(false);
+	// Below 980 px the confirmation is a bottom sheet (MobileConta.dc.html).
+	const mobile = useMediaQuery('(max-width: 979px)') === true;
 
 	const back = (
 		<Link
@@ -215,7 +220,7 @@ function OrderDetailSection({ orderId }: { orderId: string }) {
 					</div>
 
 					{canCancelOrder(data.status) ? (
-						confirming ? (
+						confirming && !mobile ? (
 							<div
 								role="alertdialog"
 								aria-label="Confirmar cancelamento"
@@ -271,6 +276,33 @@ function OrderDetailSection({ orderId }: { orderId: string }) {
 							trocar ou devolver.
 						</div>
 					) : null}
+					<BottomSheet
+						open={confirming && mobile}
+						onOpenChange={setConfirming}
+						title={`Cancelar ${data.orderNumber}?`}
+						description="O valor é estornado no cartão e as peças voltam ao estoque."
+					>
+						{cancel.isError ? (
+							<span role="alert" className="text-sm text-clay">
+								{cancelErrorText(cancel.error)}
+							</span>
+						) : null}
+						<button
+							type="button"
+							onClick={handleCancel}
+							disabled={cancel.isPending}
+							className="h-[52px] rounded-xl bg-clay text-base font-medium text-white disabled:opacity-55"
+						>
+							{cancel.isPending ? 'Cancelando…' : 'Sim, cancelar pedido'}
+						</button>
+						<button
+							type="button"
+							onClick={() => setConfirming(false)}
+							className="h-12 rounded-xl border bg-card text-[15px]"
+						>
+							Manter pedido
+						</button>
+					</BottomSheet>
 				</div>
 			</div>
 		</>
