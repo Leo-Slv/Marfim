@@ -38,7 +38,7 @@ function AuthHeading({
 	return (
 		<div className="flex flex-col gap-2">
 			{eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-			<h1 className="text-[40px] leading-[1.05] font-light tracking-[-0.03em]">
+			<h1 className="text-[32px] leading-[1.08] font-light tracking-[-0.03em] min-[980px]:text-[40px] min-[980px]:leading-[1.05]">
 				{children}
 			</h1>
 			{description ? (
