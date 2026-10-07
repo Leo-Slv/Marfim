@@ -99,6 +99,12 @@ back/forward; components reading it with `useSearchParams` sit inside a
 `Suspense` boundary. New features are added following the Implementation
 Workflow below, one feature at a time.
 
+Below 980 px the storefront header is the mobile bar (`MobileTopo.dc.html`:
+menu, search, bag); inner screens pass `StoreHeader mobileBack={{ href,
+title? }}` for its Voltar variant, as the mobile mockups show. Store search
+runs in the front over the catalog (`useCatalog`, `searchProducts`) because
+OrderCore only matches names.
+
 Error screens come from `src/features/errors`: unknown routes hit
 `src/app/not-found.tsx`, render errors `error.tsx`; when the query a page
 is about fails without data, render `QueryErrorState` (404/403/429/sem

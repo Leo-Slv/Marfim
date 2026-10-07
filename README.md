@@ -50,10 +50,20 @@ public/
   paginação de 8 em 8 (`?pagina=`), selos de estoque (Esgotado / Últimas
   unidades) e mini-sacola ao adicionar. O menu de categorias do header e os
   links do rodapé levam para cá. Consome `GET /api/catalog/products` (com
-  `categoryId`, `searchTerm`, `onSale`, `sort`) e
-  `GET /api/catalog/categories`. Spec em `Docs/specs/storefront/listing.md`;
-  lacunas do backend (busca só por nome e sensível a acento, sem filtro por
-  ateliê) em `Docs/backend-pendencies/storefront/listing.md`.
+  `categoryId`, `onSale`, `sort`) e `GET /api/catalog/categories`. A busca
+  roda no front sobre o catálogo inteiro (nome, ateliê, categoria e
+  descrição curta, sem acento), porque a API só busca no nome. Spec em
+  `Docs/specs/storefront/listing.md`; lacunas do backend em
+  `Docs/backend-pendencies/storefront/listing.md`.
+- **Navegação no celular** (abaixo de 980 px) — telas `MobileTopo.dc.html` e
+  `MobileBusca.dc.html`: barra compacta com menu lateral (conta, Novidades,
+  categorias do banco, Promoções, busca e ajuda), busca e sacola com
+  contador; nas telas internas a barra troca o menu por "Voltar" e título
+  (Produto → categoria, Sacola, Finalizar compra, Ajuda, Entrar). No celular
+  `/search` vira a tela de busca: buscas recentes (no navegador), chips de
+  categorias e ateliês reais, "Continue digitando", "Nada para…" e
+  resultados em lista. Spec em `Docs/specs/storefront/mobile-navigation.md`;
+  lacunas em `Docs/backend-pendencies/storefront/mobile-navigation.md`.
 - **Produto** (`/products/[slug]`) — tela `Produto.dc.html`: o desenho da
   peça em vistas (frente, acesa para iluminação, detalhe, ambiente), ateliê,
   descrição, preço com preço "de" e desconto, estoque (em estoque, últimas

@@ -189,10 +189,18 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   (`categoria`, `q`, `ordem`, `pagina`; `lib/listing-url.ts` builds hrefs
   and resets the page on any other change), read inside `Suspense`. Uses
   catalog's `ListingProductCard` and cart's `AddedToCartDrawer`
-  (mini-sacola, a Radix Dialog).
+  (mini-sacola, a Radix Dialog). Search matches in the front over the
+  whole catalog (`useCatalog` + catalog's `searchProducts`: name, atelier,
+  category, short description, unaccented) and paginates locally; below
+  980 px `/search` is `MobileSearch` (MobileBusca.dc.html) with recent
+  searches in a localStorage external store (`lib/recent-searches-store.ts`,
+  the cart's pattern). Only the layout for the current width is mounted
+  (`useMediaQuery`), since both write `?q=`.
 
 `src/components/store-header.tsx` and `store-footer.tsx` are the
-storefront chrome shared by every store page.
+storefront chrome shared by every store page. Below 980 px the header is
+`mobile-top-bar.tsx` (MobileTopo.dc.html) with `mobile-menu.tsx`; screens
+pass `mobileBack={{ href, title? }}` for the Voltar + title variant.
 
 Each new feature is added following the workflow in the root `CLAUDE.md`
 (spec → resolve open decisions → backend pendencies → implementation plan →
