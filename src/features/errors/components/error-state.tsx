@@ -18,9 +18,9 @@ const DEFAULT_RETRY_AFTER_SECONDS = 30;
 const RING_LENGTH = 327;
 
 const primaryButton =
-	'flex h-12 items-center justify-center rounded-xl bg-primary px-[22px] text-[15px] font-medium text-primary-foreground transition hover:-translate-y-px hover:bg-primary-strong disabled:cursor-not-allowed disabled:opacity-55 disabled:hover:translate-y-0 disabled:hover:bg-primary';
+	'flex h-[52px] w-full items-center justify-center rounded-xl bg-primary px-[22px] text-base font-medium text-primary-foreground transition min-[980px]:h-12 min-[980px]:w-auto min-[980px]:text-[15px] hover:-translate-y-px hover:bg-primary-strong disabled:cursor-not-allowed disabled:opacity-55 disabled:hover:translate-y-0 disabled:hover:bg-primary';
 const secondaryButton =
-	'flex h-12 items-center rounded-xl border bg-card px-5 text-[15px] font-medium transition-colors hover:bg-surface-2';
+	'flex h-[50px] w-full items-center justify-center rounded-xl border bg-card px-5 text-[15px] font-medium transition-colors hover:bg-surface-2 min-[980px]:h-12 min-[980px]:w-auto';
 
 type ErrorStateProps = {
 	kind: ErrorKind;
@@ -45,7 +45,7 @@ function ErrorState({
 	const retry = onRetry ?? (() => window.location.reload());
 
 	return (
-		<section className="flex grow flex-col px-5 pt-[72px] pb-24 min-[980px]:px-10">
+		<section className="flex grow flex-col px-5 pt-9 pb-10 min-[980px]:px-10 min-[980px]:pt-[72px] min-[980px]:pb-24">
 			<div className="mx-auto flex w-full max-w-[1280px] flex-col items-center gap-5 text-center">
 				{kind === 'not-found' ? <NotFound /> : null}
 				{kind === 'forbidden' ? <Forbidden /> : null}
@@ -104,7 +104,7 @@ function Label({ children }: { children: React.ReactNode }) {
 
 function Actions({ children }: { children: React.ReactNode }) {
 	return (
-		<div className="flex animate-up flex-wrap justify-center gap-2.5 pt-1 [animation-delay:.24s]">
+		<div className="flex w-full animate-up flex-col gap-2.5 pt-1 [animation-delay:.24s] min-[980px]:w-auto min-[980px]:flex-row min-[980px]:flex-wrap min-[980px]:justify-center">
 			{children}
 		</div>
 	);
