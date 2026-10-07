@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Admin · Pedidos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+.card{background:#FFFFFF;border:1px solid #E6E4DE;border-radius:16px}
+.in{height:48px;box-sizing:border-box;padding:0 12px;border:1px solid #E6E4DE;border-radius:12px;font-size:16px;background:#FFFFFF;width:100%}
+.bp{height:50px;border-radius:12px;border:none;background:#3B3FD9;color:#FFFFFF;font-size:15px;font-weight:500;width:100%}
+.bs{height:48px;border-radius:12px;border:1px solid #E6E4DE;background:#FFFFFF;color:#18181B;font-size:15px;font-weight:500;width:100%}
+.pill{height:24px;padding:0 9px;border-radius:999px;font-size:11px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap}
+</style>
+</helmet>
+<div style="width: 390px; height: 1300px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileAdminTopo" active="pedidos" title="Pedidos" hint-size="390px,60px"></dc-import>
+
+<sc-if value="{{isList}}" hint-placeholder-val="{{ true }}">
+<div class="fade" style="display: flex; flex-direction: column">
+<div style="padding: 14px 16px 8px">
+<label style="height: 46px; display: flex; align-items: center; gap: 8px; padding: 0 12px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input type="search" aria-label="Buscar pedido ou cliente" placeholder="Número ou cliente" value="{{q}}" onChange="{{onQ}}" style="flex-grow: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 16px"></label>
+</div>
+<div class="chips" style="display: flex; gap: 6px; overflow-x: auto; padding: 4px 16px 12px">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="6"><button onClick="{{t.pick}}" style="flex-shrink: 0; height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid #E6E4DE; background: {{t.bg}}; color: {{t.fg}}; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; white-space: nowrap">{{t.label}}<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; opacity: .7">{{t.count}}</span></button></sc-for>
+</div>
+<div style="padding: 0 16px 24px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+<button onClick="{{r.open}}" class="card up" style="text-align: left; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; color: #18181B">
+<span style="display: flex; justify-content: space-between; align-items: center; width: 100%"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{r.id}}</span><span class="pill" style="background: {{r.sbg}}; color: {{r.sfg}}">{{r.status}}</span></span>
+<span style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 14px"><span style="display: flex; flex-direction: column; gap: 2px"><span>{{r.who}}</span><span style="font-size: 12px; color: #6B6B72">{{r.date}} · {{r.units}}</span></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{r.total}} ›</span></span>
+</button>
+</sc-for>
+<sc-if value="{{noRows}}" hint-placeholder-val="{{ false }}"><div style="padding: 32px 16px; text-align: center; font-size: 14px; color: #6B6B72">Nenhum pedido nesse filtro.</div></sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isDet}}" hint-placeholder-val="{{ false }}">
+<div key="{{d.id}}" class="up" style="padding: 12px 16px 120px; display: flex; flex-direction: column; gap: 12px">
+<button onClick="{{closeDet}}" style="align-self: flex-start; min-height: 40px; border: none; background: none; color: #3B3FD9; font-size: 14px; font-weight: 500; padding: 0">‹ Todos os pedidos</button>
+<div style="display: flex; justify-content: space-between; align-items: flex-end"><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #6B6B72">{{d.who}} · {{d.date}}</span><span style="font-size: 26px; font-weight: 300; letter-spacing: -0.02em">{{d.id}}</span></span><span key="{{d.status}}" class="pill pop" style="height: 28px; font-size: 12px; background: {{d.sbg}}; color: {{d.sfg}}">{{d.status}}</span></div>
+
+<sc-if value="{{d.canStart}}" hint-placeholder-val="{{ false }}"><div class="card" style="padding: 14px; display: flex; flex-direction: column; gap: 10px; border-color: #3B3FD9"><b style="font-size: 15px; font-weight: 500">Próximo passo</b><span style="font-size: 13px; color: #44444A">Pagamento aprovado. Avise o ateliê e comece a preparar.</span><button onClick="{{d.start}}" class="bp">Iniciar preparo</button></div></sc-if>
+<sc-if value="{{d.canShip}}" hint-placeholder-val="{{ false }}">
+<form onSubmit="{{d.ship}}" class="card" style="margin: 0; padding: 14px; display: flex; flex-direction: column; gap: 10px; border-color: #3B3FD9">
+<b style="font-size: 15px; font-weight: 500">Marcar como enviado</b>
+<input class="in" aria-label="Transportadora" placeholder="Transportadora" value="{{d.carrier}}" onChange="{{d.onCarrier}}" style="border-color: {{d.shipB}}">
+<input class="in" aria-label="Código de rastreio" placeholder="Código de rastreio" value="{{d.code}}" onChange="{{d.onCode}}" style="border-color: {{d.shipB}}; font-family: 'JetBrains Mono', monospace">
+<input class="in" aria-label="Link de rastreio (opcional)" placeholder="Link de rastreio (opcional)" value="{{d.link}}" onChange="{{d.onLink}}">
+<button type="submit" class="bp">Confirmar envio</button>
+</form>
+</sc-if>
+<sc-if value="{{d.canDeliver}}" hint-placeholder-val="{{ false }}"><div class="card" style="padding: 14px; display: flex; flex-direction: column; gap: 10px"><span style="font-size: 13px; color: #44444A">Em trânsito · <span style="font-family: 'JetBrains Mono', monospace">{{d.shipInfo}}</span></span><button onClick="{{d.deliver}}" class="bp">Marcar como entregue</button></div></sc-if>
+<sc-if value="{{d.none}}" hint-placeholder-val="{{ false }}"><div style="padding: 12px 14px; border-radius: 14px; background: #F1F0EC; font-size: 14px; color: #44444A">{{d.noneText}}</div></sc-if>
+
+<div class="card" style="padding: 4px 14px">
+<sc-for list="{{d.items}}" as="i" hint-placeholder-count="2"><div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #F1F0EC"><span style="width: 44px; height: 44px; border-radius: 10px; background: {{i.tint}}; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="{{i.kind}}" size="26" hint-size="26px,29px"></dc-import></span><span style="flex-grow: 1; font-size: 14px">{{i.name}}<span style="display: block; font-size: 12px; color: #6B6B72">{{i.qty}} un.</span></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{i.total}}</span></div></sc-for>
+<div style="display: flex; justify-content: space-between; padding: 12px 0; font-size: 15px"><span>Total</span><b style="font-family: 'JetBrains Mono', monospace; font-weight: 500">{{d.total}}</b></div>
+</div>
+
+<div class="card" style="padding: 14px; display: flex; flex-direction: column; gap: 0">
+<b style="font-size: 15px; font-weight: 500; padding-bottom: 10px">Histórico</b>
+<sc-for list="{{d.timeline}}" as="t" hint-placeholder-count="3"><div class="fade" style="display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{t.dot}}"></span><span style="flex-grow: 1">{{t.label}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">{{t.when}}</span></div></sc-for>
+</div>
+
+<div class="card" style="padding: 14px; display: flex; flex-direction: column; gap: 10px">
+<b style="font-size: 15px; font-weight: 500">Notas internas</b>
+<sc-for list="{{d.notes}}" as="n" hint-placeholder-count="1"><div class="up" style="padding: 10px 12px; border-radius: 12px; background: #F4F3EF; font-size: 14px; display: flex; flex-direction: column; gap: 4px">{{n.text}}<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6B6B72">{{n.meta}}</span></div></sc-for>
+<form onSubmit="{{d.addNote}}" style="margin: 0; display: flex; gap: 6px"><input class="in" aria-label="Nova nota" placeholder="Escreva uma nota" value="{{d.draft}}" onChange="{{d.onDraft}}"><button type="submit" style="height: 48px; padding: 0 14px; border-radius: 12px; border: none; background: #18181B; color: #FFFFFF; font-size: 14px; font-weight: 500">Salvar</button></form>
+</div>
+
+<sc-if value="{{d.canCancel}}" hint-placeholder-val="{{ false }}"><button onClick="{{d.ask}}" class="bs" style="color: #B4501E">Cancelar pedido</button></sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{d.asking}}" hint-placeholder-val="{{ false }}">
+<div class="fade" onClick="{{d.keep}}" style="position: fixed; inset: 0; background: rgba(24,24,27,.45); z-index: 40"></div>
+<div class="sheet" role="dialog" aria-label="Cancelar pedido" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: #FFFFFF; border-radius: 20px 20px 0 0; padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 12px">
+<span style="align-self: center; width: 40px; height: 4px; border-radius: 999px; background: #E6E4DE"></span>
+<b style="font-size: 20px; font-weight: 500">Cancelar {{d.id}}?</b>
+<span style="font-size: 14px; color: #44444A; line-height: 1.5">Os itens voltam ao estoque e o estorno de {{d.total}} é solicitado ao Stripe. O cliente recebe um e-mail.</span>
+<button onClick="{{d.cancel}}" class="bp" style="background: #B4501E">Sim, cancelar</button>
+<button onClick="{{d.keep}}" class="bs">Manter pedido</button>
+</div>
+</sc-if>
+<sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{toast.key}}" class="toast" role="status" style="position: fixed; left: 16px; right: 16px; bottom: 20px; z-index: 60; min-height: 48px; border-radius: 12px; background: #18181B; color: #FFFFFF; display: flex; align-items: center; gap: 10px; padding: 8px 16px; box-sizing: border-box; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7EE2A0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>{{toast.text}}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const it = (n, q, p, k, t) => ({ name: n, qty: q, price: p, kind: k, tint: t });
+    this.state = {
+      q: '', tab: 'todos', sel: 'MF-000231', ask: false, toast: null, toastN: 0, draft: '', carrier: '', code: '', link: '', shipTried: false,
+      orders: [
+        { id: 'MF-000231', who: 'Ana Ribeiro', date: '01 out · 10:42', status: 'Confirmado', items: [it('Pendente Orbe', 1, 359, 'pendant', '#F1F0EC'), it('Vaso Duna', 1, 129, 'vase', '#F1F0EC'), it('Par de canecas Grão', 2, 89, 'mug', '#FCEEE4')], log: [['Pedido criado', '10:41'], ['Pagamento aprovado', '10:42']], notes: [] },
+        { id: 'MF-000230', who: '[CLIENTE]', date: '01 out · 10:30', status: 'Aguardando pagamento', items: [it('Manta Trama', 1, 219, 'throw', '#ECECFD')], log: [['Pedido criado', '10:30']], notes: [] },
+        { id: 'MF-000229', who: '[CLIENTE]', date: '01 out · 09:12', status: 'Em preparo', items: [it('Luminária Arco', 1, 489, 'lamp', '#ECECFD')], log: [['Pedido criado', '30 SET'], ['Pagamento aprovado', '30 SET'], ['Preparo iniciado', '09:12']], notes: [{ text: 'Cliente pediu para embalar separado.', meta: '[ADMIN] · 09:15' }] },
+        { id: 'MF-000228', who: '[CLIENTE]', date: '30 set · 16:02', status: 'Enviado', carrier: '[TRANSPORTADORA]', code: '[CÓDIGO]', items: [it('Cadeira Lina', 1, 1290, 'chair', '#E8F5EC')], log: [['Pedido criado', '28 SET'], ['Pagamento aprovado', '28 SET'], ['Preparo iniciado', '29 SET'], ['Enviado', '30 SET']], notes: [] },
+        { id: 'MF-000227', who: '[CLIENTE]', date: '30 set · 11:20', status: 'Confirmado', items: [it('Tigela Areia', 3, 79, 'bowl', '#F1F0EC')], log: [['Pedido criado', '30 SET'], ['Pagamento aprovado', '30 SET']], notes: [] },
+        { id: 'MF-000226', who: '[CLIENTE]', date: '29 set · 18:05', status: 'Entregue', items: [it('Almofada Linho', 2, 119, 'throw', '#FCEEE4')], log: [['Pedido criado', '25 SET'], ['Entregue', '29 SET']], notes: [] },
+        { id: 'MF-000225', who: '[CLIENTE]', date: '29 set · 14:40', status: 'Pagamento não aprovado', items: [it('Arandela Fio', 1, 279, 'sconce', '#FCEEE4')], log: [['Pedido criado', '29 SET'], ['Pagamento não aprovado', '29 SET']], notes: [] },
+        { id: 'MF-000224', who: '[CLIENTE]', date: '28 set · 09:00', status: 'Cancelado', items: [it('Jarra Seixo', 1, 149, 'jar', '#E8F5EC')], log: [['Pedido criado', '27 SET'], ['Cancelado pelo cliente', '28 SET']], notes: [] }
+      ]
+    };
+  }
+  componentWillUnmount() { clearTimeout(this.tt); }
+  money(n) { return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  toast(text) { this.setState({ toast: text, toastN: this.state.toastN + 1 }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2600); }
+  update(id, fn) { this.setState({ orders: this.state.orders.map((o) => (o.id === id ? fn(o) : o)), ask: false }); }
+  renderVals() {
+    const s = this.state;
+    const ST = {
+      'Aguardando pagamento': ['#F1F0EC', '#44444A'], 'Confirmado': ['#ECECFD', '#3B3FD9'], 'Em preparo': ['#FCEEE4', '#B4501E'],
+      'Enviado': ['#3B3FD9', '#FFFFFF'], 'Entregue': ['#E8F5EC', '#15803D'], 'Cancelado': ['#F1F0EC', '#44444A'], 'Pagamento não aprovado': ['#FCEEE4', '#B4501E']
+    };
+    const tabsDef = [['todos', 'Todos', null], ['Confirmado', 'A preparar', 'Confirmado'], ['Em preparo', 'Em preparo', 'Em preparo'], ['Enviado', 'Enviados', 'Enviado'], ['Entregue', 'Entregues', 'Entregue'], ['outros', 'Cancelados e falhas', null]];
+    const isOther = (o) => o.status === 'Cancelado' || o.status === 'Pagamento não aprovado' || o.status === 'Aguardando pagamento';
+    const match = (o, t) => t === 'todos' ? true : t === 'outros' ? isOther(o) : o.status === t;
+    const q = s.q.trim().toLowerCase();
+    const list = s.orders.filter((o) => match(o, s.tab) && (!q || (o.id + ' ' + o.who).toLowerCase().includes(q)));
+    const sum = (o) => o.items.reduce((a, i) => a + i.qty * i.price, 0);
+    const d = s.orders.find((o) => o.id === s.sel) || s.orders[0];
+    const now = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    const shipOk = s.carrier.trim() && s.code.trim();
+    let noneText = '';
+    if (d.status === 'Entregue') noneText = 'Pedido concluído.';
+    if (d.status === 'Cancelado') noneText = 'Pedido cancelado. Estorno solicitado ao Stripe.';
+    if (d.status === 'Pagamento não aprovado') noneText = 'Pagamento recusado. Os itens voltaram ao estoque.';
+    if (d.status === 'Aguardando pagamento') noneText = 'Aguardando a confirmação do pagamento.';
+    return {
+      isList: !s.det, isDet: !!s.det, closeDet: () => this.setState({ det: false, ask: false }),
+      q: s.q, onQ: (e) => this.setState({ q: e.target.value }),
+      tabs: tabsDef.map(([id, label]) => ({ label, on: s.tab === id, count: s.orders.filter((o) => match(o, id)).length, bg: s.tab === id ? '#18181B' : '#FFFFFF', border: s.tab === id ? '#18181B' : '#E6E4DE', fg: s.tab === id ? '#FFFFFF' : '#44444A', pick: () => this.setState({ tab: id }) })),
+      rows: list.map((o) => ({
+        id: o.id, who: o.who, date: o.date, units: o.items.reduce((a, i) => a + i.qty, 0) + ' un.', total: this.money(sum(o)),
+        status: o.status, sbg: ST[o.status][0], sfg: ST[o.status][1], sel: o.id === d.id,
+        bg: o.id === d.id ? '#ECECFD' : '#FFFFFF', mark: o.id === d.id ? '#3B3FD9' : 'transparent',
+        open: () => this.setState({ det: true, sel: o.id, ask: false, shipTried: false, carrier: '', code: '', link: '' })
+      })),
+      noRows: list.length === 0,
+      d: {
+        id: d.id, who: d.who, date: d.date, status: d.status, sbg: ST[d.status][0], sfg: ST[d.status][1],
+        items: d.items.map((i) => ({ name: i.name, qty: i.qty, kind: i.kind, tint: i.tint, total: this.money(i.qty * i.price) })),
+        total: this.money(sum(d)),
+        canStart: d.status === 'Confirmado', canShip: d.status === 'Em preparo', canDeliver: d.status === 'Enviado',
+        none: ['Entregue', 'Cancelado', 'Pagamento não aprovado', 'Aguardando pagamento'].includes(d.status), noneText,
+        canCancel: ['Confirmado', 'Em preparo', 'Aguardando pagamento'].includes(d.status),
+        asking: s.ask, notAsking: !s.ask,
+        ask: () => this.setState({ ask: true }), keep: () => this.setState({ ask: false }),
+        start: () => { this.update(d.id, (o) => Object.assign({}, o, { status: 'Em preparo', log: o.log.concat([['Preparo iniciado', now]]) })); this.toast('Preparo iniciado'); },
+        carrier: s.carrier, code: s.code, link: s.link,
+        onCarrier: (e) => this.setState({ carrier: e.target.value }), onCode: (e) => this.setState({ code: e.target.value }), onLink: (e) => this.setState({ link: e.target.value }),
+        shipB: s.shipTried && !shipOk ? '#B4501E' : '#E6E4DE',
+        ship: (e) => {
+          e.preventDefault();
+          if (!shipOk) { this.setState({ shipTried: true }); return; }
+          this.update(d.id, (o) => Object.assign({}, o, { status: 'Enviado', carrier: s.carrier, code: s.code, log: o.log.concat([['Enviado · ' + s.carrier, now]]) }));
+          this.setState({ carrier: '', code: '', link: '', shipTried: false });
+          this.toast('Marcado como enviado. O cliente recebe o e-mail.');
+        },
+        shipInfo: (d.carrier || '') + ' · ' + (d.code || ''),
+        deliver: () => { this.update(d.id, (o) => Object.assign({}, o, { status: 'Entregue', log: o.log.concat([['Entregue', now]]) })); this.toast('Pedido entregue'); },
+        cancel: () => { this.update(d.id, (o) => Object.assign({}, o, { status: 'Cancelado', log: o.log.concat([['Cancelado pela loja', now]]) })); this.toast('Pedido cancelado e estorno solicitado'); },
+        timeline: d.log.map((l, i) => ({ label: l[0], when: l[1], dot: i === d.log.length - 1 ? '#3B3FD9' : '#15803D' })),
+        notes: d.notes,
+        draft: s.draft, onDraft: (e) => this.setState({ draft: e.target.value }),
+        addNote: (e) => { e.preventDefault(); if (!s.draft.trim()) return; this.update(d.id, (o) => Object.assign({}, o, { notes: o.notes.concat([{ text: s.draft.trim(), meta: '[ADMIN] · ' + now }]) })); this.setState({ draft: '' }); }
+      },
+      toast: { show: !!s.toast, text: s.toast || '', key: 't' + s.toastN }
+    };
+  }
+}
+</script>
+</body>
+</html>

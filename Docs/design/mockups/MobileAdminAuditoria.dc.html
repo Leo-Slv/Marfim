@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Admin · Auditoria</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+.card{background:#FFFFFF;border:1px solid #E6E4DE;border-radius:16px}
+.pill{height:24px;padding:0 9px;border-radius:999px;font-size:11px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap}
+</style>
+</helmet>
+<div style="width: 390px; height: 1450px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileAdminTopo" active="auditoria" title="Auditoria" hint-size="390px,60px"></dc-import>
+
+<div style="padding: 14px 16px 8px">
+<label style="height: 46px; display: flex; align-items: center; gap: 8px; padding: 0 12px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input type="search" aria-label="Buscar no registro" placeholder="Quem, ação ou ID" value="{{q}}" onChange="{{onQ}}" style="flex-grow: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 16px"></label>
+</div>
+<div class="chips" style="display: flex; gap: 6px; overflow-x: auto; padding: 4px 16px 12px">
+<sc-for list="{{types}}" as="t" hint-placeholder-count="7"><button onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="flex-shrink: 0; height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid {{t.border}}; background: {{t.bg}}; color: {{t.fg}}; font-size: 13px; font-weight: 500; white-space: nowrap">{{t.label}}</button></sc-for>
+</div>
+
+<div style="padding: 0 16px 8px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="9">
+<div class="card up" style="overflow: hidden">
+<button onClick="{{r.toggle}}" aria-expanded="{{r.open}}" style="width: 100%; text-align: left; padding: 12px 14px; border: none; background: {{r.bg}}; color: #18181B; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; justify-content: space-between; align-items: center; width: 100%"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">{{r.when}}</span><span class="pill" style="height: 22px; background: #F1F0EC; color: #44444A; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em">{{r.entity}}</span></span>
+<span style="display: flex; align-items: center; gap: 10px; width: 100%"><span style="flex-grow: 1; font-size: 15px">{{r.action}}</span><span style="color: #6B6B72; font-size: 18px; transform: rotate({{r.rot}}); transition: transform .2s; display: inline-block">›</span></span>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #44444A"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{r.whoDot}}; flex-shrink: 0"></span>{{r.who}}<span style="color: #6B6B72">·</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">{{r.id}}</span></span>
+</button>
+<sc-if value="{{r.open}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="padding: 0 14px 14px; display: flex; flex-direction: column; gap: 8px">
+<div style="padding: 10px 12px; border-radius: 12px; background: #FCEEE4; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; white-space: pre-line; overflow-wrap: anywhere"><span style="font-size: 10px; letter-spacing: 0.12em; color: #B4501E">ANTES</span>
+{{r.before}}</div>
+<div style="padding: 10px 12px; border-radius: 12px; background: #E8F5EC; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; white-space: pre-line; overflow-wrap: anywhere"><span style="font-size: 10px; letter-spacing: 0.12em; color: #15803D">DEPOIS</span>
+{{r.after}}</div>
+</div>
+</sc-if>
+</div>
+</sc-for>
+<sc-if value="{{noRows}}" hint-placeholder-val="{{ false }}"><div style="padding: 32px 16px; text-align: center; font-size: 14px; color: #6B6B72">Nada encontrado.</div></sc-if>
+</div>
+<div style="padding: 8px 16px 24px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; line-height: 1.6; color: #6B6B72; text-align: center">REGISTRO SOMENTE LEITURA · NÃO PODE SER EDITADO NEM APAGADO</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1450}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { q: '', type: 'Todos', open: 1 }; }
+  renderVals() {
+    const s = this.state;
+    const L = [
+      ['01 OUT · 10:58', '[ADMIN]', 'admin', 'Iniciou o preparo', 'Pedido', 'MF-000229', 'status: Confirmed', 'status: InFulfilment'],
+      ['01 OUT · 10:42', 'Sistema', 'sys', 'Confirmou o pagamento', 'Pedido', 'MF-000231', 'status: AwaitingPayment', 'status: Confirmed\npaymentId: pi_3Q8a…231'],
+      ['01 OUT · 09:30', '[ADMIN]', 'admin', 'Alterou o preço', 'Produto', 'pendente-orbe', 'price: 339,00\ncompareAtPrice: null', 'price: 359,00\ncompareAtPrice: 449,00'],
+      ['01 OUT · 09:12', '[ADMIN]', 'admin', 'Registrou recebimento', 'Estoque', 'BC-DUNA', 'available: 9', 'available: 14'],
+      ['30 SET · 18:05', 'Ana Ribeiro', 'cust', 'Atualizou endereço padrão', 'Cliente', 'ana', 'defaultShipping: trab', 'defaultShipping: casa'],
+      ['30 SET · 16:40', '[ADMIN]', 'admin', 'Desativou conta', 'Cliente', 'c5', 'isActive: true', 'isActive: false'],
+      ['29 SET · 14:41', 'Sistema', 'sys', 'Pagamento recusado', 'Pagamento', 'pi_3Q7w…225', 'status: Pending', 'status: Failed\nreason: card_declined'],
+      ['28 SET · 09:00', '[ADMIN]', 'admin', 'Estornou pagamento', 'Pagamento', 'pi_3Q7v…224', 'refunded: 0,00', 'refunded: 149,00'],
+      ['27 SET · 11:20', '[ADMIN]', 'admin', 'Criou categoria', 'Categoria', 'banho', '—', 'name: Banho\nvisible: false']
+    ];
+    const types = ['Todos', 'Pedido', 'Produto', 'Estoque', 'Cliente', 'Pagamento', 'Categoria'];
+    const q = s.q.trim().toLowerCase();
+    const rows = L.map((l, i) => ({ l, i })).filter(({ l }) => (s.type === 'Todos' || l[4] === s.type) && (!q || (l[1] + ' ' + l[3] + ' ' + l[5]).toLowerCase().includes(q)));
+    const dot = { admin: '#3B3FD9', sys: '#6B6B72', cust: '#15803D' };
+    return {
+      q: s.q, onQ: (e) => this.setState({ q: e.target.value }),
+      types: types.map((t) => ({ label: t, on: s.type === t, bg: s.type === t ? '#18181B' : '#FFFFFF', border: s.type === t ? '#18181B' : '#E6E4DE', fg: s.type === t ? '#FFFFFF' : '#44444A', pick: () => this.setState({ type: t }) })),
+      rows: rows.map(({ l, i }) => ({
+        when: l[0], who: l[1], whoDot: dot[l[2]], action: l[3], entity: l[4].toUpperCase(), id: l[5], before: l[6], after: l[7],
+        open: s.open === i, bg: s.open === i ? '#FAFAF8' : '#FFFFFF', rot: s.open === i ? '90deg' : '0deg',
+        toggle: () => this.setState({ open: s.open === i ? null : i })
+      })),
+      noRows: rows.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

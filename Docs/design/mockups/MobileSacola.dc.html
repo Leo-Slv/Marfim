@@ -13,26 +13,67 @@
 <style>
 body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
 a{color:#3B3FD9}
-button{font-family:inherit;cursor:pointer}
-@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
-.up{animation:up .45s cubic-bezier(.2,.7,.2,1) both}
-.pop{animation:pop .4s ease}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
 </style>
 </helmet>
-<div style="width: 390px; height: 1180px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<div style="width: 390px; height: 1640px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
 <dc-import name="MobileTopo" count="{{count}}" back="MobileInicio.dc.html" title="Sacola" hint-size="390px,86px"></dc-import>
-<section style="padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<section style="padding: 16px 16px 110px; display: flex; flex-direction: column; gap: 12px">
 <div style="display: flex; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em">
 <span style="flex: 1; height: 30px; border-radius: 999px; background: #ECECFD; color: #3B3FD9; display: flex; align-items: center; justify-content: center">01 SACOLA</span>
 <span style="flex: 1; height: 30px; border-radius: 999px; background: #F1F0EC; color: #6B6B72; display: flex; align-items: center; justify-content: center">02 ENTREGA</span>
 <span style="flex: 1; height: 30px; border-radius: 999px; background: #F1F0EC; color: #6B6B72; display: flex; align-items: center; justify-content: center">03 PAGAR</span>
 </div>
 
+<sc-if value="{{futuro}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 500">{{shipLabel}}</span>
+<span style="height: 6px; border-radius: 999px; background: #F1F0EC; overflow: hidden"><span class="growx" style="display: block; height: 6px; width: {{shipPct}}; background: {{shipColor}}; border-radius: 999px; transition: width .6s"></span></span>
+</div>
+</sc-if>
+
 <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
 <div class="up" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 18px; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+<div class="floaty" style="display: flex"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="0.9" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg></div>
 <span style="font-size: 22px; font-weight: 300">Sua sacola está vazia</span>
+<span style="font-size: 14px; color: #6B6B72">As peças dos ateliês esperam por você.</span>
 <a href="MobileListagem.dc.html" style="height: 48px; padding: 0 20px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Ver a loja</a>
 </div>
 </sc-if>
@@ -44,9 +85,12 @@ button{font-family:inherit;cursor:pointer}
 <span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
 <span style="font-size: 12px; color: #6B6B72">{{l.brand}}</span>
 <span style="font-size: 16px; font-weight: 500">{{l.name}}</span>
-<span style="display: flex; gap: 6px; align-items: baseline"><span key="{{l.totalKey}}" class="pop" style="font-family: 'JetBrains Mono', monospace; font-size: 14px">{{l.total}}</span><sc-if value="{{l.hasOld}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72; text-decoration: line-through">{{l.old}}</span></sc-if></span>
+<span style="display: flex; gap: 6px; align-items: baseline"><span key="{{l.totalKey}}" class="bump" style="font-family: 'JetBrains Mono', monospace; font-size: 14px">{{l.total}}</span><sc-if value="{{l.hasOld}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72; text-decoration: line-through">{{l.old}}</span></sc-if></span>
 </span>
 </div>
+<sc-if value="{{l.hasWarn}}" hint-placeholder-val="{{ false }}">
+<div role="alert" class="fade" style="padding: 10px 12px; border-radius: 10px; background: #FCEEE4; font-size: 13px; line-height: 1.45; display: flex; align-items: center; gap: 10px"><span style="flex-grow: 1">{{l.warn}}</span><button onClick="{{l.fix}}" style="height: 34px; padding: 0 10px; border-radius: 8px; border: 1px solid #B4501E; background: transparent; color: #B4501E; font-size: 12px; font-weight: 500; white-space: nowrap">{{l.fixLabel}}</button></div>
+</sc-if>
 <div style="display: flex; align-items: center; justify-content: space-between">
 <div style="display: flex; align-items: center; height: 44px; border: 1px solid #E6E4DE; border-radius: 12px">
 <button onClick="{{l.dec}}" aria-label="Diminuir {{l.name}}" style="width: 44px; height: 42px; border: none; background: transparent; font-size: 18px">−</button>
@@ -58,14 +102,46 @@ button{font-family:inherit;cursor:pointer}
 </article>
 </sc-for>
 
+<sc-for list="{{ghosts}}" as="g" hint-placeholder-count="0">
+<article key="{{g.id}}" class="up" style="background: #FFFFFF; border: 1px dashed #E6E4DE; border-radius: 16px; padding: 12px; display: flex; gap: 12px; align-items: center">
+<span style="width: 60px; height: 60px; border-radius: 12px; background: #F1F0EC; display: flex; align-items: center; justify-content: center; color: #6B6B72; font-size: 22px">⌀</span>
+<span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #B4501E">{{g.code}}</span><span style="font-size: 15px; color: #6B6B72; text-decoration: line-through">{{g.name}}</span><span style="font-size: 12px; color: #44444A">{{g.text}}</span></span>
+<button onClick="{{g.remove}}" aria-label="Remover {{g.name}}" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 18px">×</button>
+</article>
+</sc-for>
+
 <sc-if value="{{has}}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{futuro}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+<label style="display: flex; gap: 12px; align-items: flex-start; cursor: pointer"><input type="checkbox" checked="{{gift}}" onChange="{{toggleGift}}" style="margin-top: 2px"><span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px"><b style="font-size: 15px; font-weight: 500">É para presente · + R$ 25</b><span style="font-size: 13px; color: #6B6B72">Embrulho de tecido e cartão escrito à mão.</span></span></label>
+<sc-if value="{{gift}}" hint-placeholder-val="{{ false }}"><textarea rows="2" maxlength="200" aria-label="Mensagem do cartão" placeholder="Mensagem do cartão" value="{{giftMsg}}" onChange="{{onGift}}" class="fade" style="resize: none; padding: 10px 12px; border: 1px solid #E6E4DE; border-radius: 12px; background: #F4F3EF; font-size: 16px"></textarea></sc-if>
+<div style="display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid #E6E4DE"><input aria-label="CEP" inputmode="numeric" placeholder="CEP para o frete" value="{{cep}}" onChange="{{onCep}}" style="flex-grow: 1; min-width: 0; height: 46px; box-sizing: border-box; padding: 0 12px; border: 1px solid #E6E4DE; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 16px"><button onClick="{{calc}}" style="height: 46px; padding: 0 14px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 14px; font-weight: 500">Calcular</button></div>
+<sc-if value="{{shipReady}}" hint-placeholder-val="{{ false }}"><div class="fade" style="display: flex; flex-direction: column; gap: 6px"><sc-for list="{{shipOpts}}" as="o" hint-placeholder-count="2"><label style="display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; border: 1px solid {{o.border}}; background: {{o.bg}}; font-size: 14px; cursor: pointer"><input type="radio" name="mship" checked="{{o.on}}" onChange="{{o.pick}}"><span style="flex-grow: 1">{{o.label}}</span><span style="font-family: 'JetBrains Mono', monospace; color: {{o.color}}">{{o.price}}</span></label></sc-for></div></sc-if>
+<div style="display: flex; gap: 8px"><input aria-label="Cupom" placeholder="Cupom (ex.: OUTONO10)" value="{{coupon}}" onChange="{{onCoupon}}" style="flex-grow: 1; min-width: 0; height: 46px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{couponB}}; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 16px; text-transform: uppercase"><button onClick="{{applyCoupon}}" style="height: 46px; padding: 0 14px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 14px; font-weight: 500">Aplicar</button></div>
+<sc-if value="{{couponMsg}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: {{couponColor}}">{{couponText}}</span></sc-if>
+<div role="radiogroup" aria-label="Forma de pagamento" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 12px; background: #F1F0EC">
+<button onClick="{{payPix}}" aria-checked="{{pix}}" role="radio" style="height: 40px; border-radius: 9px; border: none; background: {{pixBg}}; font-size: 14px; font-weight: 500">Pix · 5% off</button>
+<button onClick="{{payCard}}" aria-checked="{{card}}" role="radio" style="height: 40px; border-radius: 9px; border: none; background: {{cardBg}}; font-size: 14px; font-weight: 500">Cartão · 6×</button>
+</div>
+</div>
+</sc-if>
+
 <div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; font-size: 14px">
 <div style="display: flex; justify-content: space-between"><span style="color: #44444A">Subtotal · {{countLabel}}</span><span style="font-family: 'JetBrains Mono', monospace">{{full}}</span></div>
 <sc-if value="{{hasSave}}" hint-placeholder-val="{{ true }}"><div style="display: flex; justify-content: space-between"><span style="color: #44444A">Promoções</span><span style="font-family: 'JetBrains Mono', monospace; color: #15803D">− {{save}}</span></div></sc-if>
-<div style="display: flex; justify-content: space-between; align-items: center"><span style="color: #44444A">Frete</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #B4501E">EM BREVE</span></div>
-<div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 10px; border-top: 1px solid #E6E4DE"><span style="font-size: 15px; font-weight: 500">Total</span><span style="font-size: 28px; font-weight: 300">{{total}}</span></div>
+<sc-for list="{{extras}}" as="x" hint-placeholder-count="0"><div style="display: flex; justify-content: space-between"><span style="color: #44444A">{{x.label}}</span><span style="font-family: 'JetBrains Mono', monospace; color: {{x.color}}">{{x.value}}</span></div></sc-for>
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="color: #44444A">Frete</span><span style="font-family: 'JetBrains Mono', monospace; font-size: {{shipSize}}; color: {{shipRowColor}}">{{shipRow}}</span></div>
+<div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 10px; border-top: 1px solid #E6E4DE"><span style="font-size: 15px; font-weight: 500">Total</span><span key="{{total}}" class="fade" style="font-size: 28px; font-weight: 300">{{total}}</span></div>
 </div>
-<div style="padding: 12px 14px; border-radius: 14px; border: 1px dashed #E6E4DE; font-size: 13px; color: #6B6B72; line-height: 1.5">Cupom, embrulho para presente e Pix com desconto <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span></div>
+<sc-if value="{{notFuturo}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 12px 14px; border-radius: 14px; border: 1px dashed #E6E4DE; font-size: 13px; color: #6B6B72; line-height: 1.5">Frete por CEP, cupom, embrulho para presente e Pix com desconto <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span></div>
+</sc-if>
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 8px">
+<span style="font-size: 20px; font-weight: 300">Da mesma categoria</span>
+<div class="chips" style="display: flex; gap: 10px; overflow-x: auto">
+<sc-for list="{{recos}}" as="r" hint-placeholder-count="3"><div style="flex-shrink: 0; width: 150px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 6px; display: flex; flex-direction: column; gap: 6px"><span style="height: 110px; border-radius: 10px; background: {{r.tint}}; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="{{r.kind}}" size="58" hint-size="58px,65px"></dc-import></span><span style="font-size: 13px; font-weight: 500; padding: 0 4px">{{r.name}}</span><span style="display: flex; align-items: center; justify-content: space-between; padding: 0 4px 4px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">{{r.price}}</span><button onClick="{{r.add}}" aria-label="Adicionar {{r.name}}" style="width: 36px; height: 36px; border-radius: 10px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 18px">+</button></span></div></sc-for>
+</div>
+</div>
 </sc-if>
 </section>
 
@@ -76,21 +152,58 @@ button{font-family:inherit;cursor:pointer}
 </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1180}}'>
+<script type="text/x-dc" data-dc-script data-props='{"avisos":{"editor":"boolean","default":false},"futuro":{"editor":"boolean","default":false},"$preview":{"width":390,"height":1640}}'>
 class Component extends DCLogic {
-  constructor(props) { super(props); this.state = { cart: [['orbe', 1], ['duna', 1], ['grao', 2]] }; }
+  constructor(props) { super(props); this.state = { cart: [['orbe', 1], ['duna', 1], ['grao', 2]], fixed: {}, gift: false, giftMsg: '', cep: '', shipReady: false, ship: 'eco', coupon: '', couponOn: false, couponErr: false, pay: 'card' }; }
   renderVals() {
     const s = this.state;
-    const C = { orbe: ['Pendente Orbe', 'Oficina Faísca', 359, 449, 'pendant', '#F1F0EC'], duna: ['Vaso Duna', 'Estúdio Barro Cru', 129, null, 'vase', '#F1F0EC'], grao: ['Par de canecas Grão', 'Estúdio Barro Cru', 89, null, 'mug', '#FCEEE4'] };
+    const futuro = !!this.props.futuro;
+    const avisos = !!this.props.avisos;
+    const C = { orbe: ['Pendente Orbe', 'Oficina Faísca', 359, 449, 'pendant', '#F1F0EC'], duna: ['Vaso Duna', 'Estúdio Barro Cru', 129, null, 'vase', '#F1F0EC'], grao: ['Par de canecas Grão', 'Estúdio Barro Cru', 89, null, 'mug', '#FCEEE4'], seixo: ['Jarra Seixo', 'Estúdio Barro Cru', 149, null, 'jar', '#E8F5EC'], arco: ['Luminária Arco', 'Oficina Faísca', 489, null, 'lamp', '#ECECFD'], tigela: ['Tigela Areia', 'Estúdio Barro Cru', 79, 95, 'bowl', '#F1F0EC'] };
     const m = (n) => 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const set = (id, q) => this.setState({ cart: q <= 0 ? s.cart.filter((c) => c[0] !== id) : s.cart.map((c) => (c[0] === id ? [id, Math.min(9, q)] : c)) });
+    const set = (id, q) => this.setState({ cart: q <= 0 ? s.cart.filter((c) => c[0] !== id) : (s.cart.some((c) => c[0] === id) ? s.cart.map((c) => (c[0] === id ? [id, Math.min(9, q)] : c)) : s.cart.concat([[id, 1]])) });
+    const warns = avisos ? { orbe: ['O preço mudou de R$ 339 para R$ 359.', 'Entendi'], grao: ['Só temos 1 unidade disponível.', 'Ajustar para 1', 1] } : {};
     const sub = s.cart.reduce((a, [id, q]) => a + C[id][2] * q, 0);
     const full = s.cart.reduce((a, [id, q]) => a + (C[id][3] || C[id][2]) * q, 0);
     const count = s.cart.reduce((a, c) => a + c[1], 0);
+    const free = sub >= 299;
+    const shipCost = futuro && s.shipReady ? (s.ship === 'exp' ? 42.9 : (free ? 0 : 24.9)) : 0;
+    const couponV = futuro && s.couponOn ? sub * 0.1 : 0;
+    const giftV = futuro && s.gift ? 25 : 0;
+    const pixV = futuro && s.pay === 'pix' ? (sub - couponV) * 0.05 : 0;
+    const total = sub - couponV - pixV + giftV + shipCost;
+    const extras = [];
+    if (couponV) extras.push({ label: 'Cupom OUTONO10', value: '− ' + m(couponV), color: '#15803D' });
+    if (giftV) extras.push({ label: 'Embrulho para presente', value: m(25), color: '#18181B' });
+    if (pixV) extras.push({ label: 'Desconto no Pix', value: '− ' + m(pixV), color: '#15803D' });
+    const inCart = {}; s.cart.forEach((c) => { inCart[c[0]] = 1; });
+    const ghostData = avisos ? [['banco', 'Banco Tora', 'INDISPONÍVEL', 'Saiu de venda.'], ['x', 'Peça removida', 'NÃO ENCONTRADA', 'Não está mais no catálogo.']].filter((g) => !s.fixed['g' + g[0]]) : [];
     return {
+      futuro, notFuturo: !futuro,
       count, countLabel: count + (count === 1 ? ' peça' : ' peças'), empty: count === 0, has: count > 0,
-      lines: s.cart.map(([id, q]) => ({ id, name: C[id][0], brand: C[id][1], kind: C[id][4], tint: C[id][5], qty: q, total: m(C[id][2] * q), totalKey: id + q, hasOld: !!C[id][3], old: C[id][3] ? m(C[id][3] * q) : '', inc: () => set(id, q + 1), dec: () => set(id, q - 1), remove: () => set(id, 0) })),
-      full: m(full), save: m(full - sub), hasSave: full > sub, total: m(sub)
+      shipLabel: free ? 'Frete grátis na entrega econômica' : 'Faltam ' + m(299 - sub) + ' para o frete grátis', shipPct: Math.min(100, sub / 299 * 100).toFixed(1) + '%', shipColor: free ? '#15803D' : '#E8793A',
+      lines: s.cart.map(([id, q]) => {
+        const w = warns[id];
+        return { id, name: C[id][0], brand: C[id][1], kind: C[id][4], tint: C[id][5], qty: q, total: m(C[id][2] * q), totalKey: id + q, hasOld: !!C[id][3], old: C[id][3] ? m(C[id][3] * q) : '',
+          hasWarn: !!w && !s.fixed[id] && !(w[2] && q <= w[2]), warn: w ? w[0] : '', fixLabel: w ? w[1] : '',
+          fix: () => (w && w[2] ? this.setState({ fixed: Object.assign({}, s.fixed, { [id]: 1 }), cart: s.cart.map((c) => (c[0] === id ? [id, w[2]] : c)) }) : this.setState({ fixed: Object.assign({}, s.fixed, { [id]: 1 }) })),
+          inc: () => set(id, q + 1), dec: () => set(id, q - 1), remove: () => set(id, 0) };
+      }),
+      ghosts: ghostData.map((g) => ({ id: g[0], name: g[1], code: g[2], text: g[3], remove: () => this.setState({ fixed: Object.assign({}, s.fixed, { ['g' + g[0]]: 1 }) }) })),
+      gift: s.gift, giftMsg: s.giftMsg, toggleGift: () => this.setState({ gift: !s.gift }), onGift: (e) => this.setState({ giftMsg: e.target.value }),
+      cep: s.cep, onCep: (e) => this.setState({ cep: e.target.value.replace(/\D/g, '').slice(0, 8).replace(/^(\d{5})(\d)/, '$1-$2') }),
+      calc: () => this.setState({ shipReady: s.cep.replace(/\D/g, '').length === 8 }), shipReady: s.shipReady,
+      shipOpts: [['eco', 'Econômica · 5–9 dias', free ? 0 : 24.9], ['exp', 'Expressa · 2–4 dias', 42.9]].map(([id, label, c]) => ({ label, on: s.ship === id, price: c ? m(c) : 'Grátis', color: c ? '#18181B' : '#15803D', border: s.ship === id ? '#3B3FD9' : '#E6E4DE', bg: s.ship === id ? '#ECECFD' : '#FFFFFF', pick: () => this.setState({ ship: id }) })),
+      coupon: s.coupon, onCoupon: (e) => this.setState({ coupon: e.target.value.toUpperCase(), couponErr: false }), couponB: s.couponErr ? '#B4501E' : '#E6E4DE',
+      applyCoupon: () => (s.coupon.trim() === 'OUTONO10' ? this.setState({ couponOn: true, couponErr: false }) : this.setState({ couponErr: true, couponOn: false })),
+      couponMsg: s.couponOn || s.couponErr, couponText: s.couponOn ? 'OUTONO10 aplicado · 10% off' : 'Esse cupom não existe ou expirou.', couponColor: s.couponOn ? '#15803D' : '#B4501E',
+      pix: s.pay === 'pix', card: s.pay !== 'pix', pixBg: s.pay === 'pix' ? '#FFFFFF' : 'transparent', cardBg: s.pay !== 'pix' ? '#FFFFFF' : 'transparent',
+      payPix: () => this.setState({ pay: 'pix' }), payCard: () => this.setState({ pay: 'card' }),
+      extras,
+      shipRow: futuro ? (s.shipReady ? (shipCost ? m(shipCost) : 'Grátis') : 'Informe o CEP') : 'EM BREVE', shipSize: futuro ? '13px' : '10px',
+      shipRowColor: futuro ? (s.shipReady && !shipCost ? '#15803D' : '#6B6B72') : '#B4501E',
+      full: m(full), save: m(full - sub), hasSave: full > sub, total: m(total),
+      recos: ['seixo', 'arco', 'tigela'].filter((id) => !inCart[id]).map((id) => ({ name: C[id][0], price: m(C[id][2]), kind: C[id][4], tint: C[id][5], add: () => set(id, 1) }))
     };
   }
 }

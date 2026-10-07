@@ -12,25 +12,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>body{margin:0}</style>
 </helmet>
-<div style="width: 680px; box-sizing: border-box; padding: 40px; background: #ECEBE6; font-family: Outfit, Helvetica, Arial, sans-serif; color: #18181B">
-<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72; padding: 0 4px 12px">{{preheader}}</div>
-<div style="width: 600px; background: #FFFFFF; border-radius: 16px; overflow: hidden">
+<div style="width: {{outerW}}; box-sizing: border-box; padding: {{outerPad}}; background: #ECEBE6; font-family: Outfit, Helvetica, Arial, sans-serif; color: #18181B">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72; padding: 0 {{prePad}} 12px">{{preheader}}</div>
+<div style="width: {{innerW}}; background: #FFFFFF; border-radius: {{innerR}}; overflow: hidden">
 
-<div style="padding: 28px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E6E4DE">
+<div style="padding: 28px {{px}}; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E6E4DE">
 <span style="font-size: 22px; font-weight: 500; letter-spacing: -0.02em">marfim<span style="color: #3B3FD9">.</span></span>
 <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #6B6B72">{{tag}}</span>
 </div>
 
-<div style="padding: 40px 40px 8px; display: flex; flex-direction: column; gap: 16px">
+<div style="padding: 40px {{px}} 8px; display: flex; flex-direction: column; gap: 16px">
 <span style="width: 56px; height: 56px; border-radius: 16px; background: {{iconBg}}; display: flex; align-items: center; justify-content: center">
 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="{{iconFg}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{icon}}"></path></svg></span>
-<div style="font-size: 32px; font-weight: 300; letter-spacing: -0.025em; line-height: 1.12">{{title}}</div>
+<div style="font-size: {{titleSize}}; font-weight: 300; letter-spacing: -0.025em; line-height: 1.12">{{title}}</div>
 <div style="font-size: 16px; line-height: 1.6; color: #44444A">{{intro}}</div>
 </div>
 
 <!-- Bloco do pedido -->
 <sc-if value="{{hasOrder}}" hint-placeholder-val="{{ false }}">
-<div style="margin: 24px 40px 0; border: 1px solid #E6E4DE; border-radius: 14px; overflow: hidden">
+<div style="margin: 24px {{px}} 0; border: 1px solid #E6E4DE; border-radius: 14px; overflow: hidden">
 <div style="padding: 14px 18px; background: #F4F3EF; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #44444A"><span>PEDIDO MF-000231</span><span>01 OUT 2026</span></div>
 <sc-for list="{{items}}" as="i" hint-placeholder-count="3">
 <div style="padding: 14px 18px; border-top: 1px solid #E6E4DE; display: flex; align-items: center; gap: 14px">
@@ -45,7 +45,7 @@
 
 <!-- Envio -->
 <sc-if value="{{isShipped}}" hint-placeholder-val="{{ false }}">
-<div style="margin: 16px 40px 0; padding: 18px 20px; border-radius: 14px; background: #3B3FD9; color: #FFFFFF; display: flex; flex-direction: column; gap: 6px">
+<div style="margin: 16px {{px}} 0; padding: 18px 20px; border-radius: 14px; background: #3B3FD9; color: #FFFFFF; display: flex; flex-direction: column; gap: 6px">
 <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #ECECFD">TRANSPORTADORA</span>
 <div style="display: flex; justify-content: space-between; font-size: 15px"><span>[TRANSPORTADORA]</span><span style="font-family: 'JetBrains Mono', monospace">[CÓDIGO DE RASTREIO]</span></div>
 </div>
@@ -53,21 +53,21 @@
 
 <!-- Motivo / aviso -->
 <sc-if value="{{hasNote}}" hint-placeholder-val="{{ false }}">
-<div style="margin: 16px 40px 0; padding: 16px 18px; border-radius: 14px; background: {{noteBg}}; font-size: 14px; line-height: 1.55; color: #18181B">
+<div style="margin: 16px {{px}} 0; padding: 16px 18px; border-radius: 14px; background: {{noteBg}}; font-size: 14px; line-height: 1.55; color: #18181B">
 <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: {{noteInk}}; padding-bottom: 4px">{{noteLabel}}</span>{{note}}</div>
 </sc-if>
 
-<div style="padding: 28px 40px 8px">
+<div style="padding: 28px {{px}} 8px">
 <a href="{{ctaHref}}" style="display: inline-flex; align-items: center; height: 52px; padding: 0 28px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; font-size: 16px; font-weight: 500">{{cta}}</a>
 </div>
 <sc-if value="{{hasExpiry}}" hint-placeholder-val="{{ false }}">
-<div style="padding: 8px 40px 0; font-size: 13px; color: #6B6B72; line-height: 1.6">{{expiry}}<br>Se o botão não funcionar, copie este endereço no navegador:<br><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9; word-break: break-all">{{link}}</span></div>
+<div style="padding: 8px {{px}} 0; font-size: 13px; color: #6B6B72; line-height: 1.6">{{expiry}}<br>Se o botão não funcionar, copie este endereço no navegador:<br><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #3B3FD9; word-break: break-all">{{link}}</span></div>
 </sc-if>
 <sc-if value="{{hasSafety}}" hint-placeholder-val="{{ false }}">
-<div style="margin: 20px 40px 0; padding-top: 16px; border-top: 1px solid #E6E4DE; font-size: 13px; color: #6B6B72; line-height: 1.6">{{safety}}</div>
+<div style="margin: 20px {{px}} 0; padding-top: 16px; border-top: 1px solid #E6E4DE; font-size: 13px; color: #6B6B72; line-height: 1.6">{{safety}}</div>
 </sc-if>
 
-<div style="margin-top: 36px; padding: 24px 40px; background: #18181B; color: #A1A1A8; font-size: 12px; line-height: 1.7">
+<div style="margin-top: 36px; padding: 24px {{px}}; background: #18181B; color: #A1A1A8; font-size: 12px; line-height: 1.7">
 <span style="display: block; color: #F4F3EF; font-size: 14px; padding-bottom: 6px">Dúvidas? Responda este e-mail ou fale com a gente: [SEU WHATSAPP]</span>
 Você recebeu este e-mail porque tem uma conta na Marfim. Mensagem automática sobre a sua conta ou pedido.<br>
 <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px">MARFIM · CNPJ [SEU CNPJ] · [ENDEREÇO DA LOJA]</span>
@@ -75,7 +75,7 @@ Você recebeu este e-mail porque tem uma conta na Marfim. Mensagem automática s
 </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"tipo":{"editor":"enum","options":["confirmacao","nova-senha","pedido-confirmado","pedido-enviado","pedido-cancelado","pagamento-nao-aprovado"],"default":"confirmacao"},"$preview":{"width":680,"height":900}}'>
+<script type="text/x-dc" data-dc-script data-props='{"tipo":{"editor":"enum","options":["confirmacao","nova-senha","pedido-confirmado","pedido-enviado","pedido-cancelado","pagamento-nao-aprovado"],"default":"confirmacao"},"mobile":{"editor":"boolean","default":false},"$preview":{"width":680,"height":900}}'>
 class Component extends DCLogic {
   renderVals() {
     const t = this.props.tipo || 'confirmacao';
@@ -98,7 +98,8 @@ class Component extends DCLogic {
       { name: 'Vaso Duna', brand: 'Estúdio Barro Cru', qty: 1, total: 'R$ 129,00', kind: 'vase', tint: '#F1F0EC' },
       { name: 'Par de canecas Grão', brand: 'Estúdio Barro Cru', qty: 2, total: 'R$ 178,00', kind: 'mug', tint: '#FCEEE4' }
     ];
-    return {
+    const mob = !!this.props.mobile;
+    return { outerW: mob ? '390px' : '680px', outerPad: mob ? '14px 0 0' : '40px', prePad: mob ? '16px' : '4px', innerW: mob ? '390px' : '600px', innerR: mob ? '0' : '16px', px: mob ? '20px' : '40px', titleSize: mob ? '26px' : '32px',
       tag: c.tag, preheader: c.pre, icon: c.icon, iconBg: c.iconBg, iconFg: c.iconFg, title: c.title, intro: c.intro,
       cta: c.cta, ctaHref: c.href,
       hasOrder: !!c.order, items, totalLabel: c.totalLabel || 'Total',

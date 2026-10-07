@@ -23,7 +23,7 @@
 </sc-if>
 <a href="MobileInicio.dc.html" style="flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; color: #18181B">
 <span style="font-size: 19px; font-weight: 500; letter-spacing: -0.02em">{{title}}<span style="color: #3B3FD9">{{dot}}</span></span></a>
-<a href="MobileListagem.dc.html" aria-label="Buscar" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #18181B"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></a>
+<a href="MobileBusca.dc.html" aria-label="Buscar" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #18181B"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></a>
 <a href="MobileSacola.dc.html" aria-label="Sacola, {{count}} itens" style="position: relative; width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #18181B">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
 <sc-if value="{{hasCount}}" hint-placeholder-val="{{ true }}"><span key="{{count}}" style="position: absolute; top: 4px; right: 2px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 999px; background: #E8793A; color: #FFFFFF; font-family: 'JetBrains Mono', monospace; font-size: 10px; display: flex; align-items: center; justify-content: center">{{count}}</span></sc-if>
@@ -33,7 +33,7 @@
 <div onClick="{{closeMenu}}" style="position: fixed; inset: 0; background: rgba(24,24,27,.35); z-index: 50"></div>
 <nav aria-label="Menu" style="position: fixed; top: 0; left: 0; bottom: 0; width: 310px; background: #F4F3EF; z-index: 51; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; overflow: auto; box-shadow: 20px 0 40px -20px rgba(24,24,27,.3)">
 <div style="display: flex; align-items: center"><span style="flex-grow: 1; font-size: 20px; font-weight: 500">marfim<span style="color: #3B3FD9">.</span></span><button onClick="{{closeMenu}}" aria-label="Fechar menu" style="width: 44px; height: 44px; border-radius: 12px; border: none; background: transparent; font-size: 22px; cursor: pointer">×</button></div>
-<a href="Acesso.dc.html" style="height: 48px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500">Entrar ou criar conta</a>
+<a href="{{accHref}}" style="height: 48px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500">{{accLabel}}</a>
 <div style="display: flex; flex-direction: column">
 <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #6B6B72; padding-bottom: 6px">LOJA</span>
 <a href="MobileListagem.dc.html" style="height: 48px; border-bottom: 1px solid #E6E4DE; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #18181B; font-size: 20px; font-weight: 300">Novidades<span style="color: #6B6B72">›</span></a>
@@ -42,19 +42,20 @@
 <a href="MobileListagem.dc.html" style="height: 48px; border-bottom: 1px solid #E6E4DE; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #18181B; font-size: 20px; font-weight: 300">Iluminação<span style="color: #6B6B72">›</span></a>
 <a href="MobileListagem.dc.html" style="height: 48px; border-bottom: 1px solid #E6E4DE; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #18181B; font-size: 20px; font-weight: 300">Têxteis<span style="color: #6B6B72">›</span></a>
 <a href="MobileListagem.dc.html" style="height: 48px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #3B3FD9; font-size: 20px; font-weight: 400">Promoções<span>›</span></a>
+<a href="MobileBusca.dc.html" style="height: 48px; display: flex; align-items: center; gap: 10px; text-decoration: none; color: #44444A; font-size: 16px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>Buscar produtos</a>
 </div>
 <div style="display: flex; flex-direction: column; gap: 2px; font-size: 15px">
 <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #6B6B72; padding-bottom: 6px">AJUDA</span>
 <a href="MobileConta.dc.html" style="min-height: 40px; display: flex; align-items: center; color: #18181B; text-decoration: none">Meus pedidos</a>
-<a href="Conteudo.dc.html" style="min-height: 40px; display: flex; align-items: center; color: #18181B; text-decoration: none">Trocas e devoluções</a>
-<a href="Conteudo.dc.html" style="min-height: 40px; display: flex; align-items: center; color: #18181B; text-decoration: none">Perguntas frequentes</a>
-<a href="Conteudo.dc.html" style="min-height: 40px; display: flex; align-items: center; color: #18181B; text-decoration: none">Nossa história</a>
+<a href="MobileConteudo.dc.html" style="min-height: 40px; display: flex; align-items: center; color: #18181B; text-decoration: none">Trocas e devoluções</a>
+<a href="MobileConteudo.dc.html" style="min-height: 40px; display: flex; align-items: center; color: #18181B; text-decoration: none">Perguntas frequentes</a>
+<a href="MobileConteudo.dc.html" style="min-height: 40px; display: flex; align-items: center; color: #18181B; text-decoration: none">Nossa história</a>
 </div>
 </nav>
 </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"count":{"editor":"int","default":3},"back":{"editor":"text","default":""},"title":{"editor":"text","default":""},"$preview":{"width":390,"height":86}}'>
+<script type="text/x-dc" data-dc-script data-props='{"count":{"editor":"int","default":3},"back":{"editor":"text","default":""},"title":{"editor":"text","default":""},"logged":{"editor":"boolean","default":false},"$preview":{"width":390,"height":86}}'>
 class Component extends DCLogic {
   constructor(props) { super(props); this.state = { menu: false }; }
   renderVals() {
@@ -64,6 +65,7 @@ class Component extends DCLogic {
     return {
       count, hasCount: count > 0, hasBack: !!back, noBack: !back, backHref: back,
       title: title || 'marfim', dot: title ? '' : '.',
+      accHref: this.props.logged ? 'MobileConta.dc.html' : 'MobileAcesso.dc.html', accLabel: this.props.logged ? 'Minha conta' : 'Entrar ou criar conta',
       menu: this.state.menu, openMenu: () => this.setState({ menu: true }), closeMenu: () => this.setState({ menu: false })
     };
   }

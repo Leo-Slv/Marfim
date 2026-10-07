@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · E-mails</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}</style>
+</helmet>
+<div style="width: 2716px; height: 1340px; box-sizing: border-box; padding: 40px; background: #F4F3EF; display: flex; flex-direction: column; gap: 24px; overflow: hidden">
+<div style="display: flex; align-items: baseline; gap: 14px"><span style="font-size: 28px; font-weight: 300; letter-spacing: -0.02em">E-mails transacionais no celular</span><span style="font-size: 14px; color: #6B6B72">Mesmo componente dos e-mails de desktop, com a prop mobile ligada (390 px, margens de 20 px).</span></div>
+<div style="display: flex; gap: 40px; align-items: flex-start">
+<div style="width: 390px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">01 · CONFIRME SEU E-MAIL</span>
+<div style="width: 390px; height: 1180px; overflow: hidden; border-radius: 28px; border: 8px solid #18181B; box-sizing: content-box; background: #ECEBE6"><dc-import name="Email" tipo="confirmacao" mobile="{{ true }}" hint-size="390px,1180px"></dc-import></div>
+</div>
+<div style="width: 390px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">02 · NOVA SENHA</span>
+<div style="width: 390px; height: 1180px; overflow: hidden; border-radius: 28px; border: 8px solid #18181B; box-sizing: content-box; background: #ECEBE6"><dc-import name="Email" tipo="nova-senha" mobile="{{ true }}" hint-size="390px,1180px"></dc-import></div>
+</div>
+<div style="width: 390px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">03 · PEDIDO CONFIRMADO</span>
+<div style="width: 390px; height: 1180px; overflow: hidden; border-radius: 28px; border: 8px solid #18181B; box-sizing: content-box; background: #ECEBE6"><dc-import name="Email" tipo="pedido-confirmado" mobile="{{ true }}" hint-size="390px,1180px"></dc-import></div>
+</div>
+<div style="width: 390px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">04 · PEDIDO ENVIADO</span>
+<div style="width: 390px; height: 1180px; overflow: hidden; border-radius: 28px; border: 8px solid #18181B; box-sizing: content-box; background: #ECEBE6"><dc-import name="Email" tipo="pedido-enviado" mobile="{{ true }}" hint-size="390px,1180px"></dc-import></div>
+</div>
+<div style="width: 390px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">05 · PEDIDO CANCELADO</span>
+<div style="width: 390px; height: 1180px; overflow: hidden; border-radius: 28px; border: 8px solid #18181B; box-sizing: content-box; background: #ECEBE6"><dc-import name="Email" tipo="pedido-cancelado" mobile="{{ true }}" hint-size="390px,1180px"></dc-import></div>
+</div>
+<div style="width: 390px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">06 · PAGAMENTO NÃO APROVADO</span>
+<div style="width: 390px; height: 1180px; overflow: hidden; border-radius: 28px; border: 8px solid #18181B; box-sizing: content-box; background: #ECEBE6"><dc-import name="Email" tipo="pagamento-nao-aprovado" mobile="{{ true }}" hint-size="390px,1180px"></dc-import></div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2716,"height":1340}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

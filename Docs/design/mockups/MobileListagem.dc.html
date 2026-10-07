@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<title>Mobile · Listagem</title>
+<title>Mobile · Listagem e promoções</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -13,22 +13,50 @@
 <style>
 body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
 a{color:#3B3FD9}
-button{font-family:inherit;cursor:pointer}
-input[type=radio]{accent-color:#3B3FD9;width:18px;height:18px;margin:0}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
 @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 @keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
 .sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
 .fade{animation:fade .3s ease both}
 .spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
 .chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
 </style>
 </helmet>
 <div style="width: 390px; height: 1640px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
 <dc-import name="MobileTopo" count="{{bag}}" hint-size="390px,86px"></dc-import>
+
+<sc-if value="{{isCat}}" hint-placeholder-val="{{ true }}">
 <section style="padding: 20px 16px 0; display: flex; flex-direction: column; gap: 12px">
 <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">INÍCIO / {{catUpper}}</div>
 <div style="display: flex; align-items: baseline; gap: 10px"><h1 key="{{cat}}" class="up" style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: -0.03em">{{cat}}</h1><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72">{{countLabel}}</span></div>
@@ -36,14 +64,47 @@ input[type=radio]{accent-color:#3B3FD9;width:18px;height:18px;margin:0}
 <div class="chips" style="display: flex; gap: 8px; overflow-x: auto; padding: 14px 16px">
 <sc-for list="{{cats}}" as="c" hint-placeholder-count="6"><button onClick="{{c.pick}}" style="flex-shrink: 0; height: 38px; padding: 0 14px; border-radius: 999px; border: none; background: {{c.bg}}; color: {{c.fg}}; font-size: 14px; font-weight: 500">{{c.label}}</button></sc-for>
 </div>
+</sc-if>
+
+<sc-if value="{{isPromo}}" hint-placeholder-val="{{ false }}">
+<section style="padding: 16px">
+<div class="up" style="position: relative; overflow: hidden; border-radius: 20px; background: #3B3FD9; color: #FFFFFF; padding: 22px; display: flex; flex-direction: column; gap: 8px">
+<svg class="slow" width="240" height="240" viewBox="0 0 420 420" fill="none" style="position: absolute; right: -80px; top: -90px"><circle cx="210" cy="210" r="200" stroke="#FFFFFF" stroke-opacity=".18" stroke-dasharray="3 10"></circle><circle cx="210" cy="10" r="7" fill="#E8793A"></circle></svg>
+<span style="position: relative; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #ECECFD">PROMOÇÕES · SEMANA DO DESIGN</span>
+<h1 style="position: relative; margin: 0; font-size: 30px; font-weight: 300; line-height: 1.1">Peças com <b style="font-weight: 500">preço especial</b></h1>
+<span style="position: relative; font-size: 14px; color: #ECECFD">{{countLabel}} com desconto</span>
+</div>
+</section>
+</sc-if>
+
 <div style="padding: 0 16px 14px; display: flex; gap: 8px">
 <button onClick="{{openSort}}" style="flex-grow: 1; height: 44px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 4v16M3 16l4 4 4-4M17 20V4M13 8l4-4 4 4"></path></svg>{{sortLabel}}</button>
 </div>
+
+<sc-if value="{{isLoading}}" hint-placeholder-val="{{ false }}">
+<section aria-busy="true" style="padding: 0 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{skels}}" as="k" hint-placeholder-count="6"><div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 6px; display: flex; flex-direction: column; gap: 8px"><div class="skel" style="height: 150px; border-radius: 10px"></div><div class="skel" style="height: 10px; width: 50%; border-radius: 6px; margin: 0 4px"></div><div class="skel" style="height: 12px; width: 80%; border-radius: 6px; margin: 0 4px 6px"></div></div></sc-for>
+</section>
+</sc-if>
+
+<sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+<section style="padding: 8px 16px">
+<div class="up" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 18px; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+<div class="floaty" style="width: 60px; height: 60px; border-radius: 50%; background: #F1F0EC; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5M8 11h6"></path></svg></div>
+<span style="font-size: 22px; font-weight: 300">{{emptyTitle}}</span>
+<span style="font-size: 14px; color: #6B6B72; line-height: 1.5">{{emptyText}}</span>
+<a href="MobileInicio.dc.html" style="margin-top: 6px; height: 48px; padding: 0 20px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Voltar ao início</a>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{showGrid}}" hint-placeholder-val="{{ true }}">
 <section style="padding: 0 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
 <sc-for list="{{items}}" as="p" hint-placeholder-count="6">
 <article key="{{p.key}}" class="up" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 6px; display: flex; flex-direction: column; gap: 8px">
 <a href="MobileProduto.dc.html" style="position: relative; height: 150px; border-radius: 10px; background: {{p.tint}}; display: flex; align-items: center; justify-content: center; opacity: {{p.op}}"><dc-import name="Art" kind="{{p.kind}}" size="80" hint-size="80px,90px"></dc-import>
-<sc-if value="{{p.hasBadge}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: 6px; left: 6px; height: 22px; padding: 0 8px; border-radius: 999px; background: #FFFFFF; color: {{p.badgeFg}}; font-size: 11px; font-weight: 500; display: flex; align-items: center">{{p.badge}}</span></sc-if></a>
+<sc-if value="{{p.hasBadge}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: 6px; left: 6px; height: 22px; padding: 0 8px; border-radius: 999px; background: #FFFFFF; color: {{p.badgeFg}}; font-size: 11px; font-weight: 500; display: flex; align-items: center">{{p.badge}}</span></sc-if>
+<sc-if value="{{p.hasOld}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: 6px; right: 6px; height: 22px; padding: 0 7px; border-radius: 999px; background: #E8F5EC; color: #15803D; font-family: 'JetBrains Mono', monospace; font-size: 10px; display: flex; align-items: center">{{p.off}}</span></sc-if></a>
 <div style="padding: 0 4px 4px; display: flex; align-items: flex-end; gap: 6px">
 <div style="flex-grow: 1; min-width: 0"><div style="font-size: 11px; color: #6B6B72">{{p.brand}}</div><div style="font-size: 14px; font-weight: 500; line-height: 1.25">{{p.name}}</div>
 <div style="display: flex; gap: 6px; align-items: baseline; padding-top: 2px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">{{p.price}}</span><sc-if value="{{p.hasOld}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6B6B72; text-decoration: line-through">{{p.old}}</span></sc-if></div></div>
@@ -57,6 +118,7 @@ input[type=radio]{accent-color:#3B3FD9;width:18px;height:18px;margin:0}
 <sc-if value="{{hasMore}}" hint-placeholder-val="{{ true }}"><button onClick="{{more}}" style="height: 48px; width: 100%; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px">
 <sc-if value="{{loading}}" hint-placeholder-val="{{ false }}"><svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg></sc-if>Carregar mais</button></sc-if>
 </div>
+</sc-if>
 
 <!-- Ordenar -->
 <sc-if value="{{sortOpen}}" hint-placeholder-val="{{ false }}">
@@ -68,12 +130,12 @@ input[type=radio]{accent-color:#3B3FD9;width:18px;height:18px;margin:0}
 </div>
 </sc-if>
 
-<!-- 06 · Mini-sacola mobile -->
+<!-- 06 · Mini-sacola -->
 <sc-if value="{{sheet}}" hint-placeholder-val="{{ false }}">
 <div class="fade" onClick="{{closeSheet}}" style="position: fixed; inset: 0; background: rgba(24,24,27,.35); z-index: 40"></div>
 <div class="sheet" role="dialog" aria-label="Adicionado à sacola" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: #FFFFFF; border-radius: 20px 20px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 14px">
 <span style="align-self: center; width: 40px; height: 4px; border-radius: 999px; background: #E6E4DE"></span>
-<div style="display: flex; align-items: center; gap: 8px"><span style="width: 26px; height: 26px; border-radius: 50%; background: #E8F5EC; color: #15803D; display: flex; align-items: center; justify-content: center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span><b style="font-size: 16px; font-weight: 500">Adicionado à sacola</b></div>
+<div style="display: flex; align-items: center; gap: 8px"><span class="pop" style="width: 26px; height: 26px; border-radius: 50%; background: #E8F5EC; color: #15803D; display: flex; align-items: center; justify-content: center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span><b style="font-size: 16px; font-weight: 500">Adicionado à sacola</b></div>
 <div style="display: flex; gap: 12px; align-items: center"><span style="width: 60px; height: 60px; border-radius: 10px; background: {{sItem.tint}}; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="{{sItem.kind}}" size="36" hint-size="36px,41px"></dc-import></span><span style="flex-grow: 1; font-size: 15px">{{sItem.name}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 14px">{{sItem.price}}</span></div>
 <a href="MobileSacola.dc.html" style="height: 52px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 500">Ir para a sacola · {{bag}} itens</a>
 <button onClick="{{closeSheet}}" style="height: 48px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px; font-weight: 500">Continuar comprando</button>
@@ -81,12 +143,14 @@ input[type=radio]{accent-color:#3B3FD9;width:18px;height:18px;margin:0}
 </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1640}}'>
+<script type="text/x-dc" data-dc-script data-props='{"modo":{"editor":"enum","options":["categoria","promocoes"],"default":"categoria"},"estado":{"editor":"enum","options":["normal","carregando","vazio"],"default":"normal"},"$preview":{"width":390,"height":1640}}'>
 class Component extends DCLogic {
   constructor(props) { super(props); this.state = { cat: 'Tudo', sort: 'recentes', shown: 6, loading: false, sortOpen: false, sheet: null, bag: 3 }; }
   componentWillUnmount() { clearTimeout(this.lt); }
   renderVals() {
     const s = this.state;
+    const modo = this.props.modo || 'categoria';
+    const estado = this.props.estado || 'normal';
     const P = [
       ['Arandela Fio', 'Iluminação', 279, null, 'sconce', '#FCEEE4', 'Oficina Faísca', 'Low', 1], ['Vaso Duna', 'Casa', 129, null, 'vase', '#F1F0EC', 'Barro Cru', 'New', 2],
       ['Luminária Arco', 'Iluminação', 489, null, 'lamp', '#ECECFD', 'Oficina Faísca', '', 3], ['Tigela Areia', 'Cozinha', 79, 95, 'bowl', '#F1F0EC', 'Barro Cru', '', 4],
@@ -96,18 +160,27 @@ class Component extends DCLogic {
       ['Almofada Linho', 'Têxteis', 119, null, 'throw', '#FCEEE4', 'Tear Alto', '', 11], ['Toalha Listra', 'Têxteis', 99, null, 'towel', '#E8F5EC', 'Tear Alto', '', 12]
     ];
     const sorts = { recentes: 'Mais recentes', nome: 'Nome (A–Z)', asc: 'Menor preço', desc: 'Maior preço' };
-    const list = P.filter((p) => s.cat === 'Tudo' || p[1] === s.cat).sort((a, b) => s.sort === 'nome' ? a[0].localeCompare(b[0], 'pt-BR') : s.sort === 'asc' ? a[2] - b[2] : s.sort === 'desc' ? b[2] - a[2] : a[8] - b[8]);
+    let list = modo === 'promocoes' ? P.filter((p) => p[3]) : P.filter((p) => s.cat === 'Tudo' || (s.cat === 'Novidades' ? p[7] === 'New' : p[1] === s.cat));
+    if (estado === 'vazio') list = [];
+    list = list.slice().sort((a, b) => s.sort === 'nome' ? a[0].localeCompare(b[0], 'pt-BR') : s.sort === 'asc' ? a[2] - b[2] : s.sort === 'desc' ? b[2] - a[2] : a[8] - b[8]);
     const shown = list.slice(0, s.shown);
     const money = (n) => 'R$ ' + n.toLocaleString('pt-BR');
     const B = { Low: ['Últimas unidades', '#B4501E'], New: ['Novo', '#3B3FD9'], Out: ['Esgotado', '#44444A'] };
     const sItem = s.sheet ? P.find((p) => p[0] === s.sheet) : P[0];
+    const loading = estado === 'carregando';
     return {
-      bag: s.bag, cat: s.cat, catUpper: s.cat.toUpperCase(), countLabel: list.length + ' peças',
-      cats: ['Tudo', 'Casa', 'Cozinha', 'Iluminação', 'Têxteis'].map((c) => ({ label: c, bg: s.cat === c ? '#3B3FD9' : '#F1F0EC', fg: s.cat === c ? '#FFFFFF' : '#44444A', pick: () => this.setState({ cat: c, shown: 6 }) })),
+      isCat: modo === 'categoria', isPromo: modo === 'promocoes',
+      bag: s.bag, cat: s.cat, catUpper: s.cat.toUpperCase(), countLabel: list.length + (list.length === 1 ? ' peça' : ' peças'),
+      cats: ['Tudo', 'Novidades', 'Casa', 'Cozinha', 'Iluminação', 'Têxteis'].map((c) => ({ label: c, bg: s.cat === c ? '#3B3FD9' : '#F1F0EC', fg: s.cat === c ? '#FFFFFF' : '#44444A', pick: () => this.setState({ cat: c, shown: 6 }) })),
       sortLabel: 'Ordenar: ' + sorts[s.sort], openSort: () => this.setState({ sortOpen: true }), closeSort: () => this.setState({ sortOpen: false }), sortOpen: s.sortOpen,
       sorts: Object.keys(sorts).map((k) => ({ label: sorts[k], on: s.sort === k, pick: () => this.setState({ sort: k, sortOpen: false }) })),
-      items: shown.map((p, i) => ({
-        key: s.cat + s.sort + p[0], name: p[0], price: money(p[2]), hasOld: !!p[3], old: p[3] ? money(p[3]) : '', kind: p[4], tint: p[5], brand: p[6],
+      isLoading: loading, skels: [1, 2, 3, 4, 5, 6],
+      isEmpty: !loading && list.length === 0, showGrid: !loading && list.length > 0,
+      emptyTitle: modo === 'promocoes' ? 'Nenhuma promoção agora' : 'Nada nesta categoria ainda',
+      emptyText: modo === 'promocoes' ? 'A próxima Semana do Design ainda não começou.' : 'Os ateliês estão produzindo novas peças. Veja as outras categorias.',
+      items: shown.map((p) => ({
+        key: modo + s.cat + s.sort + p[0], name: p[0], price: money(p[2]), hasOld: !!p[3], old: p[3] ? money(p[3]) : '', off: p[3] ? '-' + Math.round((1 - p[2] / p[3]) * 100) + '%' : '',
+        kind: p[4], tint: p[5], brand: p[6],
         hasBadge: !!p[7], badge: p[7] ? B[p[7]][0] : '', badgeFg: p[7] ? B[p[7]][1] : '', can: p[7] !== 'Out', op: p[7] === 'Out' ? 0.5 : 1,
         add: () => this.setState({ sheet: p[0], bag: s.bag + 1 })
       })),

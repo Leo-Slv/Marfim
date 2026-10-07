@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Acesso</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+@keyframes fly{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(6px,-8px) rotate(-4deg)}100%{transform:translate(0,0) rotate(0)}}
+.fly{animation:fly 3s ease-in-out infinite}
+.lb{display:flex;flex-direction:column;gap:6px;font-size:13px;color:#44444A}
+.in{height:50px;box-sizing:border-box;padding:0 14px;border:1px solid #E6E4DE;border-radius:12px;font-size:16px;background:#FFFFFF;color:#18181B;width:100%}
+.bp{height:52px;border-radius:12px;border:none;background:#3B3FD9;color:#FFFFFF;font-size:16px;font-weight:500;display:flex;align-items:center;justify-content:center;text-decoration:none;width:100%}
+.bs{height:50px;border-radius:12px;border:1px solid #E6E4DE;background:#FFFFFF;color:#18181B;font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center;text-decoration:none;width:100%;box-sizing:border-box}
+.lnk{background:none;border:none;padding:0;color:#3B3FD9;font-size:14px;font-weight:500;min-height:40px}
+.eye{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#6B6B72}
+.h1{margin:0;font-size:32px;font-weight:300;letter-spacing:-.03em;line-height:1.08}
+.p{margin:0;font-size:15px;line-height:1.55;color:#44444A}
+.ic{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+</style>
+</helmet>
+<div style="width: 390px; height: 1000px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileTopo" count="3" back="MobileInicio.dc.html" logged="{{logged}}" hint-size="390px,86px"></dc-import>
+<div style="margin: 14px 16px 0; height: 96px; border-radius: 18px; background: #18181B; color: #FFFFFF; position: relative; overflow: hidden; display: flex; align-items: center; padding: 0 18px; gap: 14px">
+<svg class="slow" width="180" height="180" viewBox="0 0 200 200" fill="none" style="position: absolute; right: -50px; top: -42px; opacity: .25"><circle cx="100" cy="100" r="80" stroke="#ECECFD" stroke-dasharray="2 8"></circle><circle cx="100" cy="100" r="54" stroke="#E8793A" stroke-dasharray="1 6"></circle></svg>
+<span style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1; z-index: 1"><span class="eye" style="color: #B9B8C2">SUA CONTA MARFIM</span><span style="font-size: 18px; font-weight: 300; line-height: 1.2">Cada peça, do ateliê<br>até você.</span></span>
+<span class="floaty" style="z-index: 1"><dc-import name="Art" kind="vase" size="54" hint-size="54px,61px"></dc-import></span>
+</div>
+<div key="{{screenKey}}" class="up" style="padding: 22px 16px 40px; display: flex; flex-direction: column; gap: 16px">
+
+<!-- 08 Entrar -->
+<sc-if value="{{is.entrar}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="eye">ENTRAR</span><h1 class="h1">Bom te ver <span style="color: #3B3FD9">de novo</span></h1></div>
+<sc-if value="{{err.show}}" hint-placeholder-val="{{ false }}"><div key="{{errKey}}" role="alert" class="shake" style="padding: 12px 14px; border-radius: 12px; background: #FCEEE4; font-size: 14px; line-height: 1.45; color: #18181B">{{err.text}}</div></sc-if>
+<form onSubmit="{{submitEntrar}}" style="margin: 0; display: flex; flex-direction: column; gap: 14px">
+<label class="lb">E-mail<input class="in" type="email" autocomplete="email" value="{{email}}" onChange="{{onEmail}}" placeholder="voce@email.com" style="border-color: {{emailBorder}}"><sc-if value="{{emailError}}" hint-placeholder-val="{{ false }}"><span style="color: #B4501E">Digite um e-mail válido.</span></sc-if></label>
+<label class="lb"><span style="display: flex; justify-content: space-between; align-items: center">Senha<button type="button" class="lnk" onClick="{{go.esqueci}}" style="font-size: 13px">Esqueci minha senha</button></span>
+<span style="position: relative; display: block"><input class="in" type="{{pwType}}" autocomplete="current-password" value="{{pw}}" onChange="{{onPw}}" style="padding-right: 52px"><button type="button" onClick="{{togglePw}}" aria-label="{{pwToggleLabel}}" style="position: absolute; right: 3px; top: 3px; width: 44px; height: 44px; border: none; background: transparent; color: #6B6B72; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></span></label>
+<button type="submit" class="bp" disabled="{{locked}}">{{entrarLabel}}</button>
+</form>
+<div style="display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; color: #6B6B72">Ainda não tem conta?<button class="lnk" onClick="{{go.criar}}">Criar conta</button></div>
+</sc-if>
+
+<!-- Entrou -->
+<sc-if value="{{is.logado}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; padding-top: 20px">
+<span class="pop ic" style="background: #E8F5EC"><svg class="check" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span>
+<h1 class="h1">Você entrou</h1><p class="p">Voltando para onde você estava…</p>
+<a href="MobileSacola.dc.html" class="bp">Voltar para a sacola</a><a href="MobileConta.dc.html" class="bs">Minha conta</a>
+</div>
+</sc-if>
+
+<!-- 09 Criar conta -->
+<sc-if value="{{is.criar}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="eye">CRIAR CONTA</span><h1 class="h1">Leva <span style="color: #3B3FD9">um minuto</span></h1></div>
+<sc-if value="{{err.show}}" hint-placeholder-val="{{ false }}"><div key="{{errKey}}" role="alert" class="shake" style="padding: 12px 14px; border-radius: 12px; background: #FCEEE4; font-size: 14px; line-height: 1.45; display: flex; align-items: center; gap: 8px"><span style="flex-grow: 1">{{err.text}}</span><sc-if value="{{err.signin}}" hint-placeholder-val="{{ false }}"><button class="lnk" onClick="{{go.entrar}}">Entrar</button></sc-if></div></sc-if>
+<form onSubmit="{{submitCriar}}" style="margin: 0; display: flex; flex-direction: column; gap: 14px">
+<label class="lb">Nome completo<input class="in" autocomplete="name" value="{{nome}}" onChange="{{onNome}}"></label>
+<label class="lb">E-mail<input class="in" type="email" autocomplete="email" value="{{email}}" onChange="{{onEmail}}" style="border-color: {{emailBorder}}"><sc-if value="{{emailError}}" hint-placeholder-val="{{ false }}"><span style="color: #B4501E">Digite um e-mail válido.</span></sc-if></label>
+<label class="lb">Senha<input class="in" type="{{pwType}}" autocomplete="new-password" value="{{pw}}" onChange="{{onPw}}" style="border-color: {{pwBorder}}"></label>
+<div style="display: flex; gap: 4px; margin-top: -4px"><sc-for list="{{strength.bars}}" as="b" hint-placeholder-count="3"><span style="flex: 1; height: 4px; border-radius: 999px; background: {{b.color}}; transition: background .3s"></span></sc-for></div>
+<div style="display: flex; gap: 12px; flex-wrap: wrap"><sc-for list="{{strength.rules}}" as="r" hint-placeholder-count="3"><span style="display: flex; align-items: center; gap: 5px; font-size: 12px; color: {{r.color}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{r.icon}}"></path></svg>{{r.label}}</span></sc-for></div>
+<label style="display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.45; color: #44444A"><input type="checkbox" checked="{{terms}}" onChange="{{toggleTerms}}" style="margin-top: 2px"><span>Li e aceito os <a href="MobileConteudo.dc.html">termos de uso</a> e a <a href="MobileConteudo.dc.html">política de privacidade</a>.</span></label>
+<button type="submit" class="bp" disabled="{{cantCreate}}">Criar conta</button>
+</form>
+<div style="display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; color: #6B6B72">Já tem conta?<button class="lnk" onClick="{{go.entrar}}">Entrar</button></div>
+</sc-if>
+
+<!-- 10 Confirme -->
+<sc-if value="{{is.confirme}}" hint-placeholder-val="{{ false }}">
+<span class="fly ic" style="background: #ECECFD"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="1.5" stroke-linejoin="round"><path d="M3 11 21 3l-6 18-3-8-9-2Z"></path><path d="m12 13 9-10"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="eye">QUASE LÁ</span><h1 class="h1">Confirme seu e-mail</h1><p class="p">Enviamos um link para <b style="font-weight: 500; color: #18181B">{{emailShown}}</b>. Ele vale 24 horas. Você já pode navegar; para finalizar compras, a confirmação é necessária.</p></div>
+<sc-if value="{{resend.sent}}" hint-placeholder-val="{{ false }}"><div role="status" class="up" style="padding: 12px 14px; border-radius: 12px; background: #E8F5EC; color: #15803D; font-size: 14px">Link reenviado. Confira também a caixa de spam.</div></sc-if>
+<sc-if value="{{resend.already}}" hint-placeholder-val="{{ false }}"><div role="status" class="up" style="padding: 10px 14px; border-radius: 12px; background: #ECECFD; font-size: 14px; display: flex; align-items: center; justify-content: space-between">Seu e-mail já está confirmado.<button class="lnk" onClick="{{go.entrar}}">Entrar</button></div></sc-if>
+<sc-if value="{{resend.limited}}" hint-placeholder-val="{{ false }}"><div role="alert" class="up" style="padding: 12px 14px; border-radius: 12px; background: #FCEEE4; font-size: 14px">Muitas tentativas. Peça outro link em <b style="font-family: 'JetBrains Mono', monospace; font-weight: 500">{{lockSecs}}s</b>.</div></sc-if>
+<button class="bp" onClick="{{doResend}}" disabled="{{locked}}">Reenviar link</button>
+<a href="MobileInicio.dc.html" class="bs">Continuar navegando</a>
+<div style="text-align: center; font-size: 14px; color: #6B6B72">E-mail errado? <button class="lnk" onClick="{{go.criar}}">Usar outro e-mail</button></div>
+</sc-if>
+
+<!-- 11 Confirmado -->
+<sc-if value="{{is.confirmado}}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{linkOk}}" hint-placeholder-val="{{ true }}">
+<span class="pop ic" style="background: #E8F5EC"><svg class="check" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span>
+<h1 class="h1">E-mail <span style="color: #15803D">confirmado</span></h1><p class="p">Tudo certo. Agora você pode finalizar suas compras.</p>
+<a href="MobileSacola.dc.html" class="bp">Ir para a sacola</a><a href="MobileInicio.dc.html" class="bs">Continuar comprando</a>
+</sc-if>
+<sc-if value="{{linkBad}}" hint-placeholder-val="{{ false }}">
+<span class="pop ic" style="background: #FCEEE4"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#B4501E" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+<h1 class="h1">Esse link expirou</h1><p class="p">O link de confirmação vale 24 horas e só pode ser usado uma vez. Peça um novo e ele chega em instantes.</p>
+<button class="bp" onClick="{{go.confirme}}">Enviar novo link</button>
+</sc-if>
+</sc-if>
+
+<!-- 12 Esqueci -->
+<sc-if value="{{is.esqueci}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="eye">RECUPERAR ACESSO</span><h1 class="h1">Esqueceu a senha?</h1><p class="p">Digite o e-mail da sua conta e enviaremos um link para criar uma nova.</p></div>
+<sc-if value="{{forgotSent}}" hint-placeholder-val="{{ false }}"><div role="status" class="up" style="padding: 14px; border-radius: 12px; background: #E8F5EC; font-size: 14px; line-height: 1.5">Se houver uma conta com <b style="font-weight: 500">{{emailShown}}</b>, enviamos o link. Ele vale 30 minutos.</div><button class="lnk" onClick="{{go.entrar}}" style="align-self: flex-start">‹ Voltar para entrar</button></sc-if>
+<sc-if value="{{forgotForm}}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{submitEsqueci}}" style="margin: 0; display: flex; flex-direction: column; gap: 14px">
+<label class="lb">E-mail<input class="in" type="email" autocomplete="email" value="{{email}}" onChange="{{onEmail}}" style="border-color: {{emailBorder}}"><sc-if value="{{emailError}}" hint-placeholder-val="{{ false }}"><span style="color: #B4501E">Digite um e-mail válido.</span></sc-if></label>
+<button type="submit" class="bp">Enviar link</button>
+</form>
+<button class="lnk" onClick="{{go.entrar}}">Lembrei a senha</button>
+</sc-if>
+</sc-if>
+
+<!-- 13 Nova senha -->
+<sc-if value="{{is.nova}}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{resetBad}}" hint-placeholder-val="{{ false }}">
+<span class="pop ic" style="background: #FCEEE4"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#B4501E" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+<h1 class="h1">Esse link expirou</h1><p class="p">Links de nova senha valem 30 minutos e só funcionam uma vez.</p>
+<button class="bp" onClick="{{go.esqueci}}">Pedir novo link</button>
+</sc-if>
+<sc-if value="{{resetDone}}" hint-placeholder-val="{{ false }}">
+<span class="pop ic" style="background: #E8F5EC"><svg class="check" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span>
+<h1 class="h1">Senha alterada</h1><p class="p">Por segurança, encerramos todas as sessões abertas. Entre de novo com a senha nova.</p>
+<button class="bp" onClick="{{go.entrar}}">Entrar</button>
+</sc-if>
+<sc-if value="{{resetForm}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="eye">NOVA SENHA</span><h1 class="h1">Crie uma senha nova</h1></div>
+<form onSubmit="{{submitNova}}" style="margin: 0; display: flex; flex-direction: column; gap: 14px">
+<label class="lb">Nova senha<input class="in" type="{{pwType}}" autocomplete="new-password" value="{{pw}}" onChange="{{onPw}}" style="border-color: {{pwBorder}}"></label>
+<div style="display: flex; gap: 4px; margin-top: -4px"><sc-for list="{{strength.bars}}" as="b" hint-placeholder-count="3"><span style="flex: 1; height: 4px; border-radius: 999px; background: {{b.color}}; transition: background .3s"></span></sc-for></div>
+<div style="display: flex; gap: 12px; flex-wrap: wrap"><sc-for list="{{strength.rules}}" as="r" hint-placeholder-count="3"><span style="display: flex; align-items: center; gap: 5px; font-size: 12px; color: {{r.color}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{r.icon}}"></path></svg>{{r.label}}</span></sc-for></div>
+<label class="lb">Repita a nova senha<input class="in" type="{{pwType}}" autocomplete="new-password" value="{{pw2}}" onChange="{{onPw2}}" style="border-color: {{pw2Border}}"><sc-if value="{{pwMismatch}}" hint-placeholder-val="{{ false }}"><span style="color: #B4501E">As senhas não são iguais.</span></sc-if></label>
+<button type="submit" class="bp" disabled="{{cantReset}}">Salvar nova senha</button>
+</form>
+</sc-if>
+</sc-if>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"tela":{"editor":"enum","options":["entrar","criar","confirme","confirmado","esqueci","nova-senha"],"default":"entrar"},"erro":{"editor":"enum","options":["nenhum","credenciais","conta-inativa","muitas-tentativas","email-cadastrado","ja-confirmado","link-expirado"],"default":"nenhum"},"$preview":{"width":390,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { screen: null, from: null, email: 'ana@email.com', pw: '', pw2: '', nome: '', terms: false, showPw: false, err: null, errN: 0, tried: false, forgotSent: false, resetDone: false, resendState: null, lockUntil: 0, now: Date.now() };
+  }
+  componentDidMount() { this.t = setInterval(() => { if (this.state.lockUntil > Date.now() - 1000) this.setState({ now: Date.now() }); }, 1000); }
+  componentWillUnmount() { clearInterval(this.t); }
+  go(screen) { this.setState({ screen, from: this.props.tela || 'entrar', err: null, tried: false, forgotSent: false, resetDone: false, resendState: null, pw: '', pw2: '' }); }
+  lock() { this.setState({ lockUntil: Date.now() + 30000, now: Date.now() }); }
+  renderVals() {
+    const s = this.state;
+    const tela = this.props.tela || 'entrar';
+    const erro = this.props.erro || 'nenhum';
+    const screen = s.screen && s.from === tela ? s.screen : tela;
+    const lockSecs = Math.max(0, Math.ceil((s.lockUntil - s.now) / 1000));
+    const locked = lockSecs > 0;
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.email);
+    const pw = s.pw;
+    const rules = [
+      { ok: pw.length >= 8 && pw.length <= 128, label: '8 a 128 caracteres' },
+      { ok: /[A-Za-zÀ-ÿ]/.test(pw), label: 'Uma letra' },
+      { ok: /\d/.test(pw), label: 'Um número' }
+    ];
+    const score = rules.filter((r) => r.ok).length;
+    const barColor = score === 3 ? '#15803D' : score === 2 ? '#E8793A' : '#B4501E';
+    const strong = score === 3;
+    const errors = {
+      'credenciais': 'E-mail ou senha incorretos. Confira e tente de novo.',
+      'conta-inativa': 'Esta conta foi desativada pela loja. Fale com o atendimento para reativar.',
+      'muitas-tentativas': 'Muitas tentativas seguidas. Por segurança, aguarde para tentar de novo.',
+      'email-cadastrado': 'Já existe uma conta com este e-mail.',
+      'senha-fraca': 'A senha precisa ter de 8 a 128 caracteres, com pelo menos uma letra e um número.'
+    };
+    const setErr = (code) => this.setState({ err: code, errN: s.errN + 1 });
+    const is = { entrar: screen === 'entrar', logado: screen === 'logado', criar: screen === 'criar', confirme: screen === 'confirme', confirmado: screen === 'confirmado', esqueci: screen === 'esqueci', nova: screen === 'nova-senha' };
+    const errText = s.err ? (s.err === 'muitas-tentativas' && locked ? 'Muitas tentativas seguidas. Tente de novo em ' + lockSecs + ' segundos.' : errors[s.err]) : '';
+
+    return {
+      logged: screen === 'logado',
+      screenKey: screen, is,
+      go: {
+        entrar: () => this.go('entrar'), criar: () => this.go('criar'), esqueci: () => this.go('esqueci'), confirme: () => this.go('confirme')
+      },
+      err: { show: !!s.err, text: errText, signin: s.err === 'email-cadastrado' }, errKey: 'e' + s.errN,
+      email: s.email, emailShown: s.email || 'seu e-mail',
+      onEmail: (e) => this.setState({ email: e.target.value }),
+      emailError: s.tried && !emailOk, emailBorder: s.tried && !emailOk ? '#B4501E' : '#E6E4DE',
+      pw: s.pw, pw2: s.pw2, onPw: (e) => this.setState({ pw: e.target.value }), onPw2: (e) => this.setState({ pw2: e.target.value }),
+      pwType: s.showPw ? 'text' : 'password', togglePw: () => this.setState({ showPw: !s.showPw }), pwToggleLabel: s.showPw ? 'Ocultar senha' : 'Mostrar senha',
+      pwBorder: s.tried && !strong ? '#B4501E' : '#E6E4DE',
+      pw2Border: s.pw2 && s.pw2 !== s.pw ? '#B4501E' : '#E6E4DE', pwMismatch: !!s.pw2 && s.pw2 !== s.pw,
+      strength: {
+        bars: [0, 1, 2].map((i) => ({ color: i < score ? barColor : '#E6E4DE' })),
+        rules: rules.map((r) => ({ label: r.label, color: r.ok ? '#15803D' : '#6B6B72', icon: r.ok ? 'm5 12 5 5 9-10' : 'M12 12h.01' }))
+      },
+      nome: s.nome, onNome: (e) => this.setState({ nome: e.target.value }),
+      terms: s.terms, toggleTerms: () => this.setState({ terms: !s.terms }),
+      cantCreate: !s.terms, cantReset: !strong || s.pw !== s.pw2,
+      locked, lockSecs,
+      entrarLabel: locked ? 'Aguarde ' + lockSecs + 's' : 'Entrar',
+      submitEntrar: (e) => {
+        e.preventDefault();
+        if (!emailOk) { this.setState({ tried: true }); return; }
+        if (erro === 'credenciais' || erro === 'conta-inativa') { setErr(erro); return; }
+        if (erro === 'muitas-tentativas') { setErr(erro); this.lock(); return; }
+        this.go('logado');
+      },
+      submitCriar: (e) => {
+        e.preventDefault();
+        this.setState({ tried: true });
+        if (!emailOk) return;
+        if (!strong) { setErr('senha-fraca'); return; }
+        if (erro === 'email-cadastrado') { setErr('email-cadastrado'); return; }
+        this.go('confirme');
+      },
+      resend: { sent: s.resendState === 'sent', already: s.resendState === 'already', limited: s.resendState === 'limited' && locked },
+      doResend: () => {
+        if (erro === 'ja-confirmado') this.setState({ resendState: 'already' });
+        else if (erro === 'muitas-tentativas') { this.setState({ resendState: 'limited' }); this.lock(); }
+        else this.setState({ resendState: 'sent' });
+      },
+      linkOk: erro !== 'link-expirado', linkBad: erro === 'link-expirado',
+      forgotSent: s.forgotSent, forgotForm: !s.forgotSent,
+      submitEsqueci: (e) => { e.preventDefault(); if (!emailOk) { this.setState({ tried: true }); return; } this.setState({ forgotSent: true }); },
+      resetBad: erro === 'link-expirado', resetDone: erro !== 'link-expirado' && s.resetDone, resetForm: erro !== 'link-expirado' && !s.resetDone,
+      submitNova: (e) => { e.preventDefault(); this.setState({ tried: true }); if (strong && s.pw === s.pw2) this.setState({ resetDone: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

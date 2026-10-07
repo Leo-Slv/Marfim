@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Admin · Pagamentos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+.card{background:#FFFFFF;border:1px solid #E6E4DE;border-radius:16px}
+.in{height:48px;box-sizing:border-box;padding:0 12px;border:1px solid #E6E4DE;border-radius:12px;font-size:16px;background:#FFFFFF;width:100%}
+.bp{height:50px;border-radius:12px;border:none;background:#3B3FD9;color:#FFFFFF;font-size:15px;font-weight:500;width:100%}
+.bs{height:48px;border-radius:12px;border:1px solid #E6E4DE;background:#FFFFFF;color:#18181B;font-size:15px;font-weight:500;width:100%}
+.pill{height:24px;padding:0 9px;border-radius:999px;font-size:11px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap}
+</style>
+</helmet>
+<div style="width: 390px; height: 1150px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileAdminTopo" active="pagamentos" title="Pagamentos" hint-size="390px,60px"></dc-import>
+
+<sc-if value="{{isList}}" hint-placeholder-val="{{ true }}">
+<div class="fade" style="display: flex; flex-direction: column">
+<div class="chips" role="tablist" aria-label="Status" style="display: flex; gap: 6px; overflow-x: auto; padding: 14px 16px 12px">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4"><button role="tab" aria-selected="{{t.on}}" onClick="{{t.pick}}" style="flex-shrink: 0; height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid {{t.border}}; background: {{t.bg}}; color: {{t.fg}}; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; white-space: nowrap">{{t.label}}<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; opacity: .7">{{t.count}}</span></button></sc-for>
+</div>
+<div style="padding: 0 16px 24px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+<button onClick="{{r.open}}" class="card up" style="text-align: left; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; color: #18181B">
+<span style="display: flex; justify-content: space-between; align-items: center; width: 100%"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">{{r.pi}}</span><span key="{{r.status}}" class="pill pop" style="background: {{r.sbg}}; color: {{r.sfg}}">{{r.status}}</span></span>
+<span style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 14px"><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{r.order}}</span><span style="font-size: 12px; color: #6B6B72">{{r.when}} · estornado <span style="font-family: 'JetBrains Mono', monospace">{{r.refunded}}</span></span></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{r.amount}} ›</span></span>
+</button>
+</sc-for>
+<sc-if value="{{noRows}}" hint-placeholder-val="{{ false }}"><div style="padding: 32px 16px; text-align: center; font-size: 14px; color: #6B6B72">Nenhum pagamento nesse filtro.</div></sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isDet}}" hint-placeholder-val="{{ false }}">
+<div key="{{d.pi}}" class="up" style="padding: 12px 16px 120px; display: flex; flex-direction: column; gap: 12px">
+<button onClick="{{closeDet}}" style="align-self: flex-start; min-height: 40px; border: none; background: none; color: #3B3FD9; font-size: 14px; font-weight: 500; padding: 0">‹ Voltar</button>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #44444A">{{d.pi}}</span>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><span style="font-size: 32px; font-weight: 300; letter-spacing: -0.03em">{{d.amount}}</span><span key="{{d.status}}" class="pill pop" style="height: 28px; font-size: 12px; background: {{d.sbg}}; color: {{d.sfg}}">{{d.status}}</span></div>
+<span style="font-size: 13px; color: #6B6B72; line-height: 1.5">Pedido <a href="MobileAdminPedidos.dc.html" style="font-family: 'JetBrains Mono', monospace; text-decoration: none">{{d.order}}</a> · Cartão final {{d.last4}} · {{d.when}}</span>
+</div>
+
+<sc-if value="{{d.hasReason}}" hint-placeholder-val="{{ false }}"><div style="padding: 12px 14px; border-radius: 14px; background: #FCEEE4; font-size: 14px; line-height: 1.5"><span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #B4501E; padding-bottom: 2px">MOTIVO DA RECUSA</span>{{d.reason}}</div></sc-if>
+
+<div class="card" style="padding: 14px; display: flex; flex-direction: column; gap: 10px">
+<b style="font-size: 15px; font-weight: 500">Conferir com o Stripe</b>
+<sc-if value="{{d.checking}}" hint-placeholder-val="{{ false }}"><span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #3B3FD9"><svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg>Consultando o Stripe…</span></sc-if>
+<sc-if value="{{d.checked}}" hint-placeholder-val="{{ false }}"><span class="pop" style="font-size: 14px; color: {{d.checkColor}}">{{d.checkText}}</span></sc-if>
+<button onClick="{{d.check}}" disabled="{{d.checking}}" class="bs">Conferir agora</button>
+</div>
+
+<sc-if value="{{d.canRefund}}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{d.refund}}" class="card" style="margin: 0; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+<span style="display: flex; justify-content: space-between; align-items: baseline"><b style="font-size: 15px; font-weight: 500">Estorno</b><span style="font-size: 12px; color: #6B6B72">até <span style="font-family: 'JetBrains Mono', monospace">{{d.refundable}}</span></span></span>
+<div style="display: flex; gap: 8px">
+<input class="in" aria-label="Valor do estorno" inputmode="decimal" placeholder="0,00" value="{{d.refundVal}}" onChange="{{d.onRefund}}" style="flex-grow: 1; min-width: 0; width: auto; border-color: {{d.refundB}}; font-family: 'JetBrains Mono', monospace">
+<button type="button" onClick="{{d.fillAll}}" style="height: 48px; padding: 0 16px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 14px; font-weight: 500; flex-shrink: 0">Total</button>
+</div>
+<sc-if value="{{d.refundErr}}" hint-placeholder-val="{{ false }}"><span role="alert" class="shake" style="font-size: 13px; color: #B4501E">Informe um valor entre R$ 0,01 e {{d.refundable}}.</span></sc-if>
+<button type="submit" class="bp" style="background: #B4501E">Estornar</button>
+</form>
+</sc-if>
+
+<div class="card" style="padding: 14px; display: flex; flex-direction: column">
+<b style="font-size: 15px; font-weight: 500; padding-bottom: 10px">Eventos</b>
+<sc-for list="{{d.events}}" as="e" hint-placeholder-count="3"><div class="fade" style="display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{e.dot}}; flex-shrink: 0"></span><span style="flex-grow: 1">{{e.label}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">{{e.when}}</span></div></sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{d.refundAsk}}" hint-placeholder-val="{{ false }}">
+<div class="fade" onClick="{{d.refundKeep}}" style="position: fixed; inset: 0; background: rgba(24,24,27,.45); z-index: 40"></div>
+<div class="sheet" role="dialog" aria-label="Confirmar estorno" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: #FFFFFF; border-radius: 20px 20px 0 0; padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 12px">
+<span style="align-self: center; width: 40px; height: 4px; border-radius: 999px; background: #E6E4DE"></span>
+<b style="font-size: 20px; font-weight: 500">Estornar {{d.refundAmt}}?</b>
+<span style="font-size: 14px; color: #44444A; line-height: 1.5">O estorno de <span style="font-family: 'JetBrains Mono', monospace">{{d.pi}}</span> (pedido {{d.order}}) é enviado ao Stripe e não pode ser desfeito.</span>
+<button onClick="{{d.refund}}" class="bp" style="background: #B4501E">Sim, estornar</button>
+<button onClick="{{d.refundKeep}}" class="bs">Voltar</button>
+</div>
+</sc-if>
+<sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{toast.key}}" class="toast" role="status" style="position: fixed; left: 16px; right: 16px; bottom: 20px; z-index: 60; min-height: 48px; border-radius: 12px; background: #18181B; color: #FFFFFF; display: flex; align-items: center; gap: 10px; padding: 8px 16px; box-sizing: border-box; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7EE2A0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>{{toast.text}}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1150}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const P = (pi, order, amount, status, when, last4, reason) => ({ pi, order, amount, status, when, last4, reason, refunded: 0, events: [['Pagamento criado', when], status === 'Recusado' ? ['Recusado pelo banco', when] : status === 'Pendente' ? ['Aguardando confirmação', when] : ['Aprovado', when]] });
+    this.state = { det: false, confirmRef: false, tab: 'todos', sel: 'pi_3Q8a…231', refundVal: '', tried: false, checking: false, checked: null, toast: null, toastN: 0,
+      list: [
+        P('pi_3Q8a…231', 'MF-000231', 666, 'Aprovado', '01 OUT 10:42', '4242'),
+        P('pi_3Q8a…230', 'MF-000230', 219, 'Pendente', '01 OUT 10:30', '1881'),
+        P('pi_3Q7z…229', 'MF-000229', 489, 'Aprovado', '30 SET 18:20', '0005'),
+        P('pi_3Q7y…228', 'MF-000228', 1290, 'Aprovado', '28 SET 11:02', '4444'),
+        P('pi_3Q7w…225', 'MF-000225', 279, 'Recusado', '29 SET 14:40', '0002', 'card_declined · O banco emissor não autorizou a transação.'),
+        Object.assign(P('pi_3Q7v…224', 'MF-000224', 149, 'Estornado', '27 SET 09:12', '4242'), { refunded: 149 })
+      ] };
+  }
+  componentWillUnmount() { clearTimeout(this.tt); clearTimeout(this.ct); }
+  toast(text) { this.setState({ toast: text, toastN: this.state.toastN + 1 }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2600); }
+  money(n) { return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  renderVals() {
+    const s = this.state;
+    const ST = { Aprovado: ['#E8F5EC', '#15803D'], Pendente: ['#F1F0EC', '#44444A'], Recusado: ['#FCEEE4', '#B4501E'], Estornado: ['#ECECFD', '#3B3FD9'], 'Estorno parcial': ['#ECECFD', '#3B3FD9'] };
+    const tabs = [['todos', 'Todos'], ['Aprovado', 'Aprovados'], ['Recusado', 'Recusados'], ['est', 'Estornos']];
+    const list = s.list.filter((p) => s.tab === 'todos' || (s.tab === 'est' ? p.refunded > 0 : p.status === s.tab));
+    const d = s.list.find((p) => p.pi === s.sel) || s.list[0];
+    const refundable = d.amount - d.refunded;
+    const val = parseFloat(s.refundVal.replace(/\./g, '').replace(',', '.'));
+    const bad = isNaN(val) || val <= 0 || val > refundable + 0.001;
+    const now = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    return {
+      isList: !s.det, isDet: !!s.det, closeDet: () => this.setState({ det: false, confirmRef: false }), noRows: list.length === 0,
+      tabs: tabs.map(([id, label]) => ({ label, on: s.tab === id, count: s.list.filter((p) => id === 'todos' || (id === 'est' ? p.refunded > 0 : p.status === id)).length, border: s.tab === id ? '#18181B' : '#E6E4DE', bg: s.tab === id ? '#18181B' : '#FFFFFF', fg: s.tab === id ? '#FFFFFF' : '#44444A', pick: () => this.setState({ tab: id }) })),
+      rows: list.map((p) => ({
+        pi: p.pi, order: p.order, when: p.when, amount: this.money(p.amount), refunded: p.refunded ? this.money(p.refunded) : '—',
+        status: p.status, sbg: ST[p.status][0], sfg: ST[p.status][1],
+        sel: p.pi === d.pi, bg: p.pi === d.pi ? '#ECECFD' : '#FFFFFF', mark: p.pi === d.pi ? '#3B3FD9' : 'transparent',
+        open: () => this.setState({ det: true, confirmRef: false, sel: p.pi, refundVal: '', tried: false, checked: null, checking: false })
+      })),
+      d: {
+        pi: d.pi, order: d.order, when: d.when, last4: d.last4, amount: this.money(d.amount), status: d.status, sbg: ST[d.status][0], sfg: ST[d.status][1],
+        hasReason: !!d.reason, reason: d.reason || '',
+        checking: s.checking, checked: !!s.checked && !s.checking,
+        checkText: 'Status no Stripe igual ao da loja: ' + d.status.toLowerCase() + '.', checkColor: '#15803D',
+        check: () => { this.setState({ checking: true, checked: null }); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ checking: false, checked: true }), 1400); },
+        canRefund: refundable > 0 && (d.status === 'Aprovado' || d.status === 'Estorno parcial'),
+        refundable: this.money(refundable), refundVal: s.refundVal,
+        onRefund: (e) => this.setState({ refundVal: e.target.value.replace(/[^\d.,]/g, ''), tried: false }),
+        fillAll: () => this.setState({ refundVal: refundable.toFixed(2).replace('.', ','), tried: false }),
+        refundB: s.tried && bad ? '#B4501E' : '#E6E4DE', refundErr: s.tried && bad,
+        refundAsk: !!s.confirmRef && !bad, refundAmt: bad ? '' : this.money(val), refundKeep: () => this.setState({ confirmRef: false }),
+        refund: (e) => {
+          e.preventDefault();
+          if (bad) { this.setState({ tried: true, confirmRef: false }); return; }
+          if (!s.confirmRef) { this.setState({ confirmRef: true }); return; }
+          const total = d.refunded + val;
+          const status = total >= d.amount - 0.001 ? 'Estornado' : 'Estorno parcial';
+          this.setState({ confirmRef: false, refundVal: '', tried: false, list: s.list.map((p) => (p.pi === d.pi ? Object.assign({}, p, { refunded: total, status, events: p.events.concat([['Estorno de ' + this.money(val), now]]) }) : p)) });
+          this.toast('Estorno enviado ao Stripe');
+        },
+        events: d.events.map((e, i) => ({ label: e[0], when: e[1], dot: i === d.events.length - 1 ? '#3B3FD9' : '#15803D' }))
+      },
+      toast: { show: !!s.toast, text: s.toast || '', key: 't' + s.toastN }
+    };
+  }
+}
+</script>
+</body>
+</html>

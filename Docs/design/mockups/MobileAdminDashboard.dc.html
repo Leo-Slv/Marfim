@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Admin · Dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+.area{animation:fade .8s ease both}
+.line{stroke-dasharray:3000;stroke-dashoffset:3000;animation:dl 1.4s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes dl{to{stroke-dashoffset:0}}
+.card{background:#FFFFFF;border:1px solid #E6E4DE;border-radius:16px;padding:14px}
+</style>
+</helmet>
+<div style="width: 390px; height: 1640px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileAdminTopo" active="dashboard" title="Dashboard" hint-size="390px,60px"></dc-import>
+<div style="padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: flex-end; justify-content: space-between">
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">QUA · 01 OUT 2026</span><span style="font-size: 24px; font-weight: 300; letter-spacing: -0.02em">Bom dia, [ADMIN]</span></span>
+<div role="radiogroup" aria-label="Período" style="display: flex; padding: 3px; border-radius: 999px; background: #F1F0EC"><sc-for list="{{periods}}" as="p" hint-placeholder-count="2"><button role="radio" aria-checked="{{p.on}}" onClick="{{p.pick}}" style="height: 34px; padding: 0 12px; border-radius: 999px; border: none; background: {{p.bg}}; color: {{p.fg}}; font-size: 13px; font-weight: 500">{{p.label}}</button></sc-for></div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<div key="{{k.key}}" class="card up" style="animation-delay: {{k.delay}}; padding: 12px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; color: #6B6B72">{{k.label}}</span>
+<span style="font-size: 24px; font-weight: 300; letter-spacing: -0.02em">{{k.value}}</span>
+<span style="align-self: flex-start; height: 22px; padding: 0 8px; border-radius: 999px; background: {{k.chipBg}}; color: {{k.chipFg}}; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; align-items: center">{{k.delta}}</span>
+</div>
+</sc-for>
+</div>
+<div class="card up d1" style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 500">Receita por dia</span><span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6B6B72"><span style="width: 16px; height: 0; border-top: 2px dashed #E8793A"></span>Meta diária R$ 700 · toque no gráfico</span></div>
+<div style="position: relative; height: 230px">
+<svg key="{{chartKey}}" width="100%" height="230" viewBox="0 0 720 230" preserveAspectRatio="none" style="display: block; overflow: visible" aria-label="Receita por dia, {{periodLabel}}">
+<line x1="0" y1="10" x2="720" y2="10" stroke="#F1F0EC"></line>
+<line x1="0" y1="105" x2="720" y2="105" stroke="#F1F0EC"></line>
+<line x1="0" y1="200" x2="720" y2="200" stroke="#E6E4DE"></line>
+<path class="area" d="{{areaPath}}" fill="#ECECFD"></path>
+<line x1="0" y1="{{goalY}}" x2="720" y2="{{goalY}}" stroke="#E8793A" stroke-width="1.5" stroke-dasharray="6 5" vector-effect="non-scaling-stroke"></line>
+<path class="line" d="{{linePath}}" fill="none" stroke="#3B3FD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path>
+</svg>
+<div style="position: absolute; left: 0; right: 0; top: 0; height: 200px; display: flex" onMouseLeave="{{clearHover}}">
+<sc-for list="{{hits}}" as="h" hint-placeholder-count="30">
+<div class="hit" onMouseEnter="{{h.enter}}" onClick="{{h.enter}}" style="flex-grow: 1; height: 100%"></div>
+</sc-for>
+</div>
+<sc-if value="{{hasHover}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; top: 0; height: 200px; left: {{hover.left}}; width: 0; border-left: 1px solid #C9C7C0; pointer-events: none"></div>
+<div style="position: absolute; top: {{hover.top}}; left: {{hover.left}}; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: #3B3FD9; border: 2px solid #FFFFFF; pointer-events: none"></div>
+<div style="position: absolute; top: 4px; left: {{hover.left}}; transform: translateX({{hover.shift}}); background: #18181B; color: #FFFFFF; border-radius: 10px; padding: 8px 12px; font-size: 12px; white-space: nowrap; pointer-events: none; display: flex; flex-direction: column; gap: 2px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #A1A1A8">{{hover.date}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{hover.value}}</span>
+<span style="color: {{hover.goalColor}}">{{hover.goal}}</span>
+</div>
+</sc-if>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6B6B72">
+<sc-for list="{{xLabels}}" as="x" hint-placeholder-count="4"><span>{{x}}</span></sc-for>
+</div>
+</div>
+</div>
+<div class="card up d2" style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 16px; font-weight: 500">Pedidos por etapa</span>
+<sc-for list="{{funnel}}" as="f" hint-placeholder-count="5"><div style="display: flex; flex-direction: column; gap: 4px"><span style="display: flex; justify-content: space-between; font-size: 13px"><span style="color: #44444A">{{f.label}}</span><span style="font-family: 'JetBrains Mono', monospace">{{f.n}}</span></span><span style="height: 8px; border-radius: 999px; background: #F1F0EC; overflow: hidden"><span key="{{f.key}}" class="growx" style="display: block; height: 100%; width: {{f.w}}; background: {{f.color}}; opacity: {{f.op}}; border-radius: 999px; animation-delay: {{f.delay}}"></span></span></div></sc-for>
+</div>
+<div class="card up d3" style="padding: 4px 14px">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0"><span style="font-size: 16px; font-weight: 500">Pedidos recentes</span><a href="MobileAdminPedidos.dc.html" style="font-size: 13px; font-weight: 500; text-decoration: none; min-height: 40px; display: flex; align-items: center">Ver todos</a></div>
+<sc-for list="{{recent}}" as="r" hint-placeholder-count="4"><a href="MobileAdminPedidos.dc.html" style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid #F1F0EC; text-decoration: none; color: #18181B"><span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">{{r.id}} · <span style="color: #6B6B72">{{r.ago}}</span></span><span style="font-size: 14px">{{r.who}}</span></span><span style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{r.total}}</span><span style="height: 22px; padding: 0 8px; border-radius: 999px; background: {{r.bg}}; color: {{r.fg}}; font-size: 11px; font-weight: 500; display: flex; align-items: center">{{r.status}}</span></span></a></sc-for>
+</div>
+<div class="card" style="padding: 4px 14px; border-color: #F5D5C0">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0"><span style="font-size: 16px; font-weight: 500">Estoque baixo</span><a href="MobileAdminEstoque.dc.html" style="font-size: 13px; font-weight: 500; text-decoration: none; min-height: 40px; display: flex; align-items: center">Repor</a></div>
+<sc-for list="{{low}}" as="l" hint-placeholder-count="3"><div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid #F1F0EC"><span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px">{{l.name}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">{{l.sku}} · mín. {{l.min}}</span></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 18px; color: {{l.color}}">{{l.qty}}</span></div></sc-for>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1640}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { period: 30, hover: null }; }
+  money(n) { return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
+  renderVals() {
+    const s = this.state;
+    const all = [420, 380, 510, 640, 590, 480, 720, 760, 540, 610, 680, 830, 790, 560, 600, 710, 690, 880, 920, 640, 580, 770, 820, 750, 900, 960, 680, 740, 1010, 1080];
+    const data = all.slice(-s.period);
+    const n = data.length;
+    const W = 720, H = 200, top = 10, max = 1100;
+    const X = (i) => (i / (n - 1)) * W;
+    const Y = (v) => H - (v / max) * (H - top);
+    const pts = data.map((v, i) => [X(i), Y(v)]);
+    const linePath = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+    const areaPath = linePath + ' L' + W + ' ' + H + ' L0 ' + H + ' Z';
+    const goal = 700;
+    const today = new Date(2026, 9, 1);
+    const dateOf = (i) => { const d = new Date(today); d.setDate(today.getDate() - (n - 1 - i)); return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).toUpperCase().replace('.', ''); };
+    const sum = data.reduce((a, b) => a + b, 0);
+    const prev = s.period === 30 ? 17980 * 0.89 : 3900;
+    const h = s.hover;
+    const hv = h !== null && h < n ? h : null;
+    const xLabels = s.period === 30 ? [dateOf(0), dateOf(10), dateOf(20), dateOf(29)] : data.map((_, i) => dateOf(i));
+    const ST = { Confirmado: ['#ECECFD', '#3B3FD9'], 'Em preparo': ['#FCEEE4', '#B4501E'], Enviado: ['#3B3FD9', '#FFFFFF'], 'Aguardando pagamento': ['#F1F0EC', '#44444A'] };
+    const recent = [
+      ['MF-000231', 'Ana Ribeiro', 666, 'Confirmado', '4 MIN'], ['MF-000230', '[CLIENTE]', 219, 'Aguardando pagamento', '12 MIN'],
+      ['MF-000229', '[CLIENTE]', 489, 'Em preparo', '1 H'], ['MF-000228', '[CLIENTE]', 1290, 'Enviado', '3 H']
+    ];
+    const funnelData = [['Aguardando pagamento', 3], ['Confirmado', 8], ['Em preparo', 5], ['Enviado', 11], ['Entregue', 37]];
+    const fmax = 37;
+    return {
+      periods: [[7, '7 dias'], [30, '30 dias']].map(([p, label]) => ({ label, on: s.period === p, bg: s.period === p ? '#18181B' : 'transparent', fg: s.period === p ? '#FFFFFF' : '#44444A', pick: () => this.setState({ period: p, hover: null }) })),
+      periodLabel: 'últimos ' + s.period + ' dias',
+      kpis: [
+        { label: 'Receita no período', value: this.money(sum), delta: '+' + ((sum / prev - 1) * 100).toFixed(1).replace('.', ',') + '%', note: 'vs. período anterior', chipBg: '#E8F5EC', chipFg: '#15803D' },
+        { label: 'Pedidos pagos', value: String(Math.round(sum / 287)), delta: '+' + (s.period === 30 ? 8 : 3), note: 'pedidos', chipBg: '#E8F5EC', chipFg: '#15803D' },
+        { label: 'Ticket médio', value: 'R$ 287', delta: '-2,1%', note: 'vs. período anterior', chipBg: '#F1F0EC', chipFg: '#44444A' },
+        { label: 'A preparar agora', value: '8', delta: '2 há +24 h', note: 'meta: nenhum atrasado', chipBg: '#FCEEE4', chipFg: '#B4501E' }
+      ].map((k, i) => Object.assign(k, { key: s.period + '-' + i, delay: (i * 0.05).toFixed(2) + 's' })),
+      chartKey: 'c' + s.period, linePath, areaPath, goalY: Y(goal).toFixed(1),
+      hits: data.map((_, i) => ({ enter: () => this.setState({ hover: i }) })),
+      clearHover: () => this.setState({ hover: null }),
+      hasHover: hv !== null,
+      hover: hv === null ? {} : {
+        left: (X(hv) / W * 100).toFixed(2) + '%', top: Y(data[hv]).toFixed(1) + 'px',
+        shift: hv > n * 0.7 ? 'calc(-100% - 10px)' : '10px',
+        date: dateOf(hv), value: this.money(data[hv]),
+        goal: data[hv] >= goal ? 'Acima da meta' : 'Abaixo da meta', goalColor: data[hv] >= goal ? '#5BC583' : '#F0A070'
+      },
+      xLabels,
+      funnel: funnelData.map(([label, v], i) => ({ label, n: v, key: s.period + label, w: (v / fmax * 100).toFixed(1) + '%', color: i === 4 ? '#15803D' : '#3B3FD9', op: i === 4 ? 1 : (1 - i * 0.15).toFixed(2), delay: (i * 0.08).toFixed(2) + 's' })),
+      recent: recent.map(([id, who, t, st, ago]) => ({ id, who, total: this.money(t), status: st, bg: ST[st][0], fg: ST[st][1], ago })),
+      low: [
+        { name: 'Jarra Seixo', sku: 'BC-SEIXO', qty: 2, min: 5, color: '#B4501E' },
+        { name: 'Arandela Fio', sku: 'OF-FIO', qty: 1, min: 4, color: '#B4501E' },
+        { name: 'Banco Tora', sku: 'OT-BANCO', qty: 0, min: 2, color: '#B4501E' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

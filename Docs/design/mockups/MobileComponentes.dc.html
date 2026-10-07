@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Componentes</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+.eye{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#6B6B72}
+.blk{background:#FFFFFF;border:1px solid #E6E4DE;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.bt{font-size:16px;font-weight:500;margin:0}
+.soon{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#B4501E;border:1px dashed #B4501E;border-radius:999px;padding:2px 7px;white-space:nowrap}
+.pill{height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:500;display:inline-flex;align-items:center}
+.in{height:48px;box-sizing:border-box;padding:0 12px;border:1px solid #E6E4DE;border-radius:12px;font-size:16px;background:#FFFFFF;width:100%}
+</style>
+</helmet>
+<div style="width: 390px; height: 2300px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileTopo" count="{{count}}" back="MobileInicio.dc.html" title="Componentes" hint-size="390px,86px"></dc-import>
+<sc-if value="{{banner}}" hint-placeholder-val="{{ true }}">
+<div class="fade" style="background: #ECECFD; padding: 10px 16px; font-size: 13px; line-height: 1.45; display: flex; gap: 10px; align-items: center"><span style="flex-grow: 1">Confirme seu e-mail para finalizar compras.</span><button onClick="{{resend}}" style="height: 34px; padding: 0 10px; border-radius: 9px; border: 1px solid #3B3FD9; background: transparent; color: #3B3FD9; font-size: 12px; font-weight: 500; white-space: nowrap">{{resendLabel}}</button><button onClick="{{closeBanner}}" aria-label="Fechar" style="width: 32px; height: 32px; border: none; background: none; color: #44444A; font-size: 18px">×</button></div>
+</sc-if>
+<div style="padding: 20px 16px 40px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="eye">40 · BIBLIOTECA MOBILE</span><h1 style="margin: 0; font-size: 30px; font-weight: 300; letter-spacing: -0.03em">Componentes</h1><span style="font-size: 14px; color: #6B6B72">Toque para ver os estados animados.</span></div>
+
+<!-- Botões e campos -->
+<div class="blk up">
+<p class="bt">Botões e campos</p>
+<button style="height: 52px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 16px; font-weight: 500">Primário</button>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px"><button style="height: 48px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px; font-weight: 500">Secundário</button><button disabled="" style="height: 48px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">Desativado</button></div>
+<button onClick="{{load}}" disabled="{{loading}}" style="height: 52px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 16px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px"><sc-if value="{{loading}}" hint-placeholder-val="{{ false }}"><svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg></sc-if>{{loadLabel}}</button>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Campo<input class="in" placeholder="voce@email.com"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Com erro<input class="in" value="ana@" style="border-color: #B4501E"><span style="color: #B4501E">Digite um e-mail válido.</span></label>
+<div style="display: flex; align-items: center; gap: 12px"><span style="font-size: 14px; color: #44444A; flex-grow: 1">Quantidade</span><div style="display: flex; align-items: center; border: 1px solid #E6E4DE; border-radius: 12px"><button onClick="{{dec}}" aria-label="Diminuir" style="width: 44px; height: 44px; border: none; background: none; font-size: 18px">−</button><span key="{{qty}}" class="bump" style="width: 28px; text-align: center; font-family: 'JetBrains Mono', monospace">{{qty}}</span><button onClick="{{inc}}" aria-label="Aumentar" style="width: 44px; height: 44px; border: none; background: none; font-size: 18px">+</button></div></div>
+</div>
+
+<!-- Contador e sacola -->
+<div class="blk up d1">
+<p class="bt">Contador da sacola</p>
+<span style="font-size: 14px; color: #44444A">O número no topo pula quando uma peça entra.</span>
+<button onClick="{{addBag}}" style="height: 48px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px; font-weight: 500">Adicionar à sacola ({{count}})</button>
+<button onClick="{{toggleBanner}}" style="height: 44px; border-radius: 12px; border: none; background: #F1F0EC; font-size: 14px">{{bannerLabel}}</button>
+</div>
+
+<!-- Toasts e sheet -->
+<div class="blk up d2">
+<p class="bt">Toasts e painel inferior</p>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px"><button onClick="{{t1}}" style="height: 44px; border-radius: 12px; border: none; background: #E8F5EC; color: #15803D; font-size: 13px; font-weight: 500">Sucesso</button><button onClick="{{t2}}" style="height: 44px; border-radius: 12px; border: none; background: #FCEEE4; color: #B4501E; font-size: 13px; font-weight: 500">Aviso</button><button onClick="{{t3}}" style="height: 44px; border-radius: 12px; border: none; background: #ECECFD; color: #3B3FD9; font-size: 13px; font-weight: 500">Info</button></div>
+<button onClick="{{openSheet}}" style="height: 48px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px; font-weight: 500">Abrir painel inferior</button>
+</div>
+
+<!-- Status -->
+<div class="blk up d3">
+<p class="bt">Status de pedido</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{status}}" as="s" hint-placeholder-count="7"><span class="pill" style="background: {{s.bg}}; color: {{s.fg}}">{{s.label}}</span></sc-for></div>
+<p class="bt" style="padding-top: 4px">Estoque e preço</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center"><span class="pill" style="background: #E8F5EC; color: #15803D">Em estoque</span><span class="pill" style="background: #FCEEE4; color: #B4501E">Últimas 2</span><span class="pill" style="background: #F1F0EC; color: #6B6B72">Esgotado</span><span class="pill" style="background: #18181B; color: #FFFFFF">Novo</span><span class="pill" style="background: #E8793A; color: #FFFFFF">−20%</span></div>
+<div style="display: flex; align-items: baseline; gap: 8px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 18px">R$ 279,00</span><s style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #6B6B72">R$ 349,00</s></div>
+<div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #44444A">Recurso futuro <span class="soon">EM BREVE</span></div>
+</div>
+
+<!-- Skeleton -->
+<div class="blk up">
+<div style="display: flex; justify-content: space-between; align-items: center"><p class="bt">Carregando</p><button onClick="{{toggleSkel}}" style="height: 34px; padding: 0 12px; border-radius: 999px; border: none; background: #F1F0EC; font-size: 12px">{{skelLabel}}</button></div>
+<sc-if value="{{skel}}" hint-placeholder-val="{{ true }}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px"><sc-for list="{{two}}" as="x" hint-placeholder-count="2"><div style="display: flex; flex-direction: column; gap: 8px"><span class="skel" style="height: 150px; border-radius: 14px"></span><span class="skel" style="height: 12px; width: 70%; border-radius: 6px"></span><span class="skel" style="height: 12px; width: 40%; border-radius: 6px"></span></div></sc-for></div>
+</sc-if>
+<sc-if value="{{noSkel}}" hint-placeholder-val="{{ false }}">
+<div class="fade" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px"><div style="display: flex; flex-direction: column; gap: 6px"><span style="height: 150px; border-radius: 14px; background: #ECECFD; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="lamp" size="70" hint-size="70px,79px"></dc-import></span><span style="font-size: 14px">Luminária Arco</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">R$ 489</span></div><div style="display: flex; flex-direction: column; gap: 6px"><span style="height: 150px; border-radius: 14px; background: #FCEEE4; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="mug" size="60" hint-size="60px,68px"></dc-import></span><span style="font-size: 14px">Canecas Grão</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">R$ 89</span></div></div>
+</sc-if>
+</div>
+
+<!-- Vazio -->
+<div class="blk up" style="align-items: center; text-align: center; padding: 24px 16px">
+<div class="floaty" style="width: 60px; height: 60px; border-radius: 50%; background: #F1F0EC; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.5" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg></div>
+<span style="font-size: 20px; font-weight: 300">Lista vazia</span>
+<span style="font-size: 14px; color: #6B6B72">Texto curto explicando o que aparece aqui e um próximo passo.</span>
+<a href="MobileListagem.dc.html" style="height: 46px; padding: 0 18px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Ver novidades</a>
+</div>
+</div>
+
+<sc-if value="{{sheet}}" hint-placeholder-val="{{ false }}">
+<div class="fade" onClick="{{closeSheet}}" style="position: fixed; inset: 0; background: rgba(24,24,27,.45); z-index: 40"></div>
+<div class="sheet" role="dialog" aria-label="Ordenar" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: #FFFFFF; border-radius: 20px 20px 0 0; padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 4px">
+<span style="align-self: center; width: 40px; height: 4px; border-radius: 999px; background: #E6E4DE; margin-bottom: 8px"></span>
+<b style="font-size: 18px; font-weight: 500; padding-bottom: 6px">Ordenar por</b>
+<sc-for list="{{sorts}}" as="o" hint-placeholder-count="4"><button onClick="{{o.pick}}" style="min-height: 52px; border: none; border-bottom: 1px solid #F1F0EC; background: none; display: flex; align-items: center; justify-content: space-between; font-size: 16px; color: {{o.fg}}; font-weight: {{o.w}}">{{o.label}}<sc-if value="{{o.on}}" hint-placeholder-val="{{ false }}"><span>✓</span></sc-if></button></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{toast.key}}" class="toast" role="status" style="position: fixed; left: 16px; right: 16px; bottom: 20px; z-index: 60; min-height: 48px; border-radius: 12px; background: #18181B; color: #FFFFFF; display: flex; align-items: center; gap: 10px; padding: 0 16px; font-size: 14px"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{toast.dot}}"></span>{{toast.text}}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2300}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { count: 3, banner: true, resent: false, loading: false, qty: 1, toast: null, toastN: 0, sheet: false, sort: 'Relevância', skel: true }; }
+  componentWillUnmount() { clearTimeout(this.tt); clearTimeout(this.lt); }
+  toast(text, dot) { this.setState({ toast: { text, dot }, toastN: this.state.toastN + 1 }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2800); }
+  renderVals() {
+    const s = this.state;
+    const ST = [['Aguardando pagamento', '#F1F0EC', '#44444A'], ['Confirmado', '#ECECFD', '#3B3FD9'], ['Em preparo', '#FCEEE4', '#B4501E'], ['Enviado', '#3B3FD9', '#FFFFFF'], ['Entregue', '#E8F5EC', '#15803D'], ['Cancelado', '#F1F0EC', '#44444A'], ['Pagamento não aprovado', '#FCEEE4', '#B4501E']];
+    return {
+      count: s.count, addBag: () => { this.setState({ count: s.count + 1 }); this.toast('Peça adicionada à sacola', '#7EE2A0'); },
+      banner: s.banner, closeBanner: () => this.setState({ banner: false }), toggleBanner: () => this.setState({ banner: !s.banner }), bannerLabel: s.banner ? 'Esconder faixa de confirmação' : 'Mostrar faixa de confirmação',
+      resendLabel: s.resent ? 'Reenviado ✓' : 'Reenviar', resend: () => this.setState({ resent: true }),
+      loading: s.loading, loadLabel: s.loading ? 'Salvando…' : 'Toque para carregar',
+      load: () => { this.setState({ loading: true }); clearTimeout(this.lt); this.lt = setTimeout(() => { this.setState({ loading: false }); this.toast('Alterações salvas', '#7EE2A0'); }, 1400); },
+      qty: s.qty, dec: () => this.setState({ qty: Math.max(1, s.qty - 1) }), inc: () => this.setState({ qty: Math.min(9, s.qty + 1) }),
+      t1: () => this.toast('Endereço salvo', '#7EE2A0'), t2: () => this.toast('Restam só 2 unidades', '#E8793A'), t3: () => this.toast('Link reenviado para ana@email.com', '#A5A7F5'),
+      sheet: s.sheet, openSheet: () => this.setState({ sheet: true }), closeSheet: () => this.setState({ sheet: false }),
+      sorts: ['Relevância', 'Menor preço', 'Maior preço', 'Mais novos'].map((label) => ({ label, on: label === s.sort, fg: label === s.sort ? '#3B3FD9' : '#18181B', w: label === s.sort ? 500 : 400, pick: () => this.setState({ sort: label, sheet: false }) })),
+      status: ST.map(([label, bg, fg]) => ({ label, bg, fg })),
+      skel: s.skel, noSkel: !s.skel, two: [1, 2], toggleSkel: () => this.setState({ skel: !s.skel }), skelLabel: s.skel ? 'Mostrar conteúdo' : 'Mostrar skeleton',
+      toast: { show: !!s.toast, text: s.toast ? s.toast.text : '', dot: s.toast ? s.toast.dot : '', key: 't' + s.toastN }
+    };
+  }
+}
+</script>
+</body>
+</html>

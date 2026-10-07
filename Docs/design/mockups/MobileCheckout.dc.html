@@ -13,117 +13,301 @@
 <style>
 body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
 a{color:#3B3FD9}
-button{font-family:inherit;cursor:pointer}
-input{font-family:Outfit,sans-serif}
-input[type=radio]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
 @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-@keyframes orbit{to{transform:rotate(360deg)}}
-@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.1);opacity:1}100%{transform:scale(1)}}
-@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
 @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
-.orbit{animation:orbit 2.4s linear infinite}
-.pop{animation:pop .5s cubic-bezier(.2,.7,.2,1) both}
-.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
+.pulse{animation:pulse 1.8s ease-out infinite}
 .shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.orbit{animation:orbit 2.4s linear infinite}
 </style>
 </helmet>
-<div style="width: 390px; height: 1100px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
-<dc-import name="MobileTopo" count="4" back="MobileSacola.dc.html" title="Finalizar compra" hint-size="390px,86px"></dc-import>
+<div style="width: 390px; height: 1500px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileTopo" count="4" back="MobileSacola.dc.html" title="Finalizar compra" logged="{{ true }}" hint-size="390px,86px"></dc-import>
+
+<sc-if value="{{emailBanner}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FCEEE4; padding: 10px 16px; font-size: 13px; line-height: 1.45; display: flex; gap: 10px; align-items: center"><span style="flex-grow: 1">Confirme seu e-mail para finalizar compras.</span><button onClick="{{resend}}" style="height: 34px; padding: 0 10px; border-radius: 9px; border: 1px solid #B4501E; background: transparent; color: #B4501E; font-size: 12px; font-weight: 500; white-space: nowrap">{{resendLabel}}</button></div>
+</sc-if>
 
 <sc-if value="{{inForm}}" hint-placeholder-val="{{ true }}">
-<section style="padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<section style="padding: 16px 16px 120px; display: flex; flex-direction: column; gap: 12px">
 <div style="display: flex; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em">
 <span style="flex: 1; height: 30px; border-radius: 999px; background: #E8F5EC; color: #15803D; display: flex; align-items: center; justify-content: center">✓ SACOLA</span>
 <span style="flex: 1; height: 30px; border-radius: 999px; background: {{s2bg}}; color: {{s2fg}}; display: flex; align-items: center; justify-content: center">{{s2label}}</span>
 <span style="flex: 1; height: 30px; border-radius: 999px; background: {{s3bg}}; color: {{s3fg}}; display: flex; align-items: center; justify-content: center">03 PAGAR</span>
 </div>
 
-<!-- Entrega -->
+<!-- 14 · Entrega -->
 <sc-if value="{{isShip}}" hint-placeholder-val="{{ true }}">
 <h1 class="up" style="margin: 4px 0 0; font-size: 30px; font-weight: 300; letter-spacing: -0.03em">Para onde enviar?</h1>
+<sc-if value="{{noAddr}}" hint-placeholder-val="{{ false }}"><div style="padding: 12px 14px; border-radius: 12px; background: #F1F0EC; font-size: 14px; color: #44444A">Você ainda não tem endereços. Cadastre o primeiro; ele vira o padrão.</div></sc-if>
 <sc-for list="{{addrs}}" as="a" hint-placeholder-count="2">
-<label style="display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 14px; border: 1px solid {{a.border}}; background: {{a.bg}}; cursor: pointer">
+<label key="{{a.id}}" class="up" style="display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 14px; border: 1px solid {{a.border}}; background: {{a.bg}}; cursor: pointer">
 <input type="radio" name="addr" checked="{{a.on}}" onChange="{{a.pick}}" style="margin-top: 2px">
 <span style="display: flex; flex-direction: column; gap: 2px; font-size: 14px; line-height: 1.45"><b style="font-weight: 500; font-size: 15px">{{a.label}}</b><span style="color: #44444A">{{a.line}}</span></span>
 </label>
 </sc-for>
-<button style="min-height: 44px; border: 1px dashed #C9C7C0; border-radius: 14px; background: transparent; color: #3B3FD9; font-size: 14px; font-weight: 500">+ Novo endereço</button>
-<div style="padding: 12px 14px; border-radius: 14px; border: 1px dashed #E6E4DE; font-size: 13px; color: #6B6B72">Frete e prazo por CEP <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span></div>
+<sc-if value="{{formOpen}}" hint-placeholder-val="{{ false }}">
+<form class="up" onSubmit="{{saveAddr}}" style="margin: 0; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+<b style="font-size: 16px; font-weight: 500">Novo endereço</b>
+<sc-for list="{{fields}}" as="f" hint-placeholder-count="6"><label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: #44444A">{{f.label}}<input value="{{f.value}}" onChange="{{f.on}}" inputmode="{{f.mode}}" autocomplete="{{f.ac}}" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{f.b}}; border-radius: 12px; font-size: 16px"></label></sc-for>
+<sc-if value="{{formErr}}" hint-placeholder-val="{{ false }}"><span role="alert" style="font-size: 13px; color: #B4501E">Preencha os campos destacados. O CEP tem 8 números.</span></sc-if>
+<div style="display: flex; gap: 8px"><button type="submit" style="flex-grow: 1; height: 48px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">Salvar endereço</button><sc-if value="{{canCancel}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{closeForm}}" style="height: 48px; padding: 0 14px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px">Cancelar</button></sc-if></div>
+</form>
+</sc-if>
+<sc-if value="{{canAdd}}" hint-placeholder-val="{{ true }}"><button onClick="{{openForm}}" style="min-height: 48px; border: 1px dashed #C9C7C0; border-radius: 14px; background: transparent; color: #3B3FD9; font-size: 15px; font-weight: 500">+ Novo endereço</button></sc-if>
+<label style="display: flex; gap: 12px; align-items: center; padding: 6px 2px; font-size: 15px; cursor: pointer"><input type="checkbox" checked="{{same}}" onChange="{{toggleSame}}">Cobrança no mesmo endereço</label>
+<sc-if value="{{showBill}}" hint-placeholder-val="{{ false }}"><div class="fade" style="display: flex; flex-direction: column; gap: 8px"><span style="font-size: 13px; color: #6B6B72">Endereço de cobrança</span><sc-for list="{{billAddrs}}" as="a" hint-placeholder-count="2"><label style="display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid {{a.border}}; background: {{a.bg}}; font-size: 14px; cursor: pointer"><input type="radio" name="bill" checked="{{a.on}}" onChange="{{a.pick}}">{{a.label}}</label></sc-for></div></sc-if>
+<sc-if value="{{futuro}}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-direction: column; gap: 8px; padding-top: 6px"><span style="font-size: 15px; font-weight: 500">Frete e prazo</span><sc-for list="{{shipOpts}}" as="o" hint-placeholder-count="2"><label style="display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid {{o.border}}; background: {{o.bg}}; font-size: 14px; cursor: pointer"><input type="radio" name="frete" checked="{{o.on}}" onChange="{{o.pick}}"><span style="flex-grow: 1; display: flex; flex-direction: column"><b style="font-weight: 500">{{o.label}}</b><span style="font-size: 12px; color: #6B6B72">{{o.eta}}</span></span><span style="font-family: 'JetBrains Mono', monospace; color: {{o.color}}">{{o.price}}</span></label></sc-for></div></sc-if>
+<sc-if value="{{notFuturo}}" hint-placeholder-val="{{ true }}"><div style="padding: 12px 14px; border-radius: 14px; border: 1px dashed #E6E4DE; font-size: 13px; color: #6B6B72">Frete e prazo por CEP <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span></div></sc-if>
 </sc-if>
 
-<!-- Pagamento -->
+<!-- 15/16 · Pagamento -->
 <sc-if value="{{isPay}}" hint-placeholder-val="{{ false }}">
 <h1 class="up" style="margin: 4px 0 0; font-size: 30px; font-weight: 300; letter-spacing: -0.03em">Pagamento</h1>
-<div style="padding: 12px 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #E6E4DE; font-size: 13px; color: #44444A; display: flex; justify-content: space-between; align-items: center"><span>Entrega: <b style="font-weight: 500; color: #18181B">{{addrLabel}}</b></span><button onClick="{{toShip}}" style="border: none; background: none; color: #3B3FD9; font-size: 13px; font-weight: 500; min-height: 36px">Alterar</button></div>
+<sc-if value="{{alert.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{alert.key}}" role="alert" class="shake" style="padding: 14px; border-radius: 14px; background: {{alert.bg}}; display: flex; flex-direction: column; gap: 8px"><b style="font-size: 15px; font-weight: 500">{{alert.title}}</b><span style="font-size: 14px; line-height: 1.5; color: #44444A">{{alert.text}}</span>
+<sc-if value="{{alert.isPrice}}" hint-placeholder-val="{{ false }}"><button onClick="{{acceptPrice}}" style="align-self: flex-start; height: 40px; padding: 0 14px; border-radius: 10px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 14px; font-weight: 500">Aceitar novo total</button></sc-if>
+<sc-if value="{{alert.isStock}}" hint-placeholder-val="{{ false }}"><a href="MobileSacola.dc.html" style="align-self: flex-start; height: 40px; padding: 0 14px; border-radius: 10px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; font-size: 14px; font-weight: 500">Ajustar a sacola</a></sc-if>
+</div>
+</sc-if>
+<div style="padding: 12px 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #E6E4DE; font-size: 13px; color: #44444A; display: flex; justify-content: space-between; align-items: center"><span>Entrega: <b style="font-weight: 500; color: #18181B">{{addrLabel}}</b></span><button onClick="{{toShip}}" style="border: none; background: none; color: #3B3FD9; font-size: 13px; font-weight: 500; min-height: 40px">Alterar</button></div>
+<sc-if value="{{futuro}}" hint-placeholder-val="{{ false }}"><div role="radiogroup" aria-label="Forma de pagamento" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 12px; background: #F1F0EC"><button role="radio" aria-checked="{{isCardM}}" onClick="{{pickCard}}" style="height: 42px; border-radius: 9px; border: none; background: {{cardBg}}; font-size: 14px; font-weight: 500">Cartão</button><button role="radio" aria-checked="{{isPixM}}" onClick="{{pickPix}}" style="height: 42px; border-radius: 9px; border: none; background: {{pixBg}}; font-size: 14px; font-weight: 500">Pix · 5% off</button></div></sc-if>
+<sc-if value="{{isCardM}}" hint-placeholder-val="{{ true }}">
 <sc-if value="{{declined}}" hint-placeholder-val="{{ false }}"><div key="{{declineKey}}" role="alert" class="shake" style="padding: 12px 14px; border-radius: 12px; background: #FCEEE4; font-size: 14px">O banco recusou este cartão. Nenhum valor foi cobrado.</div></sc-if>
 <div style="border: 1px solid {{ccB}}; border-radius: 14px; overflow: hidden; background: #FFFFFF">
-<input aria-label="Número do cartão" inputmode="numeric" autocomplete="cc-number" placeholder="Número do cartão" value="{{cc.num}}" onChange="{{cc.onNum}}" style="width: 100%; height: 52px; box-sizing: border-box; padding: 0 14px; border: none; border-bottom: 1px solid #E6E4DE; outline: none; font-family: 'JetBrains Mono', monospace; font-size: 15px">
-<div style="display: flex"><input aria-label="Validade" inputmode="numeric" placeholder="MM/AA" value="{{cc.exp}}" onChange="{{cc.onExp}}" style="width: 50%; height: 52px; box-sizing: border-box; padding: 0 14px; border: none; border-right: 1px solid #E6E4DE; outline: none; font-family: 'JetBrains Mono', monospace; font-size: 15px"><input aria-label="CVC" inputmode="numeric" placeholder="CVC" value="{{cc.cvc}}" onChange="{{cc.onCvc}}" style="width: 50%; height: 52px; box-sizing: border-box; padding: 0 14px; border: none; outline: none; font-family: 'JetBrains Mono', monospace; font-size: 15px"></div>
+<input aria-label="Número do cartão" inputmode="numeric" autocomplete="cc-number" placeholder="Número do cartão" value="{{cc.num}}" onChange="{{cc.onNum}}" style="width: 100%; height: 52px; box-sizing: border-box; padding: 0 14px; border: none; border-bottom: 1px solid #E6E4DE; outline: none; font-family: 'JetBrains Mono', monospace; font-size: 16px">
+<div style="display: flex"><input aria-label="Validade" inputmode="numeric" placeholder="MM/AA" value="{{cc.exp}}" onChange="{{cc.onExp}}" style="width: 50%; height: 52px; box-sizing: border-box; padding: 0 14px; border: none; border-right: 1px solid #E6E4DE; outline: none; font-family: 'JetBrains Mono', monospace; font-size: 16px"><input aria-label="CVC" inputmode="numeric" placeholder="CVC" value="{{cc.cvc}}" onChange="{{cc.onCvc}}" style="width: 50%; height: 52px; box-sizing: border-box; padding: 0 14px; border: none; outline: none; font-family: 'JetBrains Mono', monospace; font-size: 16px"></div>
 </div>
-<span style="font-size: 12px; color: #6B6B72">Processado pelo Stripe. A Marfim não guarda o número do cartão. Pix <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #B4501E">EM BREVE</span></span>
+<span style="font-size: 12px; color: #6B6B72">Processado pelo Stripe. A Marfim não guarda o número do cartão.<sc-if value="{{notFuturo}}" hint-placeholder-val="{{ true }}"> Pix <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #B4501E">EM BREVE</span></sc-if></span>
+</sc-if>
+</sc-if>
+
+<!-- Pix -->
+<sc-if value="{{isPix}}" hint-placeholder-val="{{ false }}">
+<h1 class="up" style="margin: 4px 0 0; font-size: 30px; font-weight: 300; letter-spacing: -0.03em">Pague com Pix</h1>
+<div class="up" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; align-items: center; gap: 14px">
+<div role="img" aria-label="QR code do Pix" style="width: 220px; height: 220px; padding: 10px; box-sizing: border-box; border-radius: 14px; border: 1px solid #E6E4DE; display: grid; grid-template-columns: repeat(25, minmax(0, 1fr))"><sc-for list="{{qr}}" as="q" hint-placeholder-count="625"><span style="background: {{q.c}}; aspect-ratio: 1"></span></sc-for></div>
+<span style="font-size: 32px; font-weight: 300">{{pixTotal}}</span>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #15803D"><span class="pulse" style="width: 7px; height: 7px; border-radius: 50%; background: #15803D"></span>Aguardando pagamento · expira em <b style="font-family: 'JetBrains Mono', monospace; font-weight: 500">{{pixClock}}</b></span>
+<button onClick="{{copyPix}}" style="width: 100%; height: 48px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: {{copyColor}}; font-size: 15px; font-weight: 500">{{copyLabel}}</button>
+<button onClick="{{pixPaid}}" style="width: 100%; height: 44px; border-radius: 12px; border: none; background: #F1F0EC; font-size: 14px">Simular pagamento recebido</button>
+</div>
 </sc-if>
 
 <div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; font-size: 14px">
-<div style="display: flex; justify-content: space-between"><span style="color: #44444A">4 peças</span><span style="font-family: 'JetBrains Mono', monospace">R$ 666,00</span></div>
-<div style="display: flex; justify-content: space-between"><span style="color: #44444A">Frete</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #B4501E">EM BREVE</span></div>
+<div style="display: flex; justify-content: space-between"><span style="color: #44444A">4 peças</span><span style="font-family: 'JetBrains Mono', monospace">{{subTotal}}</span></div>
+<div style="display: flex; justify-content: space-between"><span style="color: #44444A">Frete</span><span style="font-family: 'JetBrains Mono', monospace; font-size: {{freteSize}}; color: {{freteColor}}">{{freteLabel}}</span></div>
+<sc-if value="{{pixActive}}" hint-placeholder-val="{{ false }}"><div style="display: flex; justify-content: space-between"><span style="color: #44444A">Desconto no Pix</span><span style="font-family: 'JetBrains Mono', monospace; color: #15803D">− {{pixOff}}</span></div></sc-if>
 </div>
 </section>
+<sc-if value="{{showCta}}" hint-placeholder-val="{{ true }}">
 <div style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: #FFFFFF; border-top: 1px solid #E6E4DE; padding: 10px 16px 14px">
-<button onClick="{{primary}}" style="width: 100%; height: 52px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; font-size: 16px; font-weight: 500"><span>{{primaryLabel}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 15px">R$ 666,00</span></button>
+<button onClick="{{primary}}" disabled="{{ctaDisabled}}" style="width: 100%; height: 52px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; font-size: 16px; font-weight: 500"><span style="display: flex; align-items: center; gap: 8px"><sc-if value="{{placing}}" hint-placeholder-val="{{ false }}"><svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg></sc-if>{{primaryLabel}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 15px">{{payTotal}}</span></button>
 </div>
 </sc-if>
+</sc-if>
 
+<!-- 17 -->
 <sc-if value="{{isProc}}" hint-placeholder-val="{{ false }}">
-<section style="padding: 80px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px">
+<section style="padding: 72px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px">
 <div style="position: relative; width: 100px; height: 100px"><svg width="100" height="100" viewBox="0 0 120 120" fill="none" style="position: absolute; inset: 0"><circle cx="60" cy="60" r="52" stroke="#ECECFD" stroke-width="6"></circle></svg><svg class="orbit" width="100" height="100" viewBox="0 0 120 120" fill="none" style="position: absolute; inset: 0"><path d="M60 8a52 52 0 0 1 52 52" stroke="#3B3FD9" stroke-width="6" stroke-linecap="round"></path><circle cx="112" cy="60" r="6" fill="#E8793A"></circle></svg></div>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">PEDIDO MF-000231</span>
 <h1 style="margin: 0; font-size: 28px; font-weight: 300">Confirmando o pagamento…</h1>
+<div style="width: 100%; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; text-align: left; font-size: 14px">
+<sc-for list="{{procSteps}}" as="p" hint-placeholder-count="3"><div class="fade" style="display: flex; align-items: center; gap: 10px; color: {{p.color}}"><span style="width: 16px; text-align: center; color: {{p.icoColor}}">{{p.ico}}</span>{{p.label}}</div></sc-for>
+</div>
 <p style="margin: 0; font-size: 14px; color: #6B6B72">Não feche esta tela.</p>
 </section>
 </sc-if>
 
+<!-- 18 -->
 <sc-if value="{{isDone}}" hint-placeholder-val="{{ false }}">
-<section style="padding: 60px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px">
+<section style="padding: 48px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px">
 <span class="pop" style="width: 80px; height: 80px; border-radius: 50%; background: #E8F5EC; display: flex; align-items: center; justify-content: center"><svg class="check" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span>
 <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">PEDIDO MF-000231</span>
 <h1 style="margin: 0; font-size: 34px; font-weight: 300">Pedido <b style="font-weight: 500; color: #15803D">confirmado</b></h1>
 <p style="margin: 0; font-size: 15px; color: #6B6B72">Mandamos o resumo para ana@email.com.</p>
+<div style="width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 8px 0">
+<sc-for list="{{next}}" as="n" hint-placeholder-count="4"><div style="display: flex; flex-direction: column; gap: 6px; text-align: left"><span style="height: 4px; border-radius: 999px; background: {{n.bar}}"></span><span style="font-size: 12px; color: {{n.color}}">{{n.label}}</span></div></sc-for>
+</div>
+<div style="width: 100%; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 14px 16px; font-size: 14px; display: flex; justify-content: space-between"><span>Total pago</span><span style="font-family: 'JetBrains Mono', monospace">{{payTotal}}</span></div>
 <a href="MobileConta.dc.html" style="width: 100%; height: 52px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 500">Acompanhar pedido</a>
 <a href="MobileInicio.dc.html" style="font-size: 15px; font-weight: 500; text-decoration: none; min-height: 44px; display: flex; align-items: center">Continuar comprando</a>
 </section>
 </sc-if>
+
+<!-- 19 -->
+<sc-if value="{{isFail}}" hint-placeholder-val="{{ false }}">
+<section style="padding: 48px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px">
+<span class="pop" style="width: 80px; height: 80px; border-radius: 50%; background: #FCEEE4; display: flex; align-items: center; justify-content: center"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#B4501E" stroke-width="1.8" stroke-linecap="round"><path d="M7 7l10 10M17 7 7 17"></path></svg></span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6B6B72">PEDIDO MF-000231</span>
+<h1 style="margin: 0; font-size: 32px; font-weight: 300">Pagamento <b style="font-weight: 500; color: #B4501E">não aprovado</b></h1>
+<div style="width: 100%; box-sizing: border-box; padding: 12px 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #E6E4DE; font-size: 14px; color: #44444A; text-align: left"><span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #6B6B72">MOTIVO</span>O banco não autorizou a transação. Nenhum valor foi cobrado.</div>
+<p style="margin: 0; font-size: 14px; color: #6B6B72; line-height: 1.5">As peças voltaram ao estoque; sua sacola continua salva.</p>
+<button onClick="{{retry}}" style="width: 100%; height: 52px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 16px; font-weight: 500">Tentar de novo</button>
+<a href="MobileSacola.dc.html" style="font-size: 15px; font-weight: 500; text-decoration: none; min-height: 44px; display: flex; align-items: center">Voltar para a sacola</a>
+</section>
+</sc-if>
+
+<!-- 3-D Secure -->
+<sc-if value="{{show3ds}}" hint-placeholder-val="{{ false }}">
+<div class="fade" style="position: fixed; inset: 0; background: rgba(24,24,27,.45); z-index: 40"></div>
+<div class="sheet" role="dialog" aria-label="Autenticação do banco" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: #FFFFFF; border-radius: 20px 20px 0 0; padding: 12px 16px 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+<span style="width: 40px; height: 4px; border-radius: 999px; background: #E6E4DE"></span>
+<span style="width: 56px; height: 56px; border-radius: 16px; background: #ECECFD; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3B3FD9" stroke-width="1.6" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"></rect><path d="M11 18h2"></path></svg></span>
+<b style="font-size: 20px; font-weight: 500">Confirme no app do seu banco</b>
+<span style="font-size: 14px; color: #6B6B72; line-height: 1.5">Seu banco pediu uma verificação extra (3-D Secure).</span>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #3B3FD9"><svg class="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg>Aguardando o banco</span>
+<button onClick="{{approve3ds}}" style="width: 100%; height: 52px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 16px; font-weight: 500">Já aprovei</button>
+<button onClick="{{cancel3ds}}" style="width: 100%; height: 48px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px">Cancelar</button>
+</div>
+</sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"cartao":{"editor":"enum","options":["aprovado","recusado"],"default":"aprovado"},"$preview":{"width":390,"height":1100}}'>
+<script type="text/x-dc" data-dc-script data-props='{"etapa":{"editor":"enum","options":["entrega","pagamento","processando","confirmado","recusado"],"default":"entrega"},"enderecos":{"editor":"enum","options":["com-enderecos","sem-endereco"],"default":"com-enderecos"},"erro":{"editor":"enum","options":["nenhum","preco-mudou","sem-estoque","email-nao-confirmado","muitas-tentativas"],"default":"nenhum"},"cartao":{"editor":"enum","options":["aprovado","recusado","autenticacao-3ds","nao-aprovado-depois"],"default":"aprovado"},"futuro":{"editor":"boolean","default":false},"$preview":{"width":390,"height":1500}}'>
 class Component extends DCLogic {
-  constructor(props) { super(props); this.state = { step: 'ship', addr: 'casa', cc: { num: '', exp: '', cvc: '' }, tried: false, declined: 0 }; }
-  componentWillUnmount() { clearTimeout(this.pt); }
+  constructor(props) {
+    super(props);
+    this.state = { stage: null, from: null, addr: null, added: [], formOpen: false, tried: false, f: { who: '', cep: '', street: '', num: '', city: '' }, same: true, bill: null, frete: 'eco',
+      method: 'card', cc: { num: '', exp: '', cvc: '' }, ccTried: false, declined: 0, three: false, alert: null, alertN: 0, priceOk: false, placing: false, lockUntil: 0, now: Date.now(), proc: 0, resent: false, copied: false, pixStart: 0 };
+  }
+  componentDidMount() { this.t = setInterval(() => this.tick(), 900); }
+  componentWillUnmount() { clearInterval(this.t); clearTimeout(this.pt); }
+  key() { const p = this.props; return [p.etapa, p.enderecos, p.erro, p.cartao, !!p.futuro].join('|'); }
+  stage() { return this.state.stage && this.state.from === this.key() ? this.state.stage : (this.props.etapa || 'entrega'); }
+  go(stage, extra) { this.setState(Object.assign({ stage, from: this.key(), proc: 0 }, extra || {})); }
+  tick() {
+    const st = this.stage();
+    if (st === 'processando') { const p = this.state.proc + 1; if (p >= 4) this.go(this.props.cartao === 'nao-aprovado-depois' ? 'recusado' : 'confirmado'); else this.setState({ proc: p }); }
+    else if (st === 'pix' || this.state.lockUntil > Date.now() - 1000) this.setState({ now: Date.now() });
+  }
+  m(n) { return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
   renderVals() {
-    const s = this.state;
-    const A = [['casa', 'Casa', 'Rua [ENDEREÇO], 120 · Pinheiros · São Paulo, SP'], ['trab', 'Trabalho', 'Av. [ENDEREÇO], 1500 · Bela Vista · São Paulo, SP']];
-    const ok = s.cc.num.replace(/\D/g, '').length >= 15 && /^\d{2}\/\d{2}$/.test(s.cc.exp) && s.cc.cvc.length >= 3;
-    const setCc = (k, f) => (e) => this.setState({ cc: Object.assign({}, s.cc, { [k]: f(e.target.value) }), tried: false });
-    const pay = s.step === 'pay';
+    const s = this.state, p = this.props;
+    const stage = this.stage();
+    const fresh = s.from !== this.key();
+    const futuro = !!p.futuro, erro = p.erro || 'nenhum', cartao = p.cartao || 'aprovado';
+    const base = (p.enderecos || 'com-enderecos') === 'sem-endereco' ? [] : [['casa', 'Casa', 'Rua [ENDEREÇO], 120 · Pinheiros · São Paulo, SP'], ['trab', 'Trabalho', 'Av. [ENDEREÇO], 1500 · Bela Vista · São Paulo, SP']];
+    const list = base.concat(fresh ? [] : s.added);
+    const addrId = (!fresh && s.addr) || (list[0] && list[0][0]);
+    const formOpen = list.length === 0 || (!fresh && s.formOpen);
+    const f = s.f, cepD = f.cep.replace(/\D/g, '');
+    const bad = { who: !f.who.trim(), cep: cepD.length !== 8, street: !f.street.trim(), num: !f.num.trim(), city: !f.city.trim() };
+    const anyBad = Object.values(bad).some(Boolean);
+    const setF = (k) => (e) => this.setState({ f: Object.assign({}, s.f, { [k]: k === 'cep' ? e.target.value.replace(/\D/g, '').slice(0, 8).replace(/^(\d{5})(\d)/, '$1-$2') : e.target.value }) });
+    const priceUp = erro === 'preco-mudou' && !fresh && s.priceOk;
+    const sub = 666 + (priceUp ? 20 : 0);
+    const frete = futuro ? (s.frete === 'exp' ? 42.9 : 0) : 0;
+    const pixSel = futuro && s.method === 'pix';
+    const pay = (sub + frete) * (pixSel ? 0.95 : 1);
+    const lock = Math.max(0, Math.ceil((s.lockUntil - s.now) / 1000));
+    const alerts = {
+      'preco-mudou': ['O preço de uma peça mudou', 'O Pendente Orbe passou de R$ 359,00 para R$ 379,00. Nada foi cobrado.', '#FCEEE4'],
+      'sem-estoque': ['Uma peça acabou de esgotar', 'Restou só 1 unidade do Par de canecas Grão, e sua sacola tem 2.', '#FCEEE4'],
+      'email-nao-confirmado': ['Confirme seu e-mail para finalizar', 'Enviamos o link para ana@email.com. Ele vale 24 horas.', '#ECECFD'],
+      'muitas-tentativas': ['Muitas tentativas seguidas', 'Aguarde ' + lock + ' segundos para tentar de novo.', '#FCEEE4']
+    };
+    const ac = fresh ? null : s.alert, a = ac ? alerts[ac] : null;
+    const cc = s.cc, ccOk = cc.num.replace(/\D/g, '').length >= 15 && /^\d{2}\/\d{2}$/.test(cc.exp) && cc.cvc.length >= 3;
+    const setCc = (k, fn) => (e) => this.setState({ cc: Object.assign({}, s.cc, { [k]: fn(e.target.value) }), ccTried: false });
+    const isPay = stage === 'pagamento';
+    const pixLeft = Math.max(0, 1800 - Math.floor((s.now - (s.pixStart || s.now)) / 1000));
+    const qr = [];
+    for (let y = 0; y < 25; y++) for (let x = 0; x < 25; x++) {
+      const inF = (cx, cy) => x >= cx && x < cx + 7 && y >= cy && y < cy + 7;
+      let on;
+      if (inF(0, 0) || inF(18, 0) || inF(0, 18)) { const fx = x >= 18 ? x - 18 : x, fy = y >= 18 ? y - 18 : y; on = fx === 0 || fx === 6 || fy === 0 || fy === 6 || (fx >= 2 && fx <= 4 && fy >= 2 && fy <= 4); }
+      else on = ((x * 7 + y * 13 + x * y * 3) % 5) < 2;
+      qr.push({ c: on ? '#18181B' : 'transparent' });
+    }
+    const card = (id, label, line, sel, pick) => ({ id, label, line, on: sel, border: sel ? '#3B3FD9' : '#E6E4DE', bg: sel ? '#ECECFD' : '#FFFFFF', pick });
+    const keep = { from: this.key(), stage };
     return {
-      inForm: s.step === 'ship' || pay, isShip: s.step === 'ship', isPay: pay, isProc: s.step === 'proc', isDone: s.step === 'done',
-      s2bg: pay ? '#E8F5EC' : '#ECECFD', s2fg: pay ? '#15803D' : '#3B3FD9', s2label: pay ? '✓ ENTREGA' : '02 ENTREGA',
-      s3bg: pay ? '#ECECFD' : '#F1F0EC', s3fg: pay ? '#3B3FD9' : '#6B6B72',
-      addrs: A.map(([id, label, line]) => ({ label, line, on: s.addr === id, border: s.addr === id ? '#3B3FD9' : '#E6E4DE', bg: s.addr === id ? '#ECECFD' : '#FFFFFF', pick: () => this.setState({ addr: id }) })),
-      addrLabel: A.find((a) => a[0] === s.addr)[1], toShip: () => this.setState({ step: 'ship' }),
-      cc: { num: s.cc.num, exp: s.cc.exp, cvc: s.cc.cvc,
+      emailBanner: erro === 'email-nao-confirmado' && (stage === 'entrega' || isPay), resendLabel: s.resent ? 'Reenviado ✓' : 'Reenviar link', resend: () => this.setState({ resent: true }),
+      inForm: stage === 'entrega' || isPay || stage === 'pix', isShip: stage === 'entrega', isPay, isPix: stage === 'pix', isProc: stage === 'processando', isDone: stage === 'confirmado', isFail: stage === 'recusado',
+      s2bg: stage === 'entrega' ? '#ECECFD' : '#E8F5EC', s2fg: stage === 'entrega' ? '#3B3FD9' : '#15803D', s2label: stage === 'entrega' ? '02 ENTREGA' : '✓ ENTREGA',
+      s3bg: stage === 'entrega' ? '#F1F0EC' : '#ECECFD', s3fg: stage === 'entrega' ? '#6B6B72' : '#3B3FD9',
+      noAddr: list.length === 0,
+      addrs: list.map(([id, label, line]) => card(id, label, line, id === addrId, () => this.setState(Object.assign({ addr: id, added: fresh ? [] : s.added }, keep)))),
+      formOpen, canCancel: list.length > 0, canAdd: list.length > 0 && !formOpen,
+      openForm: () => this.setState(Object.assign({ formOpen: true, tried: false, added: fresh ? [] : s.added }, keep)), closeForm: () => this.setState({ formOpen: false }),
+      fields: [['who', 'Quem recebe', 'text', 'name'], ['cep', 'CEP', 'numeric', 'postal-code'], ['street', 'Rua', 'text', 'address-line1'], ['num', 'Número e complemento', 'text', 'address-line2'], ['city', 'Cidade e UF', 'text', 'address-level2']].map(([k, label, mode, ac2]) => ({ label, mode, ac: ac2, value: f[k], on: setF(k), b: s.tried && bad[k] ? '#B4501E' : '#E6E4DE' })),
+      formErr: s.tried && anyBad,
+      saveAddr: (e) => { e.preventDefault(); if (anyBad) { this.setState(Object.assign({ tried: true, formOpen: true, added: fresh ? [] : s.added }, keep)); return; } const id = 'n' + Date.now(); this.setState(Object.assign({ added: (fresh ? [] : s.added).concat([[id, 'Novo endereço', f.street + ', ' + f.num + ' · ' + f.city + ' · ' + f.cep]]), addr: id, formOpen: false, tried: false, f: { who: '', cep: '', street: '', num: '', city: '' } }, keep)); },
+      same: s.same, toggleSame: () => this.setState({ same: !s.same }), showBill: !s.same && list.length > 0,
+      billAddrs: list.map(([id, label]) => card(id, label, '', id === (s.bill || addrId), () => this.setState({ bill: id }))),
+      futuro, notFuturo: !futuro,
+      shipOpts: [['eco', 'Econômica', '5 a 9 dias úteis', 0], ['exp', 'Expressa', '2 a 4 dias úteis', 42.9]].map(([id, label, eta, c]) => ({ label, eta, on: s.frete === id, price: c ? this.m(c) : 'Grátis', color: c ? '#18181B' : '#15803D', border: s.frete === id ? '#3B3FD9' : '#E6E4DE', bg: s.frete === id ? '#ECECFD' : '#FFFFFF', pick: () => this.setState({ frete: id }) })),
+      addrLabel: (list.find((x) => x[0] === addrId) || ['', '—'])[1], toShip: () => this.go('entrega'),
+      alert: { show: !!a && isPay, key: 'a' + s.alertN, title: a ? a[0] : '', text: a ? a[1] : '', bg: a ? a[2] : '', isPrice: ac === 'preco-mudou', isStock: ac === 'sem-estoque' },
+      acceptPrice: () => this.go('pagamento', { priceOk: true, alert: null }),
+      isCardM: !pixSel, isPixM: pixSel, cardBg: pixSel ? 'transparent' : '#FFFFFF', pixBg: pixSel ? '#FFFFFF' : 'transparent',
+      pickCard: () => this.setState({ method: 'card' }), pickPix: () => this.setState({ method: 'pix' }),
+      declined: !fresh && s.declined > 0, declineKey: 'd' + s.declined,
+      cc: { num: cc.num, exp: cc.exp, cvc: cc.cvc,
         onNum: setCc('num', (v) => v.replace(/\D/g, '').slice(0, 16).replace(/(\d{4})(?=\d)/g, '$1 ')),
         onExp: setCc('exp', (v) => v.replace(/\D/g, '').slice(0, 4).replace(/^(\d{2})(\d)/, '$1/$2')),
         onCvc: setCc('cvc', (v) => v.replace(/\D/g, '').slice(0, 4)) },
-      ccB: s.tried && !ok ? '#B4501E' : '#E6E4DE',
-      declined: s.declined > 0, declineKey: 'd' + s.declined,
-      primaryLabel: pay ? 'Pagar' : 'Ir para o pagamento',
+      ccB: s.ccTried && !ccOk ? '#B4501E' : '#E6E4DE',
+      subTotal: this.m(sub), freteLabel: futuro ? (frete ? this.m(frete) : 'Grátis') : 'EM BREVE', freteSize: futuro ? '13px' : '10px', freteColor: futuro ? (frete ? '#18181B' : '#15803D') : '#B4501E',
+      pixActive: pixSel, pixOff: this.m((sub + frete) * 0.05), pixTotal: this.m(pay), payTotal: this.m(pay),
+      qr, pixClock: String(Math.floor(pixLeft / 60)).padStart(2, '0') + ':' + String(pixLeft % 60).padStart(2, '0'),
+      copyLabel: s.copied ? 'Código copiado ✓' : 'Copiar código Pix', copyColor: s.copied ? '#15803D' : '#18181B', copyPix: () => this.setState({ copied: true }),
+      pixPaid: () => this.go('processando'),
+      showCta: stage !== 'pix', placing: !fresh && s.placing, ctaDisabled: (!fresh && s.placing) || lock > 0 || (stage === 'entrega' && list.length === 0),
+      primaryLabel: lock > 0 ? 'Aguarde ' + lock + 's' : stage === 'entrega' ? 'Ir para o pagamento' : pixSel ? 'Gerar Pix' : 'Pagar',
       primary: () => {
-        if (!pay) { this.setState({ step: 'pay' }); return; }
-        if (!ok) { this.setState({ tried: true }); return; }
-        if ((this.props.cartao || 'aprovado') === 'recusado') { this.setState({ declined: s.declined + 1 }); return; }
-        this.setState({ step: 'proc' }); clearTimeout(this.pt); this.pt = setTimeout(() => this.setState({ step: 'done' }), 2400);
-      }
+        if (stage === 'entrega') { this.go('pagamento', { addr: addrId, added: fresh ? [] : s.added }); return; }
+        const needs = erro !== 'nenhum' && !(erro === 'preco-mudou' && s.priceOk && !fresh);
+        if (!pixSel && !ccOk && !needs) { this.go('pagamento', { ccTried: true }); return; }
+        this.go('pagamento', { placing: true, alert: null, priceOk: fresh ? false : s.priceOk });
+        clearTimeout(this.pt);
+        this.pt = setTimeout(() => {
+          if (needs) { this.setState({ placing: false, alert: erro, alertN: this.state.alertN + 1, lockUntil: erro === 'muitas-tentativas' ? Date.now() + 30000 : 0, now: Date.now() }); return; }
+          if (pixSel) { this.setState({ placing: false, stage: 'pix', pixStart: Date.now(), now: Date.now() }); return; }
+          if (cartao === 'recusado') { this.setState({ placing: false, declined: this.state.declined + 1 }); return; }
+          if (cartao === 'autenticacao-3ds') { this.setState({ placing: false, three: true }); return; }
+          this.setState({ placing: false, stage: 'processando', proc: 0 });
+        }, 700);
+      },
+      show3ds: isPay && !fresh && s.three, approve3ds: () => this.go('processando', { three: false }), cancel3ds: () => this.setState({ three: false }),
+      procSteps: ['Pedido criado', 'Pagamento enviado', 'Aguardando confirmação', 'Confirmando estoque'].map((label, i) => ({ label, ico: i <= s.proc ? '✓' : i === s.proc + 1 ? '…' : '○', icoColor: i <= s.proc ? '#15803D' : '#3B3FD9', color: i <= s.proc + 1 ? '#18181B' : '#6B6B72' })),
+      next: [['Confirmado', '#15803D', '#15803D'], ['Em preparo', '#E6E4DE', '#44444A'], ['Enviado', '#E6E4DE', '#44444A'], ['Entregue', '#E6E4DE', '#44444A']].map(([label, bar, color]) => ({ label, bar, color })),
+      retry: () => this.go('pagamento', { declined: 0, alert: null })
     };
   }
 }

@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Admin · Estoque</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+.card{background:#FFFFFF;border:1px solid #E6E4DE;border-radius:16px}
+.in{height:48px;box-sizing:border-box;padding:0 12px;border:1px solid #E6E4DE;border-radius:12px;font-size:16px;background:#FFFFFF;width:100%;color:#18181B}
+.bp{height:50px;border-radius:12px;border:none;background:#3B3FD9;color:#FFFFFF;font-size:15px;font-weight:500;width:100%}
+.bs{height:48px;border-radius:12px;border:1px solid #E6E4DE;background:#FFFFFF;color:#18181B;font-size:15px;font-weight:500;width:100%}
+.pill{height:24px;padding:0 9px;border-radius:999px;font-size:11px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap}
+.eye{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#6B6B72}
+.bar{transition:width .5s cubic-bezier(.2,.7,.2,1)}
+</style>
+</helmet>
+<div style="width: 390px; height: 1240px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileAdminTopo" active="estoque" title="Estoque" hint-size="390px,60px"></dc-import>
+
+<sc-if value="{{isList}}" hint-placeholder-val="{{ true }}">
+<div class="fade" style="display: flex; flex-direction: column">
+<div style="padding: 14px 16px 4px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{tiles}}" as="k" hint-placeholder-count="3">
+<div class="card up" style="padding: 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; min-height: 92px; box-sizing: border-box">
+<span style="font-size: 12px; color: #44444A; line-height: 1.3">{{k.label}}</span>
+<span key="{{k.value}}" class="bump" style="font-size: 28px; font-weight: 300; letter-spacing: -0.03em; line-height: 1; color: {{k.color}}">{{k.value}}</span>
+</div>
+</sc-for>
+</div>
+<div class="chips" style="display: flex; gap: 6px; overflow-x: auto; padding: 12px 16px 12px">
+<sc-for list="{{filters}}" as="t" hint-placeholder-count="3"><button onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="flex-shrink: 0; height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid #E6E4DE; background: {{t.bg}}; color: {{t.fg}}; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; white-space: nowrap">{{t.label}}<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; opacity: .7">{{t.count}}</span></button></sc-for>
+</div>
+<div style="padding: 0 16px 12px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="9">
+<button onClick="{{r.open}}" class="card up" style="text-align: left; padding: 12px; display: flex; flex-direction: column; gap: 10px; color: #18181B">
+<span style="display: flex; align-items: center; gap: 12px; width: 100%">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: {{r.tint}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><dc-import name="Art" kind="{{r.kind}}" size="26" hint-size="26px,29px"></dc-import></span>
+<span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">{{r.sku}} · res. {{r.reserved}} · rep. {{r.min}}</span></span>
+<span style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px"><span key="{{r.qtyKey}}" class="bump" style="font-family: 'JetBrains Mono', monospace; font-size: 18px; color: {{r.qtyColor}}">{{r.qty}}</span><span style="font-size: 11px; font-weight: 500; color: {{r.stateColor}}">{{r.state}}</span></span>
+</span>
+<span style="display: block; width: 100%; height: 6px; border-radius: 999px; background: #F1F0EC; position: relative; overflow: hidden">
+<span class="bar growx" style="position: absolute; left: 0; top: 0; bottom: 0; width: {{r.w}}; border-radius: 999px; background: {{r.barColor}}"></span>
+<span style="position: absolute; top: 0; bottom: 0; left: {{r.minPos}}; width: 2px; background: #18181B; opacity: .35"></span>
+</span>
+</button>
+</sc-for>
+<sc-if value="{{noRows}}" hint-placeholder-val="{{ false }}"><div style="padding: 32px 16px; text-align: center; font-size: 14px; color: #6B6B72">Nenhum produto nesse filtro.</div></sc-if>
+</div>
+<div style="padding: 0 16px 32px; font-size: 12px; color: #6B6B72; display: flex; align-items: center; gap: 8px"><span style="width: 2px; height: 10px; background: #18181B; opacity: .35; flex-shrink: 0"></span>Traço = ponto de reposição. Barra laranja = abaixo do ponto.</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isDet}}" hint-placeholder-val="{{ false }}">
+<div key="{{d.id}}" class="up" style="padding: 12px 16px 40px; display: flex; flex-direction: column; gap: 12px">
+<button onClick="{{closeDet}}" style="align-self: flex-start; min-height: 40px; border: none; background: none; color: #3B3FD9; font-size: 14px; font-weight: 500; padding: 0">‹ Todo o estoque</button>
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="width: 56px; height: 56px; border-radius: 14px; background: {{d.tint}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><dc-import name="Art" kind="{{d.kind}}" size="32" hint-size="32px,36px"></dc-import></span>
+<span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 22px; font-weight: 400; letter-spacing: -0.01em">{{d.name}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6B6B72">{{d.sku}}</span></span>
+<span key="{{d.stateLabel}}" class="pill pop" style="background: {{d.stBg}}; color: {{d.stFg}}">{{d.stateLabel}}</span>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<div class="card" style="padding: 12px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; color: #6B6B72">Disponível</span><span key="{{d.qty}}" class="bump" style="font-size: 26px; font-weight: 300; line-height: 1; color: {{d.qtyColor}}">{{d.qty}}</span></div>
+<div class="card" style="padding: 12px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; color: #6B6B72">Reservado</span><span style="font-size: 26px; font-weight: 300; line-height: 1">{{d.reserved}}</span></div>
+<div class="card" style="padding: 12px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; color: #6B6B72">Reposição</span><span key="{{d.min}}" class="bump" style="font-size: 26px; font-weight: 300; line-height: 1">{{d.min}}</span></div>
+</div>
+
+<div class="card" style="padding: 14px; display: flex; flex-direction: column; gap: 12px">
+<div role="tablist" aria-label="Ação" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 12px; background: #F1F0EC">
+<sc-for list="{{actions}}" as="a" hint-placeholder-count="3"><button role="tab" aria-selected="{{a.on}}" onClick="{{a.pick}}" style="height: 40px; border-radius: 9px; border: none; background: {{a.bg}}; color: {{a.fg}}; font-size: 14px; font-weight: 500; box-shadow: {{a.shadow}}">{{a.label}}</button></sc-for>
+</div>
+<form onSubmit="{{submit}}" style="margin: 0; display: flex; flex-direction: column; gap: 10px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">{{form.qtyLabel}}<input class="in" inputmode="numeric" value="{{form.amount}}" onChange="{{form.onAmount}}" placeholder="{{form.placeholder}}" style="border-color: {{form.amountB}}; font-family: 'JetBrains Mono', monospace"></label>
+<sc-if value="{{form.needsReason}}" hint-placeholder-val="{{ false }}">
+<label class="fade" style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #44444A">Motivo<select class="in" value="{{form.reason}}" onChange="{{form.onReason}}"><option>Contagem de inventário</option><option>Peça danificada</option><option>Amostra para foto</option><option>Devolução de cliente</option></select></label>
+</sc-if>
+<sc-if value="{{form.hasErr}}" hint-placeholder-val="{{ false }}"><span role="alert" class="shake" style="font-size: 13px; color: #B4501E">{{form.err}}</span></sc-if>
+<button type="submit" class="bp">{{form.cta}}</button>
+</form>
+</div>
+
+<div class="card" style="padding: 14px; display: flex; flex-direction: column; gap: 8px">
+<span class="eye">RESERVAS ATIVAS</span>
+<sc-for list="{{d.reservations}}" as="v" hint-placeholder-count="1">
+<a href="MobileAdminPedidos.dc.html" style="min-height: 44px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; padding: 0 12px; border-radius: 12px; background: #ECECFD; color: #18181B; text-decoration: none"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #3B3FD9">{{v.order}}</span><span>{{v.qty}} un. · {{v.until}}</span></a>
+</sc-for>
+<sc-if value="{{d.noRes}}" hint-placeholder-val="{{ false }}"><span style="font-size: 14px; color: #6B6B72">Nenhuma reserva agora.</span></sc-if>
+</div>
+
+<div class="card" style="padding: 14px; display: flex; flex-direction: column; gap: 4px">
+<span class="eye" style="padding-bottom: 6px">MOVIMENTAÇÕES</span>
+<sc-for list="{{d.moves}}" as="m" hint-placeholder-count="4">
+<div class="up" style="display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 10px 0; border-top: 1px solid #F1F0EC; font-size: 14px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: {{m.color}}">{{m.delta}}</span>
+<span style="color: #44444A">{{m.what}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6B6B72">{{m.when}}</span>
+</div>
+</sc-for>
+</div>
+
+<a href="MobileAdminProdutos.dc.html" class="bs" style="box-sizing: border-box; display: flex; align-items: center; justify-content: center; text-decoration: none">Abrir em Produtos ›</a>
+</div>
+</sc-if>
+
+<sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{toast.key}}" class="toast" role="status" style="position: fixed; left: 16px; right: 16px; bottom: 20px; z-index: 60; min-height: 48px; border-radius: 12px; background: #18181B; color: #FFFFFF; display: flex; align-items: center; gap: 10px; padding: 8px 16px; box-sizing: border-box; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7EE2A0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>{{toast.text}}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1240}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const S = (id, name, sku, qty, reserved, min, kind, tint, res) => ({ id, name, sku, qty, reserved, min, kind, tint, res: res || [], moves: [] });
+    this.state = {
+      det: false, filter: 'todos', sel: 'seixo', action: 'receber', amount: '', reason: 'Contagem de inventário', tried: false, toast: null, toastN: 0,
+      items: [
+        S('orbe', 'Pendente Orbe', 'OF-ORBE', 6, 1, 3, 'pendant', '#F1F0EC', [['MF-000231', 1, 'até 10:57']]),
+        S('arco', 'Luminária Arco', 'OF-ARCO', 9, 0, 3, 'lamp', '#ECECFD'),
+        S('fio', 'Arandela Fio', 'OF-FIO', 1, 0, 4, 'sconce', '#FCEEE4'),
+        S('duna', 'Vaso Duna', 'BC-DUNA', 14, 1, 5, 'vase', '#F1F0EC', [['MF-000231', 1, 'até 10:57']]),
+        S('seixo', 'Jarra Seixo', 'BC-SEIXO', 2, 0, 5, 'jar', '#E8F5EC'),
+        S('grao', 'Par de canecas Grão', 'BC-GRAO', 11, 2, 6, 'mug', '#FCEEE4', [['MF-000231', 2, 'até 10:57']]),
+        S('lina', 'Cadeira Lina', 'OT-LINA', 4, 0, 2, 'chair', '#E8F5EC'),
+        S('banco', 'Banco Tora', 'OT-BANCO', 0, 0, 2, 'bench', '#ECECFD'),
+        S('trama', 'Manta Trama', 'TA-TRAMA', 8, 1, 4, 'throw', '#ECECFD', [['MF-000230', 1, 'até 10:45']])
+      ]
+    };
+    this.state.items.forEach((it) => { it.moves = [['+' + (it.qty + it.reserved + 3), 'Recebimento do ateliê', '20 SET'], ['−3', 'Vendas', 'SET']]; });
+  }
+  componentWillUnmount() { clearTimeout(this.tt); }
+  toast(text) { this.setState({ toast: text, toastN: this.state.toastN + 1 }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2600); }
+  renderVals() {
+    const s = this.state;
+    const isLow = (i) => i.qty < i.min;
+    const list = s.items.filter((i) => s.filter === 'todos' ? true : s.filter === 'baixo' ? isLow(i) && i.qty > 0 : i.qty === 0);
+    const d = s.items.find((i) => i.id === s.sel) || s.items[0];
+    const scale = 16;
+    const amt = parseInt(s.amount, 10);
+    const now = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    const A = {
+      receber: { label: 'Recebimento', qtyLabel: 'Quantidade recebida', placeholder: 'Ex.: 6', cta: 'Registrar recebimento' },
+      ajustar: { label: 'Ajuste', qtyLabel: 'Ajuste (+ ou −)', placeholder: 'Ex.: -1', cta: 'Aplicar ajuste' },
+      ponto: { label: 'Reposição', qtyLabel: 'Novo ponto de reposição', placeholder: String(d.min), cta: 'Salvar ponto' }
+    };
+    let err = '';
+    if (s.tried) {
+      if (isNaN(amt)) err = 'Informe um número.';
+      else if (s.action === 'receber' && amt <= 0) err = 'O recebimento precisa ser maior que zero.';
+      else if (s.action === 'ajustar' && (amt === 0 || d.qty + amt < 0)) err = amt === 0 ? 'O ajuste não pode ser zero.' : 'O disponível não pode ficar negativo.';
+      else if (s.action === 'ponto' && amt < 0) err = 'O ponto de reposição não pode ser negativo.';
+    }
+    const upd = (fn) => this.setState({ items: s.items.map((i) => (i.id === d.id ? fn(i) : i)), amount: '', tried: false });
+    const lowCount = s.items.filter((i) => isLow(i) && i.qty > 0).length;
+    const outCount = s.items.filter((i) => i.qty === 0).length;
+    return {
+      isList: !s.det, isDet: !!s.det, closeDet: () => this.setState({ det: false, amount: '', tried: false }), noRows: list.length === 0,
+      filters: [['todos', 'Todos', s.items.length], ['baixo', 'Abaixo da reposição', lowCount], ['zerado', 'Esgotados', outCount]].map(([id, label, count]) => ({ label, count, on: s.filter === id, bg: s.filter === id ? '#18181B' : '#FFFFFF', fg: s.filter === id ? '#FFFFFF' : '#44444A', pick: () => this.setState({ filter: id }) })),
+      tiles: [
+        { label: 'Unidades disponíveis', value: String(s.items.reduce((a, i) => a + i.qty, 0)), color: '#18181B' },
+        { label: 'Abaixo do ponto de reposição', value: String(lowCount), color: lowCount ? '#B4501E' : '#15803D' },
+        { label: 'Esgotados', value: String(outCount), color: outCount ? '#B4501E' : '#15803D' }
+      ],
+      rows: list.map((i) => {
+        const low = isLow(i);
+        return {
+          name: i.name, sku: i.sku, kind: i.kind, tint: i.tint, qty: i.qty, qtyKey: i.id + i.qty, reserved: i.reserved, min: i.min,
+          qtyColor: i.qty === 0 ? '#B4501E' : '#18181B',
+          w: Math.min(100, (i.qty / scale) * 100).toFixed(1) + '%', minPos: Math.min(100, (i.min / scale) * 100).toFixed(1) + '%',
+          barColor: low ? '#E8793A' : '#3B3FD9',
+          state: i.qty === 0 ? 'Zerado' : low ? 'Baixo' : 'OK', stateColor: i.qty === 0 || low ? '#B4501E' : '#15803D',
+          sel: i.id === d.id, bg: i.id === d.id ? '#ECECFD' : '#FFFFFF', mark: i.id === d.id ? '#3B3FD9' : 'transparent',
+          open: () => this.setState({ det: true, sel: i.id, amount: '', tried: false })
+        };
+      }),
+      d: {
+        id: d.id, stateLabel: d.qty === 0 ? 'Esgotado' : isLow(d) ? 'Abaixo da reposição' : 'OK', stBg: d.qty === 0 || isLow(d) ? '#FCEEE4' : '#E8F5EC', stFg: d.qty === 0 || isLow(d) ? '#B4501E' : '#15803D', qtyColor: d.qty === 0 ? '#B4501E' : '#18181B', name: d.name, sku: d.sku, kind: d.kind, tint: d.tint, qty: d.qty, reserved: d.reserved, min: d.min,
+        reservations: d.res.map(([order, qty, until]) => ({ order, qty, until })), noRes: d.res.length === 0,
+        moves: d.moves.slice().reverse().map(([delta, what, when]) => ({ delta, what, when, color: delta[0] === '+' ? '#15803D' : delta[0] === '−' ? '#B4501E' : '#3B3FD9' }))
+      },
+      actions: Object.keys(A).map((k) => ({ label: A[k].label, on: s.action === k, bg: s.action === k ? '#FFFFFF' : 'transparent', fg: s.action === k ? '#18181B' : '#44444A', shadow: s.action === k ? '0 1px 2px rgba(24,24,27,.08)' : 'none', pick: () => this.setState({ action: k, amount: '', tried: false }) })),
+      form: {
+        qtyLabel: A[s.action].qtyLabel, placeholder: A[s.action].placeholder, cta: A[s.action].cta,
+        amount: s.amount, onAmount: (e) => this.setState({ amount: e.target.value.replace(/[^\d-]/g, ''), tried: false }),
+        amountB: err ? '#B4501E' : '#E6E4DE', hasErr: !!err, err,
+        needsReason: s.action === 'ajustar', reason: s.reason, onReason: (e) => this.setState({ reason: e.target.value })
+      },
+      submit: (e) => {
+        e.preventDefault();
+        const bad = isNaN(amt) || (s.action === 'receber' && amt <= 0) || (s.action === 'ajustar' && (amt === 0 || d.qty + amt < 0)) || (s.action === 'ponto' && amt < 0);
+        if (bad) { this.setState({ tried: true }); return; }
+        if (s.action === 'receber') { upd((i) => Object.assign({}, i, { qty: i.qty + amt, moves: i.moves.concat([['+' + amt, 'Recebimento do ateliê', now]]) })); this.toast('Recebimento registrado'); }
+        if (s.action === 'ajustar') { upd((i) => Object.assign({}, i, { qty: i.qty + amt, moves: i.moves.concat([[(amt > 0 ? '+' : '−') + Math.abs(amt), 'Ajuste · ' + s.reason, now]]) })); this.toast('Ajuste aplicado'); }
+        if (s.action === 'ponto') { upd((i) => Object.assign({}, i, { min: amt, moves: i.moves.concat([['=' + amt, 'Ponto de reposição alterado', now]]) })); this.toast('Ponto de reposição salvo'); }
+      },
+      toast: { show: !!s.toast, text: s.toast || '', key: 't' + s.toastN }
+    };
+  }
+}
+</script>
+</body>
+</html>

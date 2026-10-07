@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<title>Mobile · Meus pedidos</title>
+<title>Mobile · Minha conta</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -13,88 +13,397 @@
 <style>
 body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
 a{color:#3B3FD9}
-button{font-family:inherit;cursor:pointer}
-@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes slide{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
 @keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-.up{animation:up .45s cubic-bezier(.2,.7,.2,1) both}
-.slide{animation:slide .4s cubic-bezier(.2,.7,.2,1) both}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
 .pulse{animation:pulse 1.8s ease-out infinite}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
 .grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
-.tabs{scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
 </style>
 </helmet>
-<div style="width: 390px; height: 1100px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden">
-<dc-import name="MobileTopo" count="0" title="Minha conta" hint-size="390px,86px"></dc-import>
-<div class="tabs" style="display: flex; gap: 8px; overflow-x: auto; padding: 14px 16px; border-bottom: 1px solid #E6E4DE">
-<span style="flex-shrink: 0; height: 38px; padding: 0 14px; border-radius: 999px; background: #18181B; color: #FFFFFF; font-size: 14px; display: flex; align-items: center">Pedidos</span>
-<a href="Conta.dc.html" style="flex-shrink: 0; height: 38px; padding: 0 14px; border-radius: 999px; background: #F1F0EC; color: #44444A; text-decoration: none; font-size: 14px; display: flex; align-items: center">Meus dados</a>
-<a href="Conta.dc.html" style="flex-shrink: 0; height: 38px; padding: 0 14px; border-radius: 999px; background: #F1F0EC; color: #44444A; text-decoration: none; font-size: 14px; display: flex; align-items: center">Endereços</a>
-<a href="Conta.dc.html" style="flex-shrink: 0; height: 38px; padding: 0 14px; border-radius: 999px; background: #F1F0EC; color: #44444A; text-decoration: none; font-size: 14px; display: flex; align-items: center">Senha</a>
-</div>
+<div style="width: 390px; height: 1500px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileTopo" count="0" logged="{{ true }}" hint-size="390px,86px"></dc-import>
+<section style="padding: 18px 16px 6px; display: flex; align-items: center; gap: 12px">
+<span style="width: 48px; height: 48px; border-radius: 50%; background: #E3E1F9; color: #2A2DA8; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 500">AR</span>
+<span style="flex-grow: 1; display: flex; flex-direction: column"><span style="font-size: 22px; font-weight: 300; letter-spacing: -0.02em">Olá, {{d.first}}</span><span style="font-size: 13px; color: #6B6B72">ana@email.com</span></span>
+<a href="MobileAcesso.dc.html" style="font-size: 14px; color: #44444A; text-decoration: none; min-height: 44px; display: flex; align-items: center">Sair</a>
+</section>
+<nav aria-label="Minha conta" class="chips" style="display: flex; gap: 6px; overflow-x: auto; padding: 10px 16px 14px">
+<sc-for list="{{menu}}" as="m" hint-placeholder-count="4">
+<button onClick="{{m.go}}" aria-current="{{m.current}}" style="flex-shrink: 0; height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid {{m.border}}; background: {{m.bg}}; color: {{m.fg}}; font-size: 14px; font-weight: {{m.weight}}; display: flex; align-items: center; gap: 6px; white-space: nowrap">{{m.label}}<sc-if value="{{m.hasCount}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; opacity: .7">{{m.count}}</span></sc-if></button>
+</sc-for>
+</nav>
 
-<sc-if value="{{isList}}" hint-placeholder-val="{{ true }}">
-<section style="padding: 16px; display: flex; flex-direction: column; gap: 10px">
-<h1 style="margin: 0 0 4px; font-size: 30px; font-weight: 300; letter-spacing: -0.03em">Meus pedidos</h1>
-<sc-for list="{{orders}}" as="o" hint-placeholder-count="4">
-<button class="up" onClick="{{o.open}}" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; text-align: left; color: #18181B; animation-delay: {{o.delay}}">
-<span style="display: flex; align-items: center; width: 100%"><span style="flex-grow: 1; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">{{o.id}}</span><span style="height: 24px; padding: 0 10px; border-radius: 999px; background: {{o.bg}}; color: {{o.fg}}; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center">{{o.status}}</span></span>
+<div key="{{secKey}}" class="fade" style="padding: 0 16px 40px; display: flex; flex-direction: column; gap: 12px">
+
+<!-- 23 · Pedidos -->
+<sc-if value="{{sec.pedidos}}" hint-placeholder-val="{{ true }}">
+<h1 style="margin: 4px 0 0; font-size: 28px; font-weight: 300; letter-spacing: -0.03em">Meus pedidos</h1>
+<sc-if value="{{ord.empty}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="padding: 36px 20px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+<div class="floaty" style="width: 60px; height: 60px; border-radius: 50%; background: #F1F0EC; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.5" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg></div>
+<span style="font-size: 20px; font-weight: 300">Nenhum pedido ainda</span>
+<span style="font-size: 14px; color: #6B6B72">Quando você comprar, o pedido aparece aqui com cada etapa.</span>
+<a href="MobileListagem.dc.html" style="margin-top: 6px; height: 48px; padding: 0 20px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; font-size: 15px; font-weight: 500">Ver novidades</a>
+</div>
+</sc-if>
+<sc-if value="{{ord.has}}" hint-placeholder-val="{{ true }}">
+<sc-for list="{{ord.list}}" as="o" hint-placeholder-count="5">
+<button onClick="{{o.open}}" class="up" style="animation-delay: {{o.delay}}; text-align: left; padding: 12px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; display: flex; flex-direction: column; gap: 10px; color: #18181B">
+<span style="display: flex; justify-content: space-between; align-items: center; width: 100%"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">{{o.id}} · <span style="color: #6B6B72">{{o.date}}</span></span><span style="height: 24px; padding: 0 10px; border-radius: 999px; background: {{o.bg}}; color: {{o.fg}}; font-size: 12px; font-weight: 500; display: flex; align-items: center; white-space: nowrap">{{o.status}}</span></span>
 <span style="display: flex; align-items: center; gap: 10px; width: 100%">
-<span style="display: flex"><sc-for list="{{o.thumbs}}" as="t" hint-placeholder-count="2"><span style="width: 40px; height: 40px; border-radius: 10px; background: {{t.tint}}; border: 2px solid #FFFFFF; margin-right: -8px; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="{{t.kind}}" size="22" hint-size="22px,25px"></dc-import></span></sc-for></span>
-<span style="flex-grow: 1; padding-left: 10px; font-size: 13px; color: #44444A">{{o.date}} · {{o.summary}}</span>
-<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{o.total}}</span>
+<span style="display: flex"><sc-for list="{{o.thumbs}}" as="t" hint-placeholder-count="2"><span style="width: 48px; height: 48px; border-radius: 10px; background: {{t.tint}}; border: 2px solid #FFFFFF; margin-right: -10px; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="{{t.kind}}" size="28" hint-size="28px,31px"></dc-import></span></sc-for></span>
+<span style="flex-grow: 1; padding-left: 14px; font-size: 14px; line-height: 1.35">{{o.summary}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; white-space: nowrap">{{o.total}}</span><span style="color: #6B6B72">›</span>
 </span>
 </button>
 </sc-for>
-</section>
+</sc-if>
 </sc-if>
 
-<sc-if value="{{isDetail}}" hint-placeholder-val="{{ false }}">
-<section key="{{d.id}}" class="slide" style="padding: 16px; display: flex; flex-direction: column; gap: 14px">
-<button onClick="{{back}}" style="align-self: flex-start; min-height: 40px; border: none; background: none; padding: 0; color: #3B3FD9; font-size: 14px; font-weight: 500">‹ Meus pedidos</button>
-<div style="display: flex; align-items: center; gap: 10px"><span style="flex-grow: 1; font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500">{{d.id}}</span><span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #15803D"><span class="pulse" style="width: 7px; height: 7px; border-radius: 50%; background: #15803D"></span>Ao vivo</span></div>
-<span style="align-self: flex-start; height: 28px; padding: 0 12px; border-radius: 999px; background: {{d.bg}}; color: {{d.fg}}; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center">{{d.status}}</span>
-<sc-if value="{{d.shipped}}" hint-placeholder-val="{{ false }}">
-<div style="background: #3B3FD9; color: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #ECECFD">ENVIO</span><span style="font-size: 14px">[TRANSPORTADORA] · <span style="font-family: 'JetBrains Mono', monospace">[CÓDIGO]</span></span><a href="#" style="height: 44px; border-radius: 10px; background: #FFFFFF; color: #2A2DA8; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500">Rastrear na transportadora ↗</a></div>
-</sc-if>
-<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 16px; display: flex; flex-direction: column">
-<sc-for list="{{d.timeline}}" as="t" hint-placeholder-count="5">
-<div style="display: grid; grid-template-columns: 18px minmax(0, 1fr); column-gap: 12px">
-<div style="display: flex; flex-direction: column; align-items: center"><span style="width: 12px; height: 12px; border-radius: 50%; background: {{t.dot}}; border: 2px solid {{t.ring}}; box-sizing: border-box; margin-top: 4px"></span><sc-if value="{{t.notLast}}" hint-placeholder-val="{{ true }}"><span class="grow" style="flex-grow: 1; width: 2px; min-height: 24px; background: {{t.line}}; margin: 4px 0"></span></sc-if></div>
-<div style="display: flex; flex-direction: column; padding-bottom: 12px"><span style="font-size: 15px; font-weight: {{t.weight}}; color: {{t.color}}">{{t.label}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #6B6B72">{{t.when}}</span></div>
+<!-- 24 · Detalhe -->
+<sc-if value="{{sec.detalhe}}" hint-placeholder-val="{{ false }}">
+<button onClick="{{backToOrders}}" style="align-self: flex-start; min-height: 40px; border: none; background: none; color: #3B3FD9; font-size: 14px; font-weight: 500; padding: 0">‹ Meus pedidos</button>
+<div style="display: flex; justify-content: space-between; align-items: flex-end"><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #6B6B72">{{det.date}} · {{det.count}}</span><h1 style="margin: 0; font-size: 28px; font-weight: 300; letter-spacing: -0.02em">{{det.id}}</h1></span><span class="pop" style="height: 28px; padding: 0 12px; border-radius: 999px; background: {{det.bg}}; color: {{det.fg}}; font-size: 13px; font-weight: 500; display: flex; align-items: center">{{det.status}}</span></div>
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 16px">
+<sc-for list="{{det.timeline}}" as="t" hint-placeholder-count="5">
+<div style="display: flex; gap: 12px">
+<span style="display: flex; flex-direction: column; align-items: center; width: 14px"><span style="width: 12px; height: 12px; border-radius: 50%; background: {{t.dot}}; box-shadow: inset 0 0 0 2px {{t.ring}}; flex-shrink: 0; margin-top: 4px"></span><sc-if value="{{t.notLast}}" hint-placeholder-val="{{ true }}"><span class="grow" style="width: 2px; flex-grow: 1; min-height: 24px; background: {{t.line}}"></span></sc-if></span>
+<span style="display: flex; flex-direction: column; gap: 2px; padding-bottom: 14px"><span style="font-size: 15px; font-weight: {{t.weight}}; color: {{t.color}}">{{t.label}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: #6B6B72">{{t.when}}</span><sc-if value="{{t.hasNote}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #44444A">{{t.note}}</span></sc-if></span>
 </div>
 </sc-for>
 </div>
-<div style="font-size: 14px; color: #44444A; display: flex; justify-content: space-between; padding: 0 4px"><span>Total</span><span style="font-family: 'JetBrains Mono', monospace">{{d.total}}</span></div>
-</section>
+<sc-if value="{{det.shipped}}" hint-placeholder-val="{{ false }}"><div style="padding: 12px 14px; border-radius: 14px; background: #ECECFD; font-size: 14px; display: flex; justify-content: space-between; align-items: center; gap: 8px"><span>Rastreio <b style="font-family: 'JetBrains Mono', monospace; font-weight: 500">BR 4821 9930</b></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span></div></sc-if>
+<div style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 4px 14px">
+<sc-for list="{{det.items}}" as="it" hint-placeholder-count="2"><div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F1F0EC"><span style="width: 52px; height: 52px; border-radius: 10px; background: {{it.tint}}; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="{{it.kind}}" size="30" hint-size="30px,33px"></dc-import></span><span style="flex-grow: 1; font-size: 14px">{{it.name}}<span style="display: block; font-size: 12px; color: #6B6B72">{{it.qty}} un.</span></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px">{{it.total}}</span></div></sc-for>
+<div style="display: flex; justify-content: space-between; padding: 12px 0; font-size: 15px"><span>Total</span><b style="font-family: 'JetBrains Mono', monospace; font-weight: 500">{{det.total}}</b></div>
+</div>
+<sc-if value="{{det.canCancel}}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{det.showCancelBtn}}" hint-placeholder-val="{{ true }}"><button onClick="{{det.ask}}" style="height: 48px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #B4501E; font-size: 15px; font-weight: 500">Cancelar pedido</button></sc-if>
+</sc-if>
+<sc-if value="{{det.inFulfilment}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #6B6B72; line-height: 1.5">O pedido já está com o ateliê e não pode mais ser cancelado. Depois de receber, você tem 30 dias para trocar.</span></sc-if>
+</sc-if>
+
+<!-- 20 · Dados -->
+<sc-if value="{{sec.dados}}" hint-placeholder-val="{{ false }}">
+<h1 style="margin: 4px 0 0; font-size: 28px; font-weight: 300; letter-spacing: -0.03em">Meus dados</h1>
+<form onSubmit="{{saveData}}" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: #44444A">Nome<input value="{{d.first}}" onChange="{{d.onFirst}}" autocomplete="given-name" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{d.firstB}}; border-radius: 12px; font-size: 16px"></label>
+<sc-if value="{{d.firstErr}}" hint-placeholder-val="{{ false }}"><span role="alert" style="font-size: 13px; color: #B4501E; margin-top: -6px">Informe seu nome.</span></sc-if>
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: #44444A">Sobrenome<input value="{{d.last}}" onChange="{{d.onLast}}" autocomplete="family-name" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 16px"></label>
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: #44444A">Telefone<input value="{{d.phone}}" onChange="{{d.onPhone}}" inputmode="tel" autocomplete="tel" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{d.phoneB}}; border-radius: 12px; font-size: 16px"></label>
+<sc-if value="{{d.phoneErr}}" hint-placeholder-val="{{ false }}"><span role="alert" style="font-size: 13px; color: #B4501E; margin-top: -6px">Use DDD + número (10 ou 11 dígitos).</span></sc-if>
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: #44444A">E-mail<input value="ana@email.com" readonly="" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 16px; background: #F1F0EC; color: #6B6B72"></label>
+<span style="font-size: 12px; color: #6B6B72; margin-top: -6px">Troca de e-mail <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #B4501E">EM BREVE</span></span>
+<button type="submit" disabled="{{d.saveDisabled}}" style="height: 52px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 16px; font-weight: 500">Salvar alterações</button>
+</form>
+</sc-if>
+
+<!-- 21/22 · Endereços -->
+<sc-if value="{{sec.enderecos}}" hint-placeholder-val="{{ false }}">
+<h1 style="margin: 4px 0 0; font-size: 28px; font-weight: 300; letter-spacing: -0.03em">Endereços</h1>
+<sc-if value="{{addr.empty}}" hint-placeholder-val="{{ false }}"><div style="padding: 24px 16px; border-radius: 16px; border: 1px dashed #C9C7C0; text-align: center; font-size: 14px; color: #6B6B72">Nenhum endereço salvo. O primeiro vira padrão de entrega e cobrança.</div></sc-if>
+<sc-for list="{{addr.list}}" as="a" hint-placeholder-count="2">
+<div key="{{a.id}}" class="up" style="background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap"><b style="font-size: 16px; font-weight: 500; flex-grow: 1">{{a.label}}</b><sc-if value="{{a.isShip}}" hint-placeholder-val="{{ true }}"><span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #ECECFD; color: #3B3FD9; font-size: 11px; font-weight: 500; display: flex; align-items: center">Entrega</span></sc-if><sc-if value="{{a.isBill}}" hint-placeholder-val="{{ true }}"><span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #F1F0EC; color: #44444A; font-size: 11px; font-weight: 500; display: flex; align-items: center">Cobrança</span></sc-if></div>
+<span style="font-size: 14px; color: #44444A; line-height: 1.45">{{a.line1}}<br>{{a.line2}}</span>
+<sc-if value="{{a.idle}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; gap: 4px; flex-wrap: wrap; font-size: 13px">
+<button onClick="{{a.edit}}" style="min-height: 40px; padding: 0 10px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 13px">Editar</button>
+<sc-if value="{{a.canShip}}" hint-placeholder-val="{{ false }}"><button onClick="{{a.makeShip}}" style="min-height: 40px; padding: 0 10px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 13px">Usar na entrega</button></sc-if>
+<sc-if value="{{a.canBill}}" hint-placeholder-val="{{ false }}"><button onClick="{{a.makeBill}}" style="min-height: 40px; padding: 0 10px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 13px">Usar na cobrança</button></sc-if>
+<button onClick="{{a.askDel}}" style="min-height: 40px; padding: 0 10px; border-radius: 10px; border: none; background: transparent; color: #B4501E; font-size: 13px">Excluir</button>
+</div>
+</sc-if>
+<sc-if value="{{a.confirming}}" hint-placeholder-val="{{ false }}"><div class="fade" style="padding: 10px; border-radius: 12px; background: #FCEEE4; display: flex; align-items: center; gap: 8px; font-size: 13px"><span style="flex-grow: 1">Excluir este endereço?</span><button onClick="{{a.cancelDel}}" style="min-height: 38px; padding: 0 10px; border-radius: 10px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 13px">Manter</button><button onClick="{{a.del}}" style="min-height: 38px; padding: 0 10px; border-radius: 10px; border: none; background: #B4501E; color: #FFFFFF; font-size: 13px">Excluir</button></div></sc-if>
+</div>
+</sc-for>
+<sc-if value="{{addr.formOpen}}" hint-placeholder-val="{{ false }}">
+<form class="up" onSubmit="{{addr.save}}" style="margin: 0; background: #FFFFFF; border: 1px solid #3B3FD9; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+<b style="font-size: 16px; font-weight: 500">{{addr.formTitle}}</b>
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: #44444A">Apelido<input value="{{addr.f.label}}" onChange="{{addr.f.onLabel}}" placeholder="Casa, Trabalho…" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid #E6E4DE; border-radius: 12px; font-size: 16px"></label>
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: #44444A">Rua, número e complemento<input value="{{addr.f.line1}}" onChange="{{addr.f.onLine1}}" autocomplete="address-line1" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{addr.f.line1B}}; border-radius: 12px; font-size: 16px"></label>
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: #44444A">Bairro, cidade, UF e CEP<input value="{{addr.f.line2}}" onChange="{{addr.f.onLine2}}" autocomplete="address-line2" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{addr.f.line2B}}; border-radius: 12px; font-size: 16px"></label>
+<div style="display: flex; gap: 8px"><button type="submit" style="flex-grow: 1; height: 48px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 15px; font-weight: 500">Salvar</button><button type="button" onClick="{{addr.close}}" style="height: 48px; padding: 0 16px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px">Cancelar</button></div>
+</form>
+</sc-if>
+<sc-if value="{{addr.canAdd}}" hint-placeholder-val="{{ true }}"><button onClick="{{addr.openNew}}" style="min-height: 52px; border: 1px dashed #C9C7C0; border-radius: 14px; background: transparent; color: #3B3FD9; font-size: 15px; font-weight: 500">+ Novo endereço</button></sc-if>
+</sc-if>
+
+<!-- Senha -->
+<sc-if value="{{sec.senha}}" hint-placeholder-val="{{ false }}">
+<h1 style="margin: 4px 0 0; font-size: 28px; font-weight: 300; letter-spacing: -0.03em">Trocar senha</h1>
+<sc-if value="{{pw.done}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="padding: 28px 18px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+<span class="pop" style="width: 60px; height: 60px; border-radius: 50%; background: #E8F5EC; display: flex; align-items: center; justify-content: center"><svg class="check" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span>
+<span style="font-size: 20px; font-weight: 300">Senha atualizada</span>
+<span style="font-size: 14px; color: #6B6B72">As outras sessões foram encerradas por segurança.</span>
+<button onClick="{{pw.reset}}" style="min-height: 44px; border: none; background: none; color: #3B3FD9; font-size: 15px; font-weight: 500">Voltar</button>
+</div>
+</sc-if>
+<sc-if value="{{pw.form}}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{pw.submit}}" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: #44444A">Senha atual<input key="{{pw.errKey}}" class="{{pw.curClass}}" type="password" value="{{pw.cur}}" onChange="{{pw.onCur}}" autocomplete="current-password" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{pw.curB}}; border-radius: 12px; font-size: 16px"></label>
+<sc-if value="{{pw.curErr}}" hint-placeholder-val="{{ false }}"><span role="alert" style="font-size: 13px; color: #B4501E; margin-top: -6px">A senha atual não confere.</span></sc-if>
+<label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: #44444A">Nova senha<input type="password" value="{{pw.nw}}" onChange="{{pw.onNw}}" autocomplete="new-password" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{pw.nwB}}; border-radius: 12px; font-size: 16px"></label>
+<div style="display: flex; gap: 4px"><sc-for list="{{pw.bars}}" as="b" hint-placeholder-count="3"><span style="flex: 1; height: 4px; border-radius: 999px; background: {{b.color}}; transition: background .3s"></span></sc-for></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><sc-for list="{{pw.rules}}" as="r" hint-placeholder-count="3"><span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: {{r.color}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="{{r.icon}}"></path></svg>{{r.label}}</span></sc-for></div>
+<button type="submit" style="height: 52px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 16px; font-weight: 500">Atualizar senha</button>
+</form>
+</sc-if>
+</sc-if>
+</div>
+
+<!-- Confirmar cancelamento -->
+<sc-if value="{{det.askCancel}}" hint-placeholder-val="{{ false }}">
+<div class="fade" onClick="{{det.keep}}" style="position: fixed; inset: 0; background: rgba(24,24,27,.45); z-index: 40"></div>
+<div class="sheet" role="dialog" aria-label="Cancelar pedido" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: #FFFFFF; border-radius: 20px 20px 0 0; padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 12px">
+<span style="align-self: center; width: 40px; height: 4px; border-radius: 999px; background: #E6E4DE"></span>
+<b style="font-size: 20px; font-weight: 500">Cancelar {{det.id}}?</b>
+<span style="font-size: 14px; color: #44444A; line-height: 1.5">As peças voltam ao estoque e o estorno de {{det.total}} é pedido ao banco na hora. Pode levar até 2 faturas para aparecer.</span>
+<button onClick="{{det.doCancel}}" style="height: 52px; border-radius: 12px; border: none; background: #B4501E; color: #FFFFFF; font-size: 16px; font-weight: 500">Sim, cancelar pedido</button>
+<button onClick="{{det.keep}}" style="height: 48px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px">Manter pedido</button>
+</div>
+</sc-if>
+
+<sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{toast.key}}" class="toast" role="status" style="position: fixed; left: 16px; right: 16px; bottom: 20px; z-index: 60; height: 48px; border-radius: 12px; background: #18181B; color: #FFFFFF; display: flex; align-items: center; gap: 10px; padding: 0 16px; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7EE2A0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>{{toast.text}}</div>
 </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1100}}'>
+<script type="text/x-dc" data-dc-script data-props='{"secao":{"editor":"enum","options":["pedidos","detalhe","dados","enderecos","senha"],"default":"pedidos"},"vazio":{"editor":"boolean","default":false},"statusDetalhe":{"editor":"enum","options":["confirmado","em-preparo","enviado","entregue","cancelado"],"default":"enviado"},"erroSenha":{"editor":"boolean","default":false},"$preview":{"width":390,"height":1500}}'>
 class Component extends DCLogic {
-  constructor(props) { super(props); this.state = { sel: null }; }
+  constructor(props) {
+    super(props);
+    this.state = { sec: null, from: null, toast: null, toastN: 0, detId: 'MF-000198', canceled: false, askCancel: false,
+      data: { first: 'Ana', last: 'Ribeiro', phone: '(11) 98000-0000' }, dirty: false, dataTried: false,
+      addrs: null, addrForm: null, f: { label: '', line1: '', line2: '' }, fTried: false, delAsk: null,
+      pw: { cur: '', nw: '' }, pwTried: false, pwErrN: 0, pwCurErr: false, pwDone: false };
+  }
+  key() { return [this.props.secao, this.props.vazio, this.props.statusDetalhe, this.props.erroSenha].join('|'); }
+  toast(text) { this.setState({ toast: text, toastN: this.state.toastN + 1 }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2800); }
+  componentWillUnmount() { clearTimeout(this.tt); }
+  money(n) { return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
   renderVals() {
     const s = this.state;
-    const ST = { Confirmado: ['#ECECFD', '#3B3FD9'], Enviado: ['#3B3FD9', '#FFFFFF'], Entregue: ['#E8F5EC', '#15803D'], Cancelado: ['#F1F0EC', '#44444A'] };
-    const O = [
-      ['MF-000231', '01 out', 'Confirmado', 666, [['pendant', '#F1F0EC'], ['vase', '#F1F0EC']], 'Pendente Orbe + 2'],
-      ['MF-000198', '12 set', 'Enviado', 489, [['lamp', '#ECECFD']], 'Luminária Arco'],
-      ['MF-000177', '28 ago', 'Entregue', 338, [['throw', '#ECECFD'], ['throw', '#FCEEE4']], 'Manta Trama + 1'],
-      ['MF-000150', '02 ago', 'Cancelado', 1290, [['chair', '#E8F5EC']], 'Cadeira Lina']
+    const k = this.key();
+    const fresh = s.from !== k;
+    const sec = (!fresh && s.sec) || this.props.secao || 'pedidos';
+    const vazio = !!this.props.vazio;
+    const go = (x, extra) => this.setState(Object.assign({ sec: x, from: k }, extra || {}));
+    const ST = {
+      'Aguardando pagamento': ['#F1F0EC', '#44444A'], 'Confirmado': ['#ECECFD', '#3B3FD9'], 'Em preparo': ['#FCEEE4', '#B4501E'],
+      'Enviado': ['#3B3FD9', '#FFFFFF'], 'Entregue': ['#E8F5EC', '#15803D'], 'Cancelado': ['#F1F0EC', '#44444A'], 'Pagamento não aprovado': ['#FCEEE4', '#B4501E']
+    };
+    const statusMap = { 'confirmado': 'Confirmado', 'em-preparo': 'Em preparo', 'enviado': 'Enviado', 'entregue': 'Entregue', 'cancelado': 'Cancelado' };
+    const orders = [
+      { id: 'MF-000231', date: '01 out 2026', status: 'Confirmado', items: [['Pendente Orbe', 1, 359, 'pendant', '#F1F0EC'], ['Vaso Duna', 1, 129, 'vase', '#F1F0EC'], ['Par de canecas Grão', 2, 89, 'mug', '#FCEEE4']] },
+      { id: 'MF-000198', date: '12 set 2026', status: 'Enviado', items: [['Luminária Arco', 1, 489, 'lamp', '#ECECFD']] },
+      { id: 'MF-000177', date: '28 ago 2026', status: 'Entregue', items: [['Manta Trama', 1, 219, 'throw', '#ECECFD'], ['Almofada Linho', 1, 119, 'throw', '#FCEEE4']] },
+      { id: 'MF-000150', date: '02 ago 2026', status: 'Cancelado', items: [['Cadeira Lina', 1, 1290, 'chair', '#E8F5EC']] },
+      { id: 'MF-000141', date: '20 jul 2026', status: 'Pagamento não aprovado', items: [['Tigela Areia', 1, 79, 'bowl', '#F1F0EC']] }
     ];
-    const m = (n) => 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-    const o = O.find((x) => x[0] === s.sel) || O[1];
-    const flow = ['Confirmado', 'Em preparo', 'Enviado', 'Entregue'];
-    const idx = o[2] === 'Cancelado' ? -1 : flow.indexOf(o[2]);
-    const tl = o[2] === 'Cancelado' ? [['Confirmado', '02 AGO'], ['Cancelado', '02 AGO']].map((t, i, a) => ({ label: t[0], when: t[1], future: false, cur: i === a.length - 1 })) :
-      flow.map((l, i) => ({ label: l, when: i <= idx ? ['12 SET', '13 SET', '14 SET', '18 SET'][i] : 'A SEGUIR', future: i > idx, cur: i === idx }));
+    const detId = fresh ? 'MF-000198' : s.detId;
+    const o = orders.find((x) => x.id === detId) || orders[1];
+    let detStatus = o.id === 'MF-000198' && this.props.statusDetalhe ? statusMap[this.props.statusDetalhe] : o.status;
+    if (!fresh && s.canceled && s.detId === o.id) detStatus = 'Cancelado';
+    const flow = ['Aguardando pagamento', 'Confirmado', 'Em preparo', 'Enviado', 'Entregue'];
+    const whens = ['12 SET · 14:02', '12 SET · 14:03', '13 SET · 09:40', '14 SET · 16:15', '18 SET · 11:30'];
+    const notes = { 'Confirmado': 'Pagamento aprovado no cartão.', 'Em preparo': 'A Oficina Faísca está embalando a peça.', 'Enviado': 'Coletado pela transportadora.', 'Entregue': 'Recebido por Ana.' };
+    let timeline;
+    if (detStatus === 'Cancelado') {
+      timeline = [['Aguardando pagamento', whens[0]], ['Confirmado', whens[1]], ['Cancelado', 'AGORA', 'Estorno solicitado ao banco.']].map((t, i, arr) => ({ label: t[0], when: t[1], note: t[2] || notes[t[0]] || '', hasNote: !!(t[2] || notes[t[0]]), last: i === arr.length - 1 }));
+    } else if (detStatus === 'Pagamento não aprovado') {
+      timeline = [['Aguardando pagamento', whens[0]], ['Pagamento não aprovado', whens[1], 'O banco não autorizou a transação.']].map((t, i, arr) => ({ label: t[0], when: t[1], note: t[2], hasNote: !!t[2], last: i === arr.length - 1 }));
+    } else {
+      const idx = flow.indexOf(detStatus);
+      timeline = flow.map((label, i) => ({ label, when: i <= idx ? whens[i] : 'A SEGUIR', note: notes[label] || '', hasNote: i <= idx && !!notes[label], last: i === flow.length - 1, future: i > idx, current: i === idx }));
+    }
+    timeline = timeline.map((t, i, arr) => {
+      const cur = t.current || (t.last && !t.future && t.current === undefined);
+      return Object.assign(t, {
+        notLast: i < arr.length - 1,
+        dot: t.future ? '#FFFFFF' : (cur ? (detStatus === 'Cancelado' || detStatus === 'Pagamento não aprovado' ? '#B4501E' : '#3B3FD9') : '#15803D'),
+        ring: t.future ? '#E6E4DE' : 'transparent',
+        line: t.future || (arr[i + 1] && arr[i + 1].future) ? '#E6E4DE' : '#15803D',
+        color: t.future ? '#6B6B72' : '#18181B', weight: cur ? 500 : 400
+      });
+    });
+    const sum = (it) => it.reduce((a, x) => a + x[1] * x[2], 0);
+    const units = (it) => it.reduce((a, x) => a + x[1], 0);
+    const cancelable = detStatus === 'Confirmado';
+    const inFul = detStatus === 'Em preparo' || detStatus === 'Enviado';
+
+    // endereços
+    const baseAddrs = vazio ? [] : [
+      { id: 'casa', label: 'Casa', line1: 'Rua [ENDEREÇO], 120 · apto 42', line2: 'Pinheiros · São Paulo, SP · 05400-000' },
+      { id: 'trab', label: 'Trabalho', line1: 'Av. [ENDEREÇO], 1500 · 8º andar', line2: 'Bela Vista · São Paulo, SP · 01310-000' }
+    ];
+    const addrState = (!fresh && s.addrs) || { list: baseAddrs, ship: baseAddrs[0] ? 'casa' : null, bill: baseAddrs[0] ? 'casa' : null };
+    const setAddr = (patch, extra) => this.setState(Object.assign({ from: k, sec: 'enderecos', addrs: Object.assign({}, addrState, patch) }, extra || {}));
+    const f = s.f;
+    const fBad = { line1: !f.line1.trim(), line2: !f.line2.trim() };
+    const formOpen = !fresh && !!s.addrForm;
+
+    // senha
+    const nw = s.pw.nw;
+    const rules = [
+      { ok: nw.length >= 8 && nw.length <= 128, label: '8 a 128 caracteres' },
+      { ok: /[A-Za-zÀ-ÿ]/.test(nw), label: 'Uma letra' },
+      { ok: /\d/.test(nw), label: 'Um número' }
+    ];
+    const score = rules.filter((r) => r.ok).length;
+    const barColor = score === 3 ? '#15803D' : score === 2 ? '#E8793A' : '#B4501E';
+    const phoneDigits = s.data.phone.replace(/\D/g, '');
+    const phoneBad = phoneDigits.length < 10 || phoneDigits.length > 11;
+    const firstBad = !s.data.first.trim();
+    const setData = (key) => (e) => this.setState({ data: Object.assign({}, s.data, { [key]: e.target.value }), dirty: true });
+
+    const menuItems = [
+      ['pedidos', 'Meus pedidos', 'M5 8h14l-1 12H6L5 8ZM9 8V6a3 3 0 0 1 6 0v2', vazio ? 0 : orders.length],
+      ['dados', 'Meus dados', 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 21c1.5-4 4.5-6 8-6s6.5 2 8 6'],
+      ['enderecos', 'Endereços', 'M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z'],
+      ['senha', 'Trocar senha', 'M5 11h14v10H5zM8 11V8a4 4 0 0 1 8 0v3']
+    ];
+    const activeMenu = sec === 'detalhe' ? 'pedidos' : sec;
+
     return {
-      isList: !s.sel, isDetail: !!s.sel, back: () => this.setState({ sel: null }),
-      orders: O.map((x, i) => ({ id: x[0], date: x[1], status: x[2], bg: ST[x[2]][0], fg: ST[x[2]][1], total: m(x[3]), thumbs: x[4].map(([kind, tint]) => ({ kind, tint })), summary: x[5], delay: (i * 0.05) + 's', open: () => this.setState({ sel: x[0] }) })),
-      d: { id: o[0], status: o[2], bg: ST[o[2]][0], fg: ST[o[2]][1], total: m(o[3]), shipped: o[2] === 'Enviado' || o[2] === 'Entregue',
-        timeline: tl.map((t, i, a) => ({ label: t.label, when: t.when, notLast: i < a.length - 1, dot: t.future ? '#FFFFFF' : t.cur ? (o[2] === 'Cancelado' ? '#B4501E' : '#3B3FD9') : '#15803D', ring: t.future ? '#E6E4DE' : 'transparent', line: (a[i + 1] && a[i + 1].future) ? '#E6E4DE' : '#15803D', color: t.future ? '#6B6B72' : '#18181B', weight: t.cur ? 500 : 400 })) }
+      secKey: sec + (sec === 'detalhe' ? detId : ''),
+      sec: { dados: sec === 'dados', enderecos: sec === 'enderecos', pedidos: sec === 'pedidos', detalhe: sec === 'detalhe', senha: sec === 'senha' },
+      menu: menuItems.map(([id, label, icon, count]) => {
+        const on = id === activeMenu;
+        return { label, icon, hasCount: count !== undefined, count, current: on ? 'page' : 'false', bg: on ? '#3B3FD9' : '#FFFFFF', border: on ? '#3B3FD9' : '#E6E4DE', fg: on ? '#FFFFFF' : '#18181B', weight: on ? 500 : 400, go: () => go(id) };
+      }),
+      d: {
+        first: s.data.first, last: s.data.last, phone: s.data.phone,
+        onFirst: setData('first'), onLast: setData('last'), onPhone: setData('phone'),
+        phoneErr: s.dataTried && phoneBad, phoneB: s.dataTried && phoneBad ? '#B4501E' : '#E6E4DE',
+        firstErr: s.dataTried && firstBad, firstB: s.dataTried && firstBad ? '#B4501E' : '#E6E4DE',
+        dirty: s.dirty, saveDisabled: !s.dirty
+      },
+      saveData: (e) => { e.preventDefault(); if (phoneBad || firstBad) { this.setState({ dataTried: true }); return; } this.setState({ dataTried: false, dirty: false }); this.toast('Dados salvos'); },
+      addr: {
+        has: addrState.list.length > 0, canAdd: !formOpen, empty: addrState.list.length === 0 && !formOpen,
+        formOpen, formTitle: s.addrForm && s.addrForm !== 'new' ? 'Editar endereço' : 'Novo endereço',
+        openNew: () => this.setState({ from: k, sec: 'enderecos', addrs: addrState, addrForm: 'new', f: { label: '', line1: '', line2: '' }, fTried: false }),
+        close: () => this.setState({ addrForm: null }),
+        f: {
+          label: f.label, line1: f.line1, line2: f.line2,
+          onLabel: (e) => this.setState({ f: Object.assign({}, s.f, { label: e.target.value }) }),
+          onLine1: (e) => this.setState({ f: Object.assign({}, s.f, { line1: e.target.value }) }),
+          onLine2: (e) => this.setState({ f: Object.assign({}, s.f, { line2: e.target.value }) }),
+          line1B: s.fTried && fBad.line1 ? '#B4501E' : '#E6E4DE', line2B: s.fTried && fBad.line2 ? '#B4501E' : '#E6E4DE'
+        },
+        save: (e) => {
+          e.preventDefault();
+          if (fBad.line1 || fBad.line2) { this.setState({ fTried: true }); return; }
+          const isNew = s.addrForm === 'new';
+          const id = isNew ? 'a' + Date.now() : s.addrForm;
+          const item = { id, label: f.label.trim() || 'Endereço', line1: f.line1, line2: f.line2 };
+          const list = isNew ? addrState.list.concat([item]) : addrState.list.map((a) => (a.id === id ? item : a));
+          const first = addrState.list.length === 0;
+          setAddr({ list, ship: first ? id : addrState.ship, bill: first ? id : addrState.bill }, { addrForm: null });
+          this.toast(isNew ? 'Endereço adicionado' : 'Endereço atualizado');
+        },
+        list: addrState.list.map((a) => {
+          const asking = !fresh && s.delAsk === a.id;
+          return {
+            id: a.id, label: a.label, line1: a.line1, line2: a.line2,
+            isShip: addrState.ship === a.id, isBill: addrState.bill === a.id,
+            canShip: addrState.ship !== a.id, canBill: addrState.bill !== a.id,
+            confirming: asking, idle: !asking,
+            edit: () => this.setState({ from: k, sec: 'enderecos', addrs: addrState, addrForm: a.id, f: { label: a.label, line1: a.line1, line2: a.line2 }, fTried: false }),
+            makeShip: () => { setAddr({ ship: a.id }); this.toast('Entrega padrão atualizada'); },
+            makeBill: () => { setAddr({ bill: a.id }); this.toast('Cobrança padrão atualizada'); },
+            askDel: () => this.setState({ from: k, sec: 'enderecos', addrs: addrState, delAsk: a.id }),
+            cancelDel: () => this.setState({ delAsk: null }),
+            del: () => {
+              const list = addrState.list.filter((x) => x.id !== a.id);
+              const fb = list[0] ? list[0].id : null;
+              setAddr({ list, ship: addrState.ship === a.id ? fb : addrState.ship, bill: addrState.bill === a.id ? fb : addrState.bill }, { delAsk: null });
+              this.toast('Endereço excluído');
+            }
+          };
+        })
+      },
+      ord: {
+        empty: vazio, has: !vazio,
+        list: orders.map((x, i) => {
+          const st = x.id === 'MF-000198' && this.props.statusDetalhe ? statusMap[this.props.statusDetalhe] : x.status;
+          const shown = !fresh && s.canceled && s.detId === x.id ? 'Cancelado' : st;
+          return {
+            id: x.id, date: x.date, delay: (i * 0.05).toFixed(2) + 's',
+            thumbs: x.items.slice(0, 2).map((it) => ({ kind: it[3], tint: it[4] })),
+            summary: x.items.length === 1 ? x.items[0][0] : x.items[0][0] + ' + ' + (x.items.length - 1) + (x.items.length === 2 ? ' peça' : ' peças'),
+            total: this.money(sum(x.items)), status: shown, bg: ST[shown][0], fg: ST[shown][1],
+            open: () => go('detalhe', { detId: x.id, askCancel: false })
+          };
+        })
+      },
+      backToOrders: () => go('pedidos'),
+      det: {
+        id: o.id, date: o.date, status: detStatus, bg: ST[detStatus][0], fg: ST[detStatus][1],
+        count: units(o.items) + (units(o.items) === 1 ? ' peça' : ' peças'),
+        timeline,
+        shipped: detStatus === 'Enviado' || detStatus === 'Entregue',
+        items: o.items.map((it) => ({ name: it[0], qty: it[1], total: this.money(it[1] * it[2]), kind: it[3], tint: it[4] })),
+        total: this.money(sum(o.items)),
+        canCancel: cancelable, inFulfilment: inFul,
+        askCancel: !fresh && s.askCancel, showCancelBtn: fresh || !s.askCancel,
+        ask: () => go('detalhe', { detId: o.id, askCancel: true }),
+        keep: () => this.setState({ askCancel: false }),
+        doCancel: () => { go('detalhe', { detId: o.id, askCancel: false, canceled: true }); this.toast('Pedido cancelado'); }
+      },
+      pw: {
+        cur: s.pw.cur, nw: s.pw.nw,
+        onCur: (e) => this.setState({ pw: Object.assign({}, s.pw, { cur: e.target.value }), pwCurErr: false }),
+        onNw: (e) => this.setState({ pw: Object.assign({}, s.pw, { nw: e.target.value }) }),
+        curErr: !fresh && s.pwCurErr, curB: !fresh && s.pwCurErr ? '#B4501E' : '#E6E4DE', curClass: !fresh && s.pwCurErr ? 'shake' : '', errKey: 'pe' + s.pwErrN,
+        nwB: s.pwTried && score < 3 ? '#B4501E' : '#E6E4DE',
+        bars: [0, 1, 2].map((i) => ({ color: i < score ? barColor : '#E6E4DE' })),
+        rules: rules.map((r) => ({ label: r.label, color: r.ok ? '#15803D' : '#6B6B72', icon: r.ok ? 'm5 12 5 5 9-10' : 'M12 12h.01' })),
+        done: !fresh && s.pwDone, form: fresh || !s.pwDone,
+        submit: (e) => {
+          e.preventDefault();
+          if (score < 3) { this.setState({ pwTried: true }); return; }
+          if (this.props.erroSenha) { go('senha', { pwCurErr: true, pwErrN: s.pwErrN + 1 }); return; }
+          go('senha', { pwDone: true, pw: { cur: '', nw: '' }, pwTried: false });
+        },
+        reset: () => go('senha', { pwDone: false })
+      },
+      toast: { show: !!s.toast, text: s.toast || '', key: 't' + s.toastN }
     };
   }
 }

@@ -13,27 +13,64 @@
 <style>
 body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
 a{color:#3B3FD9}
-button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed}
-@keyframes fade{from{opacity:0}to{opacity:1}}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
-@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes glow{0%,100%{opacity:.55}50%{opacity:.85}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
-.fade{animation:fade .35s ease both}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
 .sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
-.floaty{animation:floaty 5s ease-in-out infinite}
-.glow{animation:glow 3.5s ease-in-out infinite}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
 .pulse{animation:pulse 1.8s ease-out infinite}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
 details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
-details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+@keyframes glow{0%,100%{opacity:.55}50%{opacity:.85}}
+.glow{animation:glow 3.5s ease-in-out infinite}
 </style>
 </helmet>
-<div style="width: 390px; height: 1520px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<div style="width: 390px; height: 1640px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
 <dc-import name="MobileTopo" count="{{bag}}" back="MobileListagem.dc.html" title="Iluminação" hint-size="390px,86px"></dc-import>
 
+<sc-if value="{{missing}}" hint-placeholder-val="{{ false }}">
+<section class="up" style="padding: 56px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
+<div class="floaty" style="opacity: .35"><dc-import name="Art" kind="pendant" size="110" hint-size="110px,124px"></dc-import></div>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #6B6B72">PRODUTO NÃO ENCONTRADO</span>
+<h1 style="margin: 0; font-size: 28px; font-weight: 300">Essa peça não está mais na loja</h1>
+<p style="margin: 0; font-size: 14px; color: #6B6B72; line-height: 1.5">O link pode estar errado ou a peça saiu da coleção.</p>
+<a href="MobileListagem.dc.html" style="margin-top: 8px; width: 100%; height: 52px; border-radius: 12px; background: #3B3FD9; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 500">Ver Iluminação</a>
+</section>
+</sc-if>
+
+<sc-if value="{{exists}}" hint-placeholder-val="{{ true }}">
 <div style="position: relative">
-<div key="{{viewKey}}" class="fade" style="height: 400px; background: {{view.bg}}; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center">
+<div key="{{viewKey}}" class="fade" style="height: 400px; background: {{view.bg}}; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; opacity: {{artOp}}">
 <sc-if value="{{view.lit}}" hint-placeholder-val="{{ false }}"><div class="glow" style="position: absolute; left: 50%; top: 58%; width: 280px; height: 280px; margin: -140px 0 0 -140px; border-radius: 50%; background: radial-gradient(circle, rgba(232,121,58,.55) 0, rgba(232,121,58,0) 65%)"></div></sc-if>
 <div class="floaty" style="position: relative; display: flex"><dc-import name="Art" kind="pendant" size="{{view.size}}" hint-size="220px,248px"></dc-import></div>
 </div>
@@ -45,12 +82,12 @@ details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s}
 <span style="position: absolute; top: 12px; left: 12px; height: 26px; padding: 0 10px; border-radius: 999px; background: #E8F5EC; color: #15803D; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; align-items: center">-20%</span>
 </div>
 
-<section style="padding: 20px 16px; display: flex; flex-direction: column; gap: 16px">
+<section style="padding: 20px 16px 110px; display: flex; flex-direction: column; gap: 16px">
 <div style="display: flex; flex-direction: column; gap: 6px">
 <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6B6B72">OFICINA FAÍSCA · SÃO PAULO</span>
 <h1 style="margin: 0; font-size: 32px; font-weight: 300; letter-spacing: -0.03em">Pendente Orbe</h1>
-<div style="display: flex; align-items: baseline; gap: 10px"><span style="font-size: 28px; font-weight: 300">R$ 359</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #6B6B72; text-decoration: line-through">R$ 449</span></div>
-<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #15803D"><span class="pulse" style="width: 7px; height: 7px; border-radius: 50%; background: #15803D"></span>Em estoque · despacho em até 3 dias úteis</span>
+<div style="display: flex; align-items: baseline; gap: 10px"><span style="font-size: 28px; font-weight: 300; color: {{priceColor}}">R$ 359</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #6B6B72; text-decoration: line-through">R$ 449</span></div>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: {{stockColor}}"><span class="{{stockDot}}" style="width: 7px; height: 7px; border-radius: 50%; background: {{stockColor}}"></span>{{stockLabel}}</span>
 </div>
 <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #44444A">Esfera de vidro soprado à boca com canopla em latão escovado. Luz difusa e quente.</p>
 <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 14px; border-top: 1px solid #E6E4DE">
@@ -58,8 +95,20 @@ details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s}
 <div style="display: flex; gap: 8px" role="radiogroup" aria-label="Acabamento">
 <sc-for list="{{finishes}}" as="o" hint-placeholder-count="2"><button role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" disabled="{{o.off}}" style="flex: 1; height: 48px; border-radius: 12px; border: 1px solid {{o.border}}; background: {{o.bg}}; color: {{o.fg}}; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px"><span style="width: 18px; height: 18px; border-radius: 50%; background: {{o.sw}}; border: 1px solid #E6E4DE"></span>{{o.label}}</button></sc-for>
 </div>
-<span style="font-size: 12px; color: #6B6B72"><span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span> A variante ainda não segue para o pedido.</span>
+<sc-if value="{{notFuturo}}" hint-placeholder-val="{{ true }}"><span style="font-size: 12px; color: #6B6B72"><span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span> A variante ainda não segue para o pedido.</span></sc-if>
 </div>
+
+<sc-if value="{{futuro}}" hint-placeholder-val="{{ false }}">
+<form onSubmit="{{calc}}" style="margin: 0; padding-top: 14px; border-top: 1px solid #E6E4DE; display: flex; flex-direction: column; gap: 10px">
+<label for="mcep" style="font-size: 14px; color: #44444A">Calcular frete e prazo</label>
+<div style="display: flex; gap: 8px"><input id="mcep" inputmode="numeric" placeholder="00000-000" value="{{cep}}" onChange="{{onCep}}" style="flex-grow: 1; min-width: 0; height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{cepB}}; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 16px"><button type="submit" style="height: 48px; padding: 0 16px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; font-size: 15px; font-weight: 500">Calcular</button></div>
+<sc-if value="{{hasShip}}" hint-placeholder-val="{{ false }}"><div class="up" style="display: flex; flex-direction: column; gap: 6px; font-size: 14px"><div style="display: flex; justify-content: space-between"><span>Econômica · 5–9 dias</span><span style="font-family: 'JetBrains Mono', monospace; color: #15803D">Grátis +R$ 299</span></div><div style="display: flex; justify-content: space-between"><span>Expressa · 2–4 dias</span><span style="font-family: 'JetBrains Mono', monospace">R$ 42,90</span></div></div></sc-if>
+</form>
+</sc-if>
+<sc-if value="{{notFuturo}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 12px 14px; border-radius: 12px; border: 1px dashed #E6E4DE; font-size: 13px; color: #6B6B72">Frete e prazo pelo CEP <span style="font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #B4501E; border: 1px dashed #B4501E; border-radius: 999px; padding: 2px 6px">EM BREVE</span></div>
+</sc-if>
+
 <div style="display: flex; flex-direction: column; border-top: 1px solid #E6E4DE">
 <details style="border-bottom: 1px solid #E6E4DE"><summary style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 500">Medidas e materiais<span class="chev">⌄</span></summary><div style="padding-bottom: 14px; font-size: 14px; line-height: 1.6; color: #44444A">Diâmetro [MEDIDA] cm · cabo [MEDIDA] m · vidro soprado e latão · lâmpada E27 não inclusa.</div></details>
 <details style="border-bottom: 1px solid #E6E4DE"><summary style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 500">Cuidados<span class="chev">⌄</span></summary><div style="padding-bottom: 14px; font-size: 14px; line-height: 1.6; color: #44444A">Limpe o vidro com pano macio e seco. O latão ganha pátina com o tempo.</div></details>
@@ -67,16 +116,17 @@ details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s}
 </div>
 <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 6px">
 <span style="font-size: 20px; font-weight: 300">Combina com o Orbe</span>
-<div style="display: flex; gap: 10px; overflow-x: auto">
-<a href="MobileProduto.dc.html" style="flex-shrink: 0; width: 150px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 6px; text-decoration: none; color: #18181B"><span style="height: 120px; border-radius: 10px; background: #ECECFD; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="lamp" size="64" hint-size="64px,72px"></dc-import></span><span style="display: block; padding: 6px 4px 2px; font-size: 13px; font-weight: 500">Luminária Arco</span><span style="display: block; padding: 0 4px 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px">R$ 489</span></a>
-<a href="MobileProduto.dc.html" style="flex-shrink: 0; width: 150px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 6px; text-decoration: none; color: #18181B"><span style="height: 120px; border-radius: 10px; background: #FCEEE4; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="sconce" size="64" hint-size="64px,72px"></dc-import></span><span style="display: block; padding: 6px 4px 2px; font-size: 13px; font-weight: 500">Arandela Fio</span><span style="display: block; padding: 0 4px 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px">R$ 279</span></a>
-<a href="MobileProduto.dc.html" style="flex-shrink: 0; width: 150px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 6px; text-decoration: none; color: #18181B"><span style="height: 120px; border-radius: 10px; background: #F1F0EC; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="jar" size="64" hint-size="64px,72px"></dc-import></span><span style="display: block; padding: 6px 4px 2px; font-size: 13px; font-weight: 500">Castiçal Brasa</span><span style="display: block; padding: 0 4px 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px">R$ 159</span></a>
+<div class="chips" style="display: flex; gap: 10px; overflow-x: auto">
+<sc-for list="{{recos}}" as="r" hint-placeholder-count="3"><a href="MobileProduto.dc.html" style="flex-shrink: 0; width: 150px; background: #FFFFFF; border: 1px solid #E6E4DE; border-radius: 14px; padding: 6px; text-decoration: none; color: #18181B"><span style="height: 120px; border-radius: 10px; background: {{r.tint}}; display: flex; align-items: center; justify-content: center"><dc-import name="Art" kind="{{r.kind}}" size="64" hint-size="64px,72px"></dc-import></span><span style="display: block; padding: 6px 4px 2px; font-size: 13px; font-weight: 500">{{r.name}}</span><span style="display: block; padding: 0 4px 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px">{{r.price}}</span></a></sc-for>
 </div>
 </div>
 </section>
 
 <!-- Barra fixa -->
-<div style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: #FFFFFF; border-top: 1px solid #E6E4DE; padding: 10px 16px 14px; display: flex; gap: 10px; align-items: center">
+<div style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: #FFFFFF; border-top: 1px solid #E6E4DE; padding: 10px 16px 14px; display: flex; flex-direction: column; gap: 6px">
+<sc-if value="{{maxHit}}" hint-placeholder-val="{{ false }}"><span class="fade" style="font-size: 12px; color: #B4501E">{{maxLabel}}</span></sc-if>
+<sc-if value="{{canBuy}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; gap: 10px; align-items: center">
 <div style="display: flex; align-items: center; height: 52px; border: 1px solid #E6E4DE; border-radius: 12px">
 <button onClick="{{dec}}" aria-label="Diminuir" style="width: 44px; height: 50px; border: none; background: transparent; font-size: 18px">−</button>
 <span style="width: 22px; text-align: center; font-family: 'JetBrains Mono', monospace">{{qty}}</span>
@@ -84,6 +134,10 @@ details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s}
 </div>
 <button onClick="{{add}}" style="flex-grow: 1; height: 52px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 16px; font-weight: 500">Adicionar · {{total}}</button>
 </div>
+</sc-if>
+<sc-if value="{{soldOut}}" hint-placeholder-val="{{ false }}"><button disabled style="height: 52px; border-radius: 12px; border: 1px solid #E6E4DE; background: #F1F0EC; color: #6B6B72; font-size: 16px; font-weight: 500">Esgotado</button></sc-if>
+</div>
+</sc-if>
 
 <sc-if value="{{sheet}}" hint-placeholder-val="{{ false }}">
 <div class="fade" onClick="{{close}}" style="position: fixed; inset: 0; background: rgba(24,24,27,.35); z-index: 40"></div>
@@ -97,22 +151,36 @@ details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s}
 </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1520}}'>
+<script type="text/x-dc" data-dc-script data-props='{"estado":{"editor":"enum","options":["em-estoque","ultimas-unidades","esgotado","inexistente"],"default":"em-estoque"},"futuro":{"editor":"boolean","default":false},"$preview":{"width":390,"height":1640}}'>
 class Component extends DCLogic {
-  constructor(props) { super(props); this.state = { v: 0, qty: 1, finish: 'latao', sheet: false, bag: 3 }; }
+  constructor(props) { super(props); this.state = { v: 0, qty: 1, finish: 'latao', sheet: false, bag: 3, cep: '', cepTried: false, shipOk: false, maxHit: false }; }
   renderVals() {
     const s = this.state;
+    const estado = this.props.estado || 'em-estoque';
+    const futuro = !!this.props.futuro;
+    const low = estado === 'ultimas-unidades', out = estado === 'esgotado';
+    const max = low ? 2 : 9;
     const V = [{ bg: '#F1F0EC', size: 220 }, { bg: '#232327', size: 220, lit: true }, { bg: '#ECECFD', size: 420 }, { bg: '#FCEEE4', size: 150 }];
     const n = V.length;
     const total = 'R$ ' + (359 * s.qty).toLocaleString('pt-BR');
+    const cepD = s.cep.replace(/\D/g, '');
     return {
-      bag: s.bag, view: V[s.v], viewKey: 'v' + s.v,
+      missing: estado === 'inexistente', exists: estado !== 'inexistente',
+      bag: s.bag, view: V[s.v], viewKey: 'v' + s.v, artOp: out ? 0.55 : 1,
       prev: () => this.setState({ v: (s.v + n - 1) % n }), next: () => this.setState({ v: (s.v + 1) % n }),
       dots: V.map((_, i) => ({ n: i + 1, w: i === s.v ? '22px' : '8px', bg: i === s.v ? '#3B3FD9' : 'rgba(24,24,27,.25)', go: () => this.setState({ v: i }) })),
+      priceColor: out ? '#6B6B72' : '#18181B',
+      stockLabel: out ? 'Esgotado · sem previsão de novo lote' : low ? 'Últimas 2 unidades' : 'Em estoque · despacho em até 3 dias úteis',
+      stockColor: out ? '#6B6B72' : low ? '#B4501E' : '#15803D', stockDot: out || low ? '' : 'pulse',
       finishLabel: s.finish === 'latao' ? 'Latão escovado' : 'Preto fosco',
       finishes: [['latao', 'Latão', '#C9A56A', false], ['preto', 'Preto · esgotado', '#232327', true]].map(([id, label, sw, off]) => ({ label, sw, off, on: s.finish === id, border: s.finish === id ? '#3B3FD9' : '#E6E4DE', bg: s.finish === id ? '#ECECFD' : '#FFFFFF', fg: off ? '#6B6B72' : '#18181B', pick: () => this.setState({ finish: id }) })),
+      futuro, notFuturo: !futuro, cep: s.cep, cepB: s.cepTried && cepD.length !== 8 ? '#B4501E' : '#E6E4DE', hasShip: s.shipOk,
+      onCep: (e) => this.setState({ cep: e.target.value.replace(/\D/g, '').slice(0, 8).replace(/^(\d{5})(\d)/, '$1-$2'), cepTried: false, shipOk: false }),
+      calc: (e) => { e.preventDefault(); if (cepD.length !== 8) this.setState({ cepTried: true }); else this.setState({ shipOk: true }); },
+      recos: [['Luminária Arco', 489, 'lamp', '#ECECFD'], ['Arandela Fio', 279, 'sconce', '#FCEEE4'], ['Castiçal Brasa', 159, 'jar', '#F1F0EC']].map(([name, p, kind, tint]) => ({ name, kind, tint, price: 'R$ ' + p })),
+      canBuy: !out, soldOut: out, maxHit: s.maxHit, maxLabel: low ? 'Só temos 2 unidades agora.' : 'Máximo de 9 unidades por pedido.',
       qty: s.qty, total,
-      inc: () => this.setState({ qty: Math.min(9, s.qty + 1) }), dec: () => this.setState({ qty: Math.max(1, s.qty - 1) }),
+      inc: () => (s.qty >= max ? this.setState({ maxHit: true }) : this.setState({ qty: s.qty + 1, maxHit: false })), dec: () => this.setState({ qty: Math.max(1, s.qty - 1), maxHit: false }),
       add: () => this.setState({ sheet: true, bag: s.bag + s.qty }), sheet: s.sheet, close: () => this.setState({ sheet: false })
     };
   }

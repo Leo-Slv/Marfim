@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mobile · Admin · Mensagens com falha</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Outfit,system-ui,sans-serif;background:#F4F3EF;color:#18181B}
+a{color:#3B3FD9}
+button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+input,textarea,select{font-family:Outfit,sans-serif}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #3B3FD9;outline-offset:2px}
+input[type=radio],input[type=checkbox]{accent-color:#3B3FD9;width:18px;height:18px;margin:0;flex-shrink:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(21,128,61,.45)}100%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes toast{0%{opacity:0;transform:translateY(16px)}10%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.up{animation:up .5s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.sheet{animation:sheet .4s cubic-bezier(.2,.7,.2,1) both}
+.fade{animation:fade .3s ease both}
+.spin{animation:spin .9s linear infinite}
+.slow{animation:spin 40s linear infinite}
+.pop{animation:pop .45s cubic-bezier(.2,.7,.2,1) both}
+.bump{animation:bump .4s ease}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.shake{animation:shake .35s ease}
+.floaty{animation:floaty 5s ease-in-out infinite}
+.check path{stroke-dasharray:60;animation:draw .6s ease .25s both}
+.skel{background:linear-gradient(90deg,#F1F0EC 0,#E9E8E3 50%,#F1F0EC 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite}
+.toast{animation:toast 2.8s ease both}
+.grow{transform-origin:top;animation:grow .7s cubic-bezier(.2,.7,.2,1) both .2s}
+.growx{transform-origin:left;animation:growx .8s cubic-bezier(.2,.7,.2,1) both}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}.chev{transition:transform .25s;display:inline-block}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+.card{background:#FFFFFF;border:1px solid #E6E4DE;border-radius:16px}
+.bp{height:50px;border-radius:12px;border:none;background:#3B3FD9;color:#FFFFFF;font-size:15px;font-weight:500;width:100%}
+.bs{height:48px;border-radius:12px;border:1px solid #E6E4DE;background:#FFFFFF;color:#18181B;font-size:15px;font-weight:500;width:100%}
+.pill{height:24px;padding:0 9px;border-radius:999px;font-size:11px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap}
+</style>
+</helmet>
+<div style="width: 390px; height: 1150px; background: #F4F3EF; display: flex; flex-direction: column; overflow: hidden; position: relative">
+<dc-import name="MobileAdminTopo" active="falhas" title="Mensagens com falha" hint-size="390px,60px"></dc-import>
+
+<div style="padding: 14px 16px 120px; display: flex; flex-direction: column; gap: 12px">
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: #6B6B72">Eventos entre serviços que esgotaram as tentativas automáticas. Reprocessar envia de novo; descartar remove da fila e fica registrado na auditoria.</p>
+<sc-if value="{{hasAny}}" hint-placeholder-val="{{ true }}"><button onClick="{{retryAll}}" disabled="{{busyAll}}" class="bp">Reprocessar todas · <span style="font-family: 'JetBrains Mono', monospace">{{count}}</span></button></sc-if>
+
+<sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+<div class="card up" style="padding: 40px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+<span class="pop" style="width: 64px; height: 64px; border-radius: 50%; background: #E8F5EC; display: flex; align-items: center; justify-content: center"><svg class="check" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span>
+<span style="font-size: 24px; font-weight: 300">Fila limpa</span>
+<span style="font-size: 14px; color: #6B6B72">Nenhuma mensagem com falha agora.</span>
+</div>
+</sc-if>
+
+<sc-for list="{{items}}" as="m" hint-placeholder-count="2">
+<article key="{{m.id}}" class="card {{m.cls}}" style="overflow: hidden">
+<div style="padding: 14px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; gap: 12px; align-items: flex-start">
+<span style="width: 40px; height: 40px; border-radius: 12px; background: #FCEEE4; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B4501E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 21h20L12 3ZM12 10v5M12 18h.01"></path></svg></span>
+<span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; overflow-wrap: anywhere">{{m.type}}</span><span style="font-size: 14px; line-height: 1.45; color: #44444A">{{m.error}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B6B72">{{m.tries}} TENTATIVAS · {{m.when}}</span></span>
+</div>
+<sc-if value="{{m.busy}}" hint-placeholder-val="{{ false }}"><div class="fade" style="height: 48px; border-radius: 12px; background: #ECECFD; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 500; color: #3B3FD9"><svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg>Reprocessando</div></sc-if>
+<sc-if value="{{m.idle}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; gap: 8px">
+<button onClick="{{m.retry}}" style="flex-grow: 1; height: 48px; border-radius: 12px; border: none; background: #3B3FD9; color: #FFFFFF; font-size: 14px; font-weight: 500">Reprocessar</button>
+<button onClick="{{m.ask}}" style="height: 48px; padding: 0 14px; border-radius: 12px; border: 1px solid #E6E4DE; background: #FFFFFF; color: #B4501E; font-size: 14px; font-weight: 500">Descartar</button>
+</div>
+</sc-if>
+<button onClick="{{m.toggle}}" aria-expanded="{{m.open}}" style="min-height: 44px; border: none; border-top: 1px solid #F1F0EC; background: none; padding: 8px 0 0; display: flex; align-items: center; justify-content: space-between; color: #44444A; font-size: 14px; font-weight: 500">{{m.toggleLabel}}<span style="font-size: 12px; color: #6B6B72">payload e stack trace</span></button>
+</div>
+<sc-if value="{{m.open}}" hint-placeholder-val="{{ false }}">
+<div class="up" style="padding: 0 14px 14px; display: flex; flex-direction: column; gap: 8px">
+<pre style="margin: 0; padding: 12px; border-radius: 12px; background: #F4F3EF; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere">{{m.payload}}</pre>
+<pre style="margin: 0; padding: 12px; border-radius: 12px; background: #18181B; color: #E6E4DE; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere">{{m.stack}}</pre>
+</div>
+</sc-if>
+</article>
+</sc-for>
+</div>
+
+<sc-if value="{{sheet.show}}" hint-placeholder-val="{{ false }}">
+<div class="fade" onClick="{{sheet.keep}}" style="position: fixed; inset: 0; background: rgba(24,24,27,.45); z-index: 40"></div>
+<div class="sheet" role="dialog" aria-label="Descartar mensagem" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: #FFFFFF; border-radius: 20px 20px 0 0; padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 12px">
+<span style="align-self: center; width: 40px; height: 4px; border-radius: 999px; background: #E6E4DE"></span>
+<b style="font-size: 20px; font-weight: 500">Descartar esta mensagem?</b>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #18181B; overflow-wrap: anywhere">{{sheet.type}}</span>
+<span style="font-size: 14px; color: #44444A; line-height: 1.5">{{sheet.consequence}} A ação fica registrada na auditoria.</span>
+<button onClick="{{sheet.discard}}" class="bp" style="background: #B4501E">Descartar</button>
+<button onClick="{{sheet.keep}}" class="bs">Manter</button>
+</div>
+</sc-if>
+<sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}">
+<div key="{{toast.key}}" class="toast" role="status" style="position: fixed; left: 16px; right: 16px; bottom: 20px; z-index: 60; min-height: 48px; border-radius: 12px; background: #18181B; color: #FFFFFF; display: flex; align-items: center; gap: 10px; padding: 8px 16px; box-sizing: border-box; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7EE2A0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>{{toast.text}}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1150}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { open: 'm1', busy: {}, ask: null, toast: null, toastN: 0,
+      list: [
+        { id: 'm1', type: 'OrderConfirmedEmail', error: 'Tempo esgotado ao falar com o provedor de e-mail (SMTP 421).', tries: 5, when: '01 OUT · 10:43', payload: '{\n  "orderId": "MF-000231",\n  "to": "ana@email.com",\n  "template": "pedido-confirmado"\n}', stack: 'SmtpException: 421 Service not available\n  at EmailSender.SendAsync()\n  at OrderConfirmedHandler.Handle()', consequence: 'A cliente não recebe o e-mail de confirmação.' },
+        { id: 'm2', type: 'StockReservationReleased', error: 'Item de estoque bloqueado por outra transação (concorrência).', tries: 5, when: '29 SET · 14:41', payload: '{\n  "orderId": "MF-000225",\n  "sku": "OF-FIO",\n  "quantity": 1\n}', stack: 'DbUpdateConcurrencyException\n  at StockItem.Release()\n  at PaymentFailedHandler.Handle()', consequence: 'A unidade reservada não volta ao estoque.' }
+      ] };
+  }
+  componentWillUnmount() { clearTimeout(this.tt); Object.values(this.timers || {}).forEach(clearTimeout); }
+  toast(text) { this.setState({ toast: text, toastN: this.state.toastN + 1 }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2600); }
+  retry(id) {
+    this.timers = this.timers || {};
+    this.setState({ busy: Object.assign({}, this.state.busy, { [id]: true }), ask: null });
+    this.timers[id] = setTimeout(() => { this.setState({ list: this.state.list.filter((m) => m.id !== id) }); this.toast('Mensagem reprocessada com sucesso'); }, 1500);
+  }
+  renderVals() {
+    const s = this.state;
+    return {
+      count: s.list.length,
+      sheet: (() => { const m = s.list.find((x) => x.id === s.ask && !s.busy[x.id]); return m ? { show: true, type: m.type, consequence: m.consequence, keep: () => this.setState({ ask: null }), discard: () => { this.setState({ list: s.list.filter((x) => x.id !== m.id), ask: null }); this.toast('Mensagem descartada'); } } : { show: false, type: '', consequence: '' }; })(),
+      hasAny: s.list.length > 0, empty: s.list.length === 0, busyAll: Object.keys(s.busy).length > 0 && s.list.every((m) => s.busy[m.id]),
+      retryAll: () => s.list.forEach((m) => this.retry(m.id)),
+      items: s.list.map((m) => ({
+        id: m.id, type: m.type, error: m.error, tries: m.tries, when: m.when, payload: m.payload, stack: m.stack, consequence: m.consequence,
+        cls: 'up', open: s.open === m.id, toggleLabel: s.open === m.id ? 'Ocultar' : 'Detalhes',
+        toggle: () => this.setState({ open: s.open === m.id ? null : m.id }),
+        busy: !!s.busy[m.id], idle: !s.busy[m.id],
+        retry: () => this.retry(m.id),
+        asking: s.ask === m.id && !s.busy[m.id], ask: () => this.setState({ ask: m.id }), keep: () => this.setState({ ask: null }),
+        discard: () => { this.setState({ list: s.list.filter((x) => x.id !== m.id), ask: null }); this.toast('Mensagem descartada'); }
+      })),
+      toast: { show: !!s.toast, text: s.toast || '', key: 't' + s.toastN }
+    };
+  }
+}
+</script>
+</body>
+</html>
