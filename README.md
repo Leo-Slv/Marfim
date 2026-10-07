@@ -64,6 +64,17 @@ public/
   Consome `GET /api/catalog/products/by-slug/{slug}`. Spec em
   `Docs/specs/storefront/product.md`; lacunas em
   `Docs/backend-pendencies/storefront/product.md`.
+- **Institucional e ajuda** (`/content/[slug]`) — telas `Conteudo.dc.html`
+  e `MobileConteudo.dc.html`: 11 páginas (Nossa história, Ateliês parceiros,
+  Venda com a gente, Lookbook, Perguntas frequentes, Trocas e devoluções,
+  Prazos e frete, Cuidados com as peças, Rastrear pedido, Privacidade e
+  Termos de uso) com índice lateral no desktop e chips no celular. Os textos
+  deixam claro que a Marfim é uma loja de demonstração (pagamentos em modo
+  de teste do Stripe); o que a loja ainda não tem (atendimento, rastreio sem
+  login, frete por CEP, troca pelo pedido) aparece como EM BREVE. Ateliês e
+  Lookbook usam as peças reais do catálogo (`GET /api/catalog/products`).
+  Spec em `Docs/specs/content/content-pages.md`; lacunas em
+  `Docs/backend-pendencies/content/content-pages.md`.
 - **Sacola** (`/cart`) — tela `Carrinho.dc.html`: itens com quantidade
   (1–9), remover, resumo do pedido e "Combina com a sua sacola". A sacola
   fica no navegador e é revalidada no backend ao abrir e a cada mudança

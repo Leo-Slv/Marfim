@@ -79,7 +79,8 @@ Current features: `catalog/` (products, categories, `ProductCard`,
 `ListingProductCard`, `ProductArt`), `cart/` (client-side cart store,
 mini-sacola and the Sacola screen), `home/` (the storefront home),
 `listing/` (category, search and promotions listing), `product/` (the
-product page), `auth/` (sign
+product page), `content/` (institutional, help and legal pages; static
+copy written for a demonstration store), `auth/` (sign
 in/up, e-mail confirmation, password recovery), `checkout/` (Entrega
 and Pagamento with Stripe), `account/` (Minha conta), `errors/` (error
 states), `admin-auth/` (admin sign-in + gate), `admin-shell/` (admin

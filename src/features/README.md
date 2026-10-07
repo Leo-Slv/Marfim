@@ -174,6 +174,15 @@ cross-feature UI (shadcn/ui primitives in `ui/`, shared composites elsewhere).
   to what fits in the bag (9 per piece), mini-sacola with the quantity,
   accordions (materials from the short description, care text per category
   in `lib/product-content.ts`) and "Combina com" from the same category.
+- `content/` — institutional, help and legal pages `/content/[slug]`
+  (`Docs/specs/content/content-pages.md`): a static route
+  (`generateStaticParams`, `dynamicParams = false`, so any other slug is
+  the 404 page) over a registry of 11 pages (`lib/content-pages.ts`); all
+  pt-BR copy in `lib/content-copy.ts`, written as an honest demonstration
+  store (no invented contacts, Stripe test mode explained in Termos/FAQ).
+  Desktop sticky index / mobile chips; FAQ search is accent-insensitive
+  (`lib/filter-faqs.ts`); Ateliês and Lookbook take their pieces from the
+  live catalog by brand/slug (`lib/catalog-pieces.ts`).
 - `listing/` — the product listing (`Docs/specs/storefront/listing.md`),
   one screen in three modes routed by `src/app/products`, `search` and
   `promotions`. Everything that defines the result set lives in the URL
