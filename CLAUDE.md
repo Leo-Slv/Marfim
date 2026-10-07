@@ -115,6 +115,12 @@ which traps `position: fixed`; use `animate-fade-in` there). Side panels
 become bottom sheets (`BottomSheet`), and those screens pass
 `StoreFooter hideOnMobile` (the others get the compact footer).
 
+The admin panel has its mobile layout too (`Docs/specs/admin/mobile-admin.md`): below
+980 px `AdminMobileBar` (bar + side menu) replaces the sidebar, lists show cards next to
+the desktop table, detail panels take the whole screen, destructive confirms become
+`BottomSheet`s gated by `useMediaQuery` and the product editor has a fixed save bar
+(same `animate-up` caveat).
+
 Error screens come from `src/features/errors`: unknown routes hit
 `src/app/not-found.tsx`, render errors `error.tsx`; when the query a page
 is about fails without data, render `QueryErrorState` (404/403/429/sem

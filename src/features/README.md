@@ -209,6 +209,11 @@ screen stay in the DOM and CSS picks one; where a component can only exist
 once (a field bound to the URL, a Radix dialog) `useMediaQuery` mounts just
 the current one.
 
+The admin panel follows the same rule below 980 px (`Docs/specs/admin/mobile-admin.md`):
+`admin-mobile-bar.tsx` (bar + side menu) replaces the sidebar, lists render cards next to
+the desktop table, detail panels take the whole screen and destructive confirms
+are `BottomSheet`s (inline confirm stays on desktop).
+
 Each new feature is added following the workflow in the root `CLAUDE.md`
 (spec → resolve open decisions → backend pendencies → implementation plan →
 implement → tests → docs → commit). A feature only gets the subfolders it

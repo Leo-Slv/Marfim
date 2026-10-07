@@ -254,6 +254,14 @@ public/
   descartadas. Spec em `Docs/specs/admin/admin-failed-messages.md`; lacunas
   em `Docs/backend-pendencies/admin/admin-failed-messages.md`.
 
+- **Admin · versão mobile** (abaixo de 980 px) — todas as telas do painel têm
+  layout próprio (`MobileAdmin*.dc.html`): barra superior com menu lateral e
+  sino de pedidos a preparar, listas em cards, filtros em chips com rolagem,
+  painéis de detalhe em tela cheia, barra fixa Salvar/Publicar no editor de
+  produto e confirmações (cancelar, descontinuar, desativar, estornar,
+  descartar) em bottom sheet. Spec em `Docs/specs/admin/mobile-admin.md`;
+  lacunas em `Docs/backend-pendencies/admin/mobile-admin.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra
