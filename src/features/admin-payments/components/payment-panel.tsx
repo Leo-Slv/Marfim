@@ -4,12 +4,14 @@ import { ArrowLeftIcon } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { BottomSheet } from '@/components/bottom-sheet';
 import { notify } from '@/features/account/components/account-toast';
 import { formatTimelineMoment } from '@/features/account/lib/account-format';
 import { formatOrderMoment } from '@/features/admin-orders/lib/order-format';
 import { parseMoney } from '@/features/admin-products/lib/product-form';
 import { formatCurrencyBrlCents } from '@/features/catalog/lib/format-currency-brl';
 import { QueryErrorState } from '@/features/errors/components/query-error-state';
+import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
 
@@ -53,7 +55,7 @@ function PaymentPanel({
 	const payment = usePayment(paymentId);
 
 	return (
-		<aside className="flex w-full shrink-0 animate-slide-in flex-col gap-[18px] border-l bg-card px-6 py-7 min-[1280px]:sticky min-[1280px]:top-0 min-[1280px]:h-screen min-[1280px]:w-[400px] min-[1280px]:overflow-y-auto">
+		<aside className="flex w-full shrink-0 animate-slide-in flex-col gap-[18px] bg-card px-4 py-4 min-[980px]:border-l min-[980px]:px-6 min-[980px]:py-7 min-[1280px]:sticky min-[1280px]:top-0 min-[1280px]:h-screen min-[1280px]:w-[400px] min-[1280px]:overflow-y-auto">
 			<button
 				type="button"
 				onClick={onClose}
@@ -94,6 +96,8 @@ function PaymentDetail({
 	const [reason, setReason] = useState<string>(refundReasons[0]);
 	const [refundError, setRefundError] = useState<string | null>(null);
 	const [confirming, setConfirming] = useState(false);
+	// Below 980 px the refund confirm is a bottom sheet (MobileAdminPagamentos.dc.html).
+	const mobile = useMediaQuery('(max-width: 979px)') === true;
 	const check = actions.reconcile.data
 		? reconciliationMessage(actions.reconcile.data)
 		: null;
@@ -262,7 +266,7 @@ function PaymentDetail({
 							{refundError}
 						</span>
 					) : null}
-					{confirming ? (
+					{confirming && !mobile ? (
 						<div className="flex animate-pop-in flex-col gap-2 rounded-[10px] bg-clay-soft p-3 text-[13px]">
 							Estornar {formatCurrencyBrlCents(parseMoney(amount) ?? 0)} no
 							cartão do cliente? Não dá para desfazer.
@@ -292,6 +296,32 @@ function PaymentDetail({
 							Estornar
 						</button>
 					)}
+					<BottomSheet
+						open={confirming && mobile}
+						onOpenChange={setConfirming}
+						title={
+							'Estornar ' +
+							formatCurrencyBrlCents(parseMoney(amount) ?? 0) +
+							'?'
+						}
+						description="O valor volta para o cartão do cliente. Não dá para desfazer."
+					>
+						<button
+							type="button"
+							disabled={actions.refund.isPending}
+							onClick={sendRefund}
+							className="h-[50px] rounded-xl bg-clay text-[15px] font-medium text-white disabled:opacity-55"
+						>
+							{actions.refund.isPending ? 'Enviando…' : 'Sim, estornar'}
+						</button>
+						<button
+							type="button"
+							onClick={() => setConfirming(false)}
+							className="h-12 rounded-xl border bg-card text-[15px] font-medium"
+						>
+							Voltar
+						</button>
+					</BottomSheet>
 				</form>
 			) : null}
 

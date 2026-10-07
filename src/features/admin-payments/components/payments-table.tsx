@@ -37,7 +37,83 @@ function PaymentsTable({
 }) {
 	return (
 		<div className="flex flex-col gap-3">
-			<div className="overflow-hidden rounded-2xl border bg-card">
+			{/* Below 980 px: one card per payment (MobileAdminPagamentos.dc.html). */}
+			<div className="flex flex-col gap-2 min-[980px]:hidden">
+				{failed ? (
+					<div
+						role="alert"
+						className="flex flex-col items-center gap-2 rounded-2xl border bg-card p-8 text-sm text-ink-soft"
+					>
+						Não foi possível carregar os pagamentos.
+						<button
+							type="button"
+							onClick={onRetry}
+							className="font-medium text-primary"
+						>
+							Tentar de novo
+						</button>
+					</div>
+				) : !payments ? (
+					[0, 1, 2, 3].map((index) => (
+						<div key={index} className="skeleton h-[84px] rounded-2xl" />
+					))
+				) : payments.length === 0 ? (
+					<p className="p-8 text-center text-sm text-muted-foreground">
+						Nenhum pagamento neste filtro.
+					</p>
+				) : (
+					payments.map((payment) => {
+						const status = paymentStatusView(
+							payment.status,
+							payment.refundedAmount,
+						);
+						return (
+							<button
+								key={payment.id}
+								type="button"
+								onClick={() => onOpen(payment.id)}
+								className={cn(
+									'flex animate-up flex-col gap-2 rounded-2xl border bg-card px-3.5 py-3 text-left',
+									loading && 'opacity-60 transition-opacity',
+								)}
+							>
+								<span className="flex w-full items-center justify-between gap-2">
+									<span className="text-[13px]">
+										{payment.method === 'Pix' ? 'Pix' : 'Cartão'} ·{' '}
+										<span className="font-mono">
+											{payment.orderNumber ?? '—'}
+										</span>
+									</span>
+									<span
+										className={cn(
+											'inline-flex h-6 items-center rounded-full px-[9px] text-[11px] font-medium whitespace-nowrap',
+											status.className,
+										)}
+									>
+										{status.label}
+									</span>
+								</span>
+								<span className="flex w-full items-center justify-between gap-3 text-sm">
+									<span className="flex min-w-0 flex-col gap-0.5 text-xs text-muted-foreground">
+										<span>{formatOrderMoment(payment.createdAt)}</span>
+										{payment.refundedAmount > 0 ? (
+											<span>
+												estornado{' '}
+												{formatCurrencyBrlCents(payment.refundedAmount)}
+											</span>
+										) : null}
+									</span>
+									<span className="font-mono text-[13px] whitespace-nowrap">
+										{formatCurrencyBrlCents(payment.amount)} ›
+									</span>
+								</span>
+							</button>
+						);
+					})
+				)}
+			</div>
+			<div className="hidden overflow-hidden rounded-2xl border bg-card min-[980px]:block">
+				{' '}
 				<div className="overflow-x-auto">
 					<div className="min-w-[580px]">
 						<div
