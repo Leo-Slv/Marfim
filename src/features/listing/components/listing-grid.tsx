@@ -3,7 +3,7 @@ import type { ProductSummary } from '@/features/catalog/model/product';
 import { cn } from '@/lib/utils';
 
 const gridClassName =
-	'grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 min-[980px]:grid-cols-3 min-[1180px]:grid-cols-4';
+	'grid grid-cols-2 gap-2.5 min-[980px]:grid-cols-3 min-[980px]:gap-4 min-[1180px]:grid-cols-4';
 
 const SKELETON_CARDS = 8;
 
@@ -53,7 +53,7 @@ function ListingGridSkeleton() {
 					key={index}
 					className="flex flex-col gap-3 rounded-2xl border bg-card p-2"
 				>
-					<div className="skeleton h-[210px] rounded-xl" />
+					<div className="skeleton h-[150px] rounded-[10px] min-[980px]:h-[210px] min-[980px]:rounded-xl" />
 					<div className="flex flex-col gap-2 px-1.5 pb-2">
 						<div className="skeleton h-2.5 w-2/5 rounded-md" />
 						<div className="skeleton h-3.5 w-3/4 rounded-md" />

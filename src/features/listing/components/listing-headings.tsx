@@ -19,8 +19,8 @@ function CategoryHeading({
 	blurb: string;
 }) {
 	return (
-		<section className="pt-8 pb-2">
-			<div className="mx-auto flex max-w-[1280px] flex-col gap-3.5 px-5 sm:px-10">
+		<section className="pt-5 pb-0 min-[980px]:pt-8 min-[980px]:pb-2">
+			<div className="mx-auto flex max-w-[1280px] flex-col gap-3 px-4 min-[980px]:gap-3.5 sm:px-10">
 				<div className="font-mono text-[11px] tracking-[0.14em] text-muted-foreground">
 					<Link
 						href={appRoutes.system.home}
@@ -33,7 +33,7 @@ function CategoryHeading({
 				<div className="flex flex-wrap items-baseline gap-3.5">
 					<h1
 						key={title}
-						className="animate-up text-[44px] leading-none font-light tracking-[-0.03em] [animation-duration:.7s]"
+						className="animate-up text-[34px] leading-none font-light tracking-[-0.03em] [animation-duration:.7s] min-[980px]:text-[44px]"
 					>
 						{title}
 					</h1>
@@ -43,7 +43,7 @@ function CategoryHeading({
 						</span>
 					) : null}
 				</div>
-				<p className="max-w-[560px] text-[15px] text-muted-foreground">
+				<p className="hidden max-w-[560px] text-[15px] text-muted-foreground min-[980px]:block">
 					{blurb}
 				</p>
 			</div>
@@ -118,9 +118,9 @@ function SearchHeading({
 /** Promotions mode: the indigo "Semana do design" banner. */
 function PromotionsHeading({ countLabel }: { countLabel: string | null }) {
 	return (
-		<section className="pt-7 pb-2">
-			<div className="mx-auto max-w-[1280px] px-5 sm:px-10">
-				<div className="relative flex flex-wrap items-center gap-8 overflow-hidden rounded-[20px] bg-primary px-6 py-9 text-primary-foreground sm:px-10">
+		<section className="pt-4 pb-0 min-[980px]:pt-7 min-[980px]:pb-2">
+			<div className="mx-auto max-w-[1280px] px-4 sm:px-10">
+				<div className="relative flex flex-wrap items-center gap-8 overflow-hidden rounded-[20px] bg-primary px-[22px] py-[22px] text-primary-foreground min-[980px]:px-6 min-[980px]:py-9 sm:px-10">
 					<svg
 						className="absolute -top-[110px] -right-20 animate-spin-slow"
 						width="340"
@@ -150,7 +150,7 @@ function PromotionsHeading({ countLabel }: { countLabel: string | null }) {
 						<div className="font-mono text-[11px] tracking-[0.18em] text-primary-soft">
 							PROMOÇÕES · SEMANA DO DESIGN
 						</div>
-						<h1 className="text-[36px] leading-[1.05] font-light tracking-[-0.03em] sm:text-[44px]">
+						<h1 className="text-[30px] leading-[1.1] font-light tracking-[-0.03em] min-[980px]:text-[44px] min-[980px]:leading-[1.05]">
 							Peças com <span className="font-medium">preço especial</span>
 						</h1>
 						<div className="min-h-[1.5em] text-[15px] text-primary-soft">

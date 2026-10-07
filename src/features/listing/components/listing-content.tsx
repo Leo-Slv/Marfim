@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
@@ -29,6 +30,7 @@ import { buildListingHref } from '../lib/listing-url';
 import { paginate, parsePage } from '../lib/pagination';
 import type { ListingMode } from '../model/listing';
 import { KeepTypingHint, ListingEmptyState } from './listing-empty-state';
+import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { ListingGrid, ListingGridSkeleton } from './listing-grid';
 import {
 	CategoryHeading,
@@ -46,6 +48,9 @@ function ListingContent({ mode }: { mode: ListingMode }) {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const categories = useCategories();
+	// Below 980 px "Carregar mais" grows one list (`?pagina=N` shows 1..N);
+	// null until the width is known.
+	const mobile = useMediaQuery('(max-width: 979px)');
 	const { addItem } = useCart();
 	const [addedItem, setAddedItem] = useState<AddedItem | null>(null);
 
@@ -67,15 +72,15 @@ function ListingContent({ mode }: { mode: ListingMode }) {
 
 	const listing = useProducts(
 		{
-			page,
-			pageSize: PAGE_SIZE,
+			page: mobile ? 1 : page,
+			pageSize: mobile ? PAGE_SIZE * page : PAGE_SIZE,
 			categoryId: category?.id,
 			// Novidades is every product; its newest-first order is the default
 			// sort (pendency #2).
 			sort: sort.apiSort,
 			onSale: mode === 'promotions' ? true : undefined,
 		},
-		{ enabled: mode !== 'search' && !waitingForCategory },
+		{ enabled: mode !== 'search' && !waitingForCategory && mobile !== null },
 	);
 	// Search runs in the front over the whole catalog, in the API's sort
 	// order: OrderCore only matches names, accent-sensitively (mobile
@@ -200,8 +205,8 @@ function ListingContent({ mode }: { mode: ListingMode }) {
 				onSortChange={(value) => navigate({ ordem: value })}
 			/>
 
-			<section className="grow pt-6 pb-16">
-				<div className="mx-auto flex max-w-[1280px] flex-col gap-8 px-5 sm:px-10">
+			<section className="grow pt-4 pb-8 min-[980px]:pt-6 min-[980px]:pb-16">
+				<div className="mx-auto flex max-w-[1280px] flex-col gap-5 px-4 min-[980px]:gap-8 sm:px-10">
 					{!searchable ? (
 						<KeepTypingHint />
 					) : products.isError ? (
@@ -229,22 +234,42 @@ function ListingContent({ mode }: { mode: ListingMode }) {
 						<>
 							<ListingGrid
 								products={products.data.items}
-								gridKey={`${mode}-${categoryParam}-${term}-${sort.value}-${page}`}
+								gridKey={`${mode}-${categoryParam}-${term}-${sort.value}-${mobile ? 0 : page}`}
 								dimmed={products.isPlaceholderData}
 								onAdd={handleAdd}
 							/>
+							{/* Below 980 px: "N DE M" and Carregar mais (MobileListagem). */}
+							<div className="flex flex-col items-center gap-2.5 min-[980px]:hidden">
+								<span className="font-mono text-[11px] text-muted-foreground">
+									{Math.min(products.data.items.length, totalItems)} DE{' '}
+									{totalItems}
+								</span>
+								{products.data.items.length < totalItems ? (
+									<Link
+										href={buildListingHref(pathname, searchParams, {
+											pagina: String(page + 1),
+										})}
+										scroll={false}
+										className="flex h-12 w-full items-center justify-center rounded-xl border bg-card text-[15px] font-medium"
+									>
+										Carregar mais
+									</Link>
+								) : null}
+							</div>
 							{products.data.totalPages > 1 ? (
-								<ListingPagination
-									page={page}
-									pageSize={PAGE_SIZE}
-									totalPages={products.data.totalPages}
-									totalItems={totalItems}
-									hrefForPage={(target) =>
-										buildListingHref(pathname, searchParams, {
-											pagina: String(target),
-										})
-									}
-								/>
+								<div className="hidden min-[980px]:block">
+									<ListingPagination
+										page={page}
+										pageSize={PAGE_SIZE}
+										totalPages={products.data.totalPages}
+										totalItems={totalItems}
+										hrefForPage={(target) =>
+											buildListingHref(pathname, searchParams, {
+												pagina: String(target),
+											})
+										}
+									/>
+								</div>
 							) : null}
 						</>
 					)}

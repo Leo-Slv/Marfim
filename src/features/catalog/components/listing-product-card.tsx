@@ -40,13 +40,13 @@ function ListingProductCard({
 
 	return (
 		<article
-			className="group flex animate-up flex-col gap-3 rounded-2xl border bg-card p-2 transition-[transform,box-shadow] duration-350 ease-[cubic-bezier(.2,.7,.2,1)] [animation-duration:.7s] hover:-translate-y-[5px] hover:shadow-[0_16px_36px_-18px_rgba(24,24,27,.22)]"
+			className="group flex animate-up flex-col gap-2 rounded-[14px] border bg-card p-1.5 transition-[transform,box-shadow] duration-350 ease-[cubic-bezier(.2,.7,.2,1)] [animation-duration:.7s] hover:-translate-y-[5px] hover:shadow-[0_16px_36px_-18px_rgba(24,24,27,.22)] min-[980px]:gap-3 min-[980px]:rounded-2xl min-[980px]:p-2"
 			style={{ animationDelay: `${(index * 0.05).toFixed(2)}s` }}
 		>
 			<Link
 				href={href}
 				aria-label={product.name}
-				className="relative flex h-[210px] items-center justify-center overflow-hidden rounded-xl"
+				className="relative flex h-[150px] items-center justify-center overflow-hidden rounded-[10px] min-[980px]:h-[210px] min-[980px]:rounded-xl"
 				style={{ background: soldOut ? productTints.sand : visual.tint }}
 			>
 				<div
@@ -55,7 +55,11 @@ function ListingProductCard({
 						soldOut && 'opacity-40',
 					)}
 				>
-					<ProductArt kind={visual.kind} size={112} />
+					<ProductArt
+						kind={visual.kind}
+						size={112}
+						className="h-auto w-20 min-[980px]:w-28"
+					/>
 				</div>
 				{badge ? (
 					<span
@@ -73,14 +77,14 @@ function ListingProductCard({
 					</span>
 				) : null}
 			</Link>
-			<div className="flex items-end gap-2.5 px-1.5 pb-1.5">
+			<div className="flex items-end gap-2.5 px-1 pb-1 min-[980px]:px-1.5 min-[980px]:pb-1.5">
 				<div className="flex min-w-0 grow flex-col gap-[3px]">
-					<div className="text-xs text-muted-foreground">
+					<div className="text-[11px] text-muted-foreground min-[980px]:text-xs">
 						{product.brand ?? ' '}
 					</div>
 					<Link
 						href={href}
-						className="text-base font-medium text-foreground transition-colors hover:text-primary"
+						className="text-sm leading-tight font-medium text-foreground transition-colors hover:text-primary min-[980px]:text-base"
 					>
 						{product.name}
 					</Link>
@@ -105,7 +109,7 @@ function ListingProductCard({
 						type="button"
 						disabled
 						aria-label={`${product.name} esgotado`}
-						className="h-11 shrink-0 cursor-not-allowed rounded-xl border bg-surface px-3 text-[13px] text-muted-foreground"
+						className="hidden h-11 shrink-0 cursor-not-allowed rounded-xl border bg-surface px-3 text-[13px] text-muted-foreground min-[980px]:block"
 					>
 						Esgotado
 					</button>
@@ -114,7 +118,7 @@ function ListingProductCard({
 						type="button"
 						onClick={onAdd}
 						aria-label={`Adicionar ${product.name} à sacola`}
-						className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-[background-color,transform] duration-200 hover:-translate-y-px hover:bg-primary-strong"
+						className="flex size-10 shrink-0 items-center justify-center rounded-[10px] bg-primary text-primary-foreground transition-[background-color,transform] duration-200 hover:-translate-y-px hover:bg-primary-strong min-[980px]:size-11 min-[980px]:rounded-xl"
 					>
 						<PlusIcon size={16} weight="bold" />
 					</button>
