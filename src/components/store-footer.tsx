@@ -19,19 +19,24 @@ const storeLinks: FooterLink[] = [
 ];
 
 const helpLinks: FooterLink[] = [
-	{ label: 'Rastrear pedido', href: appRoutes.account.orders },
-	{ label: 'Trocas e devoluções', href: appRoutes.content.page('trocas') },
-	{ label: 'Prazos e frete', href: appRoutes.content.page('frete') },
+	{ label: 'Rastrear pedido', href: appRoutes.content.page('rastrear') },
+	{
+		label: 'Trocas e devoluções',
+		href: appRoutes.content.page('trocas-e-devolucoes'),
+	},
+	{ label: 'Prazos e frete', href: appRoutes.content.page('prazos') },
 	{ label: 'Cuidados com as peças', href: appRoutes.content.page('cuidados') },
-	{ label: 'Perguntas frequentes', href: appRoutes.content.page('faq') },
+	{
+		label: 'Perguntas frequentes',
+		href: appRoutes.content.page('perguntas-frequentes'),
+	},
 ];
 
 const brandLinks: FooterLink[] = [
-	{ label: 'Nossa história', href: appRoutes.content.page('historia') },
+	{ label: 'Nossa história', href: appRoutes.content.page('nossa-historia') },
 	{ label: 'Ateliês parceiros', href: appRoutes.content.page('ateliers') },
 	{ label: 'Venda com a gente', href: appRoutes.content.page('venda') },
 	{ label: 'Lookbook', href: appRoutes.content.page('lookbook') },
-	{ label: 'Instagram', href: appRoutes.content.page('instagram') },
 ];
 
 /** Storefront footer from Docs/design/mockups/Footer.dc.html. */
@@ -91,7 +96,14 @@ function StoreFooter() {
 					title="MARFIM"
 					links={brandLinks}
 					className="min-[980px]:col-span-2"
-				/>
+				>
+					<span className="flex items-center gap-2 text-[#A1A1A8]">
+						Instagram
+						<span className="font-mono text-[9px] tracking-[0.1em] text-[#F0A070]">
+							EM BREVE
+						</span>
+					</span>
+				</FooterColumn>
 			</div>
 			<div className="mx-auto max-w-[1280px] px-5 sm:px-10">
 				<div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 border-y border-[#2E2E33] py-5 text-[13px] text-[#D4D4D8]">
@@ -99,7 +111,12 @@ function StoreFooter() {
 						<span className="font-mono text-[10px] tracking-[0.14em] text-[#A1A1A8]">
 							ATENDIMENTO
 						</span>
-						<span>Seg a sex, 9h às 18h · [SEU WHATSAPP] · [SEU E-MAIL]</span>
+						<span className="flex items-center gap-2">
+							WhatsApp e e-mail
+							<span className="font-mono text-[9px] tracking-[0.1em] text-[#F0A070]">
+								EM BREVE
+							</span>
+						</span>
 					</div>
 					<div className="grow" />
 					<div className="flex flex-wrap items-center gap-1.5">
@@ -115,7 +132,7 @@ function StoreFooter() {
 					</div>
 				</div>
 				<div className="flex flex-wrap items-center gap-x-5 gap-y-3 py-4 font-mono text-[11px] text-[#A1A1A8]">
-					<span>© 2026 MARFIM · CNPJ [SEU CNPJ]</span>
+					<span>© 2026 MARFIM · LOJA DE DEMONSTRAÇÃO</span>
 					<span className="grow" />
 					<Link
 						href={appRoutes.content.page('privacidade')}
