@@ -42,7 +42,12 @@ function AddedToCartDrawer({ item, onClose }: AddedToCartDrawerProps) {
 		>
 			<DialogPrimitive.Portal>
 				<DialogPrimitive.Overlay className="fixed inset-0 z-40 animate-fade-in bg-foreground/30" />
-				<DialogPrimitive.Content className="fixed top-4 right-4 z-41 flex w-[380px] max-w-[calc(100%-32px)] animate-slide-in flex-col rounded-[20px] bg-card shadow-[0_30px_60px_-20px_rgba(24,24,27,.35)] outline-none">
+				{/* Below 980 px a bottom sheet (MobileListagem / MobileProduto). */}
+				<DialogPrimitive.Content className="fixed inset-x-0 bottom-0 z-41 flex animate-sheet-up flex-col rounded-t-[20px] bg-card pb-[env(safe-area-inset-bottom)] shadow-[0_30px_60px_-20px_rgba(24,24,27,.35)] outline-none min-[980px]:inset-x-auto min-[980px]:top-4 min-[980px]:right-4 min-[980px]:bottom-auto min-[980px]:w-[380px] min-[980px]:max-w-[calc(100%-32px)] min-[980px]:animate-slide-in min-[980px]:rounded-[20px] min-[980px]:pb-0">
+					<span
+						aria-hidden="true"
+						className="mt-2.5 h-1 w-10 self-center rounded-full bg-border min-[980px]:hidden"
+					/>
 					{item ? (
 						<>
 							<div className="flex items-center gap-2.5 border-b px-5 py-[18px]">
@@ -88,7 +93,13 @@ function AddedToCartDrawer({ item, onClose }: AddedToCartDrawerProps) {
 									className="flex h-12 items-center justify-center gap-2 rounded-xl bg-primary text-[15px] font-medium text-primary-foreground transition-[background-color,transform] duration-200 hover:-translate-y-px hover:bg-primary-strong"
 								>
 									Ir para a sacola
-									<ArrowRightIcon size={16} />
+									<span className="min-[980px]:hidden">
+										· {formatItemCount(count)}
+									</span>
+									<ArrowRightIcon
+										size={16}
+										className="hidden min-[980px]:block"
+									/>
 								</Link>
 								<DialogPrimitive.Close className="h-12 rounded-xl border bg-card text-[15px] font-medium text-foreground transition-colors hover:bg-surface-2">
 									Continuar comprando

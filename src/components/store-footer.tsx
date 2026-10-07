@@ -39,10 +39,76 @@ const brandLinks: FooterLink[] = [
 	{ label: 'Lookbook', href: appRoutes.content.page('lookbook') },
 ];
 
-/** Storefront footer from Docs/design/mockups/Footer.dc.html. */
-function StoreFooter() {
+const compactHelpLinks: FooterLink[] = [
+	{ label: 'Meus pedidos', href: appRoutes.account.orders },
+	{ label: 'Trocas', href: appRoutes.content.page('trocas-e-devolucoes') },
+	{
+		label: 'Perguntas frequentes',
+		href: appRoutes.content.page('perguntas-frequentes'),
+	},
+];
+
+const compactBrandLinks: FooterLink[] = [
+	{ label: 'Nossa história', href: appRoutes.content.page('nossa-historia') },
+	{ label: 'Ateliês', href: appRoutes.content.page('ateliers') },
+	{ label: 'Privacidade', href: appRoutes.content.page('privacidade') },
+	{ label: 'Termos de uso', href: appRoutes.content.page('termos') },
+];
+
+/**
+ * Storefront footer from Docs/design/mockups/Footer.dc.html; below 980 px
+ * the compact one of MobileInicio.dc.html. Screens with the mobile action
+ * bar pass `hideOnMobile` (Docs/specs/storefront/mobile-screens.md).
+ */
+function StoreFooter({ hideOnMobile = false }: { hideOnMobile?: boolean }) {
 	return (
-		<footer className="w-full overflow-hidden bg-foreground pt-14 text-background">
+		<>
+			{hideOnMobile ? null : <CompactFooter />}
+			<FullFooter />
+		</>
+	);
+}
+
+function CompactFooter() {
+	return (
+		<footer className="flex w-full flex-col gap-5 overflow-hidden bg-foreground px-4 pt-8 text-background min-[980px]:hidden">
+			<div className="grid grid-cols-2 gap-4 text-sm">
+				{[
+					{ title: 'AJUDA', links: compactHelpLinks },
+					{ title: 'MARFIM', links: compactBrandLinks },
+				].map((column) => (
+					<div key={column.title} className="flex flex-col gap-2.5">
+						<span className="font-mono text-[10px] tracking-[0.14em] text-[#A1A1A8]">
+							{column.title}
+						</span>
+						{column.links.map((link) => (
+							<Link
+								key={link.label}
+								href={link.href}
+								className="text-background hover:text-[#A1A1A8]"
+							>
+								{link.label}
+							</Link>
+						))}
+					</div>
+				))}
+			</div>
+			<div className="border-t border-[#2E2E33] pt-3.5 font-mono text-[10px] text-[#A1A1A8]">
+				© 2026 MARFIM · LOJA DE DEMONSTRAÇÃO
+			</div>
+			<div
+				aria-hidden="true"
+				className="-ml-1.5 h-[70px] overflow-hidden text-[110px] leading-[0.78] font-light tracking-[-0.06em] text-[#232327]"
+			>
+				marfim<span className="text-primary">.</span>
+			</div>
+		</footer>
+	);
+}
+
+function FullFooter() {
+	return (
+		<footer className="hidden w-full overflow-hidden bg-foreground pt-14 text-background min-[980px]:block">
 			<div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-x-6 gap-y-10 px-5 min-[980px]:grid-cols-12 min-[980px]:gap-y-0 sm:px-10">
 				<form className="col-span-2 flex flex-col gap-3.5 min-[980px]:col-span-4">
 					<div className="flex items-center gap-2.5">
