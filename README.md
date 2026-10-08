@@ -313,3 +313,14 @@ npm run dev
 - `npm run typecheck` — TypeScript sem emitir
 - `npm run test` — testes (`*.spec.ts`, via `node:test` + `tsx`)
 - `npm run format` — Prettier
+
+## Deploy
+
+Hospedagem na Vercel; passo a passo, variáveis de ambiente e teste de fumaça
+em `Docs/deploy/vercel.md`. Toda resposta leva os cabeçalhos de segurança de
+`src/lib/security/security-headers.ts` (CSP liberando só o próprio app, a API e o
+Stripe, HSTS etc.) — uma nova origem de terceiros precisa ser incluída ali. O CI
+(`.github/workflows/ci.yml`) roda typecheck, lint, testes e build em cada push na
+`main` e em cada pull request, sem depender da API. Spec em
+`Docs/specs/infra/deploy.md`; o que o OrderCore precisa em produção (CORS, links
+dos e-mails, webhook do Stripe) em `Docs/backend-pendencies/infra/deploy.md`.

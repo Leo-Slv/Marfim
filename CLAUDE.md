@@ -126,6 +126,12 @@ checkout `TestCardHint` explain the Stripe test mode and are switched by
 `NEXT_PUBLIC_DEMO_STORE` (`env.demoStore`, on unless `false`) — turn it off when
 going live (`Docs/specs/storefront/demo-notice.md`).
 
+Every response carries the security headers of `src/lib/security/security-headers.ts`
+(applied in `next.config.ts`): the CSP allows only the app, the API origin
+(`NEXT_PUBLIC_API_URL`) and Stripe, so a new third-party origin (analytics,
+images, fonts) must be added there or the browser blocks it. CI is
+`.github/workflows/ci.yml`; deploy notes are in `Docs/deploy/vercel.md`.
+
 Error screens come from `src/features/errors`: unknown routes hit
 `src/app/not-found.tsx`, render errors `error.tsx`; when the query a page
 is about fails without data, render `QueryErrorState` (404/403/429/sem
