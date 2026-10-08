@@ -3,6 +3,12 @@
 Spec: `Docs/specs/infra/deploy.md`. All of these are OrderCore
 configuration (step 8), not code, and wait for the Marfim URL.
 
+**Status**: implemented on the OrderCore side in its V6 demo deployment
+(`deploy/aws`, runbook `Docs/operations/aws-demo.md`): CORS and the e-mail links
+come from the `storefront-url` SSM parameter, forwarded headers are trusted behind
+Caddy, and the Stripe webhook is registered by hand (runbook step 4). What is
+left is creating the AWS resources and the parameters.
+
 ## 1. CORS allows only the Marfim origin — Config
 
 - **Marfim expects**: the browser calls the API directly (`apiFetch`), so

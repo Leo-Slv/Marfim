@@ -31,6 +31,10 @@ that file and its spec, or the browser will block it.
 
 ## 4. What OrderCore needs once the Marfim URL is known (step 8)
 
+OrderCore ships the server side in its repo (`Docs/operations/aws-demo.md`): one AWS
+machine deployed by CI. Put the Vercel URL in its `storefront-url` SSM parameter and
+deploy; set `NEXT_PUBLIC_API_URL` here to its `ApiUrl` output.
+
 See `Docs/backend-pendencies/infra/deploy.md`: CORS for the Marfim origin,
 `Identity:Links` pointing to `https://<marfim>/confirmar-email` and
 `/redefinir-senha`, the Stripe webhook endpoint for the public API, and
