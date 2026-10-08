@@ -48,6 +48,7 @@ import { paymentStage } from '../lib/order-stage';
 import { checkoutAlert, type CheckoutAlert } from '../lib/payment-messages';
 import type { CheckoutRequest, Order } from '../model/order';
 import { CardPaymentForm } from './card-payment-form';
+import { TestCardHint } from './test-card-hint';
 import { TotalsCard } from './checkout-summary';
 import {
 	OrderConfirmed,
@@ -333,6 +334,7 @@ function PaymentContent() {
 								actions={alertActions(alertState.alert)}
 							/>
 						) : null}
+						{stage === 'card' ? <TestCardHint /> : null}
 						{stage === 'card' ? (
 							order && clientSecret && methods.data?.publishableKey ? (
 								<CardPaymentForm

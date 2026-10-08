@@ -18,6 +18,7 @@ import { useIsHydrated } from '@/lib/hooks/use-is-hydrated';
 import { appRoutes } from '@/lib/routes/app-routes';
 import { cn } from '@/lib/utils';
 
+import { DemoStoreBanner } from './demo-store-banner';
 import { MobileTopBar, type MobileBack } from './mobile-top-bar';
 
 const promises = [
@@ -52,6 +53,7 @@ function StoreHeader({ mobileBack }: { mobileBack?: MobileBack } = {}) {
 
 	return (
 		<div className="w-full bg-background">
+			<DemoStoreBanner />
 			<MobileTopBar
 				back={mobileBack}
 				count={count}
