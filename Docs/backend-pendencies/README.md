@@ -17,6 +17,7 @@ Cosmetic / Config).
 | Storefront home (`/`) | [storefront/home.md](storefront/home.md) | Product imagery, merchandising tags, curated selection, wishlist, atelier details, free shipping/installments, promotion campaign, newsletter, store contact data |
 | Storefront listing (`/products`, `/search`, `/promotions`) | [storefront/listing.md](storefront/listing.md) | Name-only accent-sensitive search, no "new" flag, no brand filter, no editorial sort |
 | Demonstration-store notice (store header, `/checkout/payment`) | [storefront/demo-notice.md](storefront/demo-notice.md) | Stripe test/live mode not exposed by the API (manual setting instead) |
+| Deploy (Vercel) | [infra/deploy.md](infra/deploy.md) | OrderCore production config: CORS for the Marfim origin, e-mail links, Stripe webhook endpoint, forwarded headers |
 | Account access (`/login`, `/register`, `/forgot-password`, `/confirmar-email`, `/redefinir-senha`) | [auth/access.md](auth/access.md) | Rate limits behind the BFF (config), `Retry-After` not exposed by CORS, no name in the session |
 | Checkout · Entrega (`/checkout/delivery`) | [checkout/delivery.md](checkout/delivery.md) | No shipping options/cost, label/neighborhood/country required, first address not default, no CEP/UF validation |
 | Checkout · Pagamento (`/checkout/payment`) | [checkout/payment.md](checkout/payment.md) | No Pix with Stripe, no card last4, stock/price conflicts without item detail, Stripe CLI needed locally |
