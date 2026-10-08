@@ -121,6 +121,11 @@ the desktop table, detail panels take the whole screen, destructive confirms bec
 `BottomSheet`s gated by `useMediaQuery` and the product editor has a fixed save bar
 (same `animate-up` caveat).
 
+Marfim ships as a demonstration store: `DemoStoreBanner` (in `StoreHeader`) and the
+checkout `TestCardHint` explain the Stripe test mode and are switched by
+`NEXT_PUBLIC_DEMO_STORE` (`env.demoStore`, on unless `false`) — turn it off when
+going live (`Docs/specs/storefront/demo-notice.md`).
+
 Error screens come from `src/features/errors`: unknown routes hit
 `src/app/not-found.tsx`, render errors `error.tsx`; when the query a page
 is about fails without data, render `QueryErrorState` (404/403/429/sem

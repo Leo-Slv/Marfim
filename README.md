@@ -262,6 +262,12 @@ public/
   descartar) em bottom sheet. Spec em `Docs/specs/admin/mobile-admin.md`;
   lacunas em `Docs/backend-pendencies/admin/mobile-admin.md`.
 
+- **Aviso de loja de demonstração** — faixa fechável (lembrada na sessão) acima do
+  cabeçalho da loja e bloco com os cartões de teste do Stripe na tela de
+  Pagamento. Ligado por padrão; desligue com `NEXT_PUBLIC_DEMO_STORE=false`
+  junto com as chaves live do Stripe. Spec em `Docs/specs/storefront/demo-notice.md`;
+  lacunas em `Docs/backend-pendencies/storefront/demo-notice.md`.
+
 ## Telas (design)
 
 As telas do Claude Design estão exportadas em `Docs/design/mockups/`. Abra

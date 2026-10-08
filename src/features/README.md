@@ -214,6 +214,10 @@ The admin panel follows the same rule below 980 px (`Docs/specs/admin/mobile-adm
 the desktop table, detail panels take the whole screen and destructive confirms
 are `BottomSheet`s (inline confirm stays on desktop).
 
+The demonstration-store notice is `components/demo-store-banner.tsx` (mounted by `StoreHeader`,
+closable per session through `lib/demo/demo-banner-store.ts`) plus `checkout/components/test-card-hint.tsx`;
+both read `env.demoStore` (`NEXT_PUBLIC_DEMO_STORE`, on by default).
+
 Each new feature is added following the workflow in the root `CLAUDE.md`
 (spec → resolve open decisions → backend pendencies → implementation plan →
 implement → tests → docs → commit). A feature only gets the subfolders it
